@@ -1,0 +1,8 @@
+@startuml
+
+User -> App: Créé sa publication avec une difficulté et une catégorie
+User --> App: L'utilisateur valide un défi/geste
+App --> User: La difficulté rapporte des points
+App --> User: Gagne un badge
+
+@enduml
