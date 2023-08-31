@@ -1,0 +1,15 @@
+@startuml
+(*) --> "(bouton +) Créer une publication"
+--> "choix un titre, label, chargement image"
+
+if "défi ou geste ? "
+-down-> [défi] "lancer un défi avec une catégorie > action (catégories inspirées de MPP) et choix de la durée"
+--> "la publication apparait sur son feed"
+
+else 
+-down->[geste] "définir une catégorie > action"
+--> "la publication apparait sur son feed"
+
+endif
+
+@enduml

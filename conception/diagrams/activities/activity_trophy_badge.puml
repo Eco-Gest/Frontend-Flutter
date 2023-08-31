@@ -1,0 +1,15 @@
+@startuml
+(*)  --> "User end his challenge / action of X category"
+
+If "challenge points on category X \n + the points on category X he had \n >= minimum points to add a new trophy" then
+--> [Yes] "User get a new trophy"
+Endif
+-->(*)
+
+(*)  --[hidden]> "User end his challenge / action of X category"
+If "challenge points \n + user total points \n >= minimum points to level up his badge" then
+--> [Yes] "User level up his badge"
+
+Endif
+-->(*)
+@enduml

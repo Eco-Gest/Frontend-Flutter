@@ -1,0 +1,12 @@
+@startuml
+
+participant    FlutterApp    as fa
+collections     BackendApi     as ba
+database      DB      as db
+
+fa -> ba : HTTP request (with params ?)
+ba -> db : DB request  
+db -> ba : DB response
+ba -> fa : HTTP Response 
+
+@enduml

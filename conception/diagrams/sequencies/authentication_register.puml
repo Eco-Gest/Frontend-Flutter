@@ -1,0 +1,16 @@
+@startuml
+
+actor       User       as u
+participant    FlutterApp    as fa
+collections     BackendApi     as ba
+database      DB      as db
+
+u -> fa : Enter an email, a username & password 
+fa -> ba : HTTP post to login route with email & password params
+ba -> db : ask to check if email & username aren't used 
+db -> ba : response if a user is found or no
+ba -> db : if no insert request with email, username & crypted password 
+ba -> fa : Response HTTP & token if statutCode == 200
+fa-> u : if statutCode == 200 redirection to home, else error message 
+
+@enduml
