@@ -8,9 +8,9 @@ database      DB      as db
 u -> fa : Enter an email, a username & password 
 fa -> ba : HTTP post to login route with email & password params
 ba -> db : ask to check if email & username aren't used 
-db -> ba : response if a user is found or no
-ba -> db : if no insert request with email, username & crypted password 
-ba -> fa : Response HTTP & token if statutCode == 200
-fa-> u : if statutCode == 200 redirection to home, else error message 
+db -> ba : if a user is found or NOT
+ba -> db : if NOT: insert request with email, username & crypted password 
+ba -> fa : HTTP Response & if Response HTTP's statutCode == 200 return token 
+fa-> u : if HTTP Response's statutCode == 200  redirection to home, else error message 
 
 @enduml

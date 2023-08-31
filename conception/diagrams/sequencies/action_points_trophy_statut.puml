@@ -1,8 +1,7 @@
 @startuml
 
-User -> App: Créé sa publication avec une difficulté et une catégorie
-User --> App: L'utilisateur valide un défi/geste
-App --> User: La difficulté rapporte des points
-App --> User: Gagne un badge
+Action --> Points : the difficulty level earns points
+Points --> Trophy : if the threshold reaches the number of points per category => trophy gain
+Points --> Badge : if the threshold reaches the total number of points => level up badge
 
 @enduml
