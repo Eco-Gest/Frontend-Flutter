@@ -1,14 +1,17 @@
 @startuml
-(*) --> "(bouton +) Créer une publication"
---> "choix un titre, label, chargement image"
+(*) --> "(button +) Create a post"
+--> "Choose between challenge and action"
 
-if "défi ou geste ? "
--down-> [défi] "lancer un défi avec une catégorie > action (catégories inspirées de MPP) et choix de la durée"
---> "la publication apparait sur son feed"
+
+
+if "challenge or action"
+-d-> [challenge] "Choose a title, a description, upload an image, a category, some hashtags & a difficulty"
+--> "choose start & end dates"
+--> "button to post"
 
 else 
--down->[geste] "définir une catégorie > action"
---> "la publication apparait sur son feed"
+-d->[action] "Choose a title, a description, upload an image, a category, some hashtags & a difficulty"
+--> "button to post"
 
 endif
 
