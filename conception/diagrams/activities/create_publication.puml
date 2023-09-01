@@ -4,14 +4,22 @@
 
 
 if "challenge or action"
--d-> [challenge] "choose start & end dates"
---> "Choose a title, a description, upload an image, a category, some hashtags & a difficulty"
+-d-> [challenge] "choose start & end dates (*)"
+-d->[action] "Choose a title(*), a description, upload an image, a category(*), some hashtags & a difficulty(*)"
 
 else 
--d->[action] "Choose a title, a description, upload an image, a category, some hashtags & a difficulty"
-
+-d->[action] "Choose a title(*), a description, upload an image, a category(*), some hashtags & a difficulty(*)"
 endif
 
 --> "button to post"
+
+if "Required fields (*) filled ?"
+-d->[yes] "post created"
+-->(*)
+else 
+-d->[no] "Return error message"
+-->(*)
+endif
+
 
 @enduml

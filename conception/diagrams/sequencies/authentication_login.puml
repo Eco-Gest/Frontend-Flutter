@@ -7,11 +7,9 @@ database      DB      as db
 
 u -> fa : Enter his email & password 
 fa -> ba : HTTP post to login route with email & password params
-ba -> db : Ask to check if email exists & crypt this password 
-ba -> db : if email exists check the encrypted password
-db -> ba : response if encrypted password is the right one
+ba -> db : Check crenditials
+db -> ba : Response  
 ba -> fa : HTTP Response & if Response HTTP's statutCode == 200 return token 
 fa-> u : if HTTP Response's statutCode == 200  redirection to home, else error message 
-
 
 @enduml
