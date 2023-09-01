@@ -1,83 +1,84 @@
 @startuml
 left to right direction
-actor :Visiteur: as V
+actor :Visitor: as V
 actor :User: as U
 actor :Admin: as A
 
-usecase "Se connecter" as (Connect)
-usecase "S'inscrire" as (Register)
-usecase "Se déconnecter" as (Disconnect)
+usecase "Log in" as (Connect)
+usecase "Register" as (Register)
 
-usecase "Voir le fil d'actualité" as (Actu)
-usecase "Accéder à ses notifications" as (Notif)
-usecase "Accéder à un carrousel explicatif de l'application" as (AppInfos)
+usecase "See the newsfeed" as (Actu)
+usecase "Access their notifications" as (Notif)
+usecase "Access an explanatory carousel of the application" as (AppInfos)
 
-package "Publications" as (Publi) {
-  usecase "Gagner des points par catégorie à la publication d'un geste"
-  usecase "Gagner des points par catégorie après avoir complété un défi"
-  usecase "Voir les défis en cours"
-  usecase "Souscrire à un défi créé par d'autres utilisateurs"
-  usecase "Inviter d'autres utilisateurs à participer à un défi créé"
-  package "Voir une publication" {
-    usecase "Afficher le détail d'un publication (commentaire, like)" as (Détail)
-    usecase "Liker une publication" as (Like)
-    usecase "Commenter une publication" as (Comment)
+package "Posts" as (Publi) {
+  usecase "Earn points by category when posting an action"
+  usecase "Earn points per category after completing a challenge"
+  usecase "See ongoing challenges"
+  usecase "Subscribe to a challenge created by other users"
+  usecase "Invite other users to participate in a created challenge"
+  package "See a post" {
+    usecase "Display the detail of a post (comment, like)" as (Détail)
+    usecase "Like a post" as (Like)
+    usecase "Comment a post" as (Comment)
+    usecase "Share the post on social media" as (Shared)
   }
-  package "Créer un défi" {
-    usecase "Ajouter le titre et la description d'un défi"
-    usecase "Sélectionner la catégorie d'un défi"
-    usecase "Sélectionner le(s) hashtag(s) d'un défi"
-    usecase "Sélectionner la durée d'un défi"
+  package "Create a challenge" {
+    usecase "Add a challenge title and description"
+    usecase "Select the category of a challenge"
+    usecase "Select the hashtag(s) of a challenge"
+    usecase "Select the duration of a challenge"
   }
-  package "Créer un geste" {
-    usecase "Ajouter le titre et la description d'un geste"
-    usecase "Sélectionner la catégorie d'un geste"
-    usecase "Sélectionner le(s) hashtag(s) d'un geste"
+  package "Create an action" {
+    usecase "Add action title and description"
+    usecase "Select the category of an action"
+    usecase "Select the hastag(s) of an action"
   }
 }
 
-package "Recherche" {
-  usecase "Rechercher d'autres utilisateurs"
-  usecase "Rechercher des défis"
+package "Search" as (Search) {
+  usecase "Find other users"
+  usecase "Look for challenges"
 }
 
-package "Paramètres" as (Param) {
-  usecase "Accéder à la Politique de confidentialité"
-  usecase "Accéder aux Mentions Légales"
-  usecase "Choisir entre un mode sombre ou clair"
-  usecase "Choisir la langue de l'application"
-  usecase "Supprimer son compte"
-  usecase "Télécharger ses données"
-  usecase "Accéder à une FAQ"
-  usecase "Contacter le DPO pour au sujet de mes droits d'accès et de rectification"
+package "Settings" as (Param) {
+  usecase "Access the Privacy Policy"
+  usecase "Access the Legal"
+  usecase "Choose between dark or light mode"
+  usecase "Choose app language"
+  usecase "Delete your account"
+  usecase "Download your data"
+  usecase "Access a FAQ"
+  usecase "Contact the DPO about my rights of access and rectification"
+  usecase "Log out" as (Disconnect)
 }
 
-package "Autres utilisateurs" as (Others) {
-  usecase "Consulter le profil d'un autre utilisateur"
-  usecase "S'abonner à un autre utilisateur"
-  usecase "Demander à suivre un autre utilisateur"
-  usecase "Accepter/Refuser la demande de follow d'un autre utilisateur"
+package "Other users" as (Others) {
+  usecase "View another user's profile"
+  usecase "Subscribe to another user"
+  usecase "Ask to follow another user"
+  usecase "Accept/Decline another user's follow request"
 }
 
-package "Profil" {
-  usecase "Avoir un compte public ou privé" as (Status)
-  usecase "Accepter ou refuser une demande de follow" as (Follow)
-  usecase "Afficher la présentation des badges (status)"
-  usecase "Gagner des trophées par catégories"
-  usecase "Modifier les informations du profil (photo, username, mot de passe, ville, biographie)"
+package "Profile" as (Profile) {
+  usecase "Have a public or private account" as (Status)
+  usecase "Accept or decline a follow request" as (Follow)
+  usecase "View badge overview (status)"
+  usecase "View my trophies by categories"
+  usecase "Modify profile information (photo, username, password, city, presentation)"
   note right of (Status)
-    Public : publications visibles 
-    par tout utilisateur connecté
-    Privé : publications visibles 
-    uniquement par ses followers
+    Public: posts visible 
+    to any logged-in user. 
+    Private: posts visible 
+    only to their followers
   end note
 }
 
 package "Backoffice" {
-  usecase "Listing & gestion de tous les utilisateurs"
-  usecase "Visualiser le nombre de requête par utilisateur"
-  usecase "CRUD défis"
-  usecase "CRUD trophée"
+  usecase "Listing & management of all users"
+  usecase "View the number of requests per user"
+  usecase "CRUD challenge"
+  usecase "CRUD trophy"
 }
 
 (Connect) --> U
@@ -89,11 +90,10 @@ V --> (AppInfos)
 U --> (Actu)
 U --> (Publi)
 U --> (Notif)
-U --> (Disconnect)
 U --> (Param)
-U --> Recherche
+U --> (Search)
 U --> (Others)
-U --> Profil
+U --> (Profile)
 
 A --> (Disconnect)
 A --> Backoffice
