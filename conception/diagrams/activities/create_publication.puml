@@ -3,16 +3,15 @@
 --> "Choose between challenge and action"
 
 
-
 if "challenge or action"
--d-> [challenge] "Choose a title, a description, upload an image, a category, some hashtags & a difficulty"
---> "choose start & end dates"
---> "button to post"
+-d-> [challenge] "choose start & end dates"
+--> "Choose a title, a description, upload an image, a category, some hashtags & a difficulty"
 
 else 
 -d->[action] "Choose a title, a description, upload an image, a category, some hashtags & a difficulty"
---> "button to post"
 
 endif
+
+--> "button to post"
 
 @enduml
