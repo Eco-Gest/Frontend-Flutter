@@ -1,0 +1,17 @@
+@startuml
+(*) --> "(button +) Create a post"
+--> "Choose between challenge and action"
+
+
+if "challenge or action"
+-d-> [challenge] "choose start & end dates"
+--> "Choose a title, a description, upload an image, a category, some hashtags & a difficulty"
+
+else 
+-d->[action] "Choose a title, a description, upload an image, a category, some hashtags & a difficulty"
+
+endif
+
+--> "button to post"
+
+@enduml
