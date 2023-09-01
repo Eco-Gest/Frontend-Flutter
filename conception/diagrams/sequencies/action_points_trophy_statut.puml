@@ -1,7 +1,0 @@
-@startuml
-
-Action --> Points : the difficulty level earns points
-Points --> Trophy : if the threshold reaches the number of points per category => trophy gain
-Points --> Badge : if the threshold reaches the total number of points => level up badge
-
-@enduml
