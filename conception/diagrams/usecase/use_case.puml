@@ -1,0 +1,100 @@
+@startuml
+left to right direction
+actor :Visiteur: as V
+actor :User: as U
+actor :Admin: as A
+
+usecase "Se connecter" as (Connect)
+usecase "S'inscrire" as (Register)
+usecase "Se déconnecter" as (Disconnect)
+
+usecase "Voir le fil d'actualité" as (Actu)
+usecase "Accéder à ses notifications" as (Notif)
+usecase "Accéder à un carrousel explicatif de l'application" as (AppInfos)
+
+package "Publications" as (Publi) {
+  usecase "Gagner des points par catégorie à la publication d'un geste"
+  usecase "Gagner des points par catégorie après avoir complété un défi"
+  usecase "Voir les défis en cours"
+  usecase "Souscrire à un défi créé par d'autres utilisateurs"
+  usecase "Inviter d'autres utilisateurs à participer à un défi créé"
+  package "Voir une publication" {
+    usecase "Afficher le détail d'un publication (commentaire, like)" as (Détail)
+    usecase "Liker une publication" as (Like)
+    usecase "Commenter une publication" as (Comment)
+  }
+  package "Créer un défi" {
+    usecase "Ajouter le titre et la description d'un défi"
+    usecase "Sélectionner la catégorie d'un défi"
+    usecase "Sélectionner le(s) hashtag(s) d'un défi"
+    usecase "Sélectionner la durée d'un défi"
+  }
+  package "Créer un geste" {
+    usecase "Ajouter le titre et la description d'un geste"
+    usecase "Sélectionner la catégorie d'un geste"
+    usecase "Sélectionner le(s) hashtag(s) d'un geste"
+  }
+}
+
+package "Recherche" {
+  usecase "Rechercher d'autres utilisateurs"
+  usecase "Rechercher des défis"
+}
+
+package "Paramètres" as (Param) {
+  usecase "Accéder à la Politique de confidentialité"
+  usecase "Accéder aux Mentions Légales"
+  usecase "Choisir entre un mode sombre ou clair"
+  usecase "Choisir la langue de l'application"
+  usecase "Supprimer son compte"
+  usecase "Télécharger ses données"
+  usecase "Accéder à une FAQ"
+  usecase "Contacter le DPO pour au sujet de mes droits d'accès et de rectification"
+}
+
+package "Autres utilisateurs" as (Others) {
+  usecase "Consulter le profil d'un autre utilisateur"
+  usecase "S'abonner à un autre utilisateur"
+  usecase "Demander à suivre un autre utilisateur"
+  usecase "Accepter/Refuser la demande de follow d'un autre utilisateur"
+}
+
+package "Profil" {
+  usecase "Avoir un compte public ou privé" as (Status)
+  usecase "Accepter ou refuser une demande de follow" as (Follow)
+  usecase "Afficher la présentation des badges (status)"
+  usecase "Gagner des trophées par catégories"
+  usecase "Modifier les informations du profil (photo, username, mot de passe, ville, biographie)"
+  note right of (Status)
+    Public : publications visibles 
+    par tout utilisateur connecté
+    Privé : publications visibles 
+    uniquement par ses followers
+  end note
+}
+
+package "Backoffice" {
+  usecase "Listing & gestion de tous les utilisateurs"
+  usecase "Visualiser le nombre de requête par utilisateur"
+  usecase "CRUD défis"
+  usecase "CRUD trophée"
+}
+
+(Connect) --> U
+
+V --> (Connect)
+V --> (Register)
+V --> (AppInfos)
+
+U --> (Actu)
+U --> (Publi)
+U --> (Notif)
+U --> (Disconnect)
+U --> (Param)
+U --> Recherche
+U --> (Others)
+U --> Profil
+
+A --> (Disconnect)
+A --> Backoffice
+@enduml
