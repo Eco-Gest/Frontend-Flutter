@@ -1,0 +1,82 @@
+@startuml
+!theme spacelab
+' hide the spot
+' hide circle
+
+' avoid problems with angled crows feet
+skinparam linetype ortho
+
+entity "User" as u {
+  *id : number <<generated>>
+  --
+  *badge_id : number <<FK>>
+  *email : text
+  *password : text
+  *username : text
+  *image : text
+  *birthday : datetime
+  *biography: text
+  *position : text
+  *is_private : bool
+}
+
+entity "Category" as cat {
+  *id : number <<generated>>
+  --
+  *title: text
+  *image : text
+}
+
+entity "Post" as p {
+  *id : number <<generated>>
+  --
+  *category_id : number <<FK>>
+  *author_id : number <<FK>>
+  *tag : [text]
+  *like : [number user_id]
+  *title: text
+  *description : text
+  *image : text
+  *position : text
+  *type : enum (challenge, action)
+  *level : enum (easy, medium, hard)
+  *start_date : datetime
+  *end_date : datetime
+}
+
+entity "Comment" as c {
+  *id : number <<generated>>
+  --
+  *author_id : number <<FK>>
+  *post_id : number <<FK>>
+  *content : text
+}
+
+entity "Reward" as r {
+  *id : number <<generated>>
+  --
+  *title : text
+  *image : text
+  *type : enum (badge, trophy)
+  *point : number
+}
+
+entity "Notification" as not {
+  *id : number <<generated>>
+  --
+  *title : text
+  *content : text
+}
+
+u }o-down--o{ p : participates
+u }o-down--|| p : writes
+u }o-down--o{ p : likes
+u }o---|| c : writes
+u ||---o{ r : has 
+u }o-up-o{ u : asks to follow
+u }o--right--o{ not : has
+p }o---|| c : commented
+p ||---o{ cat : has
+
+
+@enduml
