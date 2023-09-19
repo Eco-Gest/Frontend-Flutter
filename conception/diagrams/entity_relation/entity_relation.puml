@@ -68,7 +68,25 @@ entity "Notification" as not {
   *content : text
 }
 
-u }o-down--o{ p : participates
+entity "User_post_participation" as upp {
+  *id : number <<generated>>
+  --
+  *post_id : number <<FK>>
+  *participant_id : number <<FK>>
+  *is_completed : bool
+}
+
+entity "User_point_category" as upc {
+  *id : number <<generated>>
+  --
+  *user_id : number user_id <<FK>>
+  *category_id : number user_id <<FK>>
+  *current_point : number
+  *total_point : number
+}
+
+u |o-down--o{ upp : participates
+p }o---o| upp : contains
 u }o-down--|| p : writes
 u }o-down--o{ p : likes
 u }o---|| c : writes
@@ -77,6 +95,8 @@ u }o-up-o{ u : asks to follow
 u }o--right--o{ not : has
 p }o---|| c : commented
 p ||---o{ cat : has
+u }o--|| upc : has points in
+cat }o--|| upc : has 
 
 
 @enduml

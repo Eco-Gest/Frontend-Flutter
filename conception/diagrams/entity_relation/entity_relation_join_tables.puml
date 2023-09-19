@@ -119,6 +119,6 @@ p ||---o{ cat : is categorized
 u }o--|| upc : has points in
 u }o--|| ut : has 
 cat }|--|| ut : has 
-cat }o--o| upc : has 
+cat }o--|| upc : has 
 
 @enduml
