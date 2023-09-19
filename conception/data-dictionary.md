@@ -3,7 +3,7 @@
 
 ## TABLES DE REFERENCE
 
-| user            |
+| user                     |              |                                     |             |
 | ------------------------ | ------------ | ----------------------------------- | ----------- |
 | Champ                    | Type         | Spécificités                        | Description |
 | id                       | INTEGER      | PRIMARY KEY, NOT NULL               | L’identifiant de l'utilisateur       |
@@ -19,7 +19,7 @@
 | created_at               | TIMESTAMP    | NOT NULL, DEFAULT CURRENT_TIMESTAMP | Date de création de l'utilisateur |
 | updated_at               | TIMESTAMP    | NOT NULL, DEFAULT CURRENT_TIMESTAMP | Date de mise à jour de l'utilisateur |
 
-| category         |
+| category                 |              |                                     |             |
 | ------------------------ | ------------ | ----------------------------------- | ----------- |
 | Champ                    | Type         | Spécificités                        | Description |
 | id                       | INTEGER      | PRIMARY KEY, NOT NULL               | L’identifiant de la catégorie |
@@ -28,7 +28,7 @@
 | created_at               | TIMESTAMP    | NOT NULL, DEFAULT CURRENT_TIMESTAMP | Date de création de la catégorie |
 | updated_at               | TIMESTAMP    | NOT NULL, DEFAULT CURRENT_TIMESTAMP | Date de mise à jour de la catégorie  |
 
-| post     |
+| post                     |              |                                     |             |
 | ------------------------ | ------------ | ----------------------------------- | ----------- |
 | Champ                    | Type         | Spécificités                        | Description |
 | id                       | INTEGER      | PRIMARY KEY, NOT NULL               | L'identifiant de la publication|
@@ -47,7 +47,7 @@
 | created_at               | TIMESTAMP    | NOT NULL, DEFAULT CURRENT_TIMESTAMP | La date de creation de la publication |
 | updated_at               | TIMESTAMP    | NOT NULL, DEFAULT CURRENT_TIMESTAMP | La date de mise à jour de la publication |
 
-| comment                       |
+| comment                  |              |                                     |             |
 | ------------------------ | ------------ | ----------------------------------- | ----------- |
 | Champ                    | Type         | Spécificités                        | Description |
 | id                       | INTEGER      | PRIMARY KEY, NOT NULL               | L'identifiant du commentaire |
@@ -57,7 +57,7 @@
 | created_at               | TIMESTAMP    | NOT NULL, DEFAULT CURRENT_TIMESTAMP | La date de creation du commentaire |
 | updated_at               | TIMESTAMP    | NOT NULL, DEFAULT CURRENT_TIMESTAMP | La date de mise à jour du commentaire |
 
-| reward                        |
+| reward                   |              |                                     |             |
 | ------------------------ | ------------ | ----------------------------------- | ----------- |
 | Champ                    | Type         | Spécificités                        | Description |
 | id                       | INTEGER      | PRIMARY KEY, NOT NULL               | L'identifiant de la récompense |
@@ -68,7 +68,7 @@
 | created_at               | TIMESTAMP    | NOT NULL, DEFAULT CURRENT_TIMESTAMP | La date de creation de la récompense |
 | updated_at               | TIMESTAMP    | NOT NULL, DEFAULT CURRENT_TIMESTAMP | La date de mise à jour de la récompense |
 
-| notification                    |
+| notification             |              |                                     |             |
 | ------------------------ | ------------ | ----------------------------------- | ----------- |
 | Champ                    | Type         | Spécificités                        | Description |
 | id                       | INTEGER      | PRIMARY KEY, NOT NULL               | L'identifiant de la notification |
@@ -79,7 +79,7 @@
 
 ## TABLES PIVOT
 
-| subscription                        |
+| subscription             |              |                                     |             |
 | ------------------------ | ------------ | ----------------------------------- | ----------- |
 | Champ                    | Type         | Spécificités                        | Description |
 | id                       | INTEGER      | PRIMARY KEY, NOT NULL               | L'identifiant de l'abonnement |
@@ -88,7 +88,7 @@
 | created_at               | TIMESTAMP    | NOT NULL, DEFAULT CURRENT_TIMESTAMP | La date de creation de l'abonnement |
 | updated_at               | TIMESTAMP    | NOT NULL, DEFAULT CURRENT_TIMESTAMP | La date de mise à jour de l'abonnement|
 
-| user_post_participation     |
+| user_post_participation  |              |                                     |             |
 | ------------------------ | ------------ | ----------------------------------- | ----------- |
 | Champ                    | Type         | Spécificités                        | Description |
 | id                       | INTEGER      | PRIMARY KEY, NOT NULL               | L'identifiant de la participation à un challenge |
@@ -98,7 +98,7 @@
 | created_at               | TIMESTAMP    | NOT NULL, DEFAULT CURRENT_TIMESTAMP | La date de creation de la participation |
 | updated_at               | TIMESTAMP    | NOT NULL, DEFAULT CURRENT_TIMESTAMP | La date de mise à jour de la participation |
 
-| user_trophy          |
+| user_trophy              |              |                                     |             |
 | ------------------------ | ------------ | ----------------------------------- | ----------- |
 | Champ                    | Type         | Spécificités                        | Description |
 | id                       | INTEGER      | PRIMARY KEY, NOT NULL               | L'identifiant de la remise de trophée |
@@ -107,7 +107,7 @@
 | created_at               | TIMESTAMP    | NOT NULL, DEFAULT CURRENT_TIMESTAMP | La date de creation de la remise de trophée |
 | updated_at               | TIMESTAMP    | NOT NULL, DEFAULT CURRENT_TIMESTAMP | La date de mise à jour de la remise de trophée |
 
-| user_notification        |
+| user_notification        |              |                                     |             |
 | ------------------------ | ------------ | ----------------------------------- | ----------- |
 | Champ                    | Type         | Spécificités                        | Description |
 | id                       | INTEGER      | PRIMARY KEY, NOT NULL               | L'identifiant de l'emission de la notification |
@@ -116,7 +116,7 @@
 | created_at               | TIMESTAMP    | NOT NULL, DEFAULT CURRENT_TIMESTAMP | La date de creation de l'emission de la notification |
 | updated_at               | TIMESTAMP    | NOT NULL, DEFAULT CURRENT_TIMESTAMP | La date de mise à jour de l'emission de la notification |
 
-| user_point_category      |
+| user_point_category      |              |                                     |             |
 | ------------------------ | ------------ | ----------------------------------- | ----------- |
 | Champ                    | Type         | Spécificités                        | Description |
 | id                       | INTEGER      | PRIMARY KEY, NOT NULL               | L'identifiant du suivi de points par catégorie |
