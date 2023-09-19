@@ -122,7 +122,7 @@
 | id                       | INTEGER      | PRIMARY KEY, NOT NULL               | L'identifiant du suivi de points par catégorie |
 | user_id                  | INTEGER      | NOT NULL, FOREIGN KEY               | L'identifiant de l'utilisateur qui gagne des points |
 | category_id              | INTEGER      | NOT NULL, FOREIGN KEY               | L'identifiant de la catégorie  |
-| current_point            | INTEGER      | NOT NULL, DEFAULT 0                 | Le nombre de points actuels dans la catégorie  |
-| trophy                   | INTEGER      | NOT NULL, DEFAULT 0                 | Le nombre de trophees dans la catégorie  |
+| current_point            | INTEGER      | NOT NULL, DEFAULT 0                 | Le nombre de points actuel dans la catégorie  |
+| total_point              | INTEGER      | NOT NULL, DEFAULT 0                 | Le nombre de points total dans la catégorie  |
 | created_at               | TIMESTAMP    | NOT NULL, DEFAULT CURRENT_TIMESTAMP | La date de creation du suivi de points par catégorie  |
 | updated_at               | TIMESTAMP    | NOT NULL, DEFAULT CURRENT_TIMESTAMP | La date de mise à jour du suivi de points par catégorie  |
