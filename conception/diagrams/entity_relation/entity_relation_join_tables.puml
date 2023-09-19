@@ -113,12 +113,12 @@ u }o---|| c : writes
 u ||---o{ r : has a badge
 u |o-up--o| s : asks to follow
 u }o--down--|| un : is notified
-un ||--up--o| not : is notified
+un ||--up--|{ not : is notified
 p }o-right--|| c : commented
 p ||---o{ cat : is categorized
 u }o--|| upc : has points in
 u }o--|| ut : has 
 cat }|--|| ut : has 
-cat |o--o| upc : has 
+cat }o--o| upc : has 
 
 @enduml
