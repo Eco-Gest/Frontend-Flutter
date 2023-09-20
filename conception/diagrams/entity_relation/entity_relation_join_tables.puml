@@ -61,7 +61,6 @@ entity "Post" as p {
   *description : text
   *image : text
   *position : text
-  *like : [number user_id]
   *type : enum (challenge, action)
   *level : enum (easy, medium, hard)
   *tag : [text]
@@ -105,10 +104,16 @@ Entity "User_trophy" as ut {
   *category_id : number <<FK>>
 }
 
+Entity "Post_like" as pl {
+  *post_id : number <<FK>>
+  *user_id : number <<FK>>
+}
+
 u |o-down--o{ upp : participates
 p }o---o| upp : contains
 u }o-down--|| p : writes
-u |o-down--o{ p : likes
+u }o-down--|| pl : likes
+p }o-right--|| pl : has
 u }o---|| c : writes
 u ||---o{ r : has a badge
 u |o-up--o| s : asks to follow
