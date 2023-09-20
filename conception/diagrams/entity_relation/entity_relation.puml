@@ -33,7 +33,6 @@ entity "Post" as p {
   *category_id : number <<FK>>
   *author_id : number <<FK>>
   *tag : [text]
-  *like : [number user_id]
   *title: text
   *description : text
   *image : text
