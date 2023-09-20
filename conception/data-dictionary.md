@@ -35,7 +35,6 @@
 | category_id              | INTEGER      | NOT NULL, FOREIGN KEY               | L'identifiant de la catégorie de la publication|
 | author_id                | INTEGER      | NOT NULL, FOREIGN KEY               | L'identifiant de l'auteur de la publication |
 | tag                      | TEXT [ ]     | NULL                                | Les mots-clés de la publication |
-| like                     | INTEGER [ ]  | NULL                                | Le nombre d'intéractions "j'aime" de la publication|
 | title                    | VARCHAR(64)  | NULL                                | Le titre de la publication |
 | description              | TEXT         | NULL                                | La description de la publication |
 | image                    | VARCHAR(128) | NULL                                | L'url de l'image de la publication |
@@ -126,3 +125,12 @@
 | total_point              | INTEGER      | NOT NULL, DEFAULT 0                 | Le nombre de points total dans la catégorie  |
 | created_at               | TIMESTAMP    | NOT NULL, DEFAULT CURRENT_TIMESTAMP | La date de creation du suivi de points par catégorie  |
 | updated_at               | TIMESTAMP    | NOT NULL, DEFAULT CURRENT_TIMESTAMP | La date de mise à jour du suivi de points par catégorie  |
+
+| like                     |              |                                     |             |
+| ------------------------ | ------------ | ----------------------------------- | ----------- |
+| Champ                    | Type         | Spécificités                        | Description |
+| id                       | INTEGER      | PRIMARY KEY, NOT NULL               | L'identifiant du like |
+| author_id                | INTEGER      | NOT NULL, FOREIGN KEY               | L'identifiant de l'auteur du like |
+| post_id                  | INTEGER      | NOT NULL, FOREIGN KEY               | L'identifiant de la publication du like  |
+| created_at               | TIMESTAMP    | NOT NULL, DEFAULT CURRENT_TIMESTAMP | La date de creation du commentaire |
+| updated_at               | TIMESTAMP    | NOT NULL, DEFAULT CURRENT_TIMESTAMP | La date de mise à jour du commentaire |
