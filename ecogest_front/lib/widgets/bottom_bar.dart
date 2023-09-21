@@ -35,7 +35,7 @@ class AppBarFooter extends StatelessWidget {
                 : Colors.blueGrey.shade400),
             tooltip: 'Home',
             onPressed: () {
-              GoRouter.of(context).goNamed(HomeView.name);
+              GoRouter.of(context).pushNamed(HomeView.name);
             },
           ),
           IconButton(
