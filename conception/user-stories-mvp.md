@@ -1,22 +1,23 @@
-| #  | Priorité | Epic        | En tant que ...          | Je souhaite ...                                     | Afin de ...                                                            | Sprint |
-| -- | -------- | ----------- | ------------------------ | --------------------------------------------------- | ---------------------------------------------------------------------- | ------ |
-| 1  | haute    | Profil      | utilisateur connecté     | afficher mon profil                                 | voir mes informations personnelles                                     | 4      |
-| 2  | haute    | Publication | utilisateur connecté     | afficher une publication avec ses détails           | d'en savoir plus sur l'action dont le descriptif                       | 4      |
-| 3  | haute    | Publication | utilisateur connecté     | créer une publication                               | partager une action ou un défi à la communauté et gagner des points    | 4      |
-| 4  | haute    | Publication | utilisateur connecté     | afficher la liste des publications de ma communauté | suivre les actions qu'ils ont réalisées                                | 5      |
-| 5  | moyenne  | Profil      | utilisateur connecté     | afficher la liste de mes trophées                   | voir le suivi par catégories et celles où je suis plus actif           | 5      |
-| 6  | moyenne  | Publication | utilisateur connecté     | éditer une publication                              | pouvoir modifier une erreur de texte ou remplacer une image            | 5      |
-| 7  | moyenne  | Publication | utilisateur connecté     | commenter une publication                           | encourager mes amis et créer du lien avec un message personnalisé      | 5      |
-| 8  | moyenne  | Publication | utilisateur connecté     | interagir en ajoutant un "j'aime" à la publication  | encourager mes amis et créer du lien                                   | 6      |
-| 9  | moyenne  | Profil      | utilisateur connecté     | afficher l'historique de mes défis et challenges    | voir le chemin parcouru et l'évolution de mon activité                 | 6      |
-| 10 | moyenne  | Login       | utilisateur non connecté | pouvoir créer mon compte                            | pouvoir utiliser l'application                                         | 6      |
-| 11 | moyenne  | Login       | utilisateur non connecté | pouvoir me connecter à l'application                | pouvoir accéder aux fonctionnalités de l'application                   | 6      |
-| 12 | moyenne  | Défi        | utilisateur connecté     | afficher les défis en cours                         | me rappeler la liste des défis auxquels je suis inscrit.e              | 7      |
-| 13 | moyenne  | Défi        | utilisateur connecté     | afficher les défis à venir                          | pouvoir m'inspirer et peut-être participer à l'un d'entre eux          | 7      |
-| 14 | basse    | Défi        | utilisateur connecté     | souscrire à un défi                                 | pouvoir ajouter le défi à mes actions et peut-être gagner des points   | 7      |
-| 15 | basse    | Recherche   | utilisateur connecté     | faire une recherche par mot clé                     | pouvoir trouver un profil ou une publication                           | 7      |
-| 16 | basse    | Paramètres  | utilisateur connecté     | afficher mes notifications                          | suivre l'activité de mes amis ou mes rappels                           | 8      |
-| 17 | basse    | Paramètres  | utilisateur connecté     | me déconnecter de l'application                     | pour ne pas laisser ma session ouverte                                 | 8      |
-| 18 | basse    | Paramètres  | utilisateur connecté     | afficher la politique de confidentialité            | pour me renseigner sur les conditions d'utilisation, les cookies, etc. | 8      |
-| 19 | basse    | Paramètres  | utilisateur connecté     | afficher les mentions légales                       | pour me renseigner sur les conditions d'utilisation, les cookies, etc. | 8      |
-| 20 | basse    | Paramètres  | utilisateur connecté     | pouvoir contacter le DPO                            | pour faire une demande concernant mes données personnelles             | 8      |
+| #  | Priorité | Epic        | En tant que          | Je souhaite                                                   | Afin de                                                                | Sprint |
+| -- | -------- | ----------- | -------------------- | ------------------------------------------------------------- | ---------------------------------------------------------------------- | ------ |
+| 1  | haute    | Profil      | utilisateur connecté | afficher mon profil                                           | voir mes informations personnelles                                     | 4      |
+| 2  | haute    | Publication | utilisateur connecté | afficher une publication avec ses détails                     | d'en savoir plus sur l'action dont le descriptif                       | 4      |
+| 3  | haute    | Publication | utilisateur connecté | créer une publication                                         | partager une action ou un défi à la communauté et gagner des points    | 4      |
+| 21 | haute    | Home        | développeur          | développer les élements communs à l'ensemble de l'application | les réutiliser sur tous les écrans                                     | 4      |
+| 7  | haute    | Auth        | visiteur             | pouvoir me connecter à l'application                          | pouvoir accéder aux fonctionnalités de l'application                   | 4      |
+| 4  | haute    | Home        | utilisateur connecté | afficher la liste des publications de ma communauté           | suivre les actions qu'ils ont réalisées                                | 5      |
+| 5  | moyenne  | Profil      | utilisateur connecté | afficher la liste de mes trophées                             | voir le suivi par catégories et celles où je suis plus actif           | 5      |
+| 6  | moyenne  | Publication | utilisateur connecté | éditer une publication                                        | pouvoir modifier une erreur de texte ou remplacer une image            | 5      |
+| 8  | moyenne  | Home        | utilisateur connecté | interagir en ajoutant un "j'aime" à la publication            | encourager mes amis et créer du lien                                   | 6      |
+| 9  | moyenne  | Profil      | utilisateur connecté | afficher l'historique de mes défis et challenges              | voir le chemin parcouru et l'évolution de mon activité                 | 6      |
+| 10 | moyenne  | Home        | utilisateur connecté | commenter une publication                                     | encourager mes amis et créer du lien avec un message personnalisé      | 6      |
+| 11 | moyenne  | Auth        | visiteur             | pouvoir créer mon compte                                      | pouvoir utiliser l'application                                         | 6      |
+| 12 | moyenne  | Défis       | utilisateur connecté | afficher les défis en cours                                   | me rappeler la liste des défis auxquels je suis inscrit.e              | 7      |
+| 13 | moyenne  | Défis       | utilisateur connecté | afficher les défis à venir                                    | pouvoir m'inspirer et peut-être participer à l'un d'entre eux          | 7      |
+| 14 | basse    | Défis       | utilisateur connecté | souscrire à un défi                                           | pouvoir ajouter le défi à mes actions et peut-être gagner des points   | 7      |
+| 15 | basse    | Recherche   | utilisateur connecté | faire une recherche par mot clé                               | pouvoir trouver un profil ou une publication                           | 7      |
+| 16 | basse    | Paramètres  | utilisateur connecté | afficher mes notifications                                    | suivre l'activité de mes amis ou mes rappels                           | 8      |
+| 17 | basse    | Paramètres  | utilisateur connecté | me déconnecter de l'application                               | pour ne pas laisser ma session ouverte                                 | 8      |
+| 18 | basse    | Paramètres  | utilisateur connecté | afficher la politique de confidentialité                      | pour me renseigner sur les conditions d'utilisation, les cookies, etc. | 8      |
+| 19 | basse    | Paramètres  | utilisateur connecté | afficher les mentions légales                                 | pour me renseigner sur les conditions d'utilisation, les cookies, etc. | 8      |
+| 20 | basse    | Paramètres  | utilisateur connecté | pouvoir contacter le DPO                                      | pour faire une demande concernant mes données personnelles             | 8      |
