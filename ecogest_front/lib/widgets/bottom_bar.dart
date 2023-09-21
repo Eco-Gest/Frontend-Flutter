@@ -10,7 +10,7 @@ class AppBarFooter extends StatelessWidget {
   AppBarFooter({super.key});
 
   String _getCurrentRoute(BuildContext context) {
-    return GoRouter.of(context).location;
+    return GoRouterState.of(context).uri.toString();
   }
 
   @override
