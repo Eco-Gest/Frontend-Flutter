@@ -20,11 +20,13 @@ class ThemeAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-        title: Text(title), // Display the page title
+        title: Text(title), 
         leading: IconButton(
-          icon: Icon(Icons.arrow_back), // Display a back arrow icon
+          icon: Icon(Icons.arrow_back), 
           onPressed: () {
-            Navigator.of(context).pop(); // Navigate back when the arrow is tapped
+              if (Navigator.canPop(context)) {
+              Navigator.pop(context); // Naviguer en arrière uniquement si c'est possible
+            }
           },
         ),
       );
