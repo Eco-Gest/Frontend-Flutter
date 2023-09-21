@@ -129,8 +129,7 @@
 | like                     |              |                                     |             |
 | ------------------------ | ------------ | ----------------------------------- | ----------- |
 | Champ                    | Type         | Spécificités                        | Description |
-| id                       | INTEGER      | PRIMARY KEY, NOT NULL               | L'identifiant du like |
-| author_id                | INTEGER      | NOT NULL, FOREIGN KEY               | L'identifiant de l'auteur du like |
+| user_id                  | INTEGER      | NOT NULL, FOREIGN KEY               | L'identifiant de l'auteur du like |
 | post_id                  | INTEGER      | NOT NULL, FOREIGN KEY               | L'identifiant de la publication du like  |
 | created_at               | TIMESTAMP    | NOT NULL, DEFAULT CURRENT_TIMESTAMP | La date de creation du commentaire |
 | updated_at               | TIMESTAMP    | NOT NULL, DEFAULT CURRENT_TIMESTAMP | La date de mise à jour du commentaire |
