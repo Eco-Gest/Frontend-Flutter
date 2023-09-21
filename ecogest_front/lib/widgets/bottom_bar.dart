@@ -7,7 +7,7 @@ import 'package:ecogest_front/views/home_view.dart';
 
 
 class AppBarFooter extends StatelessWidget {
-  AppBarFooter({sgit brauper.key});
+  AppBarFooter({super.key});
 
   String _getCurrentRoute(BuildContext context) {
     return GoRouter.of(context).location;
