@@ -5,6 +5,7 @@
 - `flutter pub get` to retrieve packages
 - `flutter devices` to know the compatibles devices
 - `flutter run` to run the projects (NB: `flutter run -d DEVICENAME` to run on a specific device)
+- `flutter run -d chrome --web-browser-flag "--disable-web-security"` to run the projects on Chrome by disabling security (to avoir the CORS problem on images)
 
 ## Ressources
 
@@ -15,6 +16,7 @@
 - [Google Fonts Icon](https://fonts.google.com/icons)
 - [Package dynamic_color](https://pub.dev/packages/dynamic_color)
 - [Material Theme Builder](https://m3.material.io/theme-builder#/dynamic)
+- [Flutter - Adding assets and images](https://docs.flutter.dev/ui/assets/assets-and-images)
 
 
 
