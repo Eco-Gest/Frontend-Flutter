@@ -26,4 +26,10 @@ dev_dependencies:
 flutter:
   assets:  
     - assets\logo\logo-color.png
+    - assets\logo\logo-black.png
+    - assets\logo\logo-white.png
+    - assets\icon\icon-color.png
+    - assets\icon\icon-black.png
+    - assets\icon\icon-white.png
+    - assets\icon\icon-reverse.png
   uses-material-design: true
