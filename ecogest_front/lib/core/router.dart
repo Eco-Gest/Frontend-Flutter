@@ -1,3 +1,4 @@
+import 'package:ecogest_front/views/register_view.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -12,6 +13,11 @@ abstract class AppRouter {
         path: '/login',
         name: LoginView.name,
         builder: (context, state) => LoginView(),
+      ),
+      GoRoute(
+        path: '/register',
+        name: RegisterView.name,
+        builder: (context, state) => const RegisterView(),
       ),
     ]
   );
