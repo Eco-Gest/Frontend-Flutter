@@ -125,24 +125,28 @@ class _LoginViewState extends State<LoginView> {
             // TODO: Error message if user is not allow to connect
 
             // Connect button
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                minimumSize: const Size.fromHeight(30),
-                alignment: Alignment.topCenter,
-                padding: const EdgeInsets.all(20),
-                foregroundColor: Colors.white, // Color of button text
-                textStyle: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                )
+            SizedBox(
+              width: 300,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  minimumSize: const Size.fromHeight(30),
+                  alignment: Alignment.topCenter,
+                  padding: const EdgeInsets.all(20),
+                  foregroundColor: Colors.white, // Color of button text
+                  textStyle: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  )
+                ),
+                onPressed: () {
+                  debugPrint('Email: ${emailController.text}');
+                  debugPrint('Password: ${passwordController.text}');
+                  // TODO: Auth user
+                },
+                child: const Text('Se connecter'),
               ),
-              onPressed: () {
-                debugPrint('Email: ${emailController.text}');
-                debugPrint('Password: ${passwordController.text}');
-                // TODO: Auth user
-              },
-              child: const Text('Se connecter'),
             ),
+            
 
             // Link s'inscrire
             Container(
