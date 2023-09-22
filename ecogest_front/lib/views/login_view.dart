@@ -44,6 +44,7 @@ class _LoginViewState extends State<LoginView> {
             Container(
               alignment: Alignment.topCenter,
               padding: const EdgeInsets.all(20),
+              width: 300,
               child: Image.asset('assets/logo/logo-color.png'),
             ),
 
