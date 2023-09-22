@@ -1,29 +1,22 @@
-import 'package:ecogest_front/views/register_view.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
-class LoginView extends StatefulWidget {
-  const LoginView({super.key});
+import 'package:ecogest_front/state_management/authentication/authentication_cubit.dart';
+import 'package:ecogest_front/views/register_view.dart';
 
+class LoginView extends StatelessWidget {
+  LoginView({super.key});
   static String name = 'login';
-
-  @override
-  State<LoginView> createState() => _LoginViewState();
-}
-
-class _LoginViewState extends State<LoginView> {
   final TextEditingController emailController = TextEditingController();
-
   final TextEditingController passwordController = TextEditingController();
-
   final bool _passwordVisible = false;
-
-  // regular expression to check if string
-  RegExp passValid = RegExp(r"(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W)");
 
   // A function that validate user entered password
   bool validatePassword(String pass) {
+    //regular expression to check if string
+    RegExp passValid = RegExp(r"(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W)");
     String passwordToTest = pass.trim();
     if (passValid.hasMatch(passwordToTest)) {
       return true;
@@ -51,21 +44,19 @@ class _LoginViewState extends State<LoginView> {
             Container(
               alignment: Alignment.center,
               padding: const EdgeInsets.all(10),
-              child: const Column(
-                children: [
-                  Text(
-                    'Vous avez déjà un compte ?',
-                    style: TextStyle(fontSize: 18),
+              child: const Column(children: [
+                Text(
+                  'Vous avez déjà un compte ?',
+                  style: TextStyle(fontSize: 18),
+                ),
+                Text(
+                  'Heureux de vous revoir',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
                   ),
-                  Text(
-                    'Heureux de vous revoir',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  )
-                ]
-              ),
+                )
+              ]),
             ),
 
             // Input email
@@ -80,7 +71,9 @@ class _LoginViewState extends State<LoginView> {
                   hintText: 'Entrez votre email',
                 ),
                 autovalidateMode: AutovalidateMode.onUserInteraction,
-                validator: (value) => EmailValidator.validate(value!) ? null : 'Veuillez entrer un email valide',
+                validator: (value) => EmailValidator.validate(value!)
+                    ? null
+                    : 'Veuillez entrer un email valide',
               ),
             ),
 
@@ -97,15 +90,8 @@ class _LoginViewState extends State<LoginView> {
                   hintText: 'Entrez votre mot de passe',
                 ),
                 autovalidateMode: AutovalidateMode.onUserInteraction,
-                validator: (value) {
-                  bool result = validatePassword(value!);
-                  if (result && value.length > 8){
-                    // Password is OK
-                    return null;
-                  } else {
-                    return 'Mot de passe non valide';
-                  }
-                },
+                validator: (value) =>
+                    (validatePassword(value!) && value.length >= 8) ? null : 'Mot de passe non valide',
               ),
             ),
 
@@ -122,63 +108,72 @@ class _LoginViewState extends State<LoginView> {
               ),
             ),
 
-            // TODO: Error message if user is not allow to connect
-
-            // Connect button
-            SizedBox(
-              width: 300,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  minimumSize: const Size.fromHeight(30),
-                  alignment: Alignment.topCenter,
-                  padding: const EdgeInsets.all(20),
-                  foregroundColor: Colors.white, // Color of button text
-                  textStyle: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  )
+            BlocListener<AuthenticationCubit, AuthenticationState>(
+              // Error message if user is not allow to connect
+              listener: (context, state) {
+                if (state is AuthenticationError) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        state.message,
+                        style: const TextStyle(color: Colors.white),
+                      ),
+                      backgroundColor: Colors.red,
+                    ),
+                  );
+                }
+              },
+              // Connect button
+              child: SizedBox(
+                width: 300,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      minimumSize: const Size.fromHeight(30),
+                      alignment: Alignment.topCenter,
+                      padding: const EdgeInsets.all(20),
+                      foregroundColor: Colors.white, // Color of button text
+                      textStyle: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      )),
+                  onPressed: () {
+                    context.read<AuthenticationCubit>().login(
+                          email: emailController.text,
+                          password: passwordController.text,
+                        );
+                  },
+                  child: const Text('Se connecter'),
                 ),
-                onPressed: () {
-                  debugPrint('Email: ${emailController.text}');
-                  debugPrint('Password: ${passwordController.text}');
-                  // TODO: Auth user
-                },
-                child: const Text('Se connecter'),
               ),
             ),
-            
 
             // Link s'inscrire
             Container(
               alignment: Alignment.center,
               padding: const EdgeInsets.all(40),
-              child: Column(
-                children: [
-                  const Text(
-                    'Vous souhaitez créer un compte ?',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 18,
-                    ),
+              child: Column(children: [
+                const Text(
+                  'Vous souhaitez créer un compte ?',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 18,
                   ),
-                  TextButton(
-                    style: TextButton.styleFrom(
+                ),
+                TextButton(
+                  style: TextButton.styleFrom(
                       textStyle: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      )
-                    ),
-                    onPressed: () {
-                      GoRouter.of(context).goNamed(RegisterView.name);
-                    },
-                    child: const Text(
-                      'S\'inscrire',
-                    ),
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  )),
+                  onPressed: () {
+                    GoRouter.of(context).goNamed(RegisterView.name);
+                  },
+                  child: const Text(
+                    'S\'inscrire',
                   ),
-                ]
-              ),
+                ),
+              ]),
             ),
-
           ],
         ),
       ),
