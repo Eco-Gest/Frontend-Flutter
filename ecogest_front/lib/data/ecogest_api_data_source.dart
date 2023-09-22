@@ -4,7 +4,7 @@ import 'dart:async';
 import 'package:http/http.dart' as http;
 
 class EcoGestApiDataSource {
-  static const _baseUrl = 'http://augustinseguin-server.eddi.cloud:9080/api';
+  static const _baseUrl = 'http://localhost:9080/api';
 
   static Map<String, String> _getHeaders(String? token) {
     return <String, String>{
