@@ -3,15 +3,34 @@ import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-class LoginView extends StatelessWidget {
-  LoginView({super.key});
+class LoginView extends StatefulWidget {
+  const LoginView({super.key});
 
   static String name = 'login';
 
+  @override
+  State<LoginView> createState() => _LoginViewState();
+}
+
+class _LoginViewState extends State<LoginView> {
   final TextEditingController emailController = TextEditingController();
+
   final TextEditingController passwordController = TextEditingController();
 
   final bool _passwordVisible = false;
+
+  // regular expression to check if string
+  RegExp passValid = RegExp(r"(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W)");
+
+  // A function that validate user entered password
+  bool validatePassword(String pass) {
+    String passwordToTest = pass.trim();
+    if (passValid.hasMatch(passwordToTest)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -77,7 +96,15 @@ class LoginView extends StatelessWidget {
                   hintText: 'Entrez votre mot de passe',
                 ),
                 autovalidateMode: AutovalidateMode.onUserInteraction,
-                validator: (value) => value!.length < 8 ? 'Mot de passe non valide' : null,
+                validator: (value) {
+                  bool result = validatePassword(value!);
+                  if (result && value.length > 8){
+                    // Password is OK
+                    return null;
+                  } else {
+                    return 'Mot de passe non valide';
+                  }
+                },
               ),
             ),
 
