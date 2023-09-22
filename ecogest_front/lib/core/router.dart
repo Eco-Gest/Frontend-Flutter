@@ -39,6 +39,11 @@ abstract class AppRouter {
           name: HomeView.name,
           builder: (context, state) => const HomeView(),
         ),
+        GoRoute(
+          path: '/account',
+          name: AccountView.name,
+          builder: (context, state) => const AccountView(),
+        ),
       ],
       refreshListenable: GoRouterRefreshStream(stream),
       redirect: (context, state) {

@@ -16,7 +16,7 @@ class ThemeAppBar extends StatelessWidget implements PreferredSizeWidget {
   final TabController? tabController;
   final List<Widget>? tabs; 
 
-  static Size get prefSize => const Size.fromHeight(105.0);
+  static Size get prefSize => const Size.fromHeight(55.0);
 
   @override
   Size get preferredSize => prefSize;

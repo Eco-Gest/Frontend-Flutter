@@ -32,6 +32,7 @@ flutter:
     - assets/icon/icon-black.png
     - assets/icon/icon-white.png
     - assets/icon/icon-reverse.png
-  uses-material-design: true
-  assets:
     - assets/
+  uses-material-design: true
+
+
