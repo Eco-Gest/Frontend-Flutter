@@ -4,6 +4,7 @@ import 'package:ecogest_front/widgets/bottom_bar.dart';
 import 'package:ecogest_front/widgets/app_bar.dart';
 import 'package:ecogest_front/widgets/account_infos.dart';
 
+
 class AccountView extends StatefulWidget {
   const AccountView({super.key});
 
@@ -35,6 +36,9 @@ class _AccountViewState extends State<AccountView>
       appBar: AppBar(
         title: Text('Profile'),
         bottom: TabBar(
+          indicatorColor: Colors.black,
+          indicatorSize: TabBarIndicatorSize.label,
+          indicatorWeight: 2,   
           controller: _tabController,
           tabs: [
             Tab(text: 'Mon profile'), 
