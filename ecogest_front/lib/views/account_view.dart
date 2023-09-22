@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ecogest_front/widgets/bottom_bar.dart';
 import 'package:ecogest_front/widgets/app_bar.dart';
+import 'package:ecogest_front/widgets/account_infos.dart';
 
 class AccountView extends StatefulWidget {
   const AccountView({super.key});
@@ -46,7 +47,10 @@ class _AccountViewState extends State<AccountView>
         controller: _tabController,
         children: [
           Center(
-            child: Text('This is my profile'),
+            child: Padding(
+              padding: EdgeInsets.all(40.0), // Adjust the padding as needed
+              child: AccountInfo(),
+            ),
           ),
           Center(
             child: Text('This is my history'),
