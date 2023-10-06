@@ -30,7 +30,7 @@ abstract class AppRouter {
         GoRoute(
           path: '/register',
           name: RegisterView.name,
-          builder: (context, state) => const RegisterView(),
+          builder: (context, state) => RegisterView(),
         ),
         GoRoute(
           path: '/home',
@@ -43,25 +43,16 @@ abstract class AppRouter {
         // If the user is not authenticated, redirect to the login page.
         final authState = context.read<AuthenticationCubit>().state;
 
-        if (authState is AuthenticationAuthenticated) {
-          if (!publicRoutes.contains(state.uri.toString())) {
-            return null;
-          }
-
-          // If the user is authenticated, redirect to the home page (only if
-          // the current location is public page).
+        // // If the user is authenticated, redirect to the home page (only if
+        // // the current location is public page)
+        if (publicRoutes.contains(state.uri.toString()) &&
+            authState is AuthenticationAuthenticated) {
           return '/home';
         }
-
-        if (authState is AuthenticationUnauthenticated) {
-          // If the user is not authenticated, only allow to access the public routes
-          if (publicRoutes.contains(state.uri.toString())) {
-            return null;
-          }
-
-
-          // If the user is not authenticated, redirect to the login page.
-          // (only if the current location is not a public page).
+        // If the user is not authenticated, redirect to the login page.
+        // (only if the current location is not a public page).
+        if (!publicRoutes.contains(state.uri.toString()) &&
+            authState is AuthenticationUnauthenticated) {
           return '/login';
         }
 
