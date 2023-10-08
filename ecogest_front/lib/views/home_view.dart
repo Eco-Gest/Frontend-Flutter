@@ -1,3 +1,4 @@
+import 'package:ecogest_front/views/post_detail_view.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ecogest_front/widgets/bottom_bar.dart';
@@ -9,11 +10,6 @@ class HomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      bottomNavigationBar: AppBarFooter(),
-      body: Center(
-        child: Text('Hello World from HomeView!'),
-      ),
-    );
+    return const PostDetailView();
   }
 }
