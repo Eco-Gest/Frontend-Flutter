@@ -10,7 +10,7 @@ class AuthenticationUnauthenticated extends AuthenticationState {}
 
 /// The state of the authentication cubit when the user is authenticated.
 class AuthenticationAuthenticated extends AuthenticationState {
-  final UserModel user;
+  final UserModel? user;
 
   AuthenticationAuthenticated(this.user);
 }
