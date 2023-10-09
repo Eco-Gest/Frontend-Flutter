@@ -1,10 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:ecogest_front/assets/ecogest_theme.dart';
+import 'package:ecogest_front/state_management/authentication/authentication_cubit.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AccountInfo extends StatelessWidget {
+  const AccountInfo({super.key});
+
+
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return Scaffold(
+    body: Center(
+      child: Column(
+        
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // First Bloc: Profile Picture, Username, Location, Badge
@@ -28,7 +36,7 @@ class AccountInfo extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Username',  //TODO dynamic with api
+                  context.read<AuthenticationCubit>().state.user.username,  //TODO dynamic with api
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
                 Text(
@@ -45,7 +53,7 @@ class AccountInfo extends StatelessWidget {
                     color: EcogestTheme.primary,
                   ),
                   child: Text(
-                    'Jeune Pousse', 
+                    'Jeune Pousse', //TODO dynamic with api
                     style: TextStyle(fontSize: 14), 
                   ),
                 ),
@@ -114,6 +122,8 @@ class AccountInfo extends StatelessWidget {
           style: TextStyle(fontSize: 16),
         ),
       ],
+    ),
+    ),
     );
   }
 }
