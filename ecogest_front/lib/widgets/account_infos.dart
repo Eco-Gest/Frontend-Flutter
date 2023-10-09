@@ -17,7 +17,7 @@ class AccountInfo extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // ... First Bloc: Profile Picture, Username, Location, Badge ...
+              // ... First Bloc: Profil Picture, Username, Location, Badge ...
               Row(
                 children: [
                   Container(
@@ -64,7 +64,7 @@ class AccountInfo extends StatelessWidget {
                 ],
               ),
               SizedBox(height: 16),
-              // ... Second Bloc: Profile Bio ...
+              // ... Second Bloc: Profil Bio ...
               Text(
                 user?.biography ?? 'Default Biography',
                 style: TextStyle(fontSize: 16),

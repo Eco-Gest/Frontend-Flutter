@@ -34,14 +34,14 @@ class _AccountViewState extends  State<AccountView>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Profile'),
+        title: Text('Profil'),
         bottom: TabBar(
           indicatorColor: Colors.black,
           indicatorSize: TabBarIndicatorSize.label,
           indicatorWeight: 2,   
           controller: _tabController,
           tabs: [
-            Tab(text: 'Mon profile'), 
+            Tab(text: 'Mon profil'), 
             Tab(text: 'Historique'), 
           ],
         ),
