@@ -27,14 +27,18 @@ dans lib\data\ecogest_api_data_source.dart vérifier l'url, exemple :
 
 # Login
 
+
 email : prenom@@ecogest.dev
 password : voir le UserSeeder
+
+ voir le UserSeeder
 
 # build le projet pour production
 
 `flutter build`
 
 # installer une dépendance
+
 `flutter pub add nom_du_package`
 
 # installer toutes les dépendances
@@ -47,5 +51,13 @@ password : voir le UserSeeder
 `flutter upgrade`
 
 # mettre à jour flutter et les dépendances
+
+`flutter pub add nom_du_package`
+
+# mettre à jour flutter et les dépendances
+
 `flutter pub upgrade --major-versions`
 
+# Lancer le projet sur chrome
+
+`flutter run -d chrome`
