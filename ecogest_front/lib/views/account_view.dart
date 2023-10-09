@@ -5,30 +5,30 @@ import 'package:ecogest_front/widgets/app_bar.dart';
 import 'package:ecogest_front/widgets/account_infos.dart';
 
 
-class AccountView extends StatelessWidget {
+class AccountView extends StatefulWidget {
   const AccountView({super.key});
 
   static String name = 'account';
 
-//   @override
-//   _AccountViewState createState() => _AccountViewState();
-// }
+  @override
+  _AccountViewState createState() => _AccountViewState();
+}
 
-// class _AccountViewState extends  State<AccountView>
-//     with SingleTickerProviderStateMixin {
-//   late TabController _tabController;
+class _AccountViewState extends  State<AccountView>
+    with SingleTickerProviderStateMixin {
+  late TabController _tabController;
 
-//   @override
-//   void initState() {
-//     super.initState();
-//     _tabController = TabController(length: 2, vsync: this); // Change length to 2
-//   }
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 2, vsync: this); // Change length to 2
+  }
 
-//   @override
-//   void dispose() {
-//     _tabController.dispose();
-//     super.dispose();
-//   }
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +39,7 @@ class AccountView extends StatelessWidget {
           indicatorColor: Colors.black,
           indicatorSize: TabBarIndicatorSize.label,
           indicatorWeight: 2,   
-          // controller: _tabController,
+          controller: _tabController,
           tabs: [
             Tab(text: 'Mon profile'), 
             Tab(text: 'Historique'), 
@@ -48,7 +48,7 @@ class AccountView extends StatelessWidget {
       ),
       bottomNavigationBar: AppBarFooter(),
       body: TabBarView(
-        // controller: _tabController,
+        controller: _tabController,
         children: [
           Center(
             child: Padding(
