@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:ecogest_front/views/post_detail_view.dart';
 import 'package:ecogest_front/views/account_view.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -40,10 +41,18 @@ abstract class AppRouter {
           builder: (context, state) => const HomeView(),
         ),
         GoRoute(
+          path: '/posts/:id',
+          name: PostDetailView.name,
+          builder: (context, state) => PostDetailView(
+            postId: int.parse(state.pathParameters['id'].toString()),
+          ),
+        ),
+        GoRoute(
           path: '/account',
           name: AccountView.name,
           builder: (context, state) => const AccountView(),
         ),
+        
       ],
       refreshListenable: GoRouterRefreshStream(stream),
       redirect: (context, state) {

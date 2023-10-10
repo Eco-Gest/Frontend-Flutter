@@ -61,3 +61,8 @@
 
 - [Link doc](https://pub.dev/packages/email_validator)
 - Version: ^2.1.17
+
+### intl
+
+- [Link doc](https://pub.dev/packages/intl)
+- Version: ^0.18.1
