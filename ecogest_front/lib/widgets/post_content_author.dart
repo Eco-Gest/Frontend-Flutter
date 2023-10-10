@@ -16,6 +16,11 @@ class PostContentAuthor extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    // Transform date from DB to french date format
+    DateTime dateInFormat = DateTime.parse(date.toString());
+    String publicationDate = DateFormat('dd/MM/yyyy', 'fr_FR').format(dateInFormat);
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.end,
       crossAxisAlignment: CrossAxisAlignment.end,
@@ -23,8 +28,12 @@ class PostContentAuthor extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            Text('17 août 2023'),
-            const Text(' | '),
+            Text(
+              publicationDate
+            ),
+            if (date != null && (position != null || author!.position != null)) ...[
+              const Text(' | '),
+            ],
             Text(() {
               if (position != null) {
                 return position.toString();

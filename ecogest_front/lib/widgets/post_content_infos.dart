@@ -12,10 +12,11 @@ class PostContentInfos extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
+    // Convert tags coming from DB into an array 
+    // to be able to loop over them
     String tags = post!.tags.toString();
     tags = tags.replaceAll('{', '').replaceAll('}', '');
     List<String> tagsArray = tags.split(',');
-    debugPrint(tagsArray.toString());
 
     return Column(children: [
       Column(
