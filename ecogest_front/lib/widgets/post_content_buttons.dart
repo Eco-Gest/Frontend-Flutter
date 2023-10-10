@@ -14,8 +14,6 @@ class PostContentButtons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    debugPrint(likes!.length.toString());
-    debugPrint(comments.toString());
     return Column(
       children: [
         Row(
