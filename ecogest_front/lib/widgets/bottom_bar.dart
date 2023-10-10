@@ -1,5 +1,6 @@
 
 import 'package:ecogest_front/views/account_view.dart';
+import 'package:ecogest_front/views/post_create_view.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ecogest_front/assets/ecogest_theme.dart';
@@ -50,10 +51,12 @@ class AppBarFooter extends StatelessWidget {
           ),
           IconButton(
             icon: const Icon(Icons.add_circle),
-            color: Colors.blueGrey.shade400,
+            color:  ( _getCurrentRoute(context) == "/" 
+                ? EcogestTheme.primary
+                : Colors.blueGrey.shade400),
             tooltip: 'Add challenge or action',
             onPressed: () {
-              debugPrint('add');
+              GoRouter.of(context).pushNamed(PostCreateView.name);
             },
           ),
           IconButton(

@@ -14,7 +14,7 @@ class PostContentInfos extends StatelessWidget {
 
     // Convert tags coming from DB into an array 
     // to be able to loop over them
-    String tags = post!.tags.toString();
+    String tags = post!.tag.toString();
     tags = tags.replaceAll('{', '').replaceAll('}', '');
     List<String> tagsArray = tags.split(',');
 
@@ -87,9 +87,9 @@ class PostContentInfos extends StatelessWidget {
                   ),
                   Row(
                     children: [
-                      if (post!.category.image != null) ...[
+                      if (post!.category?.image != null) ...[
                         CircleAvatar(
-                          backgroundImage: NetworkImage(post!.category.image.toString()),
+                          backgroundImage: NetworkImage(post!.category!.image.toString()),
                         )
                       ] else ...[
                         const Icon(
@@ -97,7 +97,7 @@ class PostContentInfos extends StatelessWidget {
                           size: 15,
                         )
                       ],
-                      Text(' ${post!.category.title.toString()}'),
+                      Text(' ${post!.category!.title.toString()}'),
                     ],
                   )
                 ],
