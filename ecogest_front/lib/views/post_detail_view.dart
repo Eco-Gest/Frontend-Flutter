@@ -32,19 +32,14 @@ class PostDetailView extends StatelessWidget {
         child: BlocBuilder<PostsCubit, PostsState>(
           builder: (context, state) {
             if (state is PostsStateInitial || state is PostsStateLoading) {
-              debugPrint('Chargment');
               return const Center(
                 child: CircularProgressIndicator(),
               );
             } else if (state is PostsStateError) {
-              debugPrint('Error');
-              // debugPrint(state);
               return Center(
                 child: Text(state.message),
               );
             } else if (state is OnePostStateSuccess) {
-              debugPrint('Success');
-              debugPrint(state.post!.type.toString());
               return Center(
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
