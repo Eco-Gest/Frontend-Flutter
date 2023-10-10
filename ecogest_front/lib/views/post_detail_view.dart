@@ -1,10 +1,10 @@
 import 'package:ecogest_front/state_management/posts/posts_cubit.dart';
 import 'package:ecogest_front/state_management/posts/posts_state.dart';
 import 'package:ecogest_front/widgets/app_bar.dart';
-import 'package:ecogest_front/widgets/post_content_author.dart';
-import 'package:ecogest_front/widgets/post_content_buttons.dart';
-import 'package:ecogest_front/widgets/post_content_infos.dart';
-import 'package:ecogest_front/widgets/post_separator.dart';
+import 'package:ecogest_front/widgets/post/post_content_author.dart';
+import 'package:ecogest_front/widgets/post/post_content_buttons.dart';
+import 'package:ecogest_front/widgets/post/post_content_infos.dart';
+import 'package:ecogest_front/widgets/post/post_separator.dart';
 import 'package:flutter/material.dart';
 import 'package:ecogest_front/widgets/bottom_bar.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
