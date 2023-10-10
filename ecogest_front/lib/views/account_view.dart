@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:ecogest_front/widgets/bottom_bar.dart';
 import 'package:ecogest_front/widgets/app_bar.dart';
 import 'package:ecogest_front/widgets/account_infos.dart';
-
+import 'package:ecogest_front/widgets/account_trophies.dart';
 
 class AccountView extends StatefulWidget {
-  const AccountView({super.key});
+  const AccountView({Key? key});
 
   static String name = 'account';
 
@@ -14,14 +13,14 @@ class AccountView extends StatefulWidget {
   _AccountViewState createState() => _AccountViewState();
 }
 
-class _AccountViewState extends  State<AccountView>
+class _AccountViewState extends State<AccountView>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 2, vsync: this); // Change length to 2
+    _tabController = TabController(length: 2, vsync: this);
   }
 
   @override
@@ -38,11 +37,11 @@ class _AccountViewState extends  State<AccountView>
         bottom: TabBar(
           indicatorColor: Colors.black,
           indicatorSize: TabBarIndicatorSize.label,
-          indicatorWeight: 2,   
+          indicatorWeight: 2,
           controller: _tabController,
           tabs: [
-            Tab(text: 'Mon profil'), 
-            Tab(text: 'Historique'), 
+            Tab(text: 'Mon profil'),
+            Tab(text: 'Historique'),
           ],
         ),
       ),
@@ -50,11 +49,13 @@ class _AccountViewState extends  State<AccountView>
       body: TabBarView(
         controller: _tabController,
         children: [
-          Center(
-            child: Padding(
-              padding: EdgeInsets.all(40.0), // Adjust the padding as needed
-              child: AccountInfo(),
-            ),
+          ListView(
+            children: [
+              // Account Info Widget
+              AccountInfo(),
+              // New Widget: Account Trophies
+              AccountTrophies(),
+            ],
           ),
           Center(
             child: Text('This is my history'),
