@@ -1,8 +1,10 @@
 
+import 'package:ecogest_front/views/account_view.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ecogest_front/assets/ecogest_theme.dart';
 import 'package:ecogest_front/views/home_view.dart';
+import 'package:ecogest_front/views/account_view.dart';
 
 
 
@@ -64,10 +66,12 @@ class AppBarFooter extends StatelessWidget {
           ),
           IconButton(
             icon: const Icon(Icons.person),
-            color: Colors.blueGrey.shade400,
-            tooltip: 'Your profile',
+            color:  ( _getCurrentRoute(context) == "/" + AccountView.name
+                ? EcogestTheme.primary
+                : Colors.blueGrey.shade400),
+            tooltip: 'Your Account',
             onPressed: () {
-              debugPrint('profile');
+              GoRouter.of(context).pushNamed(AccountView.name);
             },
           )
         ],

@@ -3,6 +3,7 @@ class UserModel {
   final String? email;
   final String? username;
   final int? badgeId;
+  final String? badgeTitle;
   final String? image;
   final String? birthdate;
   final String? biography;
@@ -16,6 +17,7 @@ class UserModel {
     required this.email,
     this.username,
     this.badgeId,
+    this.badgeTitle,
     this.image,
     this.birthdate,
     this.biography,
@@ -32,6 +34,7 @@ class UserModel {
         badgeId: json['badge_id'] != null
             ? int.parse(json['badge_id'].toString())
             : null,
+        badgeTitle: json['badge']['title']?.toString(),    
         image: json['image']?.toString(),
         birthdate: json['birthdate']?.toString(),
         biography: json['biography']?.toString(),
