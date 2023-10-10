@@ -1,19 +1,30 @@
+import 'package:ecogest_front/models/post_model.dart';
 import 'package:flutter/material.dart';
 
 class PostContentInfos extends StatelessWidget {
   const PostContentInfos({
     super.key,
+    required this.post,
   });
+
+  final PostModel? post;
 
   @override
   Widget build(BuildContext context) {
+
+    String tags = post!.tags.toString();
+    tags = tags.replaceAll('{', '').replaceAll('}', '');
+    List<String> tagsArray = tags.split(',');
+    debugPrint(tagsArray.toString());
+
     return Column(children: [
-      const Column(
+      Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Ne pas manger de viande pendant une semaine',
+            post!.title.toString(),
             textAlign: TextAlign.left,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
             ),
@@ -28,61 +39,99 @@ class PostContentInfos extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Column(
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
                     children: [
-                      Text(
-                        '150',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
-                        ),
-                      ),
-                      Text(' points'),
+                      if (post!.level.toString() == 'easy') ...[
+                        if (post!.type.toString() == 'action') ...[
+                          const Text(
+                            '10',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                            ),
+                          )
+                        ] else ...[
+                          // TODO: nombre de point si un challenge
+                        ]
+                      ] else if (post!.level.toString() == 'medium') ...[
+                        if (post!.type.toString() == 'action') ...[
+                          const Text(
+                            '20',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                            ),
+                          )
+                        ] else ...[
+                          // TODO: nombre de point si un challenge
+                        ]
+                      ] else if (post!.level.toString() == 'hard') ...[
+                        if (post!.type.toString() == 'action') ...[
+                          const Text(
+                            '30',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                            ),
+                          )
+                        ] else ...[
+                          // TODO: nombre de point si un challenge
+                        ]
+                      ],
+                      const Text(' points'),
                     ],
                   ),
                   Row(
                     children: [
-                      Icon(
-                        Icons.restaurant,
-                        size: 15,
-                      ),
-                      Text(' alimentation'),
+                      if (post!.category.image != null) ...[
+                        CircleAvatar(
+                          backgroundImage: NetworkImage(post!.category.image.toString()),
+                        )
+                      ] else ...[
+                        const Icon(
+                          Icons.category_outlined,
+                          size: 15,
+                        )
+                      ],
+                      Text(' ${post!.category.title.toString()}'),
                     ],
                   )
                 ],
               ),
               Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   FilledButton(
                     onPressed: () {
+                      debugPrint('Click on ${post!.type.toString()}');
                       // TODO : Afficher les défis
                     },
-                    child: const Text(
-                      'Défi',
-                      style: TextStyle(color: Colors.white),
+                    child: Text((() {
+                        if (post!.type.toString() == 'action') {
+                          return 'Geste';
+                        } else {
+                          return 'Défi';
+                        }
+                      } ()),
+                      style: const TextStyle(color: Colors.white),
                     ),
                   ),
                   Row(
-                    children: [
-                      TextButton(
-                          onPressed: () {
-                            // TODO : Afficher la liste des publication avec ce #
-                          },
-                          child: const Text(
-                            '#vegan',
-                            style: TextStyle(color: Colors.black),
-                          )),
-                      TextButton(
-                          onPressed: () {
-                            // TODO : Afficher la liste des publication avec ce #
-                          },
-                          child: const Text(
-                            '#nomeat',
-                            style: TextStyle(color: Colors.black),
-                          )),
-                    ],
+                    children: tagsArray.map((tag) {
+                      return TextButton(
+                        onPressed: () {
+                          debugPrint('Click on $tag');
+                          // TODO : Afficher la liste des publication avec ce #
+                        },
+                        child: Text(
+                          '#$tag',
+                          style: const TextStyle(color: Colors.black),
+                        )
+                      );
+                    }).toList()
                   )
                 ],
               ),
@@ -93,21 +142,29 @@ class PostContentInfos extends StatelessWidget {
       const SizedBox(
         height: 10,
       ),
-      const Column(
+      Column(
         children: [
-          Image(
-            image: NetworkImage(
-                'https://images.pexels.com/photos/1143754/pexels-photo-1143754.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
-            fit: BoxFit.cover,
-          )
+          if (post!.image != null) ...[
+            Image(
+              image: NetworkImage(
+                  post!.image.toString()),
+              fit: BoxFit.cover,
+            )
+          ]
         ],
       ),
-      const SizedBox(
-        height: 10,
-      ),
-      const Text(
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
-      )
+      if (post!.image != null && post!.description != null) ...[
+        const SizedBox(
+          height: 10,
+        ),
+      ],
+      Text(() {
+        if (post!.description != null) {
+          return post!.description.toString();
+        } else {
+          return '';
+        }
+      } ())
     ]);
   }
 }

@@ -1,9 +1,18 @@
+import 'package:ecogest_front/models/user_model.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class PostContentAuthor extends StatelessWidget {
   const PostContentAuthor({
     super.key,
+    required this.author,
+    this.position,
+    this.date,
   });
+
+  final UserModel? author;
+  final String? position;
+  final String? date;
 
   @override
   Widget build(BuildContext context) {
@@ -11,21 +20,37 @@ class PostContentAuthor extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.end,
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
-        const Row(
+        Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             Text('17 août 2023'),
-            Text(' | '),
-            Text('Rennes, France'),
+            const Text(' | '),
+            Text(() {
+              if (position != null) {
+                return position.toString();
+              } else if (author!.position != null) {
+                return author!.position.toString();
+              } else {
+                return '';
+              }
+            } ()
+              // 'Rennes, France'
+            ),
           ],
         ),
         Column(
           children: [
             Row(
               children: [
-                const CircleAvatar(
-                  child: Icon(Icons.person),
-                ),
+                if (author!.image != null) ...[
+                  CircleAvatar(
+                    backgroundImage: NetworkImage(author!.image.toString()),
+                  )
+                ] else ...[
+                  const CircleAvatar(
+                    child: Icon(Icons.person),
+                  ),
+                ],
                 const SizedBox(
                   height: 10,
                   width: 10,
@@ -33,8 +58,9 @@ class PostContentAuthor extends StatelessWidget {
                 Row(
                   children: [
                     Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text('Maude Erateur'),
+                        Text(author?.username.toString() ?? 'Username'),
                         const SizedBox(
                           height: 10,
                         ),
@@ -42,9 +68,9 @@ class PostContentAuthor extends StatelessWidget {
                           onPressed: () {
                             // TODO : Afficher les différents badges
                           },
-                          child: const Text(
-                            'Jeune pousse',
-                            style: TextStyle(
+                          child: Text(
+                            author?.badgeTitle ?? 'Badge',
+                            style: const TextStyle(
                               fontSize: 12,
                             ),
                           ),

@@ -13,7 +13,7 @@ class PostsStateSuccess extends PostsState {
 }
 
 class OnePostStateSuccess extends PostsState {
-  final PostModel post;
+  final PostModel? post;
 
   OnePostStateSuccess(this.post);
 }
