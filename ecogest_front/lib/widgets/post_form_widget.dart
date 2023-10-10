@@ -1,32 +1,26 @@
-import 'dart:ui_web';
+import 'package:ecogest_front/state_management/authentication/authentication_cubit.dart';
+import 'package:ecogest_front/state_management/post/form_post_cubit.dart';
+import 'package:ecogest_front/widgets/app_bar.dart';
+import 'package:ecogest_front/widgets/bottom_bar.dart';
 import 'package:ecogest_front/widgets/date_widget.dart';
-import 'package:ecogest_front/models/category_model.dart';
-import 'package:ecogest_front/state_management/post/form_post_create_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:ecogest_front/widgets/bottom_bar.dart';
-import 'package:date_field/date_field.dart';
 
-class PostFormWidget extends StatefulWidget {
-  PostFormWidget({super.key, this.isChallenge, this.startDate, this.endDate});
-  bool? isChallenge;
-  DateTime? startDate;
-  DateTime? endDate;
+class PostFormWidget extends StatelessWidget {
+  PostFormWidget({super.key});
+  // bool? isChallenge;
+  // DateTime? startDate;
+  // DateTime? endDate;
 
   static String name = 'postCreate';
-
-  @override
-  _PostFormWidgetState createState() => _PostFormWidgetState();
-}
-
-class _PostFormWidgetState extends State<PostFormWidget> {
   final titleController = TextEditingController();
   final descriptionController = TextEditingController();
   final categoryController = TextEditingController();
   final positionController = TextEditingController();
   final tagController = TextEditingController();
   final List<String> tags = List.empty();
+  final formKey = GlobalKey<FormState>();
 
   void addTag(String newTag) {
     tags.add(newTag);
@@ -34,84 +28,172 @@ class _PostFormWidgetState extends State<PostFormWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-        child: Column(
-      children: [
-        TogglePostType(),
-        // TODO
-        // Bloc provider et bloc builder pour recuperer les categories
-        DropdownCategory(),
-        Container(
-          alignment: Alignment.topCenter,
-          padding: const EdgeInsets.all(10),
-          child: TextFormField(
-            controller: titleController,
-            decoration: const InputDecoration(
-              border: OutlineInputBorder(),
-              labelText: 'Titre',
-              hintText: 'Entrez un titre',
-            ),
-            autovalidateMode: AutovalidateMode.onUserInteraction,
-            validator: (value) =>
-                (value == null) ? null : 'Veuillez entrer un titre',
-          ),
+    final authenticationState = context.read<AuthenticationCubit>().state;
+    if (authenticationState is AuthenticationAuthenticated) {
+      final user = authenticationState.user;
+      return Scaffold(
+        appBar: const ThemeAppBar(title: 'Publier'),
+        body: BlocProvider(
+          create: (context) => PostFormCubit()..getDefaults(),
+          child: Builder(builder: (context) {
+            return BlocListener<PostFormCubit, PostFormState>(
+              listener: (context, state) {
+                if (state is PostFormStateError) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                        content: Text('Erreur lors de la publication.')),
+                  );
+                  context.read<PostFormCubit>().getDefaults();
+                }
+                if (state is PostFormStateSuccess) {
+                  // ScaffoldMessenger.of(context).showSnackBar(
+                  //   const SnackBar(content: Text('Publication réussie')),
+                  // );
+                  // GoRouter.of(context).goNamed(
+                  //   PostDetailView.name,
+                  //   pathParameters: {'id': state.post.id.toString()},
+                  // );
+                }
+              },
+              child: Form(
+                key: formKey,
+                child: Column(
+                  children: [
+                    BlocBuilder<PostFormCubit, PostFormState>(
+                        builder: (context, state) {
+                      if (state is SelectionState) {
+                        return Container(
+                          alignment: Alignment.center,
+                          padding: const EdgeInsets.all(10),
+                          child:
+                              // Type
+                              ToggleButtons(
+                            constraints: BoxConstraints(
+                                minWidth:
+                                    (MediaQuery.of(context).size.width - 36) /
+                                        2,
+                                minHeight: 50.0),
+                            isSelected: const <bool>[true, false],
+                            children: <Widget>[
+                              Text(state.selectableTypes[0].name),
+                              Text(state.selectableTypes[1].name),
+                            ],
+                          ),
+                        );
+                      }
+                      return const CircularProgressIndicator();
+                    }),
+
+                    // TODO
+                    // Bloc provider et bloc builder pour recuperer les categories
+                    // DropdownCategory(),
+                    Container(
+                      alignment: Alignment.topCenter,
+                      padding: const EdgeInsets.all(10),
+                      child: TextFormField(
+                        controller: titleController,
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: 'Titre',
+                          hintText: 'Entrez un titre',
+                        ),
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        validator: (value) =>
+                            (value == null) ? null : 'Veuillez entrer un titre',
+                      ),
+                    ),
+                    // Container(
+                    //   alignment: Alignment.topCenter,
+                    //   padding: const EdgeInsets.all(10),
+                    //   height: 20,
+                    //   child: TextFormField(
+                    //     controller: descriptionController,
+                    //     decoration: const InputDecoration(
+                    //       border: OutlineInputBorder(),
+                    //       labelText: 'Description',
+                    //       hintText: 'Entrez une description',
+                    //     ),
+                    //   ),
+                    // ),
+                    // Container(
+                    //   alignment: Alignment.topCenter,
+                    //   padding: const EdgeInsets.all(10),
+                    //   child: TextFormField(
+                    //     controller: positionController,
+                    //     decoration: const InputDecoration(
+                    //       border: OutlineInputBorder(),
+                    //       labelText: 'Position',
+                    //       hintText: 'Entrez votre géolocalisation',
+                    //     ),
+                    //   ),
+                    // ),
+
+                    // date debut
+                    // DateWidget(),
+                    // // date fin
+                    // DateWidget(),
+
+                    // tags
+                    Container(
+                      alignment: Alignment.topCenter,
+                      padding: const EdgeInsets.all(10),
+                      child: TextFormField(
+                        controller: tagController,
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: 'Tags',
+                          hintText: 'Entrez un ou plusieurs tags',
+                        ),
+                      ),
+                    ),
+                    // Todo
+                    // résultats des tags ajoutés : tags
+                    // pouvoir les supprimer (idealement)
+
+                    // Todo
+                    // image
+
+                    // level
+                    // DropdownLevel(),
+
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: ElevatedButton(
+                        onPressed: () async {
+                          if (formKey.currentState!.validate()) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                  content: Text('Processing transfer')),
+                            );
+                            context.read<PostFormCubit>().createPost(
+                                  authorId: user!.id.toString(),
+                                  title: titleController.text,
+                                  description: descriptionController.text,
+                                  startDate: titleController.text,
+                                  endDate: titleController.text,
+                                  tag: '{' + tags.toString() + '}',
+                                );
+                          }
+                        },
+                        child: const Text('Publier'),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          }),
         ),
-        Container(
-          alignment: Alignment.topCenter,
-          padding: const EdgeInsets.all(10),
-          height: 160,
-          child: TextFormField(
-            controller: descriptionController,
-            decoration: const InputDecoration(
-              border: OutlineInputBorder(),
-              labelText: 'Description',
-              hintText: 'Entrez une description',
-            ),
-          ),
+        bottomNavigationBar: const AppBarFooter(),
+      );
+    } else {
+      // Handle the case where the state is not AuthenticationAuthenticated
+      return const Scaffold(
+        body: Center(
+          child: Text('Problème : utilisateur non authentifié'),
         ),
-        Container(
-          alignment: Alignment.topCenter,
-          padding: const EdgeInsets.all(10),
-          child: TextFormField(
-            controller: positionController,
-            decoration: const InputDecoration(
-              border: OutlineInputBorder(),
-              labelText: 'Position',
-              hintText: 'Entrez votre géolocalisation',
-            ),
-          ),
-        ),
-
-        // date debut
-        DateWidget(),
-        // date fin
-        DateWidget(),
-
-        // tags
-        Container(
-          alignment: Alignment.topCenter,
-          padding: const EdgeInsets.all(10),
-          child: TextFormField(
-            controller: tagController,
-            decoration: const InputDecoration(
-              border: OutlineInputBorder(),
-              labelText: 'Tags',
-              hintText: 'Entrez un ou plusieurs tags',
-            ),
-          ),
-        ),
-        // Todo 
-        // résultats des tags ajoutés : tags
-        // pouvoir les supprimer (idealement)
-
-
-        // Todo
-        // image
-
-        // level
-        DropdownLevel(),
-      ],
-    ));
+      );
+    }
   }
 }
 
@@ -228,9 +310,9 @@ class DropdownLevel extends StatelessWidget {
       title: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          const Text('Language'),
+          const Text('Level'),
           DropdownButton(
-            value: 'Mobilité',
+            value: 'easy',
             items: const [
               DropdownMenuItem(
                 value: 'easy',

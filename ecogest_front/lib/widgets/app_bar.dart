@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
-import 'package:ecogest_front/assets/ecogest_theme.dart';
 
 
 class ThemeAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -26,7 +23,7 @@ class ThemeAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       title: Text(title),
       leading: IconButton(
-        icon: Icon(Icons.arrow_back),
+        icon: const Icon(Icons.arrow_back),
         onPressed: () {
           if (Navigator.canPop(context)) {
             Navigator.pop(context);

@@ -1,6 +1,5 @@
 import 'package:ecogest_front/widgets/post_form_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:ecogest_front/widgets/bottom_bar.dart';
 
 class PostCreateView extends StatelessWidget {
@@ -18,7 +17,7 @@ class PostCreateView extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Ajouter'),
       ),
-      bottomNavigationBar: AppBarFooter(),
+      bottomNavigationBar: const AppBarFooter(),
       body: Column(
         children: [
           PostFormWidget(),

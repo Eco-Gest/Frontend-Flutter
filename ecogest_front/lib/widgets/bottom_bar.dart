@@ -5,12 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ecogest_front/assets/ecogest_theme.dart';
 import 'package:ecogest_front/views/home_view.dart';
-import 'package:ecogest_front/views/account_view.dart';
 
 
 
 class AppBarFooter extends StatelessWidget {
-  AppBarFooter({super.key});
+  const AppBarFooter({super.key});
 
   String _getCurrentRoute(BuildContext context) {
     return GoRouterState.of(context).uri.toString();
@@ -33,7 +32,7 @@ class AppBarFooter extends StatelessWidget {
         children: <Widget>[
           IconButton(
             icon: const Icon(Icons.home),
-            color:  ( _getCurrentRoute(context) == "/" + HomeView.name
+            color:  ( _getCurrentRoute(context) == "/${HomeView.name}"
                 ? EcogestTheme.primary
                 : Colors.blueGrey.shade400),
             tooltip: 'Home',
@@ -69,7 +68,7 @@ class AppBarFooter extends StatelessWidget {
           ),
           IconButton(
             icon: const Icon(Icons.person),
-            color:  ( _getCurrentRoute(context) == "/" + AccountView.name
+            color:  ( _getCurrentRoute(context) == "/${AccountView.name}"
                 ? EcogestTheme.primary
                 : Colors.blueGrey.shade400),
             tooltip: 'Your Account',

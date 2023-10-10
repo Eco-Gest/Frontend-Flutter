@@ -10,7 +10,6 @@ import 'package:ecogest_front/state_management/authentication/authentication_cub
 import 'package:ecogest_front/views/register_view.dart';
 import 'package:ecogest_front/views/login_view.dart';
 import 'package:ecogest_front/views/home_view.dart';
-import 'package:ecogest_front/views/account_view.dart';
 import 'package:ecogest_front/views/post_create_view.dart';
 
 abstract class AppRouter {
@@ -54,7 +53,7 @@ abstract class AppRouter {
           builder: (context, state) => const AccountView(),
         ),
         GoRoute(
-        path: '/post/create',
+        path: '/posts/create',
         name: PostCreateView.name,
         builder: (context, state) => PostCreateView(),
       ),
