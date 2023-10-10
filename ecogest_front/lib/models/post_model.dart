@@ -1,5 +1,6 @@
 import 'package:ecogest_front/models/category_model.dart';
 import 'package:ecogest_front/models/user_model.dart';
+import 'package:ecogest_front/models/user_post_participation_model.dart';
 
 class PostModel {
   final int? id;

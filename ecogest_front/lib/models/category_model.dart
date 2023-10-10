@@ -6,8 +6,8 @@ class CategoryModel {
   final String? updatedAt;
 
   const CategoryModel({
-    this.id,
-    required this.title,
+    required this.id,
+    this.title,
     this.image,
     this.createdAt,
     this.updatedAt,
