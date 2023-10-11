@@ -18,11 +18,9 @@ class PostsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // return const Text('Ici la liste des posts');
-    debugPrint('Posts list : ${page.toString()}');
-    debugPrint(posts.toString());
-    return ListView.builder(
+    return ListView.separated(
       padding: const EdgeInsets.all(16),
+      separatorBuilder: (context, index) => const SizedBox(height: 16),
       itemCount: posts.length,
       itemBuilder: (BuildContext context, int index) {
         return Container(
