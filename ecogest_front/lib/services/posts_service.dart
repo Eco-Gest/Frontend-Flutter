@@ -3,10 +3,20 @@ import 'package:ecogest_front/models/post_model.dart';
 import 'package:ecogest_front/services/authentication_service.dart';
 
 abstract class PostsService {
-  static Future<List<PostModel>> getPosts() async {
+  static Future<List<PostModel>> getPosts(int pageNbr) async {
     final String? token = await AuthenticationService.getToken();
-    final posts = await EcoGestApiDataSource.get('/posts', token: token);
-    return posts;
+    final Map<String, dynamic> responseMap = await EcoGestApiDataSource.get('/posts?page=$pageNbr', token: token);
+
+    if (responseMap.containsKey('data')) {
+      // Data key contains the list of 30 posts 
+      final List<dynamic> responseData = responseMap['data'];
+      final List<PostModel> posts = responseData.map((post) {
+        return PostModel.fromJson(post);
+      }).toList();
+      return posts;
+    } else {
+      return [];
+    }
   }
 
   static Future<PostModel> getOnePost(int postId) async {
