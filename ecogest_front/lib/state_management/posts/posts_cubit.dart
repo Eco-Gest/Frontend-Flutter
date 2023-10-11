@@ -5,10 +5,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class PostsCubit extends Cubit<PostsState> {
   PostsCubit() : super(PostsStateInitial());
 
-  Future<void> getPosts(int pageNbr) async {
+  Future<void> getPosts() async {
     try {
       emit(PostsStateLoading());
-      final posts = await PostsService.getPosts(pageNbr);
+      final posts = await PostsService.getPosts();
       emit(PostsStateSuccess(posts));
     } catch (error) {
       emit(PostsStateError(error.toString()));
