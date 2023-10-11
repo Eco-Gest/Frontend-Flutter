@@ -21,9 +21,12 @@ class PostDetailView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const ThemeAppBar(title: 'Un post'),
+      appBar: const ThemeAppBar(title: 'Détail de la publication'),
       bottomNavigationBar: AppBarFooter(),
-      body: BlocProvider<PostsCubit>(
+      body: SingleChildScrollView(
+        child: Stack(
+          children: [
+            BlocProvider<PostsCubit>(
         create: (context) {
           final cubit = PostsCubit();
           cubit.getOnePost(postId);
@@ -70,6 +73,12 @@ class PostDetailView extends StatelessWidget {
           },
         ),
       )
+          ],
+        ),
+      )
+      
+      
+      
     );
   }
 }
