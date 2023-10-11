@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:ecogest_front/widgets/bottom_bar.dart';
 import 'package:ecogest_front/widgets/app_bar.dart';
-import 'package:ecogest_front/widgets/account_infos.dart';
-import 'package:ecogest_front/widgets/account_trophies.dart';
+import 'package:ecogest_front/widgets/account/account_infos.dart';
+import 'package:ecogest_front/widgets/account/account_trophies.dart';
 
 class AccountView extends StatefulWidget {
   const AccountView({Key? key});
@@ -53,6 +53,7 @@ class _AccountViewState extends State<AccountView>
             children: [
               // Account Info Widget
               AccountInfo(),
+              SizedBox(height: 20),
               // New Widget: Account Trophies
               AccountTrophies(),
             ],
