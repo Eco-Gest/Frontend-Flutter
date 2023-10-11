@@ -10,10 +10,7 @@ import 'package:ecogest_front/widgets/bottom_bar.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class PostDetailView extends StatelessWidget {
-  const PostDetailView({
-    required this.postId,
-    super.key
-  });
+  const PostDetailView({required this.postId, super.key});
 
   static String name = 'post';
   final int postId;
@@ -21,53 +18,63 @@ class PostDetailView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const ThemeAppBar(title: 'Un post'),
+      appBar: const ThemeAppBar(title: 'Détail de la publication'),
       bottomNavigationBar: AppBarFooter(),
-      body: BlocProvider<PostsCubit>(
-        create: (context) {
-          final cubit = PostsCubit();
-          cubit.getOnePost(postId);
-          return cubit;
-        },
-        child: BlocBuilder<PostsCubit, PostsState>(
-          builder: (context, state) {
-            if (state is PostsStateInitial || state is PostsStateLoading) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            } else if (state is PostsStateError) {
-              return Center(
-                child: Text(state.message),
-              );
-            } else if (state is OnePostStateSuccess) {
-              return Center(
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    children: [
-                      // Author info
-                      PostContentAuthor(
-                        author: state.post!.user, 
-                        position: state.post!.position, 
-                        date: state.post!.createdAt
+      body: SingleChildScrollView(
+        child: Stack(
+          children: [
+            BlocProvider<PostsCubit>(
+              create: (context) {
+                final cubit = PostsCubit();
+                cubit.getOnePost(postId);
+                return cubit;
+              },
+              child: BlocBuilder<PostsCubit, PostsState>(
+                builder: (context, state) {
+                  if (state is PostsStateInitial ||
+                      state is PostsStateLoading) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  } else if (state is PostsStateError) {
+                    return Center(
+                      child: Text(state.message),
+                    );
+                  } else if (state is OnePostStateSuccess) {
+                    return Center(
+                        child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        children: [
+                          // Author info
+                          PostContentAuthor(
+                              author: state.post!.user,
+                              position: state.post!.position,
+                              date: state.post!.createdAt),
+                          const PostSeparator(),
+                          // Post info
+                          PostContentInfos(
+                            post: state.post,
+                          ),
+                          const PostSeparator(),
+                          // Buttons
+                          PostContentButtons(
+                            likes: state.post!.likes,
+                            comments: state.post!.comments,
+                            isChallenge:
+                                (state.post!.type.toString() == 'challenge')
+                                    ? true
+                                    : false,
+                          ),
+                        ],
                       ),
-                      const PostSeparator(),
-                      // Post info
-                      PostContentInfos(post: state.post,),
-                      const PostSeparator(),
-                      // Buttons
-                      PostContentButtons(
-                        likes: state.post!.likes,
-                        comments: state.post!.comments,
-                        isChallenge: (state.post!.type.toString() == 'challenge') ? true : false,
-                      ),
-                    ],
-                  ),
-                )
-              );
-            }
-            return const SizedBox.shrink();
-          },
+                    ));
+                  }
+                  return const SizedBox.shrink();
+                },
+              ),
+            )
+          ],
         ),
       )
     );
