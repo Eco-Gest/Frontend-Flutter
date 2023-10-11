@@ -25,6 +25,15 @@ class PostCreateView extends StatelessWidget {
 
   final List<bool> _selectedPostType = <bool>[true, false];
 
+  bool datesValidation() {
+    if (startDate != null && endDate != null) {
+      if (startDate!.isBefore(endDate!)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   @override
   Widget build(BuildContext context) {
     final authenticationState = context.read<AuthenticationCubit>().state;
@@ -171,8 +180,11 @@ class PostCreateView extends StatelessWidget {
                               ),
                             ),
                           ),
+
                           BlocBuilder<PostFormCubit, PostFormState>(
                               builder: (context, state) {
+                                startDate = DateTime.now();
+                                endDate = startDate!.add(const Duration(days: 1));
                             if (state is SelectionState &&
                                 state.selectedType == PostType.challenge) {
                               return Column(children: [
@@ -185,8 +197,13 @@ class PostCreateView extends StatelessWidget {
                                             36),
                                   ),
                                   child: DateTimeFormField(
-                                    initialValue: DateTime.now(),
-                                    initialDate: DateTime.now(),
+                                    autovalidateMode:
+                                        AutovalidateMode.onUserInteraction,
+                                    validator: (value) => datesValidation()
+                                        ? null
+                                        : "Dates non valides. Veuillez sélectionner une date de début et de fin.",
+                                    initialValue: startDate,
+                                    initialDate:startDate,
                                     mode: DateTimeFieldPickerMode.date,
                                     decoration: const InputDecoration(
                                       hintStyle:
@@ -211,8 +228,13 @@ class PostCreateView extends StatelessWidget {
                                             36),
                                   ),
                                   child: DateTimeFormField(
-                                    initialValue: DateTime.now(),
-                                    initialDate: DateTime.now(),
+                                    autovalidateMode:
+                                        AutovalidateMode.onUserInteraction,
+                                    validator: (value) => datesValidation()
+                                        ? null
+                                        : 'Dates non valides. La date de fin doit être au moins un jour après la date de début.',
+                                    initialValue: endDate,
+                                    initialDate: endDate,
                                     mode: DateTimeFieldPickerMode.date,
                                     decoration: const InputDecoration(
                                       hintStyle:
