@@ -2,6 +2,7 @@ import 'package:ecogest_front/models/user_model.dart';
 import 'package:ecogest_front/services/authentication_service.dart';
 import 'package:ecogest_front/services/user_service.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 part 'authentication_state.dart';
 
@@ -23,6 +24,7 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
 
   Future<void> login({required String email, required String password}) async {
     try {
+      emit(AuthenticationLoading());
       await AuthenticationService.login(email: email, password: password);
       final user = await UserService.getCurrentUser();
       emit(AuthenticationAuthenticated(user));
@@ -36,7 +38,8 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
   Future<void> register(
       {required String email, required String password, required String username}) async {
     try {
-       final user = await AuthenticationService.register(email: email, password: password, username: username);
+      await AuthenticationService.register(email: email, password: password, username: username);
+      final user = await UserService.getCurrentUser();
       emit(AuthenticationAuthenticated(user));
     } catch (e) {
       // Failed to login, failed to parse the token or

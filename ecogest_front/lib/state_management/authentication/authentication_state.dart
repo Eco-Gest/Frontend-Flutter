@@ -15,6 +15,8 @@ class AuthenticationAuthenticated extends AuthenticationState {
   AuthenticationAuthenticated(this.user);
 }
 
+class AuthenticationLoading extends AuthenticationState {}
+
 /// The state of the authentication cubit when an error occurred.
 class AuthenticationError extends AuthenticationState {
   final String message;

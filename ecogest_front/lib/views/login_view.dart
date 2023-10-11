@@ -109,7 +109,7 @@ class LoginView extends StatelessWidget {
             ),
 
             BlocListener<AuthenticationCubit, AuthenticationState>(
-              // Error message if user is not allow to connect
+              // Error message if user is not allowed to connect
               listener: (context, state) {
                 if (state is AuthenticationError) {
                   ScaffoldMessenger.of(context).showSnackBar(
@@ -120,6 +120,28 @@ class LoginView extends StatelessWidget {
                       ),
                       backgroundColor: Colors.red,
                     ),
+                  );
+                } else if (state is AuthenticationLoading) {
+                  // Show only CircularProgressIndicator
+                  showDialog(
+                    context: context,
+                    barrierDismissible: false,
+                    builder: (context) {
+                      return Stack(
+                        children: [
+                          // Background: Full-screen white background
+                          Positioned.fill(
+                            child: Container(
+                              color: Colors.white, // Adjust the opacity as needed
+                            ),
+                          ),
+                          // Centered CircularProgressIndicator
+                          Center(
+                            child: CircularProgressIndicator(),
+                          ),
+                        ],
+                      );
+                    },
                   );
                 }
               },
