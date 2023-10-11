@@ -4,7 +4,7 @@ import 'package:ecogest_front/state_management/authentication/authentication_cub
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AccountInfo extends StatelessWidget {
-  const AccountInfo({super.key});
+  const AccountInfo({Key? key});
 
   @override
   Widget build(BuildContext context) {
@@ -25,28 +25,31 @@ class AccountInfo extends StatelessWidget {
                     height: 100,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      // image: DecorationImage(
-                      //   image: user?.image != null
-                      //             ? NetworkImage(user!.image!)
-                      //             : const AssetImage('assets/profile.jpg'),
-                      //   fit: BoxFit.cover,
-                      // ),
+                      image: DecorationImage(
+                        image: user?.image != null
+                            ? NetworkImage(user!.image!)
+                                as ImageProvider<Object>
+                            : AssetImage('assets/profile.jpg')
+                                as ImageProvider<Object>,
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
-                  const SizedBox(width: 40),
+                  SizedBox(width: 40),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         user?.username ?? 'Username',
-                        style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold),
                       ),
                       Text(
                         user?.position ?? 'Le Monde',
-                        style: const TextStyle(fontSize: 16),
+                        style: TextStyle(fontSize: 16),
                       ),
                       Container(
-                        padding: const EdgeInsets.symmetric(
+                        padding: EdgeInsets.symmetric(
                           vertical: 4.0,
                           horizontal: 12.0,
                         ),
@@ -56,18 +59,18 @@ class AccountInfo extends StatelessWidget {
                         ),
                         child: Text(
                           user?.badgeTitle ?? 'Badge',
-                          style: const TextStyle(fontSize: 14),
+                          style: TextStyle(fontSize: 14),
                         ),
                       ),
                     ],
                   ),
                 ],
               ),
-              const SizedBox(height: 16),
+              SizedBox(height: 16),
               // ... Second Bloc: Profil Bio ...
               Text(
                 user?.biography ?? 'Default Biography',
-                style: const TextStyle(fontSize: 16),
+                style: TextStyle(fontSize: 16),
               ),
             ],
           ),
@@ -75,7 +78,7 @@ class AccountInfo extends StatelessWidget {
       );
     } else {
       // Handle the case where the state is not AuthenticationAuthenticated
-      return const Scaffold(
+      return Scaffold(
         body: Center(
           child: Text('User not authenticated'),
         ),

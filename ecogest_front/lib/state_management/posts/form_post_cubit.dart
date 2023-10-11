@@ -1,10 +1,13 @@
+import 'dart:convert';
+
 import 'package:ecogest_front/models/category_model.dart';
 import 'package:ecogest_front/models/post_model.dart';
 import 'package:ecogest_front/services/category_service.dart';
 import 'package:ecogest_front/services/post_service.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-part 'form_post_state.dart';
+part './form_post_state.dart';
 
 class PostFormCubit extends Cubit<PostFormState> {
   PostFormCubit()
@@ -19,7 +22,8 @@ class PostFormCubit extends Cubit<PostFormState> {
 
   Future<void> getDefaults() async {
     final categories = await CategoryService.getCategories();
-    final firstCategory =  categories.firstWhere((element) => element.id == 1).id;
+    final firstCategory =
+        categories.firstWhere((element) => element.id == 1).id;
 
     emit(SelectionState(
       selectableTypes: PostType.values,
@@ -31,10 +35,11 @@ class PostFormCubit extends Cubit<PostFormState> {
     ));
   }
 
-  void selectPostType(PostType type) {
+  String? selectPostType(PostType type) {
     if (state is SelectionState) {
       final selectionState = state as SelectionState;
       emit(selectionState.copyWith(selectedType: type));
+      return type.name;
     }
   }
 
@@ -54,10 +59,9 @@ class PostFormCubit extends Cubit<PostFormState> {
 
   Future<void> createPost({
     required String title,
-    required String authorId,
     String? description,
-    String? startDate,
-    String? endDate,
+    DateTime? startDate,
+    DateTime? endDate,
     String? position,
     String? tag,
   }) async {
@@ -66,16 +70,14 @@ class PostFormCubit extends Cubit<PostFormState> {
     }
     final selectionState = state as SelectionState;
     final post = PostModel(
-      authorId: 1,
       categoryId: selectionState.selectedCategory,
       position: position,
-      tag: tag,
       title: title,
       description: description,
-      startDate: startDate,
-      endDate: endDate,
-      type: selectionState.selectedType,
-      level: selectionState.selectedLevel,
+      startDate: startDate?.toIso8601String(),
+      endDate: endDate?.toIso8601String(),
+      type: selectionState.selectedType.name,
+      level: selectionState.selectedLevel.name,
     );
 
     try {

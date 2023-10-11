@@ -53,7 +53,7 @@ abstract class AppRouter {
           builder: (context, state) => const AccountView(),
         ),
         GoRoute(
-        path: '/posts/create',
+        path: '/post-create',
         name: PostCreateView.name,
         builder: (context, state) => PostCreateView(),
       ),

@@ -11,8 +11,7 @@ class PostContentInfos extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-    // Convert tags coming from DB into an array 
+    // Convert tags coming from DB into an array
     // to be able to loop over them
     String tags = post!.tag.toString();
     tags = tags.replaceAll('{', '').replaceAll('}', '');
@@ -87,9 +86,10 @@ class PostContentInfos extends StatelessWidget {
                   ),
                   Row(
                     children: [
-                      if (post!.category?.image != null) ...[
+                      if (post!.category!.image != null) ...[
                         CircleAvatar(
-                          backgroundImage: NetworkImage(post!.category!.image.toString()),
+                          backgroundImage:
+                              NetworkImage(post!.category!.image.toString()),
                         )
                       ] else ...[
                         const Icon(
@@ -110,19 +110,20 @@ class PostContentInfos extends StatelessWidget {
                       debugPrint('Click on ${post!.type.toString()}');
                       // TODO : Afficher les défis
                     },
-                    child: Text((() {
+                    child: Text(
+                      (() {
                         if (post!.type.toString() == 'action') {
                           return 'Geste';
                         } else {
                           return 'Défi';
                         }
-                      } ()),
+                      }()),
                       style: const TextStyle(color: Colors.white),
                     ),
                   ),
                   Row(
-                    children: tagsArray.map((tag) {
-                      return TextButton(
+                      children: tagsArray.map((tag) {
+                    return TextButton(
                         onPressed: () {
                           debugPrint('Click on $tag');
                           // TODO : Afficher la liste des publication avec ce #
@@ -130,10 +131,8 @@ class PostContentInfos extends StatelessWidget {
                         child: Text(
                           '#$tag',
                           style: const TextStyle(color: Colors.black),
-                        )
-                      );
-                    }).toList()
-                  )
+                        ));
+                  }).toList())
                 ],
               ),
             ],
@@ -147,8 +146,7 @@ class PostContentInfos extends StatelessWidget {
         children: [
           if (post!.image != null) ...[
             Image(
-              image: NetworkImage(
-                  post!.image.toString()),
+              image: NetworkImage(post!.image.toString()),
               fit: BoxFit.cover,
             )
           ]
@@ -165,7 +163,7 @@ class PostContentInfos extends StatelessWidget {
         } else {
           return '';
         }
-      } ())
+      }())
     ]);
   }
 }
