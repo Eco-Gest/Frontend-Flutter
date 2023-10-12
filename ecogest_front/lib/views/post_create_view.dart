@@ -21,7 +21,6 @@ class PostCreateView extends StatelessWidget {
   final tagController = TextEditingController();
   final imageController = TextEditingController();
 
-
   DateTime? startDate;
   DateTime? endDate;
 
@@ -30,6 +29,29 @@ class PostCreateView extends StatelessWidget {
   bool datesValidation() {
     if (startDate != null && endDate != null) {
       if (startDate!.isBefore(endDate!)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  bool imageValidation(String image) {
+    final List<String> fileFormatImg3Chars = [
+      'jpg',
+      'png',
+      'gif',
+      'svg'
+    ];
+    final List<String> fileFormatImg4Chars = [
+      'webp',
+      'jpeg',
+    ];
+
+    final startOfUrl = image.substring(0, 8);
+    final last3CharOfUrl = image.substring(image.length - 3);
+    final last4CharOfUrl = image.substring(image.length - 4);
+    if (startOfUrl == 'http://' || startOfUrl == 'https://') {
+      if (fileFormatImg3Chars.contains(last3CharOfUrl) || fileFormatImg4Chars.contains(last4CharOfUrl)) {
         return true;
       }
     }
@@ -285,6 +307,11 @@ class PostCreateView extends StatelessWidget {
                                 labelText: 'Image',
                                 hintText: 'Entrez l\'url d\'une image',
                               ),
+                              autovalidateMode:
+                                  AutovalidateMode.onUserInteraction,
+                              validator: (value) => imageValidation(imageController.text)
+                                  ? null
+                                  : 'Lien vers l\'image doit être une url avec une extension .jpg, .png, .gif, .svg, .webp ou .jpeg',
                             ),
                           ),
 
