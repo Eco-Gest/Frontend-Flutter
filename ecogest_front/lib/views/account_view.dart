@@ -1,9 +1,9 @@
+import 'package:ecogest_front/widgets/settings_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ecogest_front/widgets/bottom_bar.dart';
 import 'package:ecogest_front/widgets/app_bar.dart';
 import 'package:ecogest_front/widgets/account_infos.dart';
-
 
 class AccountView extends StatefulWidget {
   const AccountView({super.key});
@@ -14,14 +14,15 @@ class AccountView extends StatefulWidget {
   _AccountViewState createState() => _AccountViewState();
 }
 
-class _AccountViewState extends  State<AccountView>
+class _AccountViewState extends State<AccountView>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 2, vsync: this); // Change length to 2
+    _tabController =
+        TabController(length: 2, vsync: this); // Change length to 2
   }
 
   @override
@@ -38,11 +39,11 @@ class _AccountViewState extends  State<AccountView>
         bottom: TabBar(
           indicatorColor: Colors.black,
           indicatorSize: TabBarIndicatorSize.label,
-          indicatorWeight: 2,   
+          indicatorWeight: 2,
           controller: _tabController,
           tabs: [
-            Tab(text: 'Mon profil'), 
-            Tab(text: 'Historique'), 
+            Tab(text: 'Mon profil'),
+            Tab(text: 'Paramètres'),
           ],
         ),
       ),
@@ -56,9 +57,7 @@ class _AccountViewState extends  State<AccountView>
               child: AccountInfo(),
             ),
           ),
-          Center(
-            child: Text('This is my history'),
-          ),
+          SettingsWidget(),
         ],
       ),
     );
