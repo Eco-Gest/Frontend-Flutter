@@ -55,19 +55,21 @@ class PostsList extends StatelessWidget {
                     PostContentButtons(
                       likes: posts[index].likes,
                       comments: posts[index].comments,
-                      isChallenge: (posts[index].type.toString() == 'challenge') ? true : false,
+                      isChallenge: (posts[index].type.toString() == 'challenge')
+                          ? true
+                          : false,
                     ),
                   ],
                 ),
               )
             );
           } else if (isLastPage) {
-            return const Center(
-              child: Text("Pas de nouvelles publications à afficher"),
-            );
+              return const Center(
+                child: Text("Pas de nouvelles publications à afficher"),
+              );
           }
           return const SizedBox.shrink();
-        },
+        }
       ),
       // Listen to scroll events in the goal to load more posts
       onNotification: (notification) {

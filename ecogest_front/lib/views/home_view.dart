@@ -18,39 +18,46 @@ class HomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: const ThemeAppBar(title: 'Accueil'),
-        bottomNavigationBar: AppBarFooter(),
-        body: BlocProvider<PostsCubit>(
-          create: (context) {
-            final cubit = PostsCubit();
-            cubit.getPosts(currentPage);
-            return cubit;
-          },
-          child: BlocBuilder<PostsCubit, PostsState>(
-            builder: (context, state) {
-              if (state is PostsStateInitial || state is PostsStateLoading) {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              } else if (state is PostsStateError) {
-                return Center(child: Text(state.message));
-              } else if (state is PostsStateSuccess) {
-                allPosts += state.posts;
-                (state.posts.isEmpty) ? noMorePosts = true : '';
-                return PostsList(
-                  posts: allPosts,
-                  isLastPage: noMorePosts,
-                  onScrolled: () {
-                    if (!noMorePosts) {
-                      currentPage = currentPage + 1;
-                      context.read<PostsCubit>().getPosts(currentPage);
-                    }
-                  },
-                );
+      appBar: const ThemeAppBar(title: 'Accueil'),
+      bottomNavigationBar: AppBarFooter(),
+      body: BlocProvider<PostsCubit>(
+        create: (context) {
+          final cubit = PostsCubit();
+          cubit.getPosts(currentPage);
+          return cubit;
+        },
+        child: BlocBuilder<PostsCubit, PostsState>(
+          builder: (context, state) {
+            if (state is PostsStateInitial || state is PostsStateLoading) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            } else if (state is PostsStateError) {
+              return Center(child: Text(state.message));
+            } else if (state is PostsStateSuccess) {
+              allPosts += state.posts;
+              debugPrint(allPosts.toString());
+              if (state.posts.isEmpty) {
+                noMorePosts = true;
               }
-              return const SizedBox.shrink();
-            },
-          ),
-        ));
+              return PostsList(
+                posts: allPosts,
+                isLastPage: noMorePosts,
+                onScrolled: () {
+                  // If during the last call we have not retrieved a new post,
+                  // it is because we have reached the end of the complete list of posts
+                  // -> No need to reload the page again when user scroll down
+                  if (!noMorePosts) {
+                    currentPage = currentPage + 1;
+                    context.read<PostsCubit>().getPosts(currentPage);
+                  }
+                },
+              );
+            }
+            return const SizedBox.shrink();
+          },
+        ),
+      )
+    );
   }
 }
