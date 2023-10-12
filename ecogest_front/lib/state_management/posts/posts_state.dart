@@ -1,4 +1,5 @@
 import 'package:ecogest_front/models/post_model.dart';
+import 'package:flutter/material.dart';
 
 abstract class PostsState {}
 
@@ -10,6 +11,12 @@ class PostsStateSuccess extends PostsState {
   final List<PostModel> posts;
 
   PostsStateSuccess(this.posts);
+}
+
+class PostsStateReloadSuccess extends PostsState {
+  final List<PostModel> posts;
+
+  PostsStateReloadSuccess(this.posts);
 }
 
 class OnePostStateSuccess extends PostsState {
