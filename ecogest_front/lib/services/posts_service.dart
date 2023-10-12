@@ -5,10 +5,11 @@ import 'package:ecogest_front/services/authentication_service.dart';
 abstract class PostsService {
   static Future<List<PostModel>> getPosts(int pageNbr) async {
     final String? token = await AuthenticationService.getToken();
-    final Map<String, dynamic> responseMap = await EcoGestApiDataSource.get('/posts?page=$pageNbr', token: token);
+    final Map<String, dynamic> responseMap =
+        await EcoGestApiDataSource.get('/posts?page=$pageNbr', token: token);
 
     if (responseMap.containsKey('data')) {
-      // Data key contains the list of 30 posts 
+      // Data key contains the list of 30 posts
       final List<dynamic> responseData = responseMap['data'];
       final List<PostModel> posts = responseData.map((post) {
         return PostModel.fromJson(post);
@@ -23,5 +24,12 @@ abstract class PostsService {
     final String? token = await AuthenticationService.getToken();
     final post = await EcoGestApiDataSource.get('/posts/$postId', token: token);
     return PostModel.fromJson(post);
+  }
+
+  static Future<PostModel> createPost(PostModel postModel) async {
+    final String? token = await AuthenticationService.getToken();
+    final body = postModel.toJson();
+    await EcoGestApiDataSource.post('/posts', body, token: token);
+    return postModel;
   }
 }
