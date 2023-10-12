@@ -64,6 +64,7 @@ class PostFormCubit extends Cubit<PostFormState> {
     DateTime? endDate,
     String? position,
     String? tag,
+    String? image,
   }) async {
     if (state is! SelectionState) {
       return;
@@ -74,6 +75,7 @@ class PostFormCubit extends Cubit<PostFormState> {
       position: position,
       title: title,
       description: description,
+      image: image,
       startDate: startDate?.toIso8601String(),
       endDate: endDate?.toIso8601String(),
       type: selectionState.selectedType.name,

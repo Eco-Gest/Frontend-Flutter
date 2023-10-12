@@ -50,7 +50,7 @@ class AppBarFooter extends StatelessWidget {
           ),
           IconButton(
             icon: const Icon(Icons.add_circle),
-            color:  ( _getCurrentRoute(context) == "/" 
+            color:  ( _getCurrentRoute(context) == "/${PostCreateView.name}"
                 ? EcogestTheme.primary
                 : Colors.blueGrey.shade400),
             tooltip: 'Add challenge or action',

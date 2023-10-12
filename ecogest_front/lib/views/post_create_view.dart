@@ -19,6 +19,8 @@ class PostCreateView extends StatelessWidget {
   final descriptionController = TextEditingController();
   final positionController = TextEditingController();
   final tagController = TextEditingController();
+  final imageController = TextEditingController();
+
 
   DateTime? startDate;
   DateTime? endDate;
@@ -183,8 +185,8 @@ class PostCreateView extends StatelessWidget {
 
                           BlocBuilder<PostFormCubit, PostFormState>(
                               builder: (context, state) {
-                                startDate = DateTime.now();
-                                endDate = startDate!.add(const Duration(days: 1));
+                            startDate = DateTime.now();
+                            endDate = startDate!.add(const Duration(days: 1));
                             if (state is SelectionState &&
                                 state.selectedType == PostType.challenge) {
                               return Column(children: [
@@ -203,7 +205,7 @@ class PostCreateView extends StatelessWidget {
                                         ? null
                                         : "Dates non valides. Veuillez sélectionner une date de début et de fin.",
                                     initialValue: startDate,
-                                    initialDate:startDate,
+                                    initialDate: startDate,
                                     mode: DateTimeFieldPickerMode.date,
                                     decoration: const InputDecoration(
                                       hintStyle:
@@ -272,8 +274,19 @@ class PostCreateView extends StatelessWidget {
                           // résultats des tags ajoutés : tags
                           // pouvoir les supprimer (idealement)
 
-                          // Todo
                           // image
+                          Container(
+                            alignment: Alignment.topCenter,
+                            padding: const EdgeInsets.all(10),
+                            child: TextFormField(
+                              controller: imageController,
+                              decoration: const InputDecoration(
+                                border: OutlineInputBorder(),
+                                labelText: 'Image',
+                                hintText: 'Entrez l\'url d\'une image',
+                              ),
+                            ),
+                          ),
 
                           // level
                           BlocBuilder<PostFormCubit, PostFormState>(
@@ -322,6 +335,7 @@ class PostCreateView extends StatelessWidget {
                                           position: positionController.text,
                                           startDate: startDate,
                                           endDate: endDate,
+                                          image: imageController.text,
                                         );
                                   }
                                 },
