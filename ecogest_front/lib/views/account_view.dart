@@ -1,8 +1,10 @@
+import 'package:ecogest_front/widgets/settings_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:ecogest_front/widgets/bottom_bar.dart';
 import 'package:ecogest_front/widgets/app_bar.dart';
 import 'package:ecogest_front/widgets/account/account_infos.dart';
 import 'package:ecogest_front/widgets/account/account_trophies.dart';
+import 'package:ecogest_front/widgets/account_infos.dart';
 
 class AccountView extends StatefulWidget {
   const AccountView({Key? key});
@@ -41,7 +43,7 @@ class _AccountViewState extends State<AccountView>
           controller: _tabController,
           tabs: [
             Tab(text: 'Mon profil'),
-            Tab(text: 'Historique'),
+            Tab(text: 'Paramètres'),
           ],
         ),
       ),
@@ -61,9 +63,7 @@ class _AccountViewState extends State<AccountView>
               ],
             ),
           ),
-          Center(
-            child: Text('This is my history'),
-          ),
+          SettingsWidget(),
         ],
       ),
     );

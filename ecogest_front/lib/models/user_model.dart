@@ -34,7 +34,7 @@ class UserModel {
         badgeId: json['badge_id'] != null
             ? int.parse(json['badge_id'].toString())
             : null,
-        badgeTitle: json['badge']['title']?.toString(),    
+        badgeTitle: json['badge']?['title']?.toString(),    
         image: json['image']?.toString(),
         birthdate: json['birthdate']?.toString(),
         biography: json['biography']?.toString(),
