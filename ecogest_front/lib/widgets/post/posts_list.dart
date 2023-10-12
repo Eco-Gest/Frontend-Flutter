@@ -29,6 +29,8 @@ class PostsList extends StatelessWidget {
         separatorBuilder: (context, index) => const SizedBox(height: 16),
         itemCount: posts.length,
         itemBuilder: (BuildContext context, int index) {
+          debugPrint('Index : $index');
+          debugPrint('Length : ${posts.length}');
           return Container(
               decoration: BoxDecoration(
                   border: Border.all(
