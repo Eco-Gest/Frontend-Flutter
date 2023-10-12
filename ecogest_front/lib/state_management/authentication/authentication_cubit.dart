@@ -24,27 +24,31 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
 
   Future<void> login({required String email, required String password}) async {
     try {
-      emit(AuthenticationLoading());
       await AuthenticationService.login(email: email, password: password);
+      emit(AuthenticationLoading());
       final user = await UserService.getCurrentUser();
       emit(AuthenticationAuthenticated(user));
     } catch (e) {
       // Failed to login, failed to parse the token or
       // error while getting the user
-      emit(AuthenticationError(e.toString()));
+      emit(AuthenticationError("Identifiants incorrects"));
     }
   }
 
   Future<void> register(
-      {required String email, required String password, required String username}) async {
+      {required String email,
+      required String password,
+      required String username}) async {
     try {
-      await AuthenticationService.register(email: email, password: password, username: username);
+      await AuthenticationService.register(
+          email: email, password: password, username: username);
+      emit(AuthenticationLoading());
       final user = await UserService.getCurrentUser();
       emit(AuthenticationAuthenticated(user));
     } catch (e) {
       // Failed to login, failed to parse the token or
       // error while getting the user
-      emit(AuthenticationError(e.toString()));
+      emit(AuthenticationError("Format des identifiants incorrect"));
     }
   }
 
