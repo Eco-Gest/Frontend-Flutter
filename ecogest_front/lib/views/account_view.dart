@@ -1,12 +1,13 @@
 import 'package:ecogest_front/widgets/settings_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:ecogest_front/widgets/bottom_bar.dart';
 import 'package:ecogest_front/widgets/app_bar.dart';
+import 'package:ecogest_front/widgets/account/account_infos.dart';
+import 'package:ecogest_front/widgets/account/account_trophies.dart';
 import 'package:ecogest_front/widgets/account_infos.dart';
 
 class AccountView extends StatefulWidget {
-  const AccountView({super.key});
+  const AccountView({Key? key});
 
   static String name = 'account';
 
@@ -21,8 +22,7 @@ class _AccountViewState extends State<AccountView>
   @override
   void initState() {
     super.initState();
-    _tabController =
-        TabController(length: 2, vsync: this); // Change length to 2
+    _tabController = TabController(length: 2, vsync: this);
   }
 
   @override
@@ -51,10 +51,16 @@ class _AccountViewState extends State<AccountView>
       body: TabBarView(
         controller: _tabController,
         children: [
-          Center(
-            child: Padding(
-              padding: EdgeInsets.all(40.0), // Adjust the padding as needed
-              child: AccountInfo(),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 26.0),
+            child: ListView(
+              children: [ 
+                // Account Info Widget
+                AccountInfo(),
+                SizedBox(height: 20),
+                // New Widget: Account Trophies
+                AccountTrophies(),
+              ],
             ),
           ),
           SettingsWidget(),
