@@ -12,20 +12,10 @@ class HomeView extends StatelessWidget {
   static String name = 'home';
   int currentPage = 1;
 
+  List<PostModel> allPosts = List.empty();
+
   @override
   Widget build(BuildContext context) {
-    PostsCubit loadMorePost() {
-      debugPrint('Hello de la view Home : Fin du scroll');
-      debugPrint('Previous page = ${currentPage.toString()}');
-      currentPage = currentPage + 1;
-      debugPrint('Actual page = ${currentPage.toString()}');
-
-      final cubit = PostsCubit();
-      cubit.getPosts(currentPage);
-      debugPrint(cubit.toString());
-      return cubit;
-    }
-
     return Scaffold(
         appBar: const ThemeAppBar(title: 'Accueil'),
         bottomNavigationBar: AppBarFooter(),
@@ -36,8 +26,6 @@ class HomeView extends StatelessWidget {
             return cubit;
           },
           child: BlocBuilder<PostsCubit, PostsState>(
-            buildWhen: (previous, current) =>
-                (previous is PostsStateLoading && current is PostsStateSuccess),
             builder: (context, state) {
               if (state is PostsStateInitial || state is PostsStateLoading) {
                 debugPrint('Chargement');
@@ -48,36 +36,12 @@ class HomeView extends StatelessWidget {
                 debugPrint('Erreur');
                 return Center(child: Text(state.message));
               } else if (state is PostsStateSuccess) {
-                debugPrint('Hello from state');
-                debugPrint('Success $currentPage');
+                allPosts += state.posts;
                 return PostsList(
-                  posts: state.posts,
+                  posts: allPosts,
                   onScrolled: () {
-                    debugPrint('Hello de la view Home : Fin du scroll');
-                    debugPrint('Previous page = ${currentPage.toString()}');
                     currentPage = currentPage + 1;
-                    debugPrint('Actual page = ${currentPage.toString()}');
-
-                    final cubit = PostsCubit();
-                    cubit.getPosts(currentPage);
-                    debugPrint(cubit.toString());
-                    return cubit;
-                  },
-                );
-              } else if (state is PostsStateReloadSuccess) {
-                debugPrint('Success $currentPage');
-                return PostsList(
-                  posts: state.posts,
-                  onScrolled: () {
-                    debugPrint('Hello de la view Home : Fin du scroll');
-                    debugPrint('Previous page = ${currentPage.toString()}');
-                    currentPage = currentPage + 1;
-                    debugPrint('Actual page = ${currentPage.toString()}');
-
-                    final cubit = PostsCubit();
-                    cubit.getPosts(currentPage);
-                    debugPrint(cubit.toString());
-                    return cubit;
+                    context.read<PostsCubit>().getPosts(currentPage);
                   },
                 );
               }

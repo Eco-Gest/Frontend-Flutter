@@ -1,12 +1,9 @@
 import 'package:ecogest_front/models/post_model.dart';
-import 'package:ecogest_front/state_management/posts/posts_cubit.dart';
-import 'package:ecogest_front/state_management/posts/posts_state.dart';
 import 'package:ecogest_front/widgets/post/post_content_author.dart';
 import 'package:ecogest_front/widgets/post/post_content_buttons.dart';
 import 'package:ecogest_front/widgets/post/post_content_infos.dart';
 import 'package:ecogest_front/widgets/post/post_separator.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class PostsList extends StatelessWidget {
   PostsList({
@@ -25,11 +22,6 @@ class PostsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final postState = context.read<PostsCubit>().state;
-    if (postState is PostsStateSuccess) {
-      final posts = postState.posts;
-    }
-    debugPrint('Nbr de post: ${posts.length}');
     return NotificationListener(
       child: ListView.separated(
         padding: const EdgeInsets.all(16),
@@ -37,7 +29,6 @@ class PostsList extends StatelessWidget {
         separatorBuilder: (context, index) => const SizedBox(height: 16),
         itemCount: posts.length,
         itemBuilder: (BuildContext context, int index) {
-          debugPrint('${index.toString()}');
           return Container(
               decoration: BoxDecoration(
                   border: Border.all(
@@ -76,7 +67,6 @@ class PostsList extends StatelessWidget {
           if (_scrollController.position.pixels ==
               _scrollController.position.maxScrollExtent) {
             // Event: user has reached the end of the list
-            debugPrint('Hello du widget PostList : Fin du scroll');
             onScrolled();
           }
         }

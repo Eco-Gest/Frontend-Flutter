@@ -1,4 +1,3 @@
-import 'package:ecogest_front/models/post_model.dart';
 import 'package:ecogest_front/services/posts_service.dart';
 import 'package:ecogest_front/state_management/posts/posts_state.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +10,7 @@ class PostsCubit extends Cubit<PostsState> {
     try {
       emit(PostsStateLoading());
       final posts = await PostsService.getPosts(pageNbr);
-      debugPrint('CUBIT : ${posts.toString()}');
+      debugPrint(posts.toString());
       emit(PostsStateSuccess(posts));
     } catch (error) {
       emit(PostsStateError(error.toString()));
