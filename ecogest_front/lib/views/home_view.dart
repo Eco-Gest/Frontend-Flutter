@@ -13,6 +13,7 @@ class HomeView extends StatelessWidget {
   int currentPage = 1;
 
   List<PostModel> allPosts = List.empty();
+  bool noMorePosts = false;
 
   @override
   Widget build(BuildContext context) {
@@ -28,21 +29,22 @@ class HomeView extends StatelessWidget {
           child: BlocBuilder<PostsCubit, PostsState>(
             builder: (context, state) {
               if (state is PostsStateInitial || state is PostsStateLoading) {
-                debugPrint('Chargement');
                 return const Center(
                   child: CircularProgressIndicator(),
                 );
               } else if (state is PostsStateError) {
-                debugPrint('Erreur');
                 return Center(child: Text(state.message));
               } else if (state is PostsStateSuccess) {
                 allPosts += state.posts;
-                debugPrint(allPosts.toString());
+                (state.posts.isEmpty) ? noMorePosts = true : '';
                 return PostsList(
                   posts: allPosts,
+                  isLastPage: noMorePosts,
                   onScrolled: () {
-                    currentPage = currentPage + 1;
-                    context.read<PostsCubit>().getPosts(currentPage);
+                    if (!noMorePosts) {
+                      currentPage = currentPage + 1;
+                      context.read<PostsCubit>().getPosts(currentPage);
+                    }
                   },
                 );
               }

@@ -10,10 +10,12 @@ class PostsList extends StatelessWidget {
     super.key,
     required this.posts,
     required this.onScrolled,
+    required this.isLastPage,
   });
 
   static String name = 'posts-list';
   final List<PostModel> posts;
+  final bool isLastPage;
 
   // Functions which allows to indicate to the
   // parent view that the page has been scrolled
@@ -27,11 +29,10 @@ class PostsList extends StatelessWidget {
         padding: const EdgeInsets.all(16),
         controller: _scrollController,
         separatorBuilder: (context, index) => const SizedBox(height: 16),
-        itemCount: posts.length,
+        itemCount: posts.length + (isLastPage ? 1 : 0),
         itemBuilder: (BuildContext context, int index) {
-          debugPrint('Index : $index');
-          debugPrint('Length : ${posts.length}');
-          return Container(
+          if (index < posts.length) {
+            return Container(
               decoration: BoxDecoration(
                   border: Border.all(
                 color: Colors.grey,
@@ -54,13 +55,18 @@ class PostsList extends StatelessWidget {
                     PostContentButtons(
                       likes: posts[index].likes,
                       comments: posts[index].comments,
-                      isChallenge: (posts[index].type.toString() == 'challenge')
-                          ? true
-                          : false,
+                      isChallenge: (posts[index].type.toString() == 'challenge') ? true : false,
                     ),
                   ],
                 ),
-              ));
+              )
+            );
+          } else if (isLastPage) {
+            return const Center(
+              child: Text("Pas de nouvelles publications à afficher"),
+            );
+          }
+          return const SizedBox.shrink();
         },
       ),
       // Listen to scroll events in the goal to load more posts
@@ -68,7 +74,9 @@ class PostsList extends StatelessWidget {
         if (notification is ScrollEndNotification) {
           if (_scrollController.position.pixels ==
               _scrollController.position.maxScrollExtent) {
-            // Event: user has reached the end of the list
+            // Event: user has reached the end of the list ->
+            // onScrolled allows to inform the parent view that
+            // the user has arrived at the bottom of the page
             onScrolled();
           }
         }
