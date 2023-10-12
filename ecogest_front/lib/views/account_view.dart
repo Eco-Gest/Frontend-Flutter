@@ -49,14 +49,17 @@ class _AccountViewState extends State<AccountView>
       body: TabBarView(
         controller: _tabController,
         children: [
-          ListView(
-            children: [
-              // Account Info Widget
-              AccountInfo(),
-              SizedBox(height: 20),
-              // New Widget: Account Trophies
-              AccountTrophies(),
-            ],
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 26.0),
+            child: ListView(
+              children: [ 
+                // Account Info Widget
+                AccountInfo(),
+                SizedBox(height: 20),
+                // New Widget: Account Trophies
+                AccountTrophies(),
+              ],
+            ),
           ),
           Center(
             child: Text('This is my history'),

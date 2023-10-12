@@ -16,6 +16,7 @@ class AccountInfo extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            SizedBox(height: 16),
             // ... First Bloc: Profil Picture, Username, Location, Badge ...
             Row(
               children: [
