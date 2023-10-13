@@ -3,7 +3,7 @@ import 'package:ecogest_front/models/post_model.dart';
 import 'package:ecogest_front/models/user_model.dart';
 import 'package:ecogest_front/services/authentication_service.dart';
 
-class SearchService {
+abstract class SearchService {
   static Future<List<PostModel>> searchPosts(String query) async {
     final String? token = await AuthenticationService.getToken();
     final Map<String, dynamic> responseMap =
@@ -36,21 +36,5 @@ class SearchService {
     } else {
       return [];
     }
-  }
-
-  static Future<List<List<String?>>> search(String query) async {
-    final users = await searchUsers(query);
-    final posts = await searchPosts(query);
-    List<List<String?>> results = [];
-    for (int i = 0; i < posts.length; i++) {
-      if (i.isEven) {
-        results[i].add(posts[i].title!);
-        results[i].add(posts[i].tags!);
-      } else {
-        results[i].add(users[i].username!);
-        results[i].add(users[i].image);
-      }
-    }
-    return results;
   }
 }

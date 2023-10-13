@@ -10,7 +10,6 @@ class PostsCubit extends Cubit<PostsState> {
     try {
       emit(PostsStateLoading());
       final posts = await PostService.getPosts(pageNbr);
-      debugPrint(posts.toString());
       emit(PostsStateSuccess(posts));
     } catch (error) {
       emit(PostsStateError(error.toString()));
