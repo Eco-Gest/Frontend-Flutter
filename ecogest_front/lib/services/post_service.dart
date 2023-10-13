@@ -3,7 +3,7 @@ import 'package:ecogest_front/models/post_model.dart';
 import 'package:ecogest_front/services/authentication_service.dart';
 import 'package:flutter/material.dart';
 
-abstract class PostsService {
+abstract class PostService {
   static Future<List<PostModel>> getPosts(int pageNbr) async {
     final String? token = await AuthenticationService.getToken();
     final Map<String, dynamic> responseMap =
@@ -40,6 +40,7 @@ abstract class PostsService {
   }
 
   static Future<PostModel> createPost(PostModel postModel) async {
+    debugPrint('Allo');
     final String? token = await AuthenticationService.getToken();
     final body = postModel.toJson();
     await EcoGestApiDataSource.post('/posts', body, token: token);
