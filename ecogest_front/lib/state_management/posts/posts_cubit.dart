@@ -21,7 +21,28 @@ class PostsCubit extends Cubit<PostsState> {
     try {
       emit(PostsStateLoading());
       final post = await PostService.getOnePost(postId);
-      emit(OnePostStateSuccess(post));
+      final likeCount = await PostService.likeCount(post);
+      final user = await UserService.getCurrentUser();
+      final isLiked = await PostService.userLikedPost(post, user.id);
+      emit(OnePostStateSuccess(post, isLiked, likeCount));
+    } catch (error) {
+      emit(PostsStateError(error.toString()));
+    }
+  }
+
+  Future<void> addLike(int postId) async {
+    try {
+      final isLiked = await PostService.addLike(postId);
+      emit(PostStateliked(isLiked));
+    } catch (error) {
+      emit(PostsStateError(error.toString()));
+    }
+  }
+
+  Future<void> removeLike(int postId) async {
+    try {
+      final isLiked = await PostService.removeLike(postId);
+      emit(PostStateliked(isLiked));
     } catch (error) {
       emit(PostsStateError(error.toString()));
     }

@@ -1,3 +1,4 @@
+import 'package:ecogest_front/assets/ecogest_theme.dart';
 import 'package:ecogest_front/models/post_model.dart';
 import 'package:ecogest_front/state_management/posts/posts_cubit.dart';
 import 'package:ecogest_front/state_management/posts/posts_state.dart';
@@ -19,6 +20,17 @@ class PostContentButtons extends StatelessWidget {
   final int? likes;
   final List? comments;
   bool isLiked;
+  final cubit = PostsCubit();
+  
+
+  handleLikePost() {
+    if ( isLiked ) {
+      cubit.removeLike(post.id!);
+    } else {
+      cubit.addLike(post.id!);
+    }
+
+  }
 
   @override
   Widget build(BuildContext context) {
