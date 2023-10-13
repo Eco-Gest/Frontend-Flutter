@@ -1,12 +1,10 @@
-
 import 'package:ecogest_front/views/account_view.dart';
+import 'package:ecogest_front/views/search_view.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ecogest_front/assets/ecogest_theme.dart';
 import 'package:ecogest_front/views/home_view.dart';
 import 'package:ecogest_front/views/account_view.dart';
-
-
 
 class AppBarFooter extends StatelessWidget {
   AppBarFooter({super.key});
@@ -26,13 +24,13 @@ class AppBarFooter extends StatelessWidget {
             width: 1.0,
           ),
         ),
-        ),
+      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
           IconButton(
             icon: const Icon(Icons.home),
-            color:  ( _getCurrentRoute(context) == "/" + HomeView.name
+            color: (_getCurrentRoute(context) == "/" + HomeView.name
                 ? EcogestTheme.primary
                 : Colors.blueGrey.shade400),
             tooltip: 'Home',
@@ -58,15 +56,17 @@ class AppBarFooter extends StatelessWidget {
           ),
           IconButton(
             icon: const Icon(Icons.search),
-            color: Colors.blueGrey.shade400,
-            tooltip: 'Search',
+            color: (_getCurrentRoute(context) == "/${SearchView.name}"
+                ? EcogestTheme.primary
+                : Colors.blueGrey.shade400),
+            tooltip: 'Home',
             onPressed: () {
-              debugPrint('search');
+              GoRouter.of(context).pushNamed(SearchView.name);
             },
           ),
           IconButton(
             icon: const Icon(Icons.person),
-            color:  ( _getCurrentRoute(context) == "/" + AccountView.name
+            color: (_getCurrentRoute(context) == "/" + AccountView.name
                 ? EcogestTheme.primary
                 : Colors.blueGrey.shade400),
             tooltip: 'Your Account',

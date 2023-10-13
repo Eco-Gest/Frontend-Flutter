@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:ecogest_front/views/post_detail_view.dart';
 import 'package:ecogest_front/views/account_view.dart';
+import 'package:ecogest_front/views/search_view.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -52,7 +53,11 @@ abstract class AppRouter {
           name: AccountView.name,
           builder: (context, state) => const AccountView(),
         ),
-        
+           GoRoute(
+          path: '/search',
+          name: SearchView.name,
+          builder: (context, state) => SearchView(),
+        ),
       ],
       refreshListenable: GoRouterRefreshStream(stream),
       redirect: (context, state) {
