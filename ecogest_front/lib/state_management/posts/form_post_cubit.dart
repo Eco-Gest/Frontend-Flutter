@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:ecogest_front/models/category_model.dart';
 import 'package:ecogest_front/models/post_model.dart';
 import 'package:ecogest_front/services/category_service.dart';
-import 'package:ecogest_front/services/posts_service.dart';
+import 'package:ecogest_front/services/post_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -66,6 +66,7 @@ class PostFormCubit extends Cubit<PostFormState> {
     String? tag,
     String? image,
   }) async {
+    debugPrint('Coucou');
     if (state is! SelectionState) {
       return;
     }
@@ -83,7 +84,8 @@ class PostFormCubit extends Cubit<PostFormState> {
     );
 
     try {
-      final result = await PostsService.createPost(post);
+      debugPrint('Hello');
+      final result = await PostService.createPost(post);
       emit(PostFormStateSuccess(result));
     } catch (e) {
       debugPrint(e.toString());

@@ -35,24 +35,25 @@ class PostCreateView extends StatelessWidget {
     return false;
   }
 
-  bool imageValidation(String image) {
-    final List<String> fileFormatImg3Chars = [
-      'jpg',
-      'png',
-      'gif',
-      'svg'
-    ];
+  bool imageValidation(String? image) {
+    final List<String> fileFormatImg3Chars = ['jpg', 'png', 'gif', 'svg'];
     final List<String> fileFormatImg4Chars = [
       'webp',
       'jpeg',
     ];
-
-    final startOfUrl = image.substring(0, 8);
-    final last3CharOfUrl = image.substring(image.length - 3);
-    final last4CharOfUrl = image.substring(image.length - 4);
-    if (startOfUrl == 'http://' || startOfUrl == 'https://') {
-      if (fileFormatImg3Chars.contains(last3CharOfUrl) || fileFormatImg4Chars.contains(last4CharOfUrl)) {
-        return true;
+    if (image == null || image.isEmpty) {
+      return true;
+    } else if (image.length <= 15) {
+      return false;
+    } else {
+      final startOfUrl = image.substring(0, 8);
+      final last3CharOfUrl = image.substring(image.length - 3);
+      final last4CharOfUrl = image.substring(image.length - 4);
+      if (startOfUrl == 'http://' || startOfUrl == 'https://') {
+        if (fileFormatImg3Chars.contains(last3CharOfUrl) ||
+            fileFormatImg4Chars.contains(last4CharOfUrl)) {
+          return true;
+        }
       }
     }
     return false;
@@ -350,6 +351,7 @@ class PostCreateView extends StatelessWidget {
                               child: ElevatedButton(
                                 onPressed: () async {
                                   if (formKey.currentState!.validate()) {
+                                  debugPrint('Hola');
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       const SnackBar(
                                           content:
