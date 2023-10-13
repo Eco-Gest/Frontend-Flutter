@@ -41,4 +41,39 @@ abstract class PostService {
     await EcoGestApiDataSource.post('/posts', body, token: token);
     return postModel;
   }
+
+  static int likeCount(PostModel post) {
+    final int? likes = post.likes?.length;
+    if (likes != null && likes > 0) {
+      return likes ;
+    } else {
+      return 0;
+    }
+  }
+
+  static bool userLikedPost(PostModel post, int? userId) {
+    if (post.likes != null) {
+    // Vérifie si l'ID de l'utilisateur est présent dans la liste des likes
+    return post.likes!.any((like) => like.userId == userId);
+  }
+  return false; // Si la liste des likes est null ou vide, l'utilisateur n'a pas aimé le post
+  }
+
+  static Future<bool> addLike(int postId) async {
+    final String? token = await AuthenticationService.getToken();
+    final body = {
+      'post_id': postId,
+    };
+    await EcoGestApiDataSource.post('/posts/$postId/likes', body, error: 'Failed to add like', token: token);
+    return true;
+  }
+
+  static Future<bool> removeLike(int postId) async {
+    final String? token = await AuthenticationService.getToken();
+    final body = {
+      'post_id': postId,
+    };
+    await EcoGestApiDataSource.delete('/posts/$postId/likes', body, error: 'Failed to remove like', token: token);
+    return false;
+  }
 }
