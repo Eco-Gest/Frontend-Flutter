@@ -17,6 +17,35 @@ class PostContentInfos extends StatelessWidget {
     tags = tags.replaceAll('{', '').replaceAll('}', '');
     List<String> tagsArray = tags.split(',');
 
+    // Return the number of points earned
+    // based on the difficulty of the action
+    int convertLevelToPoint(String level) {
+      int pointsByLevel = 0;
+      if (level == 'easy') {
+        pointsByLevel = 10;
+      } else if (level == 'medium') {
+        pointsByLevel = 20;
+      } else if (level == 'hard') {
+        pointsByLevel = 30;
+      }
+      return pointsByLevel;
+    }
+
+    // Calculate the duration between two dates
+    int challengeDuration(String from, String to) {
+      DateTime start = DateTime.parse(from);
+      DateTime end = DateTime.parse(to);
+      return (end.difference(start).inHours / 24).round();
+    }
+
+    // Calculate the number of points earned for a challenge
+    // based on its difficulty and its duration
+    int challengePoint(String startDate, String endDate, String level) {
+      int duration = challengeDuration(startDate, endDate);
+      int difficulty = convertLevelToPoint(level);
+      return (duration * difficulty).round();
+    }
+
     return Column(children: [
       Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -44,42 +73,27 @@ class PostContentInfos extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      if (post!.level.toString() == 'easy') ...[
-                        if (post!.type.toString() == 'action') ...[
-                          const Text(
-                            '10',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18,
-                            ),
-                          )
-                        ] else ...[
-                          // TODO: nombre de point si un challenge
-                        ]
-                      ] else if (post!.level.toString() == 'medium') ...[
-                        if (post!.type.toString() == 'action') ...[
-                          const Text(
-                            '20',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18,
-                            ),
-                          )
-                        ] else ...[
-                          // TODO: nombre de point si un challenge
-                        ]
-                      ] else if (post!.level.toString() == 'hard') ...[
-                        if (post!.type.toString() == 'action') ...[
-                          const Text(
-                            '30',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18,
-                            ),
-                          )
-                        ] else ...[
-                          // TODO: nombre de point si un challenge
-                        ]
+                      // If the post is an action, we only need the
+                      // number of points depending on the difficulty
+                      if (post!.type.toString() == 'action') ...[
+                        Text(
+                          convertLevelToPoint(post!.level.toString()).toString(),
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                          ),
+                        )
+                      // If the post is a challenge, we display the number
+                      // of points, obtained depending on the duration of
+                      // the challenge and its difficulty
+                      ] else ...[
+                        Text(
+                          challengePoint(post!.startDate.toString(), post!.endDate.toString(), post!.level.toString()).toString(),
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                          ),
+                        )
                       ],
                       const Text(' points'),
                     ],
