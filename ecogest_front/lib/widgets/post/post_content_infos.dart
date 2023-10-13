@@ -135,18 +135,20 @@ class PostContentInfos extends StatelessWidget {
                       style: const TextStyle(color: Colors.white),
                     ),
                   ),
-                  Row(
-                      children: tagsArray.map((tag) {
-                    return TextButton(
-                        onPressed: () {
-                          debugPrint('Click on $tag');
-                          // TODO : Afficher la liste des publication avec ce #
-                        },
-                        child: Text(
-                          '#$tag',
-                          style: const TextStyle(color: Colors.black),
-                        ));
-                  }).toList())
+                  if (post!.tag != null) ...[
+                    Row(
+                        children: tagsArray.map((tag) {
+                      return TextButton(
+                          onPressed: () {
+                            debugPrint('Click on $tag');
+                            // TODO : Afficher la liste des publication avec ce #
+                          },
+                          child: Text(
+                            '#$tag',
+                            style: const TextStyle(color: Colors.black),
+                          ));
+                    }).toList())
+                  ],
                 ],
               ),
             ],
