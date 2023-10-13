@@ -26,4 +26,14 @@ class PostsCubit extends Cubit<PostsState> {
       emit(PostsStateError(error.toString()));
     }
   }
+
+  Future<void> getUserPostsFiltered(String backendRoute) async {
+    try {
+      emit(PostsStateLoading());
+      final posts = await PostsService.getUserPostsFiltered(backendRoute);
+      emit(PostsStateSuccess(posts));
+    } catch (error) {
+      emit(PostsStateError(error.toString()));
+    }
+  }
 }
