@@ -36,7 +36,6 @@ class HomeView extends StatelessWidget {
               return Center(child: Text(state.message));
             } else if (state is PostsStateSuccess) {
               allPosts += state.posts;
-              debugPrint(allPosts.toString());
               if (state.posts.isEmpty) {
                 noMorePosts = true;
               }

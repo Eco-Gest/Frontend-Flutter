@@ -351,7 +351,6 @@ class PostCreateView extends StatelessWidget {
                               child: ElevatedButton(
                                 onPressed: () async {
                                   if (formKey.currentState!.validate()) {
-                                  debugPrint('Hola');
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       const SnackBar(
                                           content:

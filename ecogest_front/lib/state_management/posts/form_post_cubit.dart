@@ -66,7 +66,6 @@ class PostFormCubit extends Cubit<PostFormState> {
     String? tag,
     String? image,
   }) async {
-    debugPrint('Coucou');
     if (state is! SelectionState) {
       return;
     }
@@ -84,7 +83,6 @@ class PostFormCubit extends Cubit<PostFormState> {
     );
 
     try {
-      debugPrint('Hello');
       final result = await PostService.createPost(post);
       emit(PostFormStateSuccess(result));
     } catch (e) {
