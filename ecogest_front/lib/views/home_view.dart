@@ -1,3 +1,4 @@
+import 'package:ecogest_front/models/post_model.dart';
 import 'package:ecogest_front/state_management/posts/posts_cubit.dart';
 import 'package:ecogest_front/state_management/posts/posts_state.dart';
 import 'package:ecogest_front/widgets/post/posts_list.dart';
@@ -7,12 +8,15 @@ import 'package:ecogest_front/widgets/bottom_bar.dart';
 import 'package:ecogest_front/widgets/app_bar.dart';
 
 class HomeView extends StatelessWidget {
-  const HomeView({super.key});
+  HomeView({super.key});
   static String name = 'home';
+  int currentPage = 1;
+
+  List<PostModel> allPosts = List.empty();
+  bool noMorePosts = false;
 
   @override
   Widget build(BuildContext context) {
-    int currentPage = 1;
     return Scaffold(
       appBar: const ThemeAppBar(title: 'Accueil'),
       bottomNavigationBar: AppBarFooter(),
@@ -25,24 +29,35 @@ class HomeView extends StatelessWidget {
         child: BlocBuilder<PostsCubit, PostsState>(
           builder: (context, state) {
             if (state is PostsStateInitial || state is PostsStateLoading) {
-              debugPrint('Chargement');
               return const Center(
                 child: CircularProgressIndicator(),
               );
             } else if (state is PostsStateError) {
-              debugPrint('Erreur');
-              return Center(
-                child: Text(state.message)
-              );
+              return Center(child: Text(state.message));
             } else if (state is PostsStateSuccess) {
-              debugPrint('Success');
-              return PostsList(posts: state.posts);
+              allPosts += state.posts;
+              debugPrint(allPosts.toString());
+              if (state.posts.isEmpty) {
+                noMorePosts = true;
+              }
+              return PostsList(
+                posts: allPosts,
+                isLastPage: noMorePosts,
+                onScrolled: () {
+                  // If during the last call we have not retrieved a new post,
+                  // it is because we have reached the end of the complete list of posts
+                  // -> No need to reload the page again when user scroll down
+                  if (!noMorePosts) {
+                    currentPage = currentPage + 1;
+                    context.read<PostsCubit>().getPosts(currentPage);
+                  }
+                },
+              );
             }
             return const SizedBox.shrink();
           },
         ),
       )
-
     );
   }
 }

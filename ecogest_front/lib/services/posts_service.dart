@@ -8,7 +8,6 @@ abstract class PostsService {
     final String? token = await AuthenticationService.getToken();
     final Map<String, dynamic> responseMap =
         await EcoGestApiDataSource.get('/posts?page=$pageNbr', token: token);
-
     if (responseMap.containsKey('data')) {
       // Data key contains the list of 30 posts
       final List<dynamic> responseData = responseMap['data'];
