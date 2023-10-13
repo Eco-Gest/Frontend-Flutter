@@ -14,6 +14,7 @@ class EcoGestApiDataSource {
   /// The key used to store the token in the local storage
   static const key = 'token';
 
+
   static Map<String, String> _getHeaders(String? token) {
     return <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',

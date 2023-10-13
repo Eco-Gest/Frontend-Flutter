@@ -17,6 +17,7 @@
 - [Package dynamic_color](https://pub.dev/packages/dynamic_color)
 - [Material Theme Builder](https://m3.material.io/theme-builder#/dynamic)
 - [Flutter - Adding assets and images](https://docs.flutter.dev/ui/assets/assets-and-images)
+- [Infinite scroll pagination in Flutter](https://blog.logrocket.com/implement-infinite-scroll-pagination-flutter/)
 
 
 
