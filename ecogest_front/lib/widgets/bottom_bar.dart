@@ -1,12 +1,10 @@
-
 import 'package:ecogest_front/views/account_view.dart';
 import 'package:ecogest_front/views/post_create_view.dart';
+import 'package:ecogest_front/views/challenges_view.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ecogest_front/assets/ecogest_theme.dart';
 import 'package:ecogest_front/views/home_view.dart';
-
-
 
 class AppBarFooter extends StatelessWidget {
   const AppBarFooter({super.key});
@@ -26,7 +24,7 @@ class AppBarFooter extends StatelessWidget {
             width: 1.0,
           ),
         ),
-        ),
+      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
@@ -42,10 +40,12 @@ class AppBarFooter extends StatelessWidget {
           ),
           IconButton(
             icon: const Icon(Icons.emoji_events),
-            color: Colors.blueGrey.shade400,
-            tooltip: 'Challenge',
+            color: (_getCurrentRoute(context) == "/${ChallengesView.name}"
+                ? EcogestTheme.primary
+                : Colors.blueGrey.shade400),
+            tooltip: 'Challenge & action',
             onPressed: () {
-              debugPrint('défi');
+              GoRouter.of(context).pushNamed(ChallengesView.name);
             },
           ),
           IconButton(

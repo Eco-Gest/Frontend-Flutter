@@ -36,6 +36,5 @@ flutter:
     - assets/icon/icon-white.png
     - assets/icon/icon-reverse.png
     - assets/
+    - assets/trophy/
   uses-material-design: true
-
-

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:ecogest_front/views/challenges_view.dart';
 import 'package:ecogest_front/views/post_detail_view.dart';
 import 'package:ecogest_front/views/account_view.dart';
 import 'package:flutter/material.dart';
@@ -38,7 +39,7 @@ abstract class AppRouter {
         GoRoute(
           path: '/home',
           name: HomeView.name,
-          builder: (context, state) => const HomeView(),
+          builder: (context, state) => HomeView(),
         ),
         GoRoute(
           path: '/posts/:id',
@@ -53,10 +54,15 @@ abstract class AppRouter {
           builder: (context, state) => const AccountView(),
         ),
         GoRoute(
-        path: '/post-create',
-        name: PostCreateView.name,
-        builder: (context, state) => PostCreateView(),
-      ),
+          path: '/post-create',
+          name: PostCreateView.name,
+          builder: (context, state) => PostCreateView(),
+        ),
+        GoRoute(
+          path: '/challenge',
+          name: ChallengesView.name,
+          builder: (context, state) => const ChallengesView(),
+        ),
       ],
       refreshListenable: GoRouterRefreshStream(stream),
       redirect: (context, state) {
