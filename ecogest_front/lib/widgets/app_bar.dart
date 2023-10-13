@@ -40,6 +40,3 @@ class ThemeAppBar extends StatelessWidget implements PreferredSizeWidget {
     );
   }
 }
-
-
-

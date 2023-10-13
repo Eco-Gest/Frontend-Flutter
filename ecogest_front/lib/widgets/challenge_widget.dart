@@ -25,7 +25,7 @@ class ChallengesWidget extends StatelessWidget {
           } else if (state is PostsStateError) {
             return Center(child: Text(state.message));
           } else if (state is PostsStateSuccess) {
-            return PostsList(posts: state.posts);
+            return PostsList(posts: state.posts, onScrolled: () {  }, isLastPage: false,);
           }
           return const SizedBox.shrink();
         },

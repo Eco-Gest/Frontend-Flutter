@@ -4,7 +4,6 @@ import 'package:ecogest_front/widgets/bottom_bar.dart';
 import 'package:ecogest_front/widgets/app_bar.dart';
 import 'package:ecogest_front/widgets/account/account_infos.dart';
 import 'package:ecogest_front/widgets/account/account_trophies.dart';
-import 'package:ecogest_front/widgets/account_infos.dart';
 
 class AccountView extends StatefulWidget {
   const AccountView({Key? key});
@@ -35,7 +34,7 @@ class _AccountViewState extends State<AccountView>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Profil'),
+        title: const Text('Profil'),
         bottom: TabBar(
           indicatorColor: Colors.black,
           indicatorSize: TabBarIndicatorSize.label,
@@ -47,7 +46,7 @@ class _AccountViewState extends State<AccountView>
           ],
         ),
       ),
-      bottomNavigationBar: AppBarFooter(),
+      bottomNavigationBar: const AppBarFooter(),
       body: TabBarView(
         controller: _tabController,
         children: [
