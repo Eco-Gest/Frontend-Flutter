@@ -1,9 +1,11 @@
 import 'package:ecogest_front/models/post_model.dart';
+import 'package:ecogest_front/views/post_detail_view.dart';
 import 'package:ecogest_front/widgets/post/post_content_author.dart';
 import 'package:ecogest_front/widgets/post/post_content_buttons.dart';
 import 'package:ecogest_front/widgets/post/post_content_infos.dart';
 import 'package:ecogest_front/widgets/post/post_separator.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class PostsList extends StatelessWidget {
   PostsList({
@@ -49,7 +51,13 @@ class PostsList extends StatelessWidget {
                         date: posts[index].createdAt),
                     const PostSeparator(),
                     // Post info
-                    PostContentInfos(post: posts[index]),
+                    InkWell(
+                      onTap: () {
+                        // Redirect to post detail page
+                        GoRouter.of(context).push('/posts/${posts[index].id!}');
+                      },
+                      child: PostContentInfos(post: posts[index]),
+                    ),
                     const PostSeparator(),
                     // Buttons
                     PostContentButtons(
