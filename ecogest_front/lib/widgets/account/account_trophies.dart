@@ -51,9 +51,7 @@ class _AccountTrophiesState extends State<AccountTrophies> {
               } else {
                 // Display the list of trophies
                 return Column(
-                  children: snapshot.data!.map((trophy) {
-                    return _buildTrophyItem(trophy);
-                  }).toList(),
+                  children: _buildTrophyItems(snapshot.data!),
                 );
               }
             },
@@ -63,84 +61,95 @@ class _AccountTrophiesState extends State<AccountTrophies> {
     );
   }
 
-Widget _buildTrophyItem(TrophyModel trophy) {
-  // Calculate the trophy number based on the current points
-  int trophyNumber = (trophy.current_point! / 250).ceil();
+  List<Widget> _buildTrophyItems(List<TrophyModel> trophies) {
+    // Count occurrences of each category ID
+    Map<int, int> categoryCounts = {};
+    for (var trophy in trophies) {
+      int categoryId = trophy.category_id!;
+      categoryCounts[categoryId] = (categoryCounts[categoryId] ?? 0) + 1;
+    }
 
-  // Map category IDs to image links
-  Map<int, String> categoryImageMap = {
-    1: 'mobilite.png',
-    2: 'alim.png',
-    3: 'dechets.png',
-    4: 'biodiv.png', 
-    5: 'energie.png',
-    6: 'diy.png',
-    7: 'techno.png',
-    8: 'vie.png',
-    9: 'divers.png',
-  };
+    // Build widgets based on counts
+    return categoryCounts.entries.map((entry) {
+      int categoryId = entry.key;
+      int count = entry.value;
 
-  // Get the image link based on category ID
-  String imageLink = categoryImageMap[trophy.category_id] ?? 'default.png';
+      return _buildCategoryItem(categoryId, count);
+    }).toList();
+  }
 
-  return Padding(
-    padding: const EdgeInsets.symmetric(vertical: 8),
-    child: Row(
-      children: [
-        // Left: Picture
-        Image.asset(
-          'assets/trophy/$imageLink',
-          width: 70,
-          height: 70,
-          fit: BoxFit.cover,
-        ),
-        SizedBox(width: 16),
-        // Right: Text
-        RichText(
-          text: TextSpan(
-            style: TextStyle(
-              fontSize: 16,
-              color: Colors.black, // Vous pouvez ajuster la couleur du texte si nécessaire
-            ),
-            children: [
-              TextSpan(
-                text: '$trophyNumber X ',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              TextSpan(
-                text: '${_getCategoryName(trophy.category_id)}',
-                style: TextStyle(
-                  fontWeight: FontWeight.normal, // Laisse le reste du texte en style normal
-                ),
-              ),
-            ],
+  Widget _buildCategoryItem(int categoryId, int count) {
+    // Map category IDs to image links
+    Map<int, String> categoryImageMap = {
+      1: 'mobilite.png',
+      2: 'alim.png',
+      3: 'dechets.png',
+      4: 'biodiv.png',
+      5: 'energie.png',
+      6: 'diy.png',
+      7: 'techno.png',
+      8: 'vie.png',
+      9: 'divers.png',
+    };
+
+    // Get the image link based on category ID
+    String imageLink = categoryImageMap[categoryId] ?? 'default.png';
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: Row(
+        children: [
+          // Left: Picture
+          Image.asset(
+            'assets/trophy/$imageLink',
+            width: 70,
+            height: 70,
+            fit: BoxFit.cover,
           ),
-        ),
+          SizedBox(width: 16),
+          // Right: Text
+          RichText(
+            text: TextSpan(
+              style: TextStyle(
+                fontSize: 16,
+                color: Colors.black,
+              ),
+              children: [
+                TextSpan(
+                  text: '$count X ',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                TextSpan(
+                  text: '${_getCategoryName(categoryId)}',
+                  style: TextStyle(
+                    fontWeight: FontWeight.normal,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 
-      ],
-    ),
-  );
-}
+  String _getCategoryName(int? categoryId) {
+    // Map category IDs to category names
+    Map<int, String> categoryNameMap = {
+      1: 'As de la Mobilité Douce',
+      2: 'Gourmand.e Responsable',
+      3: 'Expert.e du Recyclage',
+      4: 'Gardien.ne de la Nature',
+      5: 'Génie de l\'Énergie',
+      6: 'Pro du Bricolage',
+      7: 'Magicien.ne des Technologies',
+      8: 'Explorateur.trice de la Seconde Vie',
+      9: 'Maître.sse des Gestes et Défis Divers',
+    };
 
-String _getCategoryName(int? categoryId) {
-  // Map category IDs to category names
-  Map<int, String> categoryNameMap = {
-    1: 'As de la Mobilité Douce',
-    2: 'Gourmand.e Responsable',
-    3: 'Expert.e du Recyclage',
-    4: 'Gardien.ne de la Nature',
-    5: 'Génie de l\'Énergie',
-    6: 'Pro du Bricolage',
-    7: 'Magicien.ne des Technologies',
-    8: 'Explorateur.trice de la Seconde Vie',
-    9: 'Maître.sse des Gestes et Défis Divers',
-  };
-
-  // Get the category name based on category ID
-  return categoryNameMap[categoryId] ?? 'Categorie inconnue';
-}
-
-
+    // Get the category name based on category ID
+    return categoryNameMap[categoryId] ?? 'Categorie inconnue';
+  }
 }
