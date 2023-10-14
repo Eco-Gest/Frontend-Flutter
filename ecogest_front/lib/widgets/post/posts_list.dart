@@ -61,6 +61,7 @@ class PostsList extends StatelessWidget {
                     const PostSeparator(),
                     // Buttons
                     PostContentButtons(
+                      postId: posts[index].id!,
                       likes: posts[index].likes,
                       comments: posts[index].comments,
                       isChallenge: (posts[index].type.toString() == 'challenge')

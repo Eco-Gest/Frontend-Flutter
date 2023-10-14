@@ -59,6 +59,7 @@ class PostDetailView extends StatelessWidget {
                           const PostSeparator(),
                           // Buttons
                           PostContentButtons(
+                            postId: state.post!.id!,
                             likes: state.post!.likes,
                             comments: state.post!.comments,
                             isChallenge:

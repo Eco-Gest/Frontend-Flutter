@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class PostContentButtons extends StatelessWidget {
   const PostContentButtons({
     super.key,
+    required this.postId,
     required this.isChallenge,
     this.likes,
     this.comments,
   });
 
+  final int postId;
   final bool? isChallenge;
   final List? likes;
   final List? comments;
@@ -80,6 +83,7 @@ class PostContentButtons extends StatelessWidget {
               onPressed: () {
                 debugPrint('Click pour commenter la publication');
                 // TODO : Commenter la publication
+                // GoRouter.of(context).push('/posts/$postId/comments');
               }, 
               child: const Icon(Icons.comment),
             ),
