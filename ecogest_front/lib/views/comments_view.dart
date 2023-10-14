@@ -1,7 +1,5 @@
-import 'package:ecogest_front/models/post_model.dart';
 import 'package:ecogest_front/widgets/app_bar.dart';
 import 'package:ecogest_front/widgets/bottom_bar.dart';
-import 'package:ecogest_front/widgets/comment/comment_element.dart';
 import 'package:ecogest_front/widgets/comment/comments_list.dart';
 import 'package:flutter/material.dart';
 
@@ -24,13 +22,19 @@ class CommentsView extends StatelessWidget {
     return Scaffold(
       appBar: const ThemeAppBar(title: 'Commentaires de la publication'),
       bottomNavigationBar: AppBarFooter(),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            const CommentsList(),
-            TextFormField(
+      body: Column(
+        children: [
+          const Expanded(
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: EdgeInsets.all(16.0),
+                child: CommentsList(),
+              ),
+            )
+          ),
+          Container(
+            padding: const EdgeInsets.all(16.0),
+            child: TextFormField(
               controller: _newCommentController,
               decoration: InputDecoration(
                 border: const OutlineInputBorder(),
@@ -45,8 +49,8 @@ class CommentsView extends StatelessWidget {
                 // ),
               ),
             ),
-          ],
-        )
+          )
+        ],
       )
     );
   }
