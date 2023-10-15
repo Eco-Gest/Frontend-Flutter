@@ -17,9 +17,8 @@ class PostsStateSuccess extends PostsState {
 
 class OnePostStateSuccess extends PostsState {
   final PostModel? post;
-  final bool isLiked;
-  final int likeCount;
-  OnePostStateSuccess(this.post, this.isLiked, this.likeCount);
+  
+  OnePostStateSuccess(this.post);
 }
 
 class PostsStateError extends PostsState {
@@ -27,12 +26,12 @@ class PostsStateError extends PostsState {
   PostsStateError(this.message);
 }
 
-class PostStateUnLiked extends PostsState {
-  final bool isLiked;
-  PostStateUnLiked(this.isLiked);
+class PostStateUnliked extends PostsState {
+  bool isLiked;
+  PostStateUnliked(this.isLiked);
 }
 
-class PostStateliked extends PostsState {
-  final bool isLiked;
-  PostStateliked(this.isLiked);
+class PostStateLiked extends PostsState {
+  bool isLiked;
+  PostStateLiked(this.isLiked);
 }

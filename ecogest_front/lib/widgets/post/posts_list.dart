@@ -1,11 +1,15 @@
+import 'dart:js';
+
 import 'package:ecogest_front/models/post_model.dart';
-import 'package:ecogest_front/views/post_detail_view.dart';
+import 'package:ecogest_front/models/user_model.dart';
+import 'package:ecogest_front/state_management/authentication/authentication_cubit.dart';
 import 'package:ecogest_front/widgets/post/post_content_author.dart';
 import 'package:ecogest_front/widgets/post/post_content_buttons.dart';
 import 'package:ecogest_front/widgets/post/post_content_infos.dart';
 import 'package:ecogest_front/widgets/post/post_separator.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class PostsList extends StatelessWidget {
   PostsList({
@@ -24,8 +28,13 @@ class PostsList extends StatelessWidget {
   final Function() onScrolled;
   final ScrollController _scrollController = ScrollController();
 
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context){
+    final authenticationState = context.read<AuthenticationCubit>().state;
+    if (authenticationState is AuthenticationAuthenticated) {
+      final UserModel? user = authenticationState.user;
+      
     return NotificationListener(
       child: ListView.separated(
         padding: const EdgeInsets.all(16),
@@ -63,7 +72,7 @@ class PostsList extends StatelessWidget {
                     PostContentButtons(
                       post: posts[index],
                       likes: posts[index].likes!.length, 
-                      isLiked: false,// TODO
+                      isLiked: posts[index].likes?.any((like) => like.userId == user!.id) ?? false,// TODO
                       comments: posts[index].comments,
                       isChallenge: (posts[index].type.toString() == 'challenge')
                           ? true
@@ -95,5 +104,8 @@ class PostsList extends StatelessWidget {
         return false;
       },
     );
+    } else {
+        return const SizedBox.shrink();
+    }
   }
 }

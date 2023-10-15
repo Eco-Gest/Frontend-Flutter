@@ -61,19 +61,14 @@ abstract class PostService {
 
   static Future<bool> addLike(int postId) async {
     final String? token = await AuthenticationService.getToken();
-    final body = {
-      'post_id': postId,
-    };
-    await EcoGestApiDataSource.post('/posts/$postId/likes', body, error: 'Failed to add like', token: token);
+
+    await EcoGestApiDataSource.post('/posts/$postId/likes', {}, error: 'Failed to add like', token: token);
     return true;
   }
 
   static Future<bool> removeLike(int postId) async {
     final String? token = await AuthenticationService.getToken();
-    final body = {
-      'post_id': postId,
-    };
-    await EcoGestApiDataSource.delete('/posts/$postId/likes', body, error: 'Failed to remove like', token: token);
+    await EcoGestApiDataSource.delete('/posts/$postId/likes', {}, error: 'Failed to remove like', token: token);
     return false;
   }
 }
