@@ -10,6 +10,7 @@ class SearchCubit extends Cubit<SearchState> {
 
   Future<void> getSearchResults(String query) async {
     try {
+      emit(SearchStateLoading());
       final users = await SearchService.searchUsers(query);
       final posts = await SearchService.searchPosts(query);
       emit(SearchStateSuccess(users, posts));

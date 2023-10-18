@@ -1,5 +1,5 @@
 import 'package:ecogest_front/state_management/search/search_cubit.dart';
-import 'package:ecogest_front/widgets/search/search_widget.dart';
+import 'package:ecogest_front/widgets/search/search_results_widget.dart';
 import 'package:ecogest_front/widgets/search/search_bar_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -26,7 +26,7 @@ class SearchView extends StatelessWidget {
                 children: 
                 [
                   SearchBarWidget(),
-                  SearchWidget(),
+                  SearchResultsWidget(),
                 ]
               )
             ),

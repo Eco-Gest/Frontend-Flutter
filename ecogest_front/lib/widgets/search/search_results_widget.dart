@@ -4,8 +4,8 @@ import 'package:ecogest_front/state_management/search/search_cubit.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ecogest_front/views/post_detail_view.dart';
 
-class SearchWidget extends StatelessWidget {
-  const SearchWidget({super.key});
+class SearchResultsWidget extends StatelessWidget {
+  const SearchResultsWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -21,13 +21,19 @@ class SearchWidget extends StatelessWidget {
           return Center(child: Text(state.message));
         } else if (state is SearchStateSuccess) {
           return Column(children: [
-            Text('Résultats des publications'),
+            Text(state.posts.isEmpty
+                ? 'Pas de publication'
+                : 'Résultats des publications'),
             ListView.builder(
               shrinkWrap: true,
               itemCount: state.posts.length,
               itemBuilder: (context, index) => ListTile(
-                leading: Image.network(state.posts.elementAt(index)?.image ??
-                    'https://picsum.photos/250?image=9'),
+                leading: CircleAvatar(
+                  child: state.posts.elementAt(index)?.image == null
+                      ? null
+                      : Image.network(state.posts.elementAt(index)!.image!,
+                          fit: BoxFit.cover),
+                ),
                 title: Text(state.posts.elementAt(index)?.title ?? 'Titre'),
                 onTap: () {
                   context.pushNamed(PostDetailView.name, pathParameters: {
@@ -36,13 +42,22 @@ class SearchWidget extends StatelessWidget {
                 },
               ),
             ),
-            Text('Résultats des utilisateurs'),
+            SizedBox(
+              height: 20, 
+            ),
+            Text(state.users.isEmpty
+                ? 'Pas d\'utilisateurs'
+                : 'Résultats des utilisateurs'),
             ListView.builder(
               shrinkWrap: true,
               itemCount: state.users.length,
               itemBuilder: (context, index) => ListTile(
-                leading: Image.network(state.users.elementAt(index)?.image ??
-                    'https://picsum.photos/250?image=10'),
+                leading: CircleAvatar(
+                  child: state.users.elementAt(index)?.image == null
+                      ? Image.asset('assets/profile.jpg')
+                      : Image.network(state.users.elementAt(index)!.image!,
+                          fit: BoxFit.cover),
+                ),
                 title:
                     Text(state.users.elementAt(index)?.username ?? 'Username'),
                 onTap: () {
