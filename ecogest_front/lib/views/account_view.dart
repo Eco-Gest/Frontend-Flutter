@@ -34,45 +34,45 @@ class _AccountViewState extends State<AccountView>
 
   @override
   Widget build(BuildContext context) {
-      final authenticationState = context.read<AuthenticationCubit>().state;
+    final authenticationState = context.read<AuthenticationCubit>().state;
     if (authenticationState is AuthenticationAuthenticated) {
       final user = authenticationState.user;
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Profil'),
-        bottom: TabBar(
-          indicatorColor: Colors.black,
-          indicatorSize: TabBarIndicatorSize.label,
-          indicatorWeight: 2,
+      return Scaffold(
+        appBar: AppBar(
+          title: const Text('Profil'),
+          bottom: TabBar(
+            indicatorColor: Colors.black,
+            indicatorSize: TabBarIndicatorSize.label,
+            indicatorWeight: 2,
+            controller: _tabController,
+            tabs: [
+              Tab(text: 'Mon profil'),
+              Tab(text: 'Paramètres'),
+            ],
+          ),
+        ),
+        bottomNavigationBar: const AppBarFooter(),
+        body: TabBarView(
           controller: _tabController,
-          tabs: [
-            Tab(text: 'Mon profil'),
-            Tab(text: 'Paramètres'),
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 26.0),
+              child: ListView(
+                children: [
+                  // Account Info Widget
+                  AccountInfo(user: user),
+                  SizedBox(height: 20),
+                  // New Widget: Account Trophies
+                  AccountTrophies(userId: user!.id!),
+                ],
+              ),
+            ),
+            SettingsWidget(),
           ],
         ),
-      ),
-      bottomNavigationBar: const AppBarFooter(),
-      body: TabBarView(
-        controller: _tabController,
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 26.0),
-            child: ListView(
-              children: [ 
-                // Account Info Widget
-                AccountInfo(user: user ),
-                SizedBox(height: 20),
-                // New Widget: Account Trophies
-                AccountTrophies(),
-              ],
-            ),
-          ),
-          SettingsWidget(),
-        ],
-      ),
-    );
-        } else {
+      );
+    } else {
       // Handle the case where the state is not AuthenticationAuthenticated
       return Center(
         child: Text('User not authenticated'),

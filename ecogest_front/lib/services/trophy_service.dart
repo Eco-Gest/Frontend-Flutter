@@ -5,16 +5,7 @@ import 'package:ecogest_front/services/authentication_service.dart';
 import 'package:ecogest_front/services/user_service.dart';
 
 class TrophyService {
-  static Future<List<TrophyModel>> getTrophies() async {
-    // 1. Get the user model from the UserService.
-    final UserModel? currentUser = await UserService.getCurrentUser();
-    
-    // 2. Check if the user model is not null and get the user ID.
-    final int? userId = currentUser?.id;
-    if (userId == null) {
-        throw Exception('User id does not exist');
-    }
-
+  static Future<List<TrophyModel>> getTrophies(int userId) async {
     // 3. Get the authentication token.
     final String? token = await AuthenticationService.getToken();
     
