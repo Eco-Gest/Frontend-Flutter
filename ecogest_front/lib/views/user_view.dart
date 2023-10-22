@@ -61,7 +61,71 @@ class UserView extends StatelessWidget {
                         : false;
 
                 if (userAuthenticated.id != state.user!.id!) {
+                  // user private
+                  if (state.user!.isPrivate!) {
+                    // status pending
+                    if (status == "pending" || status == null) {
+                      status = status == null ? "subscribe" : "cancel";
+                      debugPrint('1');
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 26.0),
+                        child: Column(
+                          children: [
+                            // Account Info Widget
+                            AccountInfo(user: state.user),
+                            SizedBox(height: 20),
+                            Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 10.0),
+                              child: Container(
+                                height: 1.0,
+                                width: MediaQuery.of(context).size.width,
+                                color: Colors.black,
+                              ),
+                            ),
+                            SizedBox(height: 20),
+                            BlocProvider<SubscriptionCubit>(
+                              create: (_) => SubscriptionCubit(),
+                              child: SubscriptionWidget(
+                                  userId: state.user!.id!,
+                                  status: status,
+                                  userAuthenticatedHasFollowRequestStatus:
+                                      userAuthenticatedHasFollowRequestStatus),
+                            ),
+                          ],
+                        ),
+                      );
+                    }
+                    debugPrint('2');
+
+                    // status approved
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 26.0),
+                      child: Column(
+                        children: [
+                          // Account Info Widget
+                          AccountInfo(user: state.user),
+                          SizedBox(height: 20),
+                          BlocProvider<SubscriptionCubit>(
+                            create: (_) => SubscriptionCubit(),
+                            child: UnSubscriptionWidget(
+                              userId: state.user!.id!,
+                              userAuthenticatedHasFollowRequestStatus:
+                                  userAuthenticatedHasFollowRequestStatus,
+                            ),
+                          ),
+                          SizedBox(height: 20),
+
+                          // New Widget: Account Trophies
+                          AccountTrophies(userId: state.user!.id!),
+                        ],
+                      ),
+                    );
+                  }
+
+                  // user public
+                  // status pending
                   if (status == "pending" || status == null) {
+                    debugPrint('3');
                     status = status == null ? "subscribe" : "cancel";
                     return Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 26.0),
@@ -87,11 +151,18 @@ class UserView extends StatelessWidget {
                                 userAuthenticatedHasFollowRequestStatus:
                                     userAuthenticatedHasFollowRequestStatus),
                           ),
+                          SizedBox(height: 20),
+
+                          // New Widget: Account Trophies
+                          AccountTrophies(userId: state.user!.id!),
                         ],
                       ),
                     );
                   }
 
+                  debugPrint('4');
+
+                  // status approved
                   return Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 26.0),
                     child: Column(
@@ -103,6 +174,8 @@ class UserView extends StatelessWidget {
                           create: (_) => SubscriptionCubit(),
                           child: UnSubscriptionWidget(
                             userId: state.user!.id!,
+                            userAuthenticatedHasFollowRequestStatus:
+                                userAuthenticatedHasFollowRequestStatus,
                           ),
                         ),
                         SizedBox(height: 20),
@@ -114,6 +187,7 @@ class UserView extends StatelessWidget {
                   );
                 }
 
+                // user.id == userAuthenticated.id
                 return Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 26.0),
                   child: Column(

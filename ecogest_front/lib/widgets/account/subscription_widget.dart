@@ -22,7 +22,7 @@ class SubscriptionWidget extends StatelessWidget {
     return BlocBuilder<SubscriptionCubit, SubscriptionState>(
         builder: (context, state) {
       if (state is SubscriptionStateInitial) {
-        return Row(children: [
+        return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
           ElevatedButton(
             child: Text(
               status == "subscribe" ? 'Suivre' : "Annuler",
@@ -32,7 +32,7 @@ class SubscriptionWidget extends StatelessWidget {
                   status == "subscribe" ? EcogestTheme.primary : Colors.white,
               fixedSize: userAuthenticatedHasFollowRequestStatus!
                   ? Size(210, 50)
-                  : Size((MediaQuery.of(context).size.width - 26) / 2, 50),
+                  : Size((MediaQuery.of(context).size.width) / 2, 50),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10.0),
               ),
@@ -48,7 +48,7 @@ class SubscriptionWidget extends StatelessWidget {
                   userAuthenticatedHasFollowRequestStatus!),
         ]);
       }
-      return Row(children: [
+      return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
         ElevatedButton(
           child: Text(
             status == "subscribe" ? 'Suivre' : "Annuler",
@@ -56,7 +56,9 @@ class SubscriptionWidget extends StatelessWidget {
           style: ElevatedButton.styleFrom(
             backgroundColor:
                 status == "subscribe" ? EcogestTheme.primary : Colors.white,
-            fixedSize: const Size(300, 50),
+            fixedSize: userAuthenticatedHasFollowRequestStatus!
+                ? Size(210, 50)
+                : Size((MediaQuery.of(context).size.width) / 2, 50),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10.0),
             ),
