@@ -12,6 +12,8 @@ class AccountInfo extends StatelessWidget {
     if (authenticationState is AuthenticationAuthenticated) {
       final user = authenticationState.user;
 
+    final pointsCategories = 
+
       return Center(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -63,8 +65,44 @@ class AccountInfo extends StatelessWidget {
                 ),
               ],
             ),
+            SizedBox(height: 16), 
+        // Second Bloc: Followings, Followers, Challenges Completed
+            Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Column(
+                      children: [
+                        Text(
+                          'Points', 
+                          style: TextStyle(fontSize: 16),
+                        ),
+                        Text(
+                          user?.badgePoints.toString() ?? '0',  //TODO dynamic with api
+                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                    Container(
+                      width: 1.0, // Width of the border
+                      height: 60.0, // Height of the border, adjust as needed
+                      color: Colors.blueGrey.shade400, // Border color
+                    ),
+                    Column(
+                      children: [
+                        Text(
+                          'Défis', 
+                          style: TextStyle(fontSize: 16),
+                        ),
+                        Text(
+                          '789',  //TODO dynamic with api
+                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
             SizedBox(height: 16),
-            // ... Second Bloc: Profil Bio ...
+            // ... Third Bloc: Profil Bio ...
             Text(
               user?.biography ?? 'Default Biography',
               style: TextStyle(fontSize: 16),
