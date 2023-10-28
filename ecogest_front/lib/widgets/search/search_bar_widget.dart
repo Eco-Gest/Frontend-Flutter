@@ -19,8 +19,8 @@ class SearchBarWidget extends StatelessWidget {
             controller: queryController,
             decoration: const InputDecoration(
               border: OutlineInputBorder(),
-              labelText: 'Rechercher un post',
-              hintText: 'Rechercher un post',
+              labelText: 'Rechercher une publication ou un utilisateur',
+              hintText: 'Rechercher une publication ou un utilisateur',
             ),
             autovalidateMode: AutovalidateMode.onUserInteraction,
             validator: (value) => (value != null && value.length > 0)
@@ -42,6 +42,7 @@ class SearchBarWidget extends StatelessWidget {
             context.read<SearchCubit>().getSearchResults(queryController.text);
           },
         ),
+          SizedBox(height: 20),
       ],
     );
   }
