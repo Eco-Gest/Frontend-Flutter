@@ -20,7 +20,7 @@ class UserView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: ThemeAppBar(title: "Profil autre utilisateur"),
+      appBar: ThemeAppBar(title: "Profil"),
       bottomNavigationBar: const AppBarFooter(),
       body: BlocProvider<UserCubit>(
         create: (context) {
@@ -66,7 +66,6 @@ class UserView extends StatelessWidget {
                     // status pending
                     if (status == "pending" || status == null) {
                       status = status == null ? "subscribe" : "cancel";
-                      debugPrint('1');
                       return Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 26.0),
                         child: Column(
@@ -95,7 +94,6 @@ class UserView extends StatelessWidget {
                         ),
                       );
                     }
-                    debugPrint('2');
 
                     // status approved
                     return Padding(
@@ -125,7 +123,6 @@ class UserView extends StatelessWidget {
                   // user public
                   // status pending
                   if (status == "pending" || status == null) {
-                    debugPrint('3');
                     status = status == null ? "subscribe" : "cancel";
                     return Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 26.0),
@@ -159,8 +156,6 @@ class UserView extends StatelessWidget {
                       ),
                     );
                   }
-
-                  debugPrint('4');
 
                   // status approved
                   return Padding(
