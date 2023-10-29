@@ -1,17 +1,15 @@
+import 'package:ecogest_front/models/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:ecogest_front/assets/ecogest_theme.dart';
-import 'package:ecogest_front/state_management/authentication/authentication_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AccountInfo extends StatelessWidget {
-  const AccountInfo({Key? key});
+  AccountInfo({Key? key, required this.user});
+
+  final UserModel user;
 
   @override
   Widget build(BuildContext context) {
-    final authenticationState = context.read<AuthenticationCubit>().state;
-    if (authenticationState is AuthenticationAuthenticated) {
-      final user = authenticationState.user;
-
       return Center(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -72,11 +70,5 @@ class AccountInfo extends StatelessWidget {
           ],
         ),
       );
-    } else {
-      // Handle the case where the state is not AuthenticationAuthenticated
-      return Center(
-        child: Text('User not authenticated'),
-      );
-    }
   }
 }

@@ -14,7 +14,7 @@ class UserModel {
 
   const UserModel({
     this.id,
-    required this.email,
+    this.email,
     this.username,
     this.badgeId,
     this.badgeTitle,
@@ -34,13 +34,24 @@ class UserModel {
         badgeId: json['badge_id'] != null
             ? int.parse(json['badge_id'].toString())
             : null,
-        badgeTitle: json['badge']?['title']?.toString(),    
+        badgeTitle: json['badge']?['title']?.toString(),
         image: json['image']?.toString(),
         birthdate: json['birthdate']?.toString(),
         biography: json['biography']?.toString(),
         position: json['position']?.toString(),
-        isPrivate: json['is_private']?.toString()== "true"? true : false,
+        isPrivate: json['is_private']?.toString() == "true" ? true : false,
         createdAt: json['create_at']?.toString(),
         updatedAt: json['updated_at']?.toString(),
       );
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data["username"] = username;
+    data["image"] = image;
+    data["birthdate"] = birthdate;
+    data["biography"] = biography;
+    data["position"] = position;
+    data["is_private"] = isPrivate;
+    return data;
+  }
 }
