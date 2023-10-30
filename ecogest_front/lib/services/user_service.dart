@@ -12,15 +12,22 @@ class UserService {
     return UserModel.fromJson(responseMap);
   }
 
-  static Future<UserModel> updateUserAccount(UserModel user) async {
+ static Future<UserModel> updateUserAccount(UserModel user) async {
     final String? token = await AuthenticationService.getToken();
 
     final body = user.toJson();
 
-    debugPrint(body.toString());
-
     var responseMap =
         await EcoGestApiDataSource.patch('/me', body, token: token);
+
+    return UserModel.fromJson(responseMap);
+  }
+  
+  static Future<UserModel> getUser(int userId) async {
+    final String? token = await AuthenticationService.getToken();
+
+    var responseMap =
+        await EcoGestApiDataSource.get('/users/$userId', token: token);
 
     return UserModel.fromJson(responseMap);
   }

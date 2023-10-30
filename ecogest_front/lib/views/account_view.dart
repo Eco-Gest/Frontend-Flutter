@@ -98,7 +98,7 @@ class _AccountViewState extends State<AccountView>
     } else {
       // Handle the case where the state is not AuthenticationAuthenticated
       return Center(
-        child: Text('Un problèm est survenu.'),
+        child: Text('Un problème est survenu.'),
       );
     }
   }

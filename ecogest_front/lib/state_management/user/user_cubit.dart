@@ -6,9 +6,20 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 part 'user_state.dart';
 
 class UserCubit extends Cubit<UserState> {
-  UserCubit() : super(UserInitial()) {}
-
-  Future<void> updateUserAccount({
+  UserCubit() : super(UserInitial()) {
+  }
+ 
+  Future<void> getUser(int userId) async {
+    try {
+      emit(UserLoading());
+      final user = await UserService.getUser(userId);
+      emit(UserSuccess(user));
+    } catch (error) {
+      emit(UserError(error.toString()));
+    }
+  }
+  
+    Future<void> updateUserAccount({
     required String username,
     required bool isPrivate,
     String? biography,
