@@ -40,6 +40,7 @@ class MainApp extends StatelessWidget {
                   title: "EcO'Gest",
                   debugShowCheckedModeBanner: false,
                   theme: ThemeData(
+                    // TODO improve dark theme
                     primarySwatch: EcogestTheme.primary,
                     textTheme: GoogleFonts.openSansTextTheme(),
                     brightness: state.brightness,

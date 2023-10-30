@@ -4,10 +4,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class TrophyCubit extends Cubit<TrophyState> {
   TrophyCubit() : super(TrophyStateInitial());
 
-  Future<void> getTrophies() async {
+  Future<void> getTrophies(int userId) async {
     try {
       emit(TrophyStateLoading());
-      final posts = await TrophyService.getTrophies();
+      final posts = await TrophyService.getTrophies(userId);
       emit(TrophyStateSuccess(posts));
     } catch (error) {
       emit(TrophyStateError(error.toString()));

@@ -4,6 +4,9 @@ import 'package:ecogest_front/views/challenges_view.dart';
 import 'package:ecogest_front/views/comments_view.dart';
 import 'package:ecogest_front/views/post_detail_view.dart';
 import 'package:ecogest_front/views/account_view.dart';
+import 'package:ecogest_front/views/settings_view.dart';
+import 'package:ecogest_front/views/user_view.dart';
+import 'package:ecogest_front/views/search_view.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -55,6 +58,11 @@ abstract class AppRouter {
           builder: (context, state) => const AccountView(),
         ),
         GoRoute(
+          path: '/search',
+          name: SearchView.name,
+          builder: (context, state) => SearchView(),
+        ),
+        GoRoute(
           path: '/post-create',
           name: PostCreateView.name,
           builder: (context, state) => PostCreateView(),
@@ -69,6 +77,18 @@ abstract class AppRouter {
           name: CommentsView.name,
           builder: (context, state) => CommentsView(
             postId: int.parse(state.pathParameters['id'].toString()),
+          ),
+        ),
+        GoRoute(
+          path: '/settings',
+          name: SettingsView.name,
+          builder: (context, state) => const SettingsView(),
+        ),
+        GoRoute(
+          path: '/users/:id',
+          name: UserView.name,
+          builder: (context, state) => UserView(
+            userId: int.parse(state.pathParameters['id'].toString()),
           ),
         ),
       ],
