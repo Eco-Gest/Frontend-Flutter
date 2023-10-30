@@ -68,7 +68,7 @@ class PostDetailView extends StatelessWidget {
                                 post: state.post!,
                                 likes: state.post!.likes!.length,
                                 isLiked: state.post!.likes!
-                                    .any((like) => like.userId == user!.id),
+                                    .any((like) => like.userId == user!.id!),
                                 comments: state.post!.comments,
                                 isChallenge:
                                     (state.post!.type.toString() == 'challenge')

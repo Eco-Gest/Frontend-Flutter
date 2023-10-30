@@ -26,12 +26,6 @@ class PostsStateError extends PostsState {
   PostsStateError(this.message);
 }
 
-class PostStateUnliked extends PostsState {
-  bool isLiked;
-  PostStateUnliked(this.isLiked);
-}
+class PostStateUnliked extends PostsState {}
 
-class PostStateLiked extends PostsState {
-  bool isLiked;
-  PostStateLiked(this.isLiked);
-}
+class PostStateLiked extends PostsState {}

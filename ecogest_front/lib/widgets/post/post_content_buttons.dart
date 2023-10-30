@@ -1,8 +1,12 @@
 import 'package:ecogest_front/models/post_model.dart';
+import 'package:ecogest_front/state_management/like/like_cubit.dart';
 import 'package:ecogest_front/state_management/posts/posts_cubit.dart';
 import 'package:ecogest_front/state_management/posts/posts_state.dart';
+import 'package:ecogest_front/views/post_detail_view.dart';
+import 'package:ecogest_front/widgets/buttons/like_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 class PostContentButtons extends StatelessWidget {
   PostContentButtons({
@@ -16,12 +20,13 @@ class PostContentButtons extends StatelessWidget {
 
   final PostModel post;
   final bool? isChallenge;
-  final int? likes;
+  int? likes;
   final List? comments;
   bool isLiked;
 
   @override
   Widget build(BuildContext context) {
+
     return Column(
       children: [
         Row(
@@ -69,56 +74,7 @@ class PostContentButtons extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            BlocProvider<PostsCubit>(
-              create: (context) {
-                final cubit = PostsCubit();
-                cubit.getLikeStatus(post, isLiked);
-                debugPrint(isLiked.toString());
-                return cubit;
-              },
-              child: BlocBuilder<PostsCubit, PostsState>(
-                builder: (context, state) {
-                  if (state is PostStateLiked) {
-                    return ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          padding: const EdgeInsets.all(20),
-                          foregroundColor: Colors.white,
-                          textStyle: const TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          )),
-                      onPressed: () {
-                        isLiked = !isLiked;
-                        debugPrint('Click pour supprimer le like');
-                        context.read<PostsCubit>().updateLike(post.id!, isLiked);
-                        debugPrint('suppr like : $isLiked');
-                      },
-                      child: const Icon(
-                        Icons.thumb_up_rounded                          
-                      ),
-                    );
-                  } else if (state is PostStateUnliked) {
-                    return ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          padding: const EdgeInsets.all(20),
-                          foregroundColor: Colors.white,
-                          textStyle: const TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          )),
-                      onPressed: () {
-                        debugPrint('Click pour liker');
-                        context.read<PostsCubit>().updateLike(post.id!, isLiked);
-                      },
-                      child: const Icon(
-                        Icons.thumb_up_alt_outlined,
-                      ),
-                    );
-                  }
-                  return const SizedBox.shrink();
-                },
-              ),
-            ),
+            LikeWidget(postId: post.id!, isLiked: isLiked),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.all(20),
