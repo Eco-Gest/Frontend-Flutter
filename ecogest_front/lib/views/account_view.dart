@@ -81,7 +81,7 @@ class _AccountViewState extends State<AccountView>
                   AccountInfo(user: user!),
                   SizedBox(height: 20),
                   // New Widget: Account Trophies
-                  AccountTrophies(),
+                  AccountTrophies(userId: user!.id!,),
                 ],
               ),
             ),
@@ -98,7 +98,7 @@ class _AccountViewState extends State<AccountView>
     } else {
       // Handle the case where the state is not AuthenticationAuthenticated
       return Center(
-        child: Text('Un problème est survenu.'),
+        child: Text('Un problèm est survenu.'),
       );
     }
   }

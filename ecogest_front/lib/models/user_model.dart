@@ -65,6 +65,7 @@ class UserModel {
     data["position"] = position;
     data["is_private"] = isPrivate;
     return data;
+  }
   
   static List<SubscriptionModel?>? subscriptionList(
       List<dynamic> responseList) {
