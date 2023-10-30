@@ -1,10 +1,11 @@
 import 'package:ecogest_front/models/user_model.dart';
 import 'package:ecogest_front/state_management/authentication/authentication_cubit.dart';
+import 'package:ecogest_front/state_management/like/like_cubit.dart';
 import 'package:ecogest_front/state_management/posts/posts_cubit.dart';
 import 'package:ecogest_front/state_management/posts/posts_state.dart';
 import 'package:ecogest_front/widgets/app_bar.dart';
 import 'package:ecogest_front/widgets/post/post_content_author.dart';
-import 'package:ecogest_front/widgets/post/post_content_buttons.dart';
+import 'package:ecogest_front/widgets/post/post_content_buttons_wrapper.dart';
 import 'package:ecogest_front/widgets/post/post_content_infos.dart';
 import 'package:ecogest_front/widgets/post/post_separator.dart';
 import 'package:flutter/material.dart';
@@ -64,16 +65,19 @@ class PostDetailView extends StatelessWidget {
                               ),
                               const PostSeparator(),
                               // Buttons
-                              PostContentButtons(
-                                post: state.post!,
-                                likes: state.post!.likes!.length,
-                                isLiked: state.post!.likes!
-                                    .any((like) => like.userId == user!.id!),
-                                comments: state.post!.comments,
-                                isChallenge:
-                                    (state.post!.type.toString() == 'challenge')
-                                        ? true
-                                        : false,
+                              BlocProvider<LikeCubit>(
+                                create: (context) => LikeCubit(),
+                                child: PostContentButtonsWrapper(
+                                  post: state.post!,
+                                  likes: state.post!.likes!.length,
+                                  isLiked: state.post!.likes!
+                                      .any((like) => like.userId == user!.id!),
+                                  comments: state.post!.comments,
+                                  isChallenge: (state.post!.type.toString() ==
+                                          'challenge')
+                                      ? true
+                                      : false,
+                                ),
                               ),
                             ],
                           ),

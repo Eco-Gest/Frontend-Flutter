@@ -2,11 +2,7 @@ import 'package:ecogest_front/models/post_model.dart';
 
 abstract class PostsState {}
 
-class PostsStateInitial extends PostsState {
-  final bool isLiked;
-  final int likes;
-  PostsStateInitial(this.isLiked, this.likes);
-}
+class PostsStateInitial extends PostsState {}
 
 class PostsStateLoading extends PostsState {}
 
@@ -17,7 +13,7 @@ class PostsStateSuccess extends PostsState {
 
 class OnePostStateSuccess extends PostsState {
   final PostModel? post;
-  
+
   OnePostStateSuccess(this.post);
 }
 

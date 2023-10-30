@@ -13,7 +13,6 @@ abstract class PostService {
     }).toList();
 
     return posts;
-
   }
 
   static Future<List<PostModel>> getUserPostsFiltered(
@@ -42,33 +41,15 @@ abstract class PostService {
     return postModel;
   }
 
-  static int likeCount(PostModel post) {
-    final int? likes = post.likes?.length;
-    if (likes != null && likes > 0) {
-      return likes ;
+  static Future<void> toggleLike(int postId, bool isLiked) async {
+    final String? token = await AuthenticationService.getToken();
+
+    if (isLiked) {
+      return await EcoGestApiDataSource.delete('/posts/$postId/likes', {},
+          error: 'Failed to add like', token: token);
     } else {
-      return 0;
+      await EcoGestApiDataSource.post('/posts/$postId/likes', {},
+          error: 'Failed to add like', token: token);
     }
-  }
-
-  static bool userLikedPost(PostModel post, int? userId) {
-    if (post.likes != null) {
-    // Vérifie si l'ID de l'utilisateur est présent dans la liste des likes
-    return post.likes!.any((like) => like.userId == userId);
-  }
-  return false; // Si la liste des likes est null ou vide, l'utilisateur n'a pas aimé le post
-  }
-
-  static Future<bool> addLike(int postId) async {
-    final String? token = await AuthenticationService.getToken();
-
-    await EcoGestApiDataSource.post('/posts/$postId/likes', {}, error: 'Failed to add like', token: token);
-    return true;
-  }
-
-  static Future<bool> removeLike(int postId) async {
-    final String? token = await AuthenticationService.getToken();
-    await EcoGestApiDataSource.delete('/posts/$postId/likes', {}, error: 'Failed to remove like', token: token);
-    return false;
   }
 }

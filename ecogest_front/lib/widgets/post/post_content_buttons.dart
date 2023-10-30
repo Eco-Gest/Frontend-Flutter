@@ -1,12 +1,7 @@
 import 'package:ecogest_front/models/post_model.dart';
 import 'package:ecogest_front/state_management/like/like_cubit.dart';
-import 'package:ecogest_front/state_management/posts/posts_cubit.dart';
-import 'package:ecogest_front/state_management/posts/posts_state.dart';
-import 'package:ecogest_front/views/post_detail_view.dart';
-import 'package:ecogest_front/widgets/buttons/like_widget.dart';
+import 'package:ecogest_front/widgets/post/like_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 
 class PostContentButtons extends StatelessWidget {
   PostContentButtons({
@@ -26,7 +21,6 @@ class PostContentButtons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Column(
       children: [
         Row(
@@ -45,7 +39,7 @@ class PostContentButtons extends StatelessWidget {
             if (likes! > 1) ...[
               TextButton(
                 onPressed: () {
-                  // TODO : Afficher les likes
+                  // TODO : Aff],) icher les likes
                 },
                 child: Text(
                   '$likes likes',
