@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:ecogest_front/views/challenges_view.dart';
 import 'package:ecogest_front/views/comments_view.dart';
@@ -75,9 +76,17 @@ abstract class AppRouter {
         GoRoute(
           path: '/posts/:id/comments',
           name: CommentsView.name,
-          builder: (context, state) => CommentsView(
-            postId: int.parse(state.pathParameters['id'].toString()),
-          ),
+          builder: (context, state) {
+            final comments = state.extra! as List;
+            return CommentsView(
+              comments: comments, 
+              postId: int.parse(state.pathParameters['id'].toString()),
+            );
+          }
+          // builder: (context, state) => CommentsView(
+          //   postId: int.parse(state.pathParameters['id'].toString()),
+          //   comments: state.pathParameters['comments'] ?? 'Il n\'y a pas de commentaires (router.dart)',
+          // )
         ),
         GoRoute(
           path: '/settings',

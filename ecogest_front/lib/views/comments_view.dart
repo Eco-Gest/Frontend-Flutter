@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:ecogest_front/widgets/app_bar.dart';
 import 'package:ecogest_front/widgets/bottom_bar.dart';
 import 'package:ecogest_front/widgets/comment/comments_list.dart';
@@ -9,37 +10,45 @@ import 'package:flutter/material.dart';
 class CommentsView extends StatelessWidget {
   CommentsView({
     super.key,
-    // required this.comment,
-    // this.comments,
+    required this.comments,
     required this.postId
   });
-  // CommentsView({
-  //   super.key,
-  //   required this.postId,
-  //   required List<dynamic> comments
-  // });
 
   static String name = 'comments';
-  // final PostModel? comment;
-  // final List<dynamic> comments = [];
+  // final List<dynamic> comments = jsonDecode(comments);
+  List<dynamic> comments = [];
+  // final String comments;
   final int postId;
   final _newCommentController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    debugPrint('Commentaires depuis comments_view');
+    debugPrint(comments.toString());
     return Scaffold(
       appBar: const ThemeAppBar(title: 'Commentaires de la publication'),
       bottomNavigationBar: const AppBarFooter(),
       body: Column(
         children: [
-          const Expanded(
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: EdgeInsets.all(16.0),
-                child: CommentsList(),
-              ),
+          if (comments.isNotEmpty) ...[
+            const Expanded(
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: EdgeInsets.all(16.0),
+                  child: CommentsList(),
+                ),
+              )
+            ),
+          ] else ...[
+            const Expanded(
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: EdgeInsets.all(16.0),
+                  child: const Text("Il n'y a pas encore de commentaire pour cette publication"),
+                ),
+              )
             )
-          ),
+          ],
           Container(
             color: EcogestTheme.primary,
             padding: const EdgeInsets.all(16.0),

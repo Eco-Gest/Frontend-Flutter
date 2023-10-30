@@ -27,35 +27,48 @@ class CommentElement extends StatelessWidget {
                 Expanded(
                   child: Wrap(
                     children: [
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
+                      // Author infos
+                      Row(
                         children: [
-                          if (image != null) ...[
-                            CircleAvatar(
-                              backgroundImage: NetworkImage(image.toString()),
-                            )
-                          ] else ...[
-                            const CircleAvatar(
-                              child: Icon(Icons.person),
-                            ),
-                          ],
+                          // Comment author profil picture
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              if (image != null) ...[
+                                CircleAvatar(
+                                  backgroundImage: NetworkImage(image.toString()),
+                                )
+                              ] else ...[
+                                const CircleAvatar(
+                                  child: Icon(Icons.person),
+                                ),
+                              ],
+                            ],
+                          ),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          // Comment author username
+                          Column(
+                            children: [
+                              Text(
+                                author.toString(),
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold
+                                ),
+                              ),
+                            ],
+                          ),
                         ],
                       ),
                       const SizedBox(
                         height: 15,
                         width: 15,
                       ),
+                      // Content of the comment
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          // Author of the comment
-                          Text(
-                            author.toString(),
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold
-                            ),
-                          ),
-                          // Content of the comment
                           Text(
                             content!,
                           ),

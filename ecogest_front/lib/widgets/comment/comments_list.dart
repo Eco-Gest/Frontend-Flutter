@@ -27,18 +27,22 @@ class CommentsList extends StatelessWidget {
     ];
     return Column(
       children: [
-        // As the comments view is "inside" the home
-        // (with a `push` rather than a `go` to reach
-        // the view), we cannot use the ListView widget
-        // which is already used in the parent.
-        // We must loop over the different comments with a `for`.
-        for (String comment in comments) ...[
-          CommentElement(content: comment, author: "Max Hymôme"),
-          const SizedBox(
-            height: 15,
-            width: 15,
-          ),
-        ],
+        if (comments.isNotEmpty) ...[
+          // As the comments view is "inside" the home
+          // (with a `push` rather than a `go` to reach
+          // the view), we cannot use the ListView widget
+          // which is already used in the parent.
+          // We must loop over the different comments with a `for`.
+          for (String comment in comments) ...[
+            CommentElement(content: comment, author: "Max Hymôme"),
+            const SizedBox(
+              height: 15,
+              width: 15,
+            ),
+          ],
+        ] else ...[
+          const Text("Il n'y a pas encore de commentaire pour cette publication")
+        ]
       ],
     );
   }
