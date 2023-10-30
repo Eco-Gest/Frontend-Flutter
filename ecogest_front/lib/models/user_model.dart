@@ -6,7 +6,7 @@ class UserModel {
   final String? username;
   final int? badgeId;
   final String? badgeTitle;
-   final int? badgePoints;
+  final int? badgePoints;
   final String? image;
   final String? birthdate;
   final String? biography;
@@ -14,6 +14,7 @@ class UserModel {
   final bool? isPrivate;
   final String? createdAt;
   final String? updatedAt;
+  final String? postParticipationCount;
   final List<SubscriptionModel?>? followers;
   final List<SubscriptionModel?>? following;
 
@@ -31,6 +32,7 @@ class UserModel {
     this.isPrivate,
     this.createdAt,
     this.updatedAt,
+    this.postParticipationCount,
     this.followers,
     this.following,
   });
@@ -49,8 +51,11 @@ class UserModel {
         biography: json['biography']?.toString(),
         position: json['position']?.toString(),
         isPrivate: json['is_private']?.toString() == "true" ? true : false,
-        createdAt: json['create_at']?.toString(),
+        createdAt: json['created_at']?.toString(),
         updatedAt: json['updated_at']?.toString(),
+        postParticipationCount: json['user_post_participation'] != null
+            ? json['user_post_participation'].length.toString()
+            : null,
         followers: json['follower'] != null
             ? subscriptionList(json['follower'])
             : null,

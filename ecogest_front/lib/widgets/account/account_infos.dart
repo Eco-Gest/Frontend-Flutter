@@ -73,7 +73,7 @@ class AccountInfo extends StatelessWidget {
                           style: TextStyle(fontSize: 16),
                         ),
                         Text(
-                          user?.badgePoints.toString() ?? '0',  //TODO dynamic with api
+                          user?.badgePoints.toString() ?? '0', 
                           style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                         ),
                       ],
@@ -90,7 +90,7 @@ class AccountInfo extends StatelessWidget {
                           style: TextStyle(fontSize: 16),
                         ),
                         Text(
-                          '789',  //TODO dynamic with api
+                          user?.postParticipationCount ?? '0',
                           style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                         ),
                       ],
