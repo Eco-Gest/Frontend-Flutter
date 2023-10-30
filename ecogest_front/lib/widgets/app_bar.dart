@@ -1,8 +1,8 @@
+import 'package:ecogest_front/views/settings_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ecogest_front/assets/ecogest_theme.dart';
-
 
 class ThemeAppBar extends StatelessWidget implements PreferredSizeWidget {
   const ThemeAppBar({
@@ -14,7 +14,7 @@ class ThemeAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   final String title;
   final TabController? tabController;
-  final List<Widget>? tabs; 
+  final List<Widget>? tabs;
 
   static Size get prefSize => const Size.fromHeight(55.0);
 
@@ -33,10 +33,20 @@ class ThemeAppBar extends StatelessWidget implements PreferredSizeWidget {
           }
         },
       ),
-      bottom: tabController != null && tabs != null ? TabBar(
-        controller: tabController,
-        tabs: tabs!,
-      ) : null,
+      actions: [
+        IconButton(
+          icon: Icon(Icons.settings),
+          onPressed: () {
+            GoRouter.of(context).pushNamed(SettingsView.name);
+          },
+        ),
+      ],
+      bottom: tabController != null && tabs != null
+          ? TabBar(
+              controller: tabController,
+              tabs: tabs!,
+            )
+          : null,
     );
   }
 }

@@ -25,7 +25,16 @@ class ChallengesWidget extends StatelessWidget {
           } else if (state is PostsStateError) {
             return Center(child: Text(state.message));
           } else if (state is PostsStateSuccess) {
-            return PostsList(posts: state.posts, onScrolled: () {  }, isLastPage: false,);
+            if (state.posts.length == 0) {
+              return Center(
+                child: Text('Oops aucun défi ici'),
+              );
+            }
+            return PostsList(
+              posts: state.posts,
+              onScrolled: () {},
+              isLastPage: false,
+            );
           }
           return const SizedBox.shrink();
         },
