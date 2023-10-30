@@ -56,9 +56,7 @@ class _AccountTrophiesState extends State<AccountTrophies> {
               } else {
                 // Display the list of trophies
                 return Column(
-                  children: snapshot.data!.map((trophy) {
-                    return _buildTrophyItem(trophy);
-                  }).toList(),
+                  children: _buildTrophyItems(snapshot.data!),
                 );
               }
             },
@@ -68,10 +66,24 @@ class _AccountTrophiesState extends State<AccountTrophies> {
     );
   }
 
-  Widget _buildTrophyItem(TrophyModel trophy) {
-    // Calculate the trophy number based on the current points
-    int trophyNumber = (trophy.current_point! / 250).ceil();
+  List<Widget> _buildTrophyItems(List<TrophyModel> trophies) {
+    // Count occurrences of each category ID
+    Map<int, int> categoryCounts = {};
+    for (var trophy in trophies) {
+      int categoryId = trophy.category_id!;
+      categoryCounts[categoryId] = (categoryCounts[categoryId] ?? 0) + 1;
+    }
 
+    // Build widgets based on counts
+    return categoryCounts.entries.map((entry) {
+      int categoryId = entry.key;
+      int count = entry.value;
+
+      return _buildCategoryItem(categoryId, count);
+    }).toList();
+  }
+
+  Widget _buildCategoryItem(int categoryId, int count) {
     // Map category IDs to image links
     Map<int, String> categoryImageMap = {
       1: 'mobilite.png',
@@ -86,7 +98,7 @@ class _AccountTrophiesState extends State<AccountTrophies> {
     };
 
     // Get the image link based on category ID
-    String imageLink = categoryImageMap[trophy.category_id] ?? 'default.png';
+    String imageLink = categoryImageMap[categoryId] ?? 'default.png';
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),
@@ -105,21 +117,21 @@ class _AccountTrophiesState extends State<AccountTrophies> {
             text: TextSpan(
               style: TextStyle(
                 fontSize: 16,
-                color: Colors
-                    .black, // Vous pouvez ajuster la couleur du texte si nécessaire
+
+                color: Colors.black,
               ),
               children: [
                 TextSpan(
-                  text: '$trophyNumber X ',
+                  text: '$count X ',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 TextSpan(
-                  text: '${_getCategoryName(trophy.category_id)}',
+
+                  text: '${_getCategoryName(categoryId)}',
                   style: TextStyle(
-                    fontWeight: FontWeight
-                        .normal, // Laisse le reste du texte en style normal
+                    fontWeight: FontWeight.normal,
                   ),
                 ),
               ],

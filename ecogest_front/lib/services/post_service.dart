@@ -13,6 +13,7 @@ abstract class PostService {
     }).toList();
 
     return posts;
+
   }
 
   static Future<List<PostModel>> getUserPostsFiltered(

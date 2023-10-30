@@ -1,10 +1,12 @@
 import 'package:ecogest_front/views/account_view.dart';
+import 'package:ecogest_front/views/search_view.dart';
 import 'package:ecogest_front/views/post_create_view.dart';
 import 'package:ecogest_front/views/challenges_view.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ecogest_front/assets/ecogest_theme.dart';
 import 'package:ecogest_front/views/home_view.dart';
+import 'package:ecogest_front/views/account_view.dart';
 
 class AppBarFooter extends StatelessWidget {
   const AppBarFooter({super.key});
@@ -60,10 +62,12 @@ class AppBarFooter extends StatelessWidget {
           ),
           IconButton(
             icon: const Icon(Icons.search),
-            color: Colors.blueGrey.shade400,
-            tooltip: 'Search',
+            color: (_getCurrentRoute(context) == "/${SearchView.name}"
+                ? EcogestTheme.primary
+                : Colors.blueGrey.shade400),
+            tooltip: 'Home',
             onPressed: () {
-              debugPrint('search');
+              GoRouter.of(context).pushNamed(SearchView.name);
             },
           ),
           IconButton(
