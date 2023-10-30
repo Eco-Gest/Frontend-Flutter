@@ -19,7 +19,7 @@ class TrophyService {
     final String? token = await AuthenticationService.getToken();
     
     // 4. Make the API request using the user ID.
-    final List<dynamic> responseMap = await EcoGestApiDataSource.get('/users/$userId/categories-points', token: token);
+    final List<dynamic> responseMap = await EcoGestApiDataSource.get('/users/$userId/trophies', token: token); 
 
     // 5. Map the response to a list of TrophyModel.
     final List<TrophyModel> trophies = responseMap.map((trophy) {
