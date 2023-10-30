@@ -10,4 +10,13 @@ class UserService {
 
     return UserModel.fromJson(responseMap);
   }
+
+  static Future<UserModel> getUser(int userId) async {
+    final String? token = await AuthenticationService.getToken();
+
+    var responseMap =
+        await EcoGestApiDataSource.get('/users/$userId', token: token);
+
+    return UserModel.fromJson(responseMap);
+  }
 }

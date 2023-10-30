@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:ecogest_front/models/trophy_model.dart'; 
-import 'package:ecogest_front/services/trophy_service.dart'; 
+import 'package:ecogest_front/models/trophy_model.dart';
+import 'package:ecogest_front/services/trophy_service.dart';
 
 class AccountTrophies extends StatefulWidget {
+  AccountTrophies({Key? key, required this.userId});
+
+  final int userId;
+
   @override
   _AccountTrophiesState createState() => _AccountTrophiesState();
 }
@@ -13,7 +17,7 @@ class _AccountTrophiesState extends State<AccountTrophies> {
   @override
   void initState() {
     super.initState();
-    _trophiesFuture = TrophyService.getTrophies();
+    _trophiesFuture = TrophyService.getTrophies(widget.userId);
   }
 
   @override
@@ -31,7 +35,7 @@ class _AccountTrophiesState extends State<AccountTrophies> {
           SizedBox(height: 12),
           // Title "Mes accomplissements"
           Text(
-            'Mes accomplissements',
+            'Accomplissements',
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
           SizedBox(height: 14),
@@ -44,7 +48,8 @@ class _AccountTrophiesState extends State<AccountTrophies> {
                 return CircularProgressIndicator();
               } else if (snapshot.hasError) {
                 // Handle error state
-                return Text('Erreur de chargement des trophées: ${snapshot.error}');
+                return Text(
+                    'Erreur de chargement des trophées: ${snapshot.error}');
               } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
                 // No trophies available
                 return Text('Aucun trophée disponible.');
@@ -112,6 +117,7 @@ class _AccountTrophiesState extends State<AccountTrophies> {
             text: TextSpan(
               style: TextStyle(
                 fontSize: 16,
+
                 color: Colors.black,
               ),
               children: [
@@ -122,6 +128,7 @@ class _AccountTrophiesState extends State<AccountTrophies> {
                   ),
                 ),
                 TextSpan(
+
                   text: '${_getCategoryName(categoryId)}',
                   style: TextStyle(
                     fontWeight: FontWeight.normal,

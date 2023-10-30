@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:ecogest_front/views/challenges_view.dart';
 import 'package:ecogest_front/views/post_detail_view.dart';
 import 'package:ecogest_front/views/account_view.dart';
+import 'package:ecogest_front/views/user_view.dart';
 import 'package:ecogest_front/views/search_view.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -68,6 +69,13 @@ abstract class AppRouter {
           path: '/challenge',
           name: ChallengesView.name,
           builder: (context, state) => const ChallengesView(),
+        ),
+        GoRoute(
+          path: '/users/:id',
+          name: UserView.name,
+          builder: (context, state) => UserView(
+            userId: int.parse(state.pathParameters['id'].toString()),
+          ),
         ),
       ],
       refreshListenable: GoRouterRefreshStream(stream),
