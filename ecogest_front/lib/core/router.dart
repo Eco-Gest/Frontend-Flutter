@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:ecogest_front/views/challenges_view.dart';
 import 'package:ecogest_front/views/post_detail_view.dart';
 import 'package:ecogest_front/views/account_view.dart';
+import 'package:ecogest_front/views/settings_view.dart';
 import 'package:ecogest_front/views/user_view.dart';
 import 'package:ecogest_front/views/search_view.dart';
 import 'package:flutter/material.dart';
@@ -69,6 +70,11 @@ abstract class AppRouter {
           path: '/challenge',
           name: ChallengesView.name,
           builder: (context, state) => const ChallengesView(),
+        ),
+        GoRoute(
+          path: '/settings',
+          name: SettingsView.name,
+          builder: (context, state) => const SettingsView(),
         ),
         GoRoute(
           path: '/users/:id',

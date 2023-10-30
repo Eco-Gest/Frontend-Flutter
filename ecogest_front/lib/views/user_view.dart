@@ -71,7 +71,7 @@ class UserView extends StatelessWidget {
                         child: Column(
                           children: [
                             // Account Info Widget
-                            AccountInfo(user: state.user),
+                            AccountInfo(user: state.user!),
                             SizedBox(height: 20),
                             Padding(
                               padding: EdgeInsets.symmetric(horizontal: 10.0),
@@ -101,7 +101,7 @@ class UserView extends StatelessWidget {
                       child: Column(
                         children: [
                           // Account Info Widget
-                          AccountInfo(user: state.user),
+                          AccountInfo(user: state.user!),
                           SizedBox(height: 20),
                           BlocProvider<SubscriptionCubit>(
                             create: (_) => SubscriptionCubit(),
@@ -129,7 +129,7 @@ class UserView extends StatelessWidget {
                       child: Column(
                         children: [
                           // Account Info Widget
-                          AccountInfo(user: state.user),
+                          AccountInfo(user: state.user!),
                           SizedBox(height: 20),
                           Padding(
                             padding: EdgeInsets.symmetric(horizontal: 10.0),
@@ -163,7 +163,7 @@ class UserView extends StatelessWidget {
                     child: Column(
                       children: [
                         // Account Info Widget
-                        AccountInfo(user: state.user),
+                        AccountInfo(user: state.user!),
                         SizedBox(height: 20),
                         BlocProvider<SubscriptionCubit>(
                           create: (_) => SubscriptionCubit(),
@@ -188,7 +188,7 @@ class UserView extends StatelessWidget {
                   child: Column(
                     children: [
                       // Account Info Widget
-                      AccountInfo(user: state.user),
+                      AccountInfo(user: state.user!),
                       SizedBox(height: 20),
                       // New Widget: Account Trophies
                       AccountTrophies(userId: state.user!.id!),

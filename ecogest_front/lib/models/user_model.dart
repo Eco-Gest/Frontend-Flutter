@@ -18,7 +18,7 @@ class UserModel {
 
   const UserModel({
     this.id,
-    required this.email,
+    this.email,
     this.username,
     this.badgeId,
     this.badgeTitle,
@@ -56,6 +56,17 @@ class UserModel {
             : null,
       );
 
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data["username"] = username;
+    data["image"] = image;
+    data["birthdate"] = birthdate;
+    data["biography"] = biography;
+    data["position"] = position;
+    data["is_private"] = isPrivate;
+    return data;
+  }
+  
   static List<SubscriptionModel?>? subscriptionList(
       List<dynamic> responseList) {
     return responseList.map((follower) {

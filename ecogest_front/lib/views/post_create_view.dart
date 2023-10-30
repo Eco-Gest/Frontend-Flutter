@@ -3,6 +3,7 @@ import 'package:ecogest_front/models/post_model.dart';
 import 'package:ecogest_front/models/user_model.dart';
 import 'package:ecogest_front/state_management/authentication/authentication_cubit.dart';
 import 'package:ecogest_front/views/home_view.dart';
+import 'package:ecogest_front/widgets/app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:ecogest_front/widgets/bottom_bar.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -65,8 +66,8 @@ class PostCreateView extends StatelessWidget {
     if (authenticationState is AuthenticationAuthenticated) {
       final UserModel? user = authenticationState.user;
       return Scaffold(
-        appBar: AppBar(
-          title: const Text('Créer un post '),
+        appBar: ThemeAppBar(
+          title:  'Créer un post ',
         ),
         bottomNavigationBar: const AppBarFooter(),
         body: SingleChildScrollView(
