@@ -36,9 +36,7 @@ class _AccountViewState extends State<AccountView>
 
   @override
   Widget build(BuildContext context) {
-    final authenticationState = context.read<AuthenticationCubit>().state;
-    if (authenticationState is AuthenticationAuthenticated) {
-      final user = authenticationState.user;
+      final user =     context.read<AuthenticationCubit>().state.user;
       return Scaffold(
         appBar: AppBar(
           title: const Text('Profil'),
@@ -95,11 +93,6 @@ class _AccountViewState extends State<AccountView>
           ],
         ),
       );
-    } else {
-      // Handle the case where the state is not AuthenticationAuthenticated
-      return Center(
-        child: Text('Un problèm est survenu.'),
-      );
-    }
+
   }
 }

@@ -87,18 +87,18 @@ abstract class AppRouter {
       refreshListenable: GoRouterRefreshStream(stream),
       redirect: (context, state) {
         // If the user is not authenticated, redirect to the login page.
-        final authState = context.read<AuthenticationCubit>().state;
+        final status = context.read<AuthenticationCubit>().state.status;
 
         // // If the user is authenticated, redirect to the home page (only if
         // // the current location is public page)
         if (publicRoutes.contains(state.uri.toString()) &&
-            authState is AuthenticationAuthenticated) {
+            status == AuthenticationStatus.authenticated) {
           return '/home';
         }
         // If the user is not authenticated, redirect to the login page.
         // (only if the current location is not a public page).
         if (!publicRoutes.contains(state.uri.toString()) &&
-            authState is AuthenticationUnauthenticated) {
+           status == AuthenticationStatus.unauthenticated) {
           return '/login';
         }
 
