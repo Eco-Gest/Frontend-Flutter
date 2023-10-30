@@ -1,5 +1,3 @@
-import 'package:ecogest_front/models/comment_model.dart';
-import 'package:ecogest_front/widgets/post/post_content_buttons.dart';
 import 'package:flutter/material.dart';
 
 class CommentElement extends StatelessWidget {
@@ -23,45 +21,53 @@ class CommentElement extends StatelessWidget {
             width: 0.5,
           )),
           child: Padding(
-            padding: EdgeInsets.all(16.0),
-            child: Wrap(
+            padding: const EdgeInsets.all(16.0),
+            child: Row(
               children: [
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    if (image != null) ...[
-                      CircleAvatar(
-                        backgroundImage: NetworkImage(image.toString()),
+                Expanded(
+                  child: Wrap(
+                    children: [
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          if (image != null) ...[
+                            CircleAvatar(
+                              backgroundImage: NetworkImage(image.toString()),
+                            )
+                          ] else ...[
+                            const CircleAvatar(
+                              child: Icon(Icons.person),
+                            ),
+                          ],
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 15,
+                        width: 15,
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Author of the comment
+                          Text(
+                            author.toString(),
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold
+                            ),
+                          ),
+                          // Content of the comment
+                          Text(
+                            content!,
+                          ),
+                        ]
                       )
-                    ] else ...[
-                      const CircleAvatar(
-                        child: Icon(Icons.person),
-                      ),
                     ],
-                  ],
-                ),
-                const SizedBox(
-                  height: 15,
-                  width: 15,
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Author of the comment
-                    Text(
-                      author.toString(),
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold
-                      ),
-                    ),
-                    // Content of the comment
-                    Text(
-                      content!,
-                    ),
-                  ]
+                  )        
                 )
+
               ],
-            )        
+            )
+            
           )
     );
   }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:ecogest_front/views/comments_view.dart';
 
 class PostContentButtons extends StatelessWidget {
   const PostContentButtons({
@@ -83,7 +84,16 @@ class PostContentButtons extends StatelessWidget {
               onPressed: () {
                 debugPrint('Click pour commenter la publication');
                 // TODO : Commenter la publication
-                // GoRouter.of(context).push('/posts/$postId/comments');
+                // context.goNamed(CommentsView.name, pathParameters: {
+                //   'postId': postId.toString(),
+                //   'comments': comments
+                // });
+                // GoRouter.of(context).go(
+                //   '/posts/$postId/comments',
+                //   comments: comments,
+                // );
+                // Navigator.of(context).push(MaterialPageRoute(builder: (context) => CommentsView(postId: postId, comments: comments!)));
+                GoRouter.of(context).push('/posts/$postId/comments');
               }, 
               child: const Icon(Icons.comment),
             ),
