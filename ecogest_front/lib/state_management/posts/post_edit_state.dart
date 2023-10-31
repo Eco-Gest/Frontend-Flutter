@@ -6,7 +6,7 @@ abstract class PostEditState {
 
 class PostEditStateInitial extends PostEditState {}
 
-class PostsStateLoading extends PostEditState {}
+class PostsEditStateLoading extends PostEditState {}
 
 class PostEditStateLoaded extends PostEditState {
   final PostModel post;

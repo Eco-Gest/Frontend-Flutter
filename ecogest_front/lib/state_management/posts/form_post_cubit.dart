@@ -92,7 +92,7 @@ class PostFormCubit extends Cubit<PostFormState> {
   }
 
 Future<void> updatePost({
-    required int postId,
+    required int? postId,
     required String title,
     String? description,
     DateTime? startDate,

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ecogest_front/state_management/posts/post_edit_cubit.dart';
 import 'package:ecogest_front/widgets/app_bar.dart';
 import 'package:ecogest_front/widgets/bottom_bar.dart';
+import 'package:ecogest_front/views/post_form_view.dart';
 
 class PostEditView extends StatelessWidget {
   const PostEditView({required this.postId, Key? key}) : super(key: key);
@@ -14,7 +15,7 @@ class PostEditView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const ThemeAppBar(title: 'Editer la publication'),
-      bottomNavigationBar: AppBarFooter(),
+      bottomNavigationBar: const AppBarFooter(),
       body: SingleChildScrollView(
         child: Stack(
           children: [
@@ -27,7 +28,7 @@ class PostEditView extends StatelessWidget {
               child: BlocBuilder<PostEditCubit, PostEditState>(
                 builder: (context, state) {
                   if (state is PostEditStateInitial ||
-                      state is PostsStateLoading) {
+                      state is PostsEditStateLoading) {
                     return const Center(
                       child: CircularProgressIndicator(),
                     );
@@ -41,9 +42,7 @@ class PostEditView extends StatelessWidget {
                         padding: const EdgeInsets.all(16.0),
                         child: Column(
                           children: [
-                            Text('coucou'),
-                            // Utilisez les détails du post pour pré-remplir le formulaire d'édition
-                            // ... le reste de votre implémentation ...
+                            PostFormView(prefilledPost: state.post),
                           ],
                         ),
                       ),

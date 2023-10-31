@@ -10,8 +10,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ecogest_front/state_management/posts/form_post_cubit.dart';
 import 'package:go_router/go_router.dart';
 
-class PostCreateView extends StatelessWidget {
-  PostCreateView({Key? key, this.prefilledPost}) : super(key: key);
+class PostFormView extends StatelessWidget {
+  PostFormView({Key? key, this.prefilledPost}) : super(key: key);
 
   final PostModel? prefilledPost;
   static String name = 'post-create';
@@ -63,18 +63,15 @@ class PostCreateView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    titleController.text = prefilledPost?.title ?? '';
+    descriptionController.text = prefilledPost?.description ?? '';
+    positionController.text = prefilledPost?.position ?? '';
+    imageController.text = prefilledPost?.image ?? '';
+
     final authenticationState = context.read<AuthenticationCubit>().state;
     if (authenticationState is AuthenticationAuthenticated) {
       final UserModel? user = authenticationState.user;
-      return Scaffold(
-        appBar: ThemeAppBar(
-          title:  'Créer un post ',
-        ),
-        bottomNavigationBar: const AppBarFooter(),
-        body: SingleChildScrollView(
-          child: Stack(
-            children: [
-              BlocProvider(
+      return BlocProvider(
                 create: (context) => PostFormCubit()..getDefaults(),
                 child: Builder(builder: (context) {
                   return BlocListener<PostFormCubit, PostFormState>(
@@ -166,7 +163,6 @@ class PostCreateView extends StatelessWidget {
                             padding: const EdgeInsets.all(10),
                             child: TextFormField(
                               controller: titleController,
-                              initialValue: prefilledPost?.title,
                               decoration: const InputDecoration(
                                 border: OutlineInputBorder(),
                                 labelText: 'Titre',
@@ -187,7 +183,6 @@ class PostCreateView extends StatelessWidget {
                             child: TextFormField(
                               textAlign: TextAlign.justify,
                               controller: descriptionController,
-                              initialValue: prefilledPost?.description,
                               autofocus: false,
                               maxLines: 8,
                               decoration: const InputDecoration(
@@ -202,7 +197,6 @@ class PostCreateView extends StatelessWidget {
                             padding: const EdgeInsets.all(10),
                             child: TextFormField(
                               controller: positionController,
-                              initialValue: prefilledPost?.position,
                               decoration: const InputDecoration(
                                 border: OutlineInputBorder(),
                                 labelText: 'Position',
@@ -361,10 +355,11 @@ class PostCreateView extends StatelessWidget {
                                           content:
                                               Text('Publication en cours...')),
                                     );
-                                    context.read<PostFormCubit>().createPost(
+                                    context.read<PostFormCubit>().updatePost(
+                                          postId: prefilledPost?.id,
                                           title: titleController.text,
                                           description:
-                                              descriptionController.text,
+                                          descriptionController.text,
                                           position: positionController.text,
                                           startDate: startDate,
                                           endDate: endDate,
@@ -372,7 +367,7 @@ class PostCreateView extends StatelessWidget {
                                         );
                                   }
                                 },
-                                child: const Text('Publier'),
+                                child: const Text('Mettre à jour'),
                               ),
                             ),
                           ),
@@ -381,11 +376,7 @@ class PostCreateView extends StatelessWidget {
                     ),
                   );
                 }),
-              ),
-            ],
-          ),
-        ),
-      );
+              );
     } else {
       // Handle the case where the state is not AuthenticationAuthenticated
       return const Scaffold(

@@ -12,6 +12,7 @@ class PostEditCubit extends Cubit<PostEditState> {
 
   Future<void> getPostDetails(int postId) async {
     try {
+      emit(PostsEditStateLoading());
       final post = await PostService.getOnePost(postId);
       emit(PostEditStateLoaded(post));
     } catch (e) {

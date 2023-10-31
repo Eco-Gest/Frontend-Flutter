@@ -67,17 +67,17 @@ class PostContentAuthor extends StatelessWidget {
                             authenticationState.user?.id == author?.id) {
                         items.add(const PopupMenuItem<String>(
                           value: 'edit',
-                          child: Text('Edit'),
+                          child: Text('Éditer'),
                         ));
                         items.add(const PopupMenuItem<String>(
                           value: 'delete',
-                          child: Text('Delete'),
+                          child: Text('Supprimer'),
                         ));
                       }
 
                       items.add(const PopupMenuItem<String>(
                         value: 'report',
-                        child: Text('Report'),
+                        child: Text('Signaler'),
                       ));
 
                       return items;
