@@ -1,4 +1,5 @@
 import 'package:ecogest_front/models/post_model.dart';
+import 'package:ecogest_front/models/tag_model.dart';
 import 'package:flutter/material.dart';
 
 class PostContentInfos extends StatelessWidget {
@@ -11,12 +12,6 @@ class PostContentInfos extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Convert tags coming from DB into an array
-    // to be able to loop over them
-    String tags = post!.tag.toString();
-    tags = tags.replaceAll('{', '').replaceAll('}', '');
-    List<String> tagsArray = tags.split(',');
-
     // Return the number of points earned
     // based on the difficulty of the action
     int convertLevelToPoint(String level) {
@@ -135,16 +130,16 @@ class PostContentInfos extends StatelessWidget {
                       style: const TextStyle(color: Colors.white),
                     ),
                   ),
-                  if (post!.tag != null) ...[
+                  if (post!.tags != null) ...[
                     Row(
-                        children: tagsArray.map((tag) {
+                        children: post!.tags!.map((tag) {
                       return TextButton(
                           onPressed: () {
-                            debugPrint('Click on $tag');
+                            debugPrint('Click on ${tag.label}');
                             // TODO : Afficher la liste des publication avec ce #
                           },
                           child: Text(
-                            '#$tag',
+                            '#${tag.label}',
                             style: const TextStyle(color: Colors.black),
                           ));
                     }).toList())
