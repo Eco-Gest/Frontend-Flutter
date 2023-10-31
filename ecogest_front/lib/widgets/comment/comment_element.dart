@@ -5,12 +5,12 @@ class CommentElement extends StatelessWidget {
     super.key,
     required this.content,
     required this.author,
-    this.image,
+    this.profilePic,
   });
 
   final String? content;
   final String? author;
-  final String? image;
+  final String? profilePic;
 
   @override
   Widget build(BuildContext context) {
@@ -34,9 +34,9 @@ class CommentElement extends StatelessWidget {
                           Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              if (image != null) ...[
+                              if (profilePic != null) ...[
                                 CircleAvatar(
-                                  backgroundImage: NetworkImage(image.toString()),
+                                  backgroundImage: NetworkImage(profilePic.toString()),
                                 )
                               ] else ...[
                                 const CircleAvatar(

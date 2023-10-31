@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:ecogest_front/views/challenges_view.dart';
 import 'package:ecogest_front/views/comments_view.dart';
@@ -79,14 +78,10 @@ abstract class AppRouter {
           builder: (context, state) {
             final comments = state.extra! as List;
             return CommentsView(
-              comments: comments, 
+              commentsList: comments, 
               postId: int.parse(state.pathParameters['id'].toString()),
             );
           }
-          // builder: (context, state) => CommentsView(
-          //   postId: int.parse(state.pathParameters['id'].toString()),
-          //   comments: state.pathParameters['comments'] ?? 'Il n\'y a pas de commentaires (router.dart)',
-          // )
         ),
         GoRoute(
           path: '/settings',
@@ -106,8 +101,8 @@ abstract class AppRouter {
         // If the user is not authenticated, redirect to the login page.
         final authState = context.read<AuthenticationCubit>().state;
 
-        // // If the user is authenticated, redirect to the home page (only if
-        // // the current location is public page)
+        // If the user is authenticated, redirect to the home page (only if
+        // the current location is public page)
         if (publicRoutes.contains(state.uri.toString()) &&
             authState is AuthenticationAuthenticated) {
           return '/home';
