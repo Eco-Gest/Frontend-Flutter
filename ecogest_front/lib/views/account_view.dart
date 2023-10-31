@@ -36,63 +36,64 @@ class _AccountViewState extends State<AccountView>
 
   @override
   Widget build(BuildContext context) {
-      final user =     context.read<AuthenticationCubit>().state.user;
-      return Scaffold(
-        appBar: AppBar(
-          title: const Text('Profil'),
-          bottom: TabBar(
-            indicatorColor: Colors.black,
-            indicatorSize: TabBarIndicatorSize.label,
-            indicatorWeight: 2,
-            controller: _tabController,
-            tabs: [
-              Tab(text: 'Mon profil'),
-              Tab(text: 'Editer mon profil'),
-            ],
-          ),
-          leading: IconButton(
-            icon: Icon(Icons.arrow_back),
+    final user = context.watch<AuthenticationCubit>().state.user;
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Profil'),
+        bottom: TabBar(
+          indicatorColor: Colors.black,
+          indicatorSize: TabBarIndicatorSize.label,
+          indicatorWeight: 2,
+          controller: _tabController,
+          tabs: [
+            Tab(text: 'Mon profil'),
+            Tab(text: 'Editer mon profil'),
+          ],
+        ),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            if (Navigator.canPop(context)) {
+              Navigator.pop(context);
+            }
+          },
+        ),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.settings),
             onPressed: () {
-              if (Navigator.canPop(context)) {
-                Navigator.pop(context);
-              }
+              GoRouter.of(context).pushNamed(SettingsView.name);
             },
           ),
-          actions: [
-            IconButton(
-              icon: Icon(Icons.settings),
-              onPressed: () {
-                GoRouter.of(context).pushNamed(SettingsView.name);
-              },
+        ],
+      ),
+      bottomNavigationBar: const AppBarFooter(),
+      body: TabBarView(
+        controller: _tabController,
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 26.0),
+            child: ListView(
+              children: [
+                // Account Info Widget
+                AccountInfo(user: user!),
+                SizedBox(height: 20),
+                // New Widget: Account Trophies
+                AccountTrophies(
+                  userId: user!.id!,
+                ),
+              ],
             ),
-          ],
-        ),
-        bottomNavigationBar: const AppBarFooter(),
-        body: TabBarView(
-          controller: _tabController,
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 26.0),
-              child: ListView(
-                children: [
-                  // Account Info Widget
-                  AccountInfo(user: user!),
-                  SizedBox(height: 20),
-                  // New Widget: Account Trophies
-                  AccountTrophies(userId: user!.id!,),
-                ],
-              ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 26.0),
+            child: UpdateAccountWidget(
+              user: user!,
+              isPrivateController: user!.isPrivate!,
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 26.0),
-              child: UpdateAccountWidget(
-                user: user!,
-                isPrivateController: user!.isPrivate!,
-              ),
-            )
-          ],
-        ),
-      );
-
+          )
+        ],
+      ),
+    );
   }
 }

@@ -24,15 +24,33 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
   }
 
   Future<void> login({required String email, required String password}) async {
-    await AuthenticationService.login(email: email, password: password);
+    try {
+      await AuthenticationService.login(email: email, password: password);
+      emit(const AuthenticationState(AuthenticationStatus.loading, null));
+      final user = await UserService.getCurrentUser();
+      emit(AuthenticationState(AuthenticationStatus.authenticated, user));
+    } catch (e) {
+      // Failed to login, failed to parse the token or
+      // error while getting the user
+      emit(const AuthenticationState(AuthenticationStatus.error, null));
+    }
   }
 
   Future<void> register(
       {required String email,
       required String password,
       required String username}) async {
-    await AuthenticationService.register(
-        email: email, password: password, username: username);
+    try {
+      await AuthenticationService.register(
+          email: email, password: password, username: username);
+      emit(const AuthenticationState(AuthenticationStatus.loading, null));
+      final user = await UserService.getCurrentUser();
+      emit(AuthenticationState(AuthenticationStatus.authenticated, user));
+    } catch (e) {
+      // Failed to login, failed to parse the token or
+      // error while getting the user
+      emit(const AuthenticationState(AuthenticationStatus.error, null));
+    }
   }
 
   Future<void> logout() async {

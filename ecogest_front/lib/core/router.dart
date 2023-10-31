@@ -25,7 +25,7 @@ abstract class AppRouter {
 
   /// Creates a [GoRouter] with a [GoRouterRefreshStream] that listens to the
   /// [AuthenticationCubit] stream.
-  static GoRouter routerWithAuthStream(Stream<AuthenticationState> stream) {
+  static GoRouter getRouter(BuildContext context) {
     return GoRouter(
       initialLocation: '/login',
       routes: [
@@ -84,7 +84,8 @@ abstract class AppRouter {
           ),
         ),
       ],
-      refreshListenable: GoRouterRefreshStream(stream),
+      refreshListenable:
+          GoRouterRefreshStream(context.read<AuthenticationCubit>().stream),
       redirect: (context, state) {
         // If the user is not authenticated, redirect to the login page.
         final status = context.read<AuthenticationCubit>().state.status;
@@ -98,7 +99,7 @@ abstract class AppRouter {
         // If the user is not authenticated, redirect to the login page.
         // (only if the current location is not a public page).
         if (!publicRoutes.contains(state.uri.toString()) &&
-           status == AuthenticationStatus.unauthenticated) {
+            status == AuthenticationStatus.unauthenticated) {
           return '/login';
         }
 

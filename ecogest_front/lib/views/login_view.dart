@@ -121,15 +121,15 @@ class LoginView extends StatelessWidget {
 
                       if (status == AuthenticationStatus.unauthenticated) {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
+                          const SnackBar(
                             content: Text(
-                              "Echec de la connexion",
-                              style: const TextStyle(color: Colors.white),
+                              "Identifiants incorrects",
+                              style: TextStyle(color: Colors.white),
                             ),
                             backgroundColor: Colors.red,
                           ),
                         );
-                      } else if (state is AuthenticationLoading) {
+                      } else if (status == AuthenticationStatus.loading) {
                         // Show only CircularProgressIndicator
                         showDialog(
                           context: context,
