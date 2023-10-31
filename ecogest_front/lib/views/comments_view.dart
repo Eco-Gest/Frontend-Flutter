@@ -25,47 +25,76 @@ class CommentsView extends StatelessWidget {
     return Scaffold(
       appBar: const ThemeAppBar(title: 'Commentaires de la publication'),
       bottomNavigationBar: const AppBarFooter(),
-      body: Column(
-        children: [
-          if (commentsList.isNotEmpty) ...[
-            Expanded(
-              child: SingleChildScrollView(
-                child: Padding(
+      body: BlocProvider(
+        create: (context) => CommentCubit(),
+        child: Builder(builder: (context) {
+          return BlocListener<CommentCubit, CommentState>(
+            listener: (context, state) {
+              if (state is CommentStateError) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                      content: Text('Erreur lors de la création du commentaire.')),
+                );
+              }
+              if (state is CommentStateSuccess) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Création du commentaire réussie.')),
+                );
+                GoRouter.of(context).goNamed(
+                  HomeView.name,
+                );
+              }
+            },
+            child: Column(
+              children: [
+                if (commentsList.isNotEmpty) ...[
+                  Expanded(
+                    child: SingleChildScrollView(
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: CommentsList(comments: commentsList),
+                      ),
+                    )
+                  ),
+                ] else ...[
+                  const Expanded(
+                    child: SingleChildScrollView(
+                      child: Padding(
+                        padding: EdgeInsets.all(16.0),
+                        child: Text("Il n'y a pas encore de commentaire pour cette publication"),
+                      ),
+                    )
+                  )
+                ],
+                Container(
+                  color: EcogestTheme.primary,
                   padding: const EdgeInsets.all(16.0),
-                  child: CommentsList(comments: commentsList),
-                ),
-              )
-            ),
-          ] else ...[
-            const Expanded(
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding: EdgeInsets.all(16.0),
-                  child: Text("Il n'y a pas encore de commentaire pour cette publication"),
-                ),
-              )
+                  child: TextFormField(
+                    controller: _newCommentController,
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Colors.white,
+                      suffixIcon: IconButton(
+                        onPressed: () {
+                          // TODO : Ajouter le commentaire au post
+                          debugPrint(_newCommentController.text.toString());
+
+                          context.read<CommentCubit>().createComment(
+                            postId: postId,
+                            content: _newCommentController.text,
+                          );
+
+                        },
+                        icon: const Icon(Icons.send),
+                      ),
+                      hintText: 'Rédiger un commentaire...',
+                    ),
+                  ),
+                )
+              ],
             )
-          ],
-          Container(
-            color: EcogestTheme.primary,
-            padding: const EdgeInsets.all(16.0),
-            child: TextFormField(
-              controller: _newCommentController,
-              decoration: InputDecoration(
-                filled: true,
-                fillColor: Colors.white,
-                suffixIcon: IconButton(
-                  onPressed: () {
-                    // TODO : Ajouter le commentaire au post
-                    debugPrint(_newCommentController.text.toString());
-                  },
-                  icon: const Icon(Icons.send),
-                ),
-                hintText: 'Rédiger un commentaire...',
-              ),
-            ),
-          )
-        ],
+          );
+        }),
       )
     );
   }
