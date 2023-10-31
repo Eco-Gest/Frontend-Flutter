@@ -3,15 +3,13 @@ import 'package:ecogest_front/models/post_model.dart';
 import 'package:ecogest_front/models/user_model.dart';
 import 'package:ecogest_front/state_management/authentication/authentication_cubit.dart';
 import 'package:ecogest_front/views/home_view.dart';
-import 'package:ecogest_front/widgets/app_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:ecogest_front/widgets/bottom_bar.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ecogest_front/state_management/posts/form_post_cubit.dart';
 import 'package:go_router/go_router.dart';
 
-class PostFormView extends StatelessWidget {
-  PostFormView({Key? key, this.prefilledPost}) : super(key: key);
+class PostFormWidget extends StatelessWidget {
+  PostFormWidget({Key? key, this.prefilledPost}) : super(key: key);
 
   final PostModel? prefilledPost;
   static String name = 'post-create';
@@ -92,6 +90,7 @@ class PostFormView extends StatelessWidget {
                         );
                       }
                     },
+                    child: SingleChildScrollView(
                     child: Form(
                       key: formKey,
                       child: Column(
@@ -108,7 +107,7 @@ class PostFormView extends StatelessWidget {
                                   constraints: BoxConstraints(
                                       minWidth:
                                           (MediaQuery.of(context).size.width -
-                                                  26) /
+                                                  60) /
                                               2,
                                       minHeight: 50.0),
                                   onPressed: (int index) {
@@ -373,6 +372,7 @@ class PostFormView extends StatelessWidget {
                           ),
                         ],
                       ),
+                    ),
                     ),
                   );
                 }),

@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ecogest_front/state_management/posts/post_edit_cubit.dart';
 import 'package:ecogest_front/widgets/app_bar.dart';
 import 'package:ecogest_front/widgets/bottom_bar.dart';
-import 'package:ecogest_front/views/post_form_view.dart';
+import 'package:ecogest_front/widgets/post/post_form_widget.dart';
 
 class PostEditView extends StatelessWidget {
   const PostEditView({required this.postId, Key? key}) : super(key: key);
@@ -42,7 +42,7 @@ class PostEditView extends StatelessWidget {
                         padding: const EdgeInsets.all(16.0),
                         child: Column(
                           children: [
-                            PostFormView(prefilledPost: state.post),
+                            PostFormWidget(prefilledPost: state.post),
                           ],
                         ),
                       ),
