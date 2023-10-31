@@ -1,90 +1,58 @@
 import 'package:flutter/material.dart';
-import 'package:ecogest_front/models/post_model.dart';
-import 'package:ecogest_front/state_management/posts/form_post_cubit.dart';
-import 'package:ecogest_front/widgets/app_bar.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ecogest_front/state_management/posts/post_edit_cubit.dart';
+import 'package:ecogest_front/widgets/app_bar.dart';
+import 'package:ecogest_front/widgets/bottom_bar.dart';
 
 class PostEditView extends StatelessWidget {
-  static String name = 'post-edit';
+  const PostEditView({required this.postId, Key? key}) : super(key: key);
+
+  static String name = 'post_edit';
   final int postId;
-
-  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  final TextEditingController titleController = TextEditingController();
-  final TextEditingController descriptionController = TextEditingController();
-  final TextEditingController positionController = TextEditingController();
-  final TextEditingController tagController = TextEditingController();
-  final TextEditingController imageController = TextEditingController();
-
-  DateTime? startDate;
-  DateTime? endDate;
-
-  PostEditView({required this.postId});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: ThemeAppBar(
-        title: 'Modifier le post',
-      ),
+      appBar: const ThemeAppBar(title: 'Editer la publication'),
+      bottomNavigationBar: AppBarFooter(),
       body: SingleChildScrollView(
         child: Stack(
           children: [
-            BlocBuilder<PostFormCubit, PostFormState>(
-              builder: (context, state) {
-                if (state is SelectionState) {
-                  // Fetch post details based on postId from the state
-                  final post = state.post;
-                  // Update your text controllers with post details
-                  titleController.text = post.title;
-                  descriptionController.text = post.description;
-                  positionController.text = post.position;
-                  // Update other controllers as needed
-
-                  return Form(
-                    key: formKey,
-                    child: Column(
-                      children: <Widget>[
-                        // Your existing form fields here...
-
-                        Padding(
-                          padding: const EdgeInsets.all(30.0),
-                          child: SizedBox(
-                            width: (MediaQuery.of(context).size.width - 26) / 2,
-                            height: 50.0,
-                            child: ElevatedButton(
-                              onPressed: () async {
-                                if (formKey.currentState!.validate()) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                      content: Text('Enregistrement en cours...'),
-                                    ),
-                                  );
-
-                                  // Call the method to update the post
-                                  context.read<PostFormCubit>().updatePost(
-                                    postId: postId,
-                                    title: titleController.text,
-                                    description: descriptionController.text,
-                                    position: positionController.text,
-                                    startDate: startDate,
-                                    endDate: endDate,
-                                    image: imageController.text,
-                                  );
-                                }
-                              },
-                              child: const Text('Enregistrer les modifications'),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
-                } else {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }
+            BlocProvider<PostEditCubit>(
+              create: (context) {
+                final cubit = PostEditCubit();
+                cubit.getPostDetails(postId);
+                return cubit;
               },
+              child: BlocBuilder<PostEditCubit, PostEditState>(
+                builder: (context, state) {
+                  if (state is PostEditStateInitial ||
+                      state is PostsStateLoading) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  } else if (state is PostEditStateError) {
+                    return Center(
+                      child: Text(state.message),
+                    );
+                  } else if (state is PostEditStateLoaded) {
+                    return Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Column(
+                          children: [
+                            Text('coucou'),
+                            // Utilisez les détails du post pour pré-remplir le formulaire d'édition
+                            // ... le reste de votre implémentation ...
+                          ],
+                        ),
+                      ),
+                    );
+                  }
+
+                  return const SizedBox.shrink();
+                },
+              ),
             ),
           ],
         ),

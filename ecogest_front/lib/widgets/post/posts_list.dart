@@ -48,7 +48,8 @@ class PostsList extends StatelessWidget {
                     PostContentAuthor(
                         author: posts[index].user,
                         position: posts[index].position,
-                        date: posts[index].createdAt),
+                        date: posts[index].createdAt,
+                        postId: posts[index].id),
                     const PostSeparator(),
                     // Post info
                     InkWell(
