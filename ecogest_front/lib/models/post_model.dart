@@ -73,10 +73,10 @@ class PostModel {
       endDate: json['end_date']?.toString(),
       createdAt: json['created_at']?.toString(),
       updatedAt: json['updated_at']?.toString(),
-      user: UserModel.fromJson(json['user'] as Map<String, Object?>),
+      user: json['user'] != null ? UserModel.fromJson(json['user'] as Map<String, Object?>) : null,
       userPostParticipation: json['user_post_participation'],
-      category:
-          CategoryModel.fromJson(json['category'] as Map<String, Object?>),
+      category: json['category'] != null ?
+          CategoryModel.fromJson(json['category'] as Map<String, Object?>) : null,
       likes: json['like'],
       comments: json['comment'],
     );

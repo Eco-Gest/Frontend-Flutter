@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:ecogest_front/views/challenges_view.dart';
+import 'package:ecogest_front/views/notifications_view.dart';
 import 'package:ecogest_front/views/post_detail_view.dart';
 import 'package:ecogest_front/views/account_view.dart';
 import 'package:ecogest_front/views/settings_view.dart';
@@ -82,6 +83,11 @@ abstract class AppRouter {
           builder: (context, state) => UserView(
             userId: int.parse(state.pathParameters['id'].toString()),
           ),
+        ),
+        GoRoute(
+          path: '/notifications',
+          name: NotificationsView.name,
+          builder: (context, state) => NotificationsView(),
         ),
       ],
       refreshListenable: GoRouterRefreshStream(stream),
