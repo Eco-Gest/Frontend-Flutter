@@ -1,5 +1,4 @@
 import 'package:ecogest_front/models/post_model.dart';
-import 'package:ecogest_front/models/tag_model.dart';
 import 'package:flutter/material.dart';
 
 class PostContentInfos extends StatelessWidget {
