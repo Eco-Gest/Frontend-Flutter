@@ -1,4 +1,5 @@
 import 'package:ecogest_front/models/category_model.dart';
+import 'package:ecogest_front/models/like_model.dart';
 import 'package:ecogest_front/models/user_model.dart';
 
 class PostModel {
@@ -19,7 +20,7 @@ class PostModel {
   final UserModel? user;
   final List? userPostParticipation;
   final CategoryModel? category;
-  final List? likes;
+  final List<LikeModel>? likes;
   final List? comments;
 
   const PostModel({
@@ -75,9 +76,8 @@ class PostModel {
       updatedAt: json['updated_at']?.toString(),
       user: UserModel.fromJson(json['user'] as Map<String, Object?>),
       userPostParticipation: json['user_post_participation'],
-      category:
-          CategoryModel.fromJson(json['category'] as Map<String, Object?>),
-      likes: json['like'],
+      category: CategoryModel.fromJson(json['category'] as Map<String, Object?>),
+      likes:  List.from(json['like']).map((e)=>LikeModel.fromJson(e)).toList(),
       comments: json['comment'],
     );
   }
