@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:ecogest_front/views/challenges_view.dart';
+import 'package:ecogest_front/views/errors/error404_view.dart';
 import 'package:ecogest_front/views/post_detail_view.dart';
 import 'package:ecogest_front/views/account_view.dart';
 import 'package:ecogest_front/views/settings_view.dart';
@@ -28,6 +29,7 @@ abstract class AppRouter {
   static GoRouter getRouter(BuildContext context) {
     return GoRouter(
       initialLocation: '/login',
+      errorBuilder: (context, state) => const Error404View(),
       routes: [
         GoRoute(
           path: '/login',
