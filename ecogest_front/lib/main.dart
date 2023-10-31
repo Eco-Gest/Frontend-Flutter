@@ -20,15 +20,14 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final GoRouter router = AppRouter.routerWithAuthStream(
-      authenticationCubit.stream,
-    );
     return MultiBlocProvider(
         providers: [
           BlocProvider<ThemeSettingsCubit>(
             create: (context) => ThemeSettingsCubit(),
           ),
-          BlocProvider.value(value: authenticationCubit),
+          BlocProvider<AuthenticationCubit>(
+            create: (context) => AuthenticationCubit()..getStatus(),
+          ),
         ],
         child: Builder(
           builder: (context) {
@@ -45,7 +44,7 @@ class MainApp extends StatelessWidget {
                     textTheme: GoogleFonts.openSansTextTheme(),
                     brightness: state.brightness,
                   ),
-                  routerConfig: router,
+                  routerConfig: AppRouter.getRouter(context),
                 );
               });
             });

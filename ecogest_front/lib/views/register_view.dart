@@ -159,17 +159,20 @@ class RegisterView extends StatelessWidget {
                   BlocListener<AuthenticationCubit, AuthenticationState>(
                     // Error message if user is not allow to connect
                     listener: (context, state) {
-                      if (state is AuthenticationError) {
+                      final status =
+                          context.read<AuthenticationCubit>().state.status;
+
+                      if (status == AuthenticationStatus.unauthenticated) {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
+                          const SnackBar(
                             content: Text(
-                              state.message,
-                              style: const TextStyle(color: Colors.white),
+                              "Erreur lors de l'inscription. Veuillez réessayer.",
+                              style: TextStyle(color: Colors.white),
                             ),
                             backgroundColor: Colors.red,
                           ),
                         );
-                      } else if (state is AuthenticationLoading) {
+                      } else if (status == AuthenticationStatus.loading) {
                         // Show only CircularProgressIndicator
                         showDialog(
                           context: context,
