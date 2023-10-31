@@ -41,4 +41,11 @@ abstract class PostService {
     await EcoGestApiDataSource.post('/posts', body, token: token);
     return postModel;
   }
+
+  static Future<PostModel> updatePost(PostModel postModel) async {
+    final String? token = await AuthenticationService.getToken();
+    final body = postModel.toJson();
+    await EcoGestApiDataSource.patch('/posts/${postModel.id}', body, token: token);
+    return postModel;
+  }
 }
