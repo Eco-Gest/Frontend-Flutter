@@ -5,6 +5,8 @@ import 'package:go_router/go_router.dart';
 import 'package:ecogest_front/state_management/authentication/authentication_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ecogest_front/state_management/posts/posts_cubit.dart';
+import 'package:url_launcher/url_launcher.dart';
+
 
 class PostContentAuthor extends StatelessWidget {
   const PostContentAuthor({
@@ -24,7 +26,6 @@ class PostContentAuthor extends StatelessWidget {
   Widget build(BuildContext context) {
     final authenticationState = context.read<AuthenticationCubit>().state;
 
-    // Transform date from DB to french date format
     DateTime dateInFormat = DateTime.parse(date.toString());
     String publicationDate = DateFormat('dd/MM/yyyy', 'fr_FR').format(dateInFormat);
 
@@ -42,21 +43,79 @@ class PostContentAuthor extends StatelessWidget {
               const Text(' | '),
             ],
             PopupMenuButton<String>(
-              onSelected: (value) {
+              onSelected: (value) async {
                 if (value == 'edit') {
-                  if (authenticationState is AuthenticationAuthenticated &&
-                      authenticationState.user?.id == author?.id) {
-                    // Action pour l'édition du post
-                  } else {
-                    // L'utilisateur actuel n'est pas l'auteur
-                    // Ajoutez ici la logique pour informer l'utilisateur qu'il ne peut pas éditer ce post.
-                  }
+                  // Handle edit logic
                 } else if (value == 'delete') {
                   context.read<PostsCubit>().deletePost(postId);
                   Navigator.pop(context);
-                } else if (value == 'report') {
-                  // Action pour signaler le post
-                  // Ajoutez votre logique de signalement ici
+                                } else if (value == 'report') {
+                  final result = await showDialog<String>(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: Text('Pourquoi signalez-vous cette publication ?'),
+                        content: Column(
+                          children: [
+                            ListTile(
+                              title: Text('Contenu inapproprié et harcèlement'),
+                              onTap: () => Navigator.pop(context, 'Contenu inapproprié'),
+                            ),
+                            ListTile(
+                              title: Text('Discours de haine'),
+                              onTap: () => Navigator.pop(context, 'Discours de haine'),
+                            ),
+                            ListTile(
+                              title: Text('Atteinte à la vie privé'),
+                              onTap: () => Navigator.pop(context, 'Discours de haine'),
+                            ),
+                            ListTile(
+                              title: Text('Suicide ou conduites autodestructrices'),
+                              onTap: () => Navigator.pop(context, 'Discours de haine'),
+                            ),
+                            ListTile(
+                              title: Text('Nudité ou actes sexuels'),
+                              onTap: () => Navigator.pop(context, 'Discours de haine'),
+                            ),
+                            ListTile(
+                              title: Text('Spam'),
+                              onTap: () => Navigator.pop(context, 'Spam'),
+                            ),
+                            ListTile(
+                              title: Text('Autre'),
+                              onTap: () => Navigator.pop(context, 'Autre'),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  );
+
+                  // Check if a reporting option was selected
+                  if (result != null) {
+                    // Launch email application
+                    final String subject = 'Signalement de post - ID: $postId, Titre: ${author?.username ?? ''}';
+                    final String body = 'Raison du signalement: $result';
+                    final String email = 'report@ecogest.io';
+                    
+                    final Uri emailLaunchUri = Uri(
+                      scheme: 'mailto',
+                      path: email,
+                      queryParameters: {
+                        // temporary fix for + replacing spaces
+                        'subject': subject.replaceAll(' ', '_'),
+                        'body': body.replaceAll(' ', '_'),
+                      },
+                    );
+
+                   launchUrl(emailLaunchUri);
+
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Signalement de type "$result" enregistré. Merci !'),
+                      ),
+                    );
+                  }
                 }
               },
               itemBuilder: (BuildContext context) {
