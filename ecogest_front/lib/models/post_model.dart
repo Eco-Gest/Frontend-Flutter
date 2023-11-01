@@ -68,16 +68,22 @@ class PostModel {
       description: json['description']?.toString(),
       image: json['image']?.toString(),
       position: json['position']?.toString(),
-      type: json['type']?.toString()?? "",
+      type: json['type']?.toString() ?? "",
       level: json['level']?.toString() ?? "",
       startDate: json['start_date']?.toString(),
       endDate: json['end_date']?.toString(),
       createdAt: json['created_at']?.toString(),
       updatedAt: json['updated_at']?.toString(),
-      user: UserModel.fromJson(json['user'] as Map<String, Object?>),
-      userPostParticipation: json['user_post_participation'],
-      category: CategoryModel.fromJson(json['category'] as Map<String, Object?>),
-      likes:  List.from(json['like']).map((e)=>LikeModel.fromJson(e)).toList(),
+      user: json['user'] != null
+          ? UserModel.fromJson(json['user'] as Map<String, Object?>)
+          : null,
+      // userPostParticipation: json['user_post_participation']?.to,
+      category: json['category'] != null
+          ? CategoryModel.fromJson(json['category'] as Map<String, Object?>)
+          : null,
+      likes: json['like'] != null
+          ? listLike(json['like'])
+          : null,
       comments: json['comment'],
     );
   }
@@ -94,11 +100,20 @@ class PostModel {
       'position': position,
       'type': type,
       'level': level,
-      'start_date': startDate == null ? null : DateTime.parse(startDate!).toIso8601String(),
-      'end_date': endDate == null ? null : DateTime.parse(endDate!).toIso8601String(),
+      'start_date': startDate == null
+          ? null
+          : DateTime.parse(startDate!).toIso8601String(),
+      'end_date':
+          endDate == null ? null : DateTime.parse(endDate!).toIso8601String(),
       'created_at': createdAt,
       'updated_at': updatedAt,
     };
+  }
+
+  static List<LikeModel>? listLike(List<dynamic> responseList) {
+    return responseList.map((like) {
+      return LikeModel.fromJson(like as Map<String, dynamic>);
+    }).toList();
   }
 }
 

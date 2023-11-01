@@ -57,7 +57,7 @@ class EcoGestApiDataSource {
     }
   }
 
-    static Future<dynamic> patch(String endpoint, Object body,
+  static Future<dynamic> patch(String endpoint, Object body,
       {String error = 'Failed to patch data', String? token}) async {
     /// In debug mode, assert that the endpoint starts with a /
     assert(endpoint.startsWith('/'), 'Endpoint must start with a /');
@@ -74,7 +74,6 @@ class EcoGestApiDataSource {
       throw Exception(error);
     }
   }
-
 
   static Future<String> getToken() async {
     String? token = await storage.read(key: key);

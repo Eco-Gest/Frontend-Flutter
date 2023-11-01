@@ -1,3 +1,4 @@
+import 'package:ecogest_front/views/user_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ecogest_front/state_management/search/search_cubit.dart';
@@ -61,10 +62,9 @@ class SearchResultsWidget extends StatelessWidget {
                 title:
                     Text(state.users.elementAt(index)?.username ?? 'Username'),
                 onTap: () {
-                  // todo after page user
-                  // context.pushNamed(UserView.name, pathParameters: {
-                  //   'id': state.users.elementAt(index)!.id.toString(),
-                  // });
+                  context.pushNamed(UserView.name, pathParameters: {
+                    'id': state.users.elementAt(index)!.id.toString(),
+                  });
                 },
               ),
             ),

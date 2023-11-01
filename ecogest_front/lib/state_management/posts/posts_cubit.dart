@@ -3,7 +3,7 @@ import 'package:ecogest_front/state_management/posts/posts_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class PostsCubit extends Cubit<PostsState> {
-  PostsCubit() : super(PostsStateLoading());
+  PostsCubit() : super(PostsStateInitial());
 
   Future<void> getPosts(int pageNbr) async {
     try {
