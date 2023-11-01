@@ -16,7 +16,7 @@ class LikeCubit extends Cubit<LikeState> {
         emit(StateUnlikeSuccess());
       }
     } catch (error) {
-      emit(StateLikeError(error.toString()));
+      emit(StateLikeError("Erreur rencontrée pour liker cette publication. Veuillez réessayer."));
     }
   }
 }
