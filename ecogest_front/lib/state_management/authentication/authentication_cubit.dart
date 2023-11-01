@@ -7,18 +7,14 @@ import 'package:go_router/go_router.dart';
 part 'authentication_state.dart';
 
 class AuthenticationCubit extends Cubit<AuthenticationState> {
-  AuthenticationCubit()
-      : super(
-          const AuthenticationState(AuthenticationStatus.unknown, null),
-        );
+  AuthenticationCubit() : super(AuthenticationInitial());
 
   void getStatus() {
     UserService.getStatus.asBroadcastStream().listen((user) {
       if (user == null) {
-        emit(const AuthenticationState(
-            AuthenticationStatus.unauthenticated, null));
+        emit(AuthenticationUnauthenticated());
       } else {
-        emit(AuthenticationState(AuthenticationStatus.authenticated, user));
+        emit(AuthenticationAuthenticated(user));
       }
     });
   }
@@ -26,13 +22,12 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
   Future<void> login({required String email, required String password}) async {
     try {
       await AuthenticationService.login(email: email, password: password);
-      emit(const AuthenticationState(AuthenticationStatus.loading, null));
       final user = await UserService.getCurrentUser();
-      emit(AuthenticationState(AuthenticationStatus.authenticated, user));
+      emit(AuthenticationAuthenticated(user));
     } catch (e) {
       // Failed to login, failed to parse the token or
       // error while getting the user
-      emit(const AuthenticationState(AuthenticationStatus.error, null));
+      emit(AuthenticationError(e.toString()));
     }
   }
 
@@ -41,20 +36,18 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
       required String password,
       required String username}) async {
     try {
-      await AuthenticationService.register(
+      final user = await AuthenticationService.register(
           email: email, password: password, username: username);
-      emit(const AuthenticationState(AuthenticationStatus.loading, null));
-      final user = await UserService.getCurrentUser();
-      emit(AuthenticationState(AuthenticationStatus.authenticated, user));
+      emit(AuthenticationAuthenticated(user));
     } catch (e) {
       // Failed to login, failed to parse the token or
       // error while getting the user
-      emit(const AuthenticationState(AuthenticationStatus.error, null));
+      emit(AuthenticationError(e.toString()));
     }
   }
 
   Future<void> logout() async {
     await AuthenticationService.logout();
-    emit(const AuthenticationState(AuthenticationStatus.unauthenticated, null));
+    emit(AuthenticationUnauthenticated());
   }
 }

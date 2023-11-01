@@ -1,7 +1,11 @@
 import 'package:ecogest_front/models/post_model.dart';
+import 'package:ecogest_front/state_management/authentication/authentication_cubit.dart';
 import 'package:ecogest_front/state_management/like/like_cubit.dart';
+import 'package:ecogest_front/state_management/posts/participation_cubit.dart';
 import 'package:ecogest_front/widgets/post/like_widget.dart';
+import 'package:ecogest_front/widgets/post/participation_widet.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class PostContentButtons extends StatelessWidget {
   PostContentButtons({
@@ -21,6 +25,8 @@ class PostContentButtons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final user = context.watch<AuthenticationCubit>().state.user;
+
     return Column(
       children: [
         Row(
@@ -103,21 +109,14 @@ class PostContentButtons extends StatelessWidget {
           height: 10,
         ),
         if (isChallenge!) ...[
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-                minimumSize: const Size.fromHeight(30),
-                alignment: Alignment.topCenter,
-                padding: const EdgeInsets.all(20),
-                foregroundColor: Colors.white,
-                textStyle: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                )),
-            onPressed: () {
-              debugPrint('Click pour rejoindre le défi');
-              // TODO : Rejoindre le défi
-            },
-            child: const Text('Participer au défi'),
+          BlocProvider<ParticipationCubit>(
+            create: (_) => ParticipationCubit(),
+            child: ParticipationWidget(
+              postId: post.id!,
+              isAlreadyParticipant: post.userPostParticipation!.any(
+                      (participation) =>
+                          participation.participantId! == user!.id!) 
+            ),
           ),
         ]
       ],

@@ -1,9 +1,11 @@
 import 'package:ecogest_front/models/user_model.dart';
 import 'package:ecogest_front/state_management/authentication/authentication_cubit.dart';
 import 'package:ecogest_front/state_management/like/like_cubit.dart';
+import 'package:ecogest_front/state_management/posts/participation_cubit.dart';
 import 'package:ecogest_front/state_management/posts/posts_cubit.dart';
 import 'package:ecogest_front/state_management/posts/posts_state.dart';
 import 'package:ecogest_front/widgets/app_bar.dart';
+import 'package:ecogest_front/widgets/post/participation_widet.dart';
 import 'package:ecogest_front/widgets/post/post_content_author.dart';
 import 'package:ecogest_front/widgets/post/post_content_buttons_wrapper.dart';
 import 'package:ecogest_front/widgets/post/post_content_infos.dart';

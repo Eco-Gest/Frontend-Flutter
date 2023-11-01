@@ -16,9 +16,6 @@ void main() {
 class MainApp extends StatelessWidget {
   MainApp({super.key});
 
-  final AuthenticationCubit authenticationCubit = AuthenticationCubit();
-
-  @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
         providers: [
