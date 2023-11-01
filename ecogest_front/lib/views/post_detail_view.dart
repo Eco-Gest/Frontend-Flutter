@@ -48,6 +48,7 @@ class PostDetailView extends StatelessWidget {
                         children: [
                           // Author info
                           PostContentAuthor(
+                              postId: postId,
                               author: state.post!.user,
                               position: state.post!.position,
                               date: state.post!.createdAt),

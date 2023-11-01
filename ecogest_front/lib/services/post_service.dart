@@ -41,4 +41,21 @@ abstract class PostService {
     await EcoGestApiDataSource.post('/posts', body, token: token);
     return postModel;
   }
+
+
+  static Future<void> deletePost(int postId) async {
+    final String? token = await AuthenticationService.getToken();
+    
+    final response = await EcoGestApiDataSource.delete(
+      '/posts/$postId', {},
+      token: token,
+    );
+
+    if (response.statusCode == 200) {
+      // La suppression a réussi.
+    } else {
+      // La suppression a échoué. Vous pouvez émettre une exception ou gérer l'erreur d'une autre manière.
+      throw Exception('Échec de la suppression du message');
+    }
+  }
 }
