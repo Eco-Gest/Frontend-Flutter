@@ -90,11 +90,12 @@ class PostModel {
   }
 
   Map<String, dynamic> toJson() {
+      
     return {
       'id': id,
       'category_id': categoryId,
       'author_id': authorId,
-      "tags": tags,
+      'tags':  tags,
       'title': title,
       'description': description,
       'image': image,

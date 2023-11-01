@@ -22,9 +22,7 @@ class TagModel extends Taggable {
     );
   }
   
-  String toJson() => '''  {
-    "label": $label,\n
-  }''';
+  String toJson() => '{"label": "$label"}';
 
   
   @override

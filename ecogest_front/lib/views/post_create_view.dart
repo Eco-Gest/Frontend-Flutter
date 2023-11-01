@@ -28,22 +28,23 @@ class PostCreateView extends StatelessWidget {
 
   DateTime? startDate;
   DateTime? endDate;
-  List<TagModel> tagsToSave = [];
+  String _selectedTagsJson = 'Nothing to show';
+  late List<TagModel> _tagsToSave = [];
 
   final List<bool> _selectedPostType = <bool>[true, false];
 
-  List<TagModel> parseStringToTagList(String input) {
-    List<String> tags = input.split(',');
-    List<TagModel> tagList = [];
+//   List<TagModel> parseStringToTagList(String input) {
+//     List<String> tags = input.split(',');
+//     List<TagModel> tagList = [];
 
-    for (String tag in tags) {
-      String trimmedTag = tag.trim();
-      TagModel tagModel = TagModel(label: trimmedTag);
-      tagList.add(tagModel);
-    }
+//     for (String tag in tags) {
+//       String trimmedTag = tag.trim();
+//       TagModel tagModel = TagModel(label: trimmedTag);
+//       tagList.add(tagModel);
+//     }
 
-    return tagList;
-}
+//     return tagList;
+// }
 
   bool datesValidation() {
     if (startDate != null && endDate != null) {
@@ -297,7 +298,7 @@ class PostCreateView extends StatelessWidget {
                             alignment: Alignment.topCenter,
                             padding: const EdgeInsets.all(10),
                             child: FlutterTagging<TagModel>(
-                              initialItems:  tagsToSave,
+                              initialItems: _tagsToSave,
                               textFieldConfiguration: const TextFieldConfiguration(
                                   decoration: InputDecoration(
                                       border: InputBorder.none,
@@ -343,7 +344,9 @@ class PostCreateView extends StatelessWidget {
                                   );
                               },
                               onChanged: () {
-                                print('coucou');
+                                _tagsToSave
+                                    .map<TagModel>((tag) => tag)
+                                    .toList();
                               }
                             ),
                          ), // tags
