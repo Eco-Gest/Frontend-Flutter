@@ -107,8 +107,12 @@ class PostContentAuthor extends StatelessWidget {
                         'body': body.replaceAll(' ', '_'),
                       },
                     );
+                    try {
+                      await launchUrl(emailLaunchUri);
+                    } catch(e) {
+                        throw Exception("Signalement non éffectué");
+                    }
 
-                   launchUrl(emailLaunchUri);
 
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
