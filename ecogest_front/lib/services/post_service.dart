@@ -59,11 +59,6 @@ static Future<PostModel> updatePost(PostModel postModel) async {
     "end_date": postModel.endDate,
   };
 
-  debugPrint('Mon body =');
-  debugPrint(requestBody.toString());
-  debugPrint('Mon postId =');
-  debugPrint(postModel.id.toString());
-
   await EcoGestApiDataSource.patch('/posts/${postModel.id}', requestBody, token: token);
 
   return postModel;
