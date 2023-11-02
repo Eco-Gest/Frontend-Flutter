@@ -8,6 +8,8 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 class EcoGestApiDataSource {
   static const _baseUrl = 'https://ecogest-api-ce3f0245de21.herokuapp.com/api';
 
+  // static const _baseUrl = "http://localhost:8080/api";
+
   /// In this example, we use the Flutter Secure Storage plugin to
   /// store the token
   static const storage = FlutterSecureStorage();

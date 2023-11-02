@@ -1,4 +1,5 @@
 import 'package:ecogest_front/models/category_model.dart';
+import 'package:ecogest_front/models/comment_model.dart';
 import 'package:ecogest_front/models/like_model.dart';
 import 'package:ecogest_front/models/tag_model.dart';
 import 'package:ecogest_front/models/user_model.dart';
@@ -23,7 +24,7 @@ class PostModel {
   final List<UserPostParticipationModel>? userPostParticipation;
   final CategoryModel? category;
   final List<LikeModel>? likes;
-  final List? comments;
+  final List<CommentModel?>? comments;
 
   const PostModel({
     this.id,
@@ -85,7 +86,9 @@ class PostModel {
       likes: json['like'] != null ? listLike(json['like']) : null,
       category: json['category'] != null ?
           CategoryModel.fromJson(json['category'] as Map<String, Object?>) : null,
-      comments: json['comment'],
+      comments: json['comment'] != null
+            ? commentList(json['comment'])
+            : null,
     );
   }
 
@@ -112,6 +115,13 @@ class PostModel {
     };
   }
 
+  static List<CommentModel?>? commentList(
+      List<dynamic> responseList) {
+    return responseList.map((comment) {
+      return CommentModel.fromJson(comment as Map<String, dynamic>);
+   }).toList();
+  }
+  
   static List<LikeModel>? listLike(List<dynamic> responseList) {
     return responseList.map((like) {
       return LikeModel.fromJson(like as Map<String, dynamic>);

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:ecogest_front/views/challenges_view.dart';
+import 'package:ecogest_front/views/comments_view.dart';
 import 'package:ecogest_front/views/notifications_view.dart';
 import 'package:ecogest_front/views/errors/error404_view.dart';
 import 'package:ecogest_front/views/post_detail_view.dart';
@@ -83,6 +84,17 @@ abstract class AppRouter {
           builder: (context, state) => const ChallengesView(),
         ),
         GoRoute(
+          path: '/posts/:id/comments',
+          name: CommentsView.name,
+          builder: (context, state) {
+            final comments = state.extra! as List;
+            return CommentsView(
+              commentsList: comments, 
+              postId: int.parse(state.pathParameters['id'].toString()),
+            );
+          }
+        ),
+        GoRoute(
           path: '/settings',
           name: SettingsView.name,
           builder: (context, state) => const SettingsView(),
@@ -106,8 +118,8 @@ abstract class AppRouter {
         // If the user is not authenticated, redirect to the login page.
         final status = context.read<AuthenticationCubit>().state;
 
-        // // If the user is authenticated, redirect to the home page (only if
-        // // the current location is public page)
+        // If the user is authenticated, redirect to the home page (only if
+        // the current location is public page)
         if (publicRoutes.contains(state.uri.toString()) &&
             status is AuthenticationAuthenticated) {
           return '/home';
