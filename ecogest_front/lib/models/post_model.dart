@@ -65,7 +65,7 @@ class PostModel {
       authorId: json['author_id'] != null
           ? int.parse(json['author_id'].toString())
           : null,
-      tags: List.from(json['tags']).map((e)=>TagModel.fromJson(e)).toList(),
+      tags: json['tags'] != null ? List.from(json['tags']).map((e)=>TagModel.fromJson(e)).toList() :  null,
       title: json['title']?.toString(),
       description: json['description']?.toString(),
       image: json['image']?.toString(),
@@ -95,7 +95,7 @@ class PostModel {
       'id': id,
       'category_id': categoryId,
       'author_id': authorId,
-      'tags':  tags,
+      'tags':  [tags?.map((tag) => tag.toJson())],
       'title': title,
       'description': description,
       'image': image,

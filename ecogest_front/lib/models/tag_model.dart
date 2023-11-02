@@ -6,7 +6,7 @@ class TagModel extends Taggable {
   final String? createdAt;
   final String? updatedAt;
 
- const TagModel({
+  const TagModel({
     this.id,
     required this.label,
     this.createdAt,
@@ -21,11 +21,13 @@ class TagModel extends Taggable {
       updatedAt: json['updated_at']?.toString(),
     );
   }
-  
-  String toJson() => '{"label": "$label"}';
 
-  
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data["label"] = label;
+    return data;
+  }
+
   @override
   List<Object> get props => [label];
-
 }

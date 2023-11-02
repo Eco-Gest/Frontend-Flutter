@@ -413,6 +413,7 @@ class PostCreateView extends StatelessWidget {
                                         position: positionController.text,
                                         startDate: startDate,
                                         endDate: endDate,
+                                        tags: _tagsToSave,
                                         image: imageController.text,
                                       );
                                 }
