@@ -9,10 +9,10 @@ class NotificationsService {
     final List<dynamic> responseMap =
         await EcoGestApiDataSource.get('/me/notifications', token: token);
 
-    final List<NotificationModel> trophies = responseMap.map((trophy) {
-      return NotificationModel.fromJson(trophy);
+    final List<NotificationModel> notifications = responseMap.map((notif) {
+      return NotificationModel.fromJson(notif);
     }).toList();
 
-    return trophies;
+    return notifications;
   }
 }
