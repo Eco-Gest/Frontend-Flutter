@@ -11,7 +11,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class PostContentButtons extends StatelessWidget {
   PostContentButtons({
     super.key,
-    required this.postId,
     required this.isChallenge,
     this.likes,
     required this.isLiked,
@@ -20,7 +19,6 @@ class PostContentButtons extends StatelessWidget {
   });
 
   final PostModel post;
-  final int postId = post.id!;
   final bool? isChallenge;
   int? likes;
   final List? comments;
@@ -29,6 +27,7 @@ class PostContentButtons extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final user = context.watch<AuthenticationCubit>().state.user;
+    final int postId = post.id!;
 
     return Column(
       children: [
@@ -48,8 +47,9 @@ class PostContentButtons extends StatelessWidget {
             if (likes! > 1) ...[
               TextButton(
                 onPressed: () {
-                  GoRouter.of(context).push('/posts/$postId/comments', extra: comments);
-                }, 
+                  GoRouter.of(context)
+                      .push('/posts/$postId/comments', extra: comments);
+                },
                 child: Text(
                   '$likes likes',
                   style: const TextStyle(color: Colors.black),
@@ -87,8 +87,9 @@ class PostContentButtons extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   )),
               onPressed: () {
-                GoRouter.of(context).push('/posts/$postId/comments', extra: comments);
-              }, 
+                GoRouter.of(context)
+                    .push('/posts/$postId/comments', extra: comments);
+              },
               child: const Icon(Icons.comment),
             ),
             ElevatedButton(
@@ -114,11 +115,10 @@ class PostContentButtons extends StatelessWidget {
           BlocProvider<ParticipationCubit>(
             create: (_) => ParticipationCubit(),
             child: ParticipationWidget(
-              postId: post.id!,
-              isAlreadyParticipant: post.userPostParticipation!.any(
-                      (participation) =>
-                          participation.participantId! == user!.id!) 
-            ),
+                postId: post.id!,
+                isAlreadyParticipant: post.userPostParticipation!.any(
+                    (participation) =>
+                        participation.participantId! == user!.id!)),
           ),
         ]
       ],
