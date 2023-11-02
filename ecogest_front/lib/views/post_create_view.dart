@@ -13,6 +13,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ecogest_front/state_management/posts/form_post_cubit.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_tagging_plus/flutter_tagging_plus.dart';
+import 'package:flutter/services.dart';
 
 class PostCreateView extends StatelessWidget {
   PostCreateView({super.key});
@@ -32,19 +33,6 @@ class PostCreateView extends StatelessWidget {
   late List<TagModel> _tagsToSave = [];
 
   final List<bool> _selectedPostType = <bool>[true, false];
-
-//   List<TagModel> parseStringToTagList(String input) {
-//     List<String> tags = input.split(',');
-//     List<TagModel> tagList = [];
-
-//     for (String tag in tags) {
-//       String trimmedTag = tag.trim();
-//       TagModel tagModel = TagModel(label: trimmedTag);
-//       tagList.add(tagModel);
-//     }
-
-//     return tagList;
-// }
 
   bool datesValidation() {
     if (startDate != null && endDate != null) {
@@ -299,13 +287,17 @@ class PostCreateView extends StatelessWidget {
                             padding: const EdgeInsets.all(10),
                             child: FlutterTagging<TagModel>(
                               initialItems: _tagsToSave,
-                              textFieldConfiguration: const TextFieldConfiguration(
+                              textFieldConfiguration: TextFieldConfiguration(
                                   decoration: InputDecoration(
                                       border: InputBorder.none,
                                       filled: true,
                                       hintText: 'Saisir un nouveau tag',
                                       labelText: 'Ajouter un ou plusieurs tags',
                                   ),
+                                  inputFormatters: [
+                                    FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z]')),
+                                    FilteringTextInputFormatter.deny(' '),
+                                  ],
                               ),
                               findSuggestions: TagService.getTagModels,
                               additionCallback: (value) {
