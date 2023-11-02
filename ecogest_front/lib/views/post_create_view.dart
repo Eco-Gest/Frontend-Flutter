@@ -207,10 +207,10 @@ class PostCreateView extends StatelessWidget {
 
                         BlocBuilder<PostFormCubit, PostFormState>(
                             builder: (context, state) {
-                          startDate = DateTime.now();
-                          endDate = startDate!.add(const Duration(days: 1));
                           if (state is SelectionState &&
                               state.selectedType == PostType.challenge) {
+                            startDate = DateTime.now();
+                            endDate = startDate!.add(const Duration(days: 1));
                             return Column(children: [
                               // date debut
                               Container(

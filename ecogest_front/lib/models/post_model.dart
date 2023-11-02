@@ -93,7 +93,7 @@ class PostModel {
       'id': id,
       'category_id': categoryId,
       'author_id': authorId,
-      "tag": tag,
+      "tags": tag,
       'title': title,
       'description': description,
       'image': image,
