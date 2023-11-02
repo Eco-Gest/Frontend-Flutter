@@ -21,7 +21,3 @@ class PostsStateError extends PostsState {
   final String message;
   PostsStateError(this.message);
 }
-
-class PostStateUnliked extends PostsState {}
-
-class PostStateLiked extends PostsState {}

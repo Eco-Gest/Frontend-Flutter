@@ -1,4 +1,5 @@
 import 'package:ecogest_front/models/subscription_model.dart';
+import 'package:ecogest_front/models/user_post_participation_model.dart';
 
 class UserModel {
   final int? id;
@@ -44,8 +45,10 @@ class UserModel {
         badgeId: json['badge_id'] != null
             ? int.parse(json['badge_id'].toString())
             : null,
-        badgeTitle: json['badge']?['title']?.toString(),  
-        badgePoints: json['badge']['point']!= null ? int.parse(json['badge']['point'].toString()) : null, 
+        badgeTitle: json['badge']?['title']?.toString(),
+        badgePoints: json['badge'] != null
+            ? int.parse(json['badge']['point'].toString())
+            : null,
         image: json['image']?.toString(),
         birthdate: json['birthdate']?.toString(),
         biography: json['biography']?.toString(),
@@ -54,7 +57,7 @@ class UserModel {
         createdAt: json['created_at']?.toString(),
         updatedAt: json['updated_at']?.toString(),
         postParticipationCount: json['user_post_participation'] != null
-            ? json['user_post_participation'].length.toString()
+            ? userPostParticipationList(json['user_post_participation'])?.length.toString()
             : null,
         followers: json['follower'] != null
             ? subscriptionList(json['follower'])
@@ -74,11 +77,19 @@ class UserModel {
     data["is_private"] = isPrivate;
     return data;
   }
-  
+
   static List<SubscriptionModel?>? subscriptionList(
       List<dynamic> responseList) {
     return responseList.map((follower) {
       return SubscriptionModel.fromJson(follower as Map<String, dynamic>);
+    }).toList();
+  }
+
+  static List<UserPostParticipationModel>? userPostParticipationList(
+      List<dynamic> responseList) {
+    return responseList.map((participation) {
+      return UserPostParticipationModel.fromJson(
+          participation as Map<String, dynamic>);
     }).toList();
   }
 }

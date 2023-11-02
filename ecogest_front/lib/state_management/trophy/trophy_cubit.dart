@@ -10,7 +10,7 @@ class TrophyCubit extends Cubit<TrophyState> {
       final posts = await TrophyService.getTrophies(userId);
       emit(TrophyStateSuccess(posts));
     } catch (error) {
-      emit(TrophyStateError(error.toString()));
+      emit(TrophyStateError("Erreur rencontrée. Veuillez réessayer."));;
     }
   }
 

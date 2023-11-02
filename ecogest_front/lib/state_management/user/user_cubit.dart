@@ -14,7 +14,7 @@ class UserCubit extends Cubit<UserState> {
       final user = await UserService.getUser(userId);
       emit(UserSuccess(user));
     } catch (error) {
-      emit(UserError(error.toString()));
+      emit(UserError("Erreur rencontrée. Veuillez réessayer."));
     }
   }
 
@@ -40,7 +40,7 @@ class UserCubit extends Cubit<UserState> {
       await UserService.updateUserAccount(user);
       emit(UserSuccess(user));
     } catch (error) {
-      emit(UserError(error.toString()));
+      emit(UserError("Erreur rencontrée pour la mise à jour de vos données. Veuillez réessayer."));
     }
   }
 }

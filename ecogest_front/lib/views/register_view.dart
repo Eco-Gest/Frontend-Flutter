@@ -160,9 +160,9 @@ class RegisterView extends StatelessWidget {
                     // Error message if user is not allow to connect
                     listener: (context, state) {
                       final status =
-                          context.read<AuthenticationCubit>().state.status;
+                          context.read<AuthenticationCubit>().state;
 
-                      if (status == AuthenticationStatus.unauthenticated) {
+                      if (status is AuthenticationUnauthenticated) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
                             content: Text(
@@ -172,7 +172,7 @@ class RegisterView extends StatelessWidget {
                             backgroundColor: Colors.red,
                           ),
                         );
-                      } else if (status == AuthenticationStatus.loading) {
+                      } else if (status is AuthenticationAuthenticated ) {
                         // Show only CircularProgressIndicator
                         showDialog(
                           context: context,
