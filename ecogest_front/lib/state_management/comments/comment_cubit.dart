@@ -1,4 +1,4 @@
-import 'package:ecogest_front/models/comment_model.dart';
+/*import 'package:ecogest_front/models/comment_model.dart';
 import 'package:ecogest_front/services/comment_service.dart';
 import 'package:ecogest_front/state_management/comments/comment_state.dart';
 import 'package:flutter/material.dart';
@@ -34,4 +34,4 @@ class CommentCubit extends Cubit<CommentState> {
     //   emit(CommentStateError(e.toString()));
     // }
   }
-}
+}*/

@@ -1,4 +1,4 @@
-import 'package:ecogest_front/data/ecogest_api_data_source.dart';
+/*import 'package:ecogest_front/data/ecogest_api_data_source.dart';
 import 'package:ecogest_front/models/comment_model.dart';
 import 'package:ecogest_front/services/authentication_service.dart';
 import 'package:flutter/material.dart';
@@ -20,4 +20,4 @@ abstract class CommentService {
       throw Exception('Eurreur à la création du commentaire');
     }
   }
-}
+}*/

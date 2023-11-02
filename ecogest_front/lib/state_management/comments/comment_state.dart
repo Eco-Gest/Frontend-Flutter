@@ -1,4 +1,4 @@
-import 'package:ecogest_front/models/comment_model.dart';
+/*import 'package:ecogest_front/models/comment_model.dart';
 
 abstract class CommentState {
   const CommentState();
@@ -18,4 +18,4 @@ class CommentStateError extends CommentState {
   final String message;
 
   const CommentStateError(this.message);
-}
+}*/
