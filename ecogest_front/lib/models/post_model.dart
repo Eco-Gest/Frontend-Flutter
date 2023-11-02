@@ -81,10 +81,9 @@ class PostModel {
       userPostParticipation: json['user_post_participation'] != null
           ? userPostParticipationList(json['user_post_participation'])
           : null,
-      category: json['category'] != null
-          ? CategoryModel.fromJson(json['category'] as Map<String, Object?>)
-          : null,
       likes: json['like'] != null ? listLike(json['like']) : null,
+      category: json['category'] != null ?
+          CategoryModel.fromJson(json['category'] as Map<String, Object?>) : null,
       comments: json['comment'],
     );
   }
