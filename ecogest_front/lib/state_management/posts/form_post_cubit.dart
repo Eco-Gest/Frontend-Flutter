@@ -99,7 +99,7 @@ Future<void> updatePost({
     DateTime? startDate,
     DateTime? endDate,
     String? position,
-    String? tag,
+    List<TagModel>? tags,
     String? image,
   }) async {
     if (state is! SelectionState) {
@@ -113,6 +113,7 @@ Future<void> updatePost({
       title: title,
       description: description,
       image: image,
+      tags: tags,
       startDate: startDate?.toIso8601String(),
       endDate: endDate?.toIso8601String(),
       type: selectionState.selectedType.name,

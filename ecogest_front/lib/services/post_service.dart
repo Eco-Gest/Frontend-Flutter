@@ -64,6 +64,7 @@ abstract class PostService {
 
     // Create a new map with only the desired fields
     final Map<String, dynamic> requestBody = {
+      "tags": postModel.tags,
       "title": postModel.title,
       "description": postModel.description,
       "image": postModel.image,

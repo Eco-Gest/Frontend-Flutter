@@ -6,6 +6,9 @@ import 'package:ecogest_front/state_management/authentication/authentication_cub
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ecogest_front/state_management/posts/posts_cubit.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:go_router/go_router.dart';
+import 'package:ecogest_front/views/home_view.dart';
+
 
 class PostContentMenu extends StatelessWidget {
   const PostContentMenu({
@@ -29,7 +32,9 @@ class PostContentMenu extends StatelessWidget {
                         } 
                       } else if (value == 'delete') {
                         context.read<PostsCubit>().deletePost(postId);
-                        Navigator.pop(context);
+                        GoRouter.of(context).goNamed(
+                          HomeView.name,
+                        );
                       } else if (value == 'report') {
                         final result = await showDialog<String>(
                           context: context,
