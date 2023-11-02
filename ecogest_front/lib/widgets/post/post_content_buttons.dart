@@ -1,54 +1,73 @@
+import 'package:ecogest_front/models/post_model.dart';
+import 'package:ecogest_front/state_management/authentication/authentication_cubit.dart';
+import 'package:ecogest_front/state_management/like/like_cubit.dart';
+import 'package:ecogest_front/state_management/posts/participation_cubit.dart';
+import 'package:ecogest_front/widgets/post/like_widget.dart';
+import 'package:ecogest_front/widgets/post/participation_widet.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class PostContentButtons extends StatelessWidget {
-  const PostContentButtons({
+  PostContentButtons({
     super.key,
     required this.postId,
     required this.isChallenge,
     this.likes,
+    required this.isLiked,
+    required this.post,
     this.comments,
   });
 
-  final int postId;
+  final PostModel post;
+  final int postId = post.id!;
   final bool? isChallenge;
-  final List? likes;
+  int? likes;
   final List? comments;
+  bool isLiked;
 
   @override
   Widget build(BuildContext context) {
+    final user = context.watch<AuthenticationCubit>().state.user;
+
     return Column(
       children: [
         Row(
           children: [
-            if (likes!.isNotEmpty) ...[
+            if (likes == 1) ...[
               TextButton(
                 onPressed: () {
                   // TODO : Afficher les likes
-                }, 
+                },
                 child: Text(
-                  '${likes!.length} likes',
-                  style: const TextStyle(
-                    color: Colors.black
-                  ),
+                  '$likes like',
+                  style: const TextStyle(color: Colors.black),
                 ),
               ),
             ],
-            if (likes!.isNotEmpty && comments!.isNotEmpty) ...[
-              const Text(' | '),
-            ],
-            if (comments!.isNotEmpty) ...[
+            if (likes! > 1) ...[
               TextButton(
                 onPressed: () {
                   GoRouter.of(context).push('/posts/$postId/comments', extra: comments);
                 }, 
                 child: Text(
-                  '${comments!.length} commentaires',
-                  style: const TextStyle(
-                    color: Colors.black
-                  ),
-                )
+                  '$likes likes',
+                  style: const TextStyle(color: Colors.black),
+                ),
               ),
+            ],
+            if (likes! > 0 && comments!.isNotEmpty) ...[
+              const Text(' | '),
+            ],
+            if (comments!.isNotEmpty) ...[
+              TextButton(
+                  onPressed: () {
+                    // TODO: Afficher les commentaires
+                  },
+                  child: Text(
+                    '${comments!.length} commentaires',
+                    style: const TextStyle(color: Colors.black),
+                  )),
             ]
           ],
         ),
@@ -58,28 +77,15 @@ class PostContentButtons extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
+            LikeWidget(postId: post.id!, isLiked: isLiked),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.all(20),
-                foregroundColor: Colors.white,
-                textStyle: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                )),
-              onPressed: () {
-                debugPrint('Click pour liker la publication');
-                // TODO : Liker la publication
-              }, 
-              child: const Icon(Icons.thumb_up),
-            ),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.all(20),
-                foregroundColor: Colors.white,
-                textStyle: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                )),
+                  padding: const EdgeInsets.all(20),
+                  foregroundColor: Colors.white,
+                  textStyle: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  )),
               onPressed: () {
                 GoRouter.of(context).push('/posts/$postId/comments', extra: comments);
               }, 
@@ -87,16 +93,16 @@ class PostContentButtons extends StatelessWidget {
             ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.all(20),
-                foregroundColor: Colors.white,
-                textStyle: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                )),
+                  padding: const EdgeInsets.all(20),
+                  foregroundColor: Colors.white,
+                  textStyle: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  )),
               onPressed: () {
                 debugPrint('Click pour partager la publication');
                 // TODO : Partager la publication
-              }, 
+              },
               child: const Icon(Icons.share),
             ),
           ],
@@ -105,25 +111,17 @@ class PostContentButtons extends StatelessWidget {
           height: 10,
         ),
         if (isChallenge!) ...[
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-                minimumSize: const Size.fromHeight(30),
-                alignment: Alignment.topCenter,
-                padding: const EdgeInsets.all(20),
-                foregroundColor: Colors.white,
-                textStyle: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                )),
-            onPressed: () {
-              debugPrint('Click pour rejoindre le défi');
-              // TODO : Rejoindre le défi
-            },
-            child: const Text('Participer au défi'),
+          BlocProvider<ParticipationCubit>(
+            create: (_) => ParticipationCubit(),
+            child: ParticipationWidget(
+              postId: post.id!,
+              isAlreadyParticipant: post.userPostParticipation!.any(
+                      (participation) =>
+                          participation.participantId! == user!.id!) 
+            ),
           ),
         ]
       ],
     );
-
   }
 }

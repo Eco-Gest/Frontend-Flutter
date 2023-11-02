@@ -15,7 +15,7 @@ class SearchCubit extends Cubit<SearchState> {
       final posts = await SearchService.searchPosts(query);
       emit(SearchStateSuccess(users, posts));
     } catch (error) {
-      emit(SearchStateError(error.toString()));
+      emit(SearchStateError("Erreur rencontrée pour votre recherche. Veuillez réessayer."));
     }
   }
 }

@@ -25,9 +25,9 @@ class ChallengesWidget extends StatelessWidget {
           } else if (state is PostsStateError) {
             return Center(child: Text(state.message));
           } else if (state is PostsStateSuccess) {
-            if (state.posts.length == 0) {
-              return Center(
-                child: Text('Oops aucun défi ici'),
+            if (state.posts.isEmpty) {
+              return  Center(
+                child: const Text('Oops aucun défi ici'),
               );
             }
             return PostsList(

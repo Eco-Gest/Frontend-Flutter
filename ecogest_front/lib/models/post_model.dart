@@ -1,6 +1,8 @@
 import 'package:ecogest_front/models/category_model.dart';
 import 'package:ecogest_front/models/comment_model.dart';
+import 'package:ecogest_front/models/like_model.dart';
 import 'package:ecogest_front/models/user_model.dart';
+import 'package:ecogest_front/models/user_post_participation_model.dart';
 
 class PostModel {
   final int? id;
@@ -18,9 +20,9 @@ class PostModel {
   final String? createdAt;
   final String? updatedAt;
   final UserModel? user;
-  final List? userPostParticipation;
+  final List<UserPostParticipationModel>? userPostParticipation;
   final CategoryModel? category;
-  final List? likes;
+  final List<LikeModel>? likes;
   final List<CommentModel?>? comments;
 
   const PostModel({
@@ -68,20 +70,24 @@ class PostModel {
       description: json['description']?.toString(),
       image: json['image']?.toString(),
       position: json['position']?.toString(),
-      type: json['type']?.toString()?? "",
+      type: json['type']?.toString() ?? "",
       level: json['level']?.toString() ?? "",
       startDate: json['start_date']?.toString(),
       endDate: json['end_date']?.toString(),
       createdAt: json['created_at']?.toString(),
       updatedAt: json['updated_at']?.toString(),
-      user: UserModel.fromJson(json['user'] as Map<String, Object?>),
-      userPostParticipation: json['user_post_participation'],
-      category:
-          CategoryModel.fromJson(json['category'] as Map<String, Object?>),
-      likes: json['like'],
+      user: json['user'] != null
+          ? UserModel.fromJson(json['user'] as Map<String, Object?>)
+          : null,
+      userPostParticipation: json['user_post_participation'] != null
+          ? userPostParticipationList(json['user_post_participation'])
+          : null,
+      likes: json['like'] != null ? listLike(json['like']) : null,
+      category: json['category'] != null ?
+          CategoryModel.fromJson(json['category'] as Map<String, Object?>) : null,
       comments: json['comment'] != null
             ? commentList(json['comment'])
-            : null, // json['comment'],
+            : null,
     );
   }
 
@@ -90,15 +96,18 @@ class PostModel {
       'id': id,
       'category_id': categoryId,
       'author_id': authorId,
-      "tag": tag,
+      "tags": tag,
       'title': title,
       'description': description,
       'image': image,
       'position': position,
       'type': type,
       'level': level,
-      'start_date': startDate == null ? null : DateTime.parse(startDate!).toIso8601String(),
-      'end_date': endDate == null ? null : DateTime.parse(endDate!).toIso8601String(),
+      'start_date': startDate == null
+          ? null
+          : DateTime.parse(startDate!).toIso8601String(),
+      'end_date':
+          endDate == null ? null : DateTime.parse(endDate!).toIso8601String(),
       'created_at': createdAt,
       'updated_at': updatedAt,
     };
@@ -108,6 +117,20 @@ class PostModel {
       List<dynamic> responseList) {
     return responseList.map((comment) {
       return CommentModel.fromJson(comment as Map<String, dynamic>);
+   }).toList();
+  }
+  
+  static List<LikeModel>? listLike(List<dynamic> responseList) {
+    return responseList.map((like) {
+      return LikeModel.fromJson(like as Map<String, dynamic>);
+    }).toList();
+  }
+
+  static List<UserPostParticipationModel>? userPostParticipationList(
+      List<dynamic> responseList) {
+    return responseList.map((participation) {
+      return UserPostParticipationModel.fromJson(
+          participation as Map<String, dynamic>);
     }).toList();
   }
 }
