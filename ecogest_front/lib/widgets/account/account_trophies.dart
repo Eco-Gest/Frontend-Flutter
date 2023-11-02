@@ -23,6 +23,7 @@ class _AccountTrophiesState extends State<AccountTrophies> {
   @override
   Widget build(BuildContext context) {
     return Expanded(
+      child: SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -62,6 +63,7 @@ class _AccountTrophiesState extends State<AccountTrophies> {
             },
           ),
         ],
+      ),
       ),
     );
   }

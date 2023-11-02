@@ -14,7 +14,7 @@ class SubscriptionCubit extends Cubit<SubscriptionState> {
       }
       emit(SubscriptionStateSuccess());
     } catch (error) {
-      emit(SubscriptionStateError(error.toString()));
+      emit(SubscriptionStateError("Erreur rencontrée. Veuillez réessayer."));
     }
   }
 
@@ -24,7 +24,7 @@ class SubscriptionCubit extends Cubit<SubscriptionState> {
       await SubscriptionService.unSubscribe(userId);
       emit(SubscriptionStateSuccess());
     } catch (error) {
-      emit(SubscriptionStateError(error.toString()));
+      emit(SubscriptionStateError("Erreur rencontrée. Veuillez réessayer."));
     }
   }
 
@@ -38,7 +38,7 @@ class SubscriptionCubit extends Cubit<SubscriptionState> {
       }
       emit(SubscriptionStateSuccess());
     } catch (error) {
-      emit(SubscriptionStateError(error.toString()));
+      emit(SubscriptionStateError("Erreur rencontrée. Veuillez réessayer."));
     }
   }
 }

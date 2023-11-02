@@ -8,7 +8,6 @@ class PostsStateLoading extends PostsState {}
 
 class PostsStateSuccess extends PostsState {
   final List<PostModel> posts;
-
   PostsStateSuccess(this.posts);
 }
 
@@ -20,6 +19,5 @@ class OnePostStateSuccess extends PostsState {
 
 class PostsStateError extends PostsState {
   final String message;
-
   PostsStateError(this.message);
 }

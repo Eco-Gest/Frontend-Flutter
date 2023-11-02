@@ -11,7 +11,8 @@ class PostsCubit extends Cubit<PostsState> {
       final posts = await PostService.getPosts(pageNbr);
       emit(PostsStateSuccess(posts));
     } catch (error) {
-      emit(PostsStateError(error.toString()));
+      emit(PostsStateError(
+          "Erreur rencontrée pour récupérer les publications. Veuillez réessayer."));
     }
   }
 
@@ -21,7 +22,8 @@ class PostsCubit extends Cubit<PostsState> {
       final post = await PostService.getOnePost(postId);
       emit(OnePostStateSuccess(post));
     } catch (error) {
-      emit(PostsStateError(error.toString()));
+      emit(PostsStateError(
+          "Erreur rencontrée pour récupérer la publication. Veuillez réessayer."));
     }
   }
 
@@ -31,7 +33,8 @@ class PostsCubit extends Cubit<PostsState> {
       final posts = await PostService.getUserPostsFiltered(backendRoute);
       emit(PostsStateSuccess(posts));
     } catch (error) {
-      emit(PostsStateError(error.toString()));
+      emit(PostsStateError(
+          "Erreur rencontrée pour récupérer vos publications. Veuillez réessayer."));
     }
   }
 }

@@ -6,20 +6,19 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 part 'user_state.dart';
 
 class UserCubit extends Cubit<UserState> {
-  UserCubit() : super(UserInitial()) {
-  }
- 
+  UserCubit() : super(UserInitial()) {}
+
   Future<void> getUser(int userId) async {
     try {
       emit(UserLoading());
       final user = await UserService.getUser(userId);
       emit(UserSuccess(user));
     } catch (error) {
-      emit(UserError(error.toString()));
+      emit(UserError("Erreur rencontrée. Veuillez réessayer."));
     }
   }
-  
-    Future<void> updateUserAccount({
+
+  Future<void> updateUserAccount({
     required String username,
     required bool isPrivate,
     String? biography,
@@ -41,7 +40,7 @@ class UserCubit extends Cubit<UserState> {
       await UserService.updateUserAccount(user);
       emit(UserSuccess(user));
     } catch (error) {
-      emit(UserError(error.toString()));
+      emit(UserError("Erreur rencontrée pour la mise à jour de vos données. Veuillez réessayer."));
     }
   }
 }
