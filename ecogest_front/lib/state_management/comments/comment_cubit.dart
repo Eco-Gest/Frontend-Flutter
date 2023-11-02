@@ -5,8 +5,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class CommentCubit extends Cubit<CommentState> {
   CommentCubit() : super(CommentStateInitial());
 
-  Future<void> createComment(
-      {required int postId, required String content}) async {
+  Future<void> createComment({
+    required int postId,
+    required String content,
+  }) async {
     try {
       final result = await CommentService.createComment(content, postId);
       emit(CommentStateSuccess(result));

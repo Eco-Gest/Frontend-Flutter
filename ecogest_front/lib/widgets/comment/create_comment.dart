@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ecogest_front/assets/ecogest_theme.dart';
 import 'package:ecogest_front/state_management/comments/comment_cubit.dart';
-import 'package:ecogest_front/state_management/comments/comment_state.dart';
 
 class CreateComment extends StatelessWidget {
   CreateComment({super.key, required this.postId});
@@ -22,15 +21,10 @@ class CreateComment extends StatelessWidget {
           fillColor: Colors.white,
           suffixIcon: IconButton(
             onPressed: () {
-              // TODO : Ajouter le commentaire au post
-              debugPrint(_newCommentController.text.toString());
-
-              //context.read<CommentCubit>().createComment(
-              //postId: postId,
-              //content: _newCommentController.text,
-              //);
               context.read<CommentCubit>().createComment(
-                  postId: postId, content: _newCommentController.text);
+                    postId: postId,
+                    content: _newCommentController.text,
+                  );
             },
             icon: const Icon(Icons.send),
           ),
