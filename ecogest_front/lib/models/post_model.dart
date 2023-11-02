@@ -1,5 +1,6 @@
 import 'package:ecogest_front/models/category_model.dart';
 import 'package:ecogest_front/models/like_model.dart';
+import 'package:ecogest_front/models/tag_model.dart';
 import 'package:ecogest_front/models/user_model.dart';
 import 'package:ecogest_front/models/user_post_participation_model.dart';
 
@@ -7,7 +8,7 @@ class PostModel {
   final int? id;
   final int? categoryId;
   final int? authorId;
-  final String? tag;
+  final List<TagModel>? tags;
   final String? title;
   final String? description;
   final String? image;
@@ -28,7 +29,7 @@ class PostModel {
     this.id,
     required this.categoryId,
     this.authorId,
-    this.tag,
+    this.tags,
     this.title,
     this.description,
     this.image,
@@ -64,7 +65,7 @@ class PostModel {
       authorId: json['author_id'] != null
           ? int.parse(json['author_id'].toString())
           : null,
-      tag: json['tag']?.toString(),
+      tags: json['tags'] != null ? List.from(json['tags']).map((e)=>TagModel.fromJson(e)).toList() :  null,
       title: json['title']?.toString(),
       description: json['description']?.toString(),
       image: json['image']?.toString(),
@@ -89,11 +90,12 @@ class PostModel {
   }
 
   Map<String, dynamic> toJson() {
+      
     return {
       'id': id,
       'category_id': categoryId,
       'author_id': authorId,
-      "tags": tag,
+      'tags':  [tags?.map((tag) => tag.toJson())],
       'title': title,
       'description': description,
       'image': image,
