@@ -95,7 +95,7 @@ class PostModel {
       'id': id,
       'category_id': categoryId,
       'author_id': authorId,
-      'tags':  [tags?.map((tag) => tag.toJson())],
+      'tags': tags?.map((tag) => tag.toJson()).toList(),
       'title': title,
       'description': description,
       'image': image,
