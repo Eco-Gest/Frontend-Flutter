@@ -62,15 +62,11 @@ class EcoGestApiDataSource {
     /// In debug mode, assert that the endpoint starts with a /
     assert(endpoint.startsWith('/'), 'Endpoint must start with a /');
 
-    debugPrint(body.toString());
-
     var response = await http.patch(
       Uri.parse('$_baseUrl$endpoint'),
       headers: _getHeaders(token),
       body: jsonEncode(body),
     );
-
-    debugPrint(response.statusCode.toString());
 
     if (response.statusCode > 199 && response.statusCode <= 299) {
       return jsonDecode(response.body);

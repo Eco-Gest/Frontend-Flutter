@@ -41,7 +41,6 @@ class UserView extends StatelessWidget {
             } else if (state is UserSuccess) {
               final authenticationState =
                   context.read<AuthenticationCubit>().state;
-              if (authenticationState is AuthenticationAuthenticated) {
                 final userAuthenticated = authenticationState.user;
                 final userIsSubscribed = userAuthenticated!.following!
                     .where((subscription) =>
@@ -195,9 +194,7 @@ class UserView extends StatelessWidget {
                     ],
                   ),
                 );
-              }
             }
-
             return const SizedBox.shrink();
           },
         ),

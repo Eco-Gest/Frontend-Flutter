@@ -13,7 +13,6 @@ abstract class PostService {
     }).toList();
 
     return posts;
-
   }
 
   static Future<List<PostModel>> getUserPostsFiltered(
@@ -40,5 +39,17 @@ abstract class PostService {
     final body = postModel.toJson();
     await EcoGestApiDataSource.post('/posts', body, token: token);
     return postModel;
+  }
+
+  static Future<void> toggleLike(int postId, bool isLiked) async {
+    final String? token = await AuthenticationService.getToken();
+
+    if (isLiked) {
+      return await EcoGestApiDataSource.delete('/posts/$postId/likes', {},
+          error: 'Failed to add like', token: token);
+    } else {
+      await EcoGestApiDataSource.post('/posts/$postId/likes', {},
+          error: 'Failed to add like', token: token);
+    }
   }
 }

@@ -8,7 +8,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 class UpdateAccountWidget extends StatefulWidget {
-  UpdateAccountWidget({super.key, required this.user, required this.isPrivateController});
+  UpdateAccountWidget(
+      {super.key, required this.user, required this.isPrivateController});
 
   UserModel user;
   bool isPrivateController;
@@ -63,7 +64,6 @@ class _UpdateAccountWidget extends State<UpdateAccountWidget> {
 
   @override
   Widget build(BuildContext context) {
-
     UserModel user = widget.user;
     usernameController.text = user!.username ?? "";
     imageController.text = user.image ?? "";
@@ -93,9 +93,6 @@ class _UpdateAccountWidget extends State<UpdateAccountWidget> {
                       if (state is UserSuccess) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(content: Text('Mise à jour réussie')),
-                        );
-                        GoRouter.of(context).goNamed(
-                          AccountView.name,
                         );
                       }
                     },
@@ -246,8 +243,8 @@ class _UpdateAccountWidget extends State<UpdateAccountWidget> {
                                                       biographyController.text,
                                                   birthdate: birthdate,
                                                   image: imageController.text,
-                                                  isPrivate:
-                                                      widget.isPrivateController);
+                                                  isPrivate: widget
+                                                      .isPrivateController);
                                         }
                                       },
                                       child: const Text('Publier'),

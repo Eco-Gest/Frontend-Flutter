@@ -86,7 +86,6 @@ class PostFormCubit extends Cubit<PostFormState> {
       final result = await PostService.createPost(post);
       emit(PostFormStateSuccess(result));
     } catch (e) {
-      debugPrint(e.toString());
       emit(PostFormStateError(e.toString()));
     }
   }

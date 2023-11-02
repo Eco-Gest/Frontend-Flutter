@@ -14,78 +14,68 @@ class ChallengesView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final authenticationState = context.read<AuthenticationCubit>().state;
-    if (authenticationState is AuthenticationAuthenticated) {
-      final user = authenticationState.user;
-      final String backendRouteChallengeCompleted =
-          '/users/${user!.id!}/challenges/completed';
-      final String backendRouteChallengeNext =
-          '/users/${user!.id!}/challenges/next';
-      final String backendRouteChallengeInProgress =
-          '/users/${user!.id!}/challenges/in-progress';
-      final String backendRouteActions = '/users/${user!.id!}/actions';
-      return DefaultTabController(
-        length: 4,
-        child: Scaffold(
-          appBar: AppBar(
-            toolbarHeight: 80,
-            title: Text('Mes défis & gestes'),
-            bottom: PreferredSize(
-                child: TabBar(
-                    isScrollable: true,
-                    unselectedLabelColor:Colors.grey,
-                    indicatorSize: TabBarIndicatorSize.label,
-                    indicatorColor: Colors.black,
-                    tabs: [
-                      Tab(
-                        child: Text('Défis en cours'),
-                      ),
-                      Tab(
-                        child: Text('Prochains défis'),
-                      ),
-                      Tab(
-                        child: Text('Défis réalisés'),
-                      ),
-                      Tab(
-                        child: Text('Gestes'),
-                      ),
-                    ]),
-                preferredSize: Size.fromHeight(30.0)),
-            leading: IconButton(
-              icon: Icon(Icons.arrow_back),
+    final user = context.read<AuthenticationCubit>().state.user;
+    final String backendRouteChallengeCompleted =
+        '/users/${user!.id!}/challenges/completed';
+    final String backendRouteChallengeNext =
+        '/users/${user!.id!}/challenges/next';
+    final String backendRouteChallengeInProgress =
+        '/users/${user!.id!}/challenges/in-progress';
+    final String backendRouteActions = '/users/${user!.id!}/actions';
+    return DefaultTabController(
+      length: 4,
+      child: Scaffold(
+        appBar: AppBar(
+          toolbarHeight: 80,
+          title: Text('Mes défis & gestes'),
+          bottom: PreferredSize(
+              child: TabBar(
+                  isScrollable: true,
+                  unselectedLabelColor: Colors.grey,
+                  indicatorSize: TabBarIndicatorSize.label,
+                  indicatorColor: Colors.black,
+                  tabs: [
+                    Tab(
+                      child: Text('Défis en cours'),
+                    ),
+                    Tab(
+                      child: Text('Prochains défis'),
+                    ),
+                    Tab(
+                      child: Text('Défis réalisés'),
+                    ),
+                    Tab(
+                      child: Text('Gestes'),
+                    ),
+                  ]),
+              preferredSize: Size.fromHeight(30.0)),
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
+              if (Navigator.canPop(context)) {
+                Navigator.pop(context);
+              }
+            },
+          ),
+          actions: [
+            IconButton(
+              icon: Icon(Icons.settings),
               onPressed: () {
-                if (Navigator.canPop(context)) {
-                  Navigator.pop(context);
-                }
+                GoRouter.of(context).pushNamed(SettingsView.name);
               },
             ),
-            actions: [
-              IconButton(
-                icon: Icon(Icons.settings),
-                onPressed: () {
-                  GoRouter.of(context).pushNamed(SettingsView.name);
-                },
-              ),
-            ],
-          ),
-          body: TabBarView(
-            children: <Widget>[
-              ChallengesWidget(backendRoute: backendRouteChallengeInProgress),
-              ChallengesWidget(backendRoute: backendRouteChallengeNext),
-              ChallengesWidget(backendRoute: backendRouteChallengeCompleted),
-              ChallengesWidget(backendRoute: backendRouteActions),
-            ],
-          ),
-          bottomNavigationBar: AppBarFooter(),
+          ],
         ),
-      );
-    } else {
-      // Handle the case where the state is not AuthenticationAuthenticated
-      return Scaffold(
-        body: Center(
-          child: Text('User not authenticated'),
+        body: TabBarView(
+          children: <Widget>[
+            ChallengesWidget(backendRoute: backendRouteChallengeInProgress),
+            ChallengesWidget(backendRoute: backendRouteChallengeNext),
+            ChallengesWidget(backendRoute: backendRouteChallengeCompleted),
+            ChallengesWidget(backendRoute: backendRouteActions),
+          ],
         ),
-      );
-    }
+        bottomNavigationBar: AppBarFooter(),
+      ),
+    );
   }
 }

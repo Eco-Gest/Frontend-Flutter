@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:ecogest_front/views/challenges_view.dart';
 import 'package:ecogest_front/views/notifications_view.dart';
+import 'package:ecogest_front/views/errors/error404_view.dart';
 import 'package:ecogest_front/views/post_detail_view.dart';
 import 'package:ecogest_front/views/account_view.dart';
 import 'package:ecogest_front/views/settings_view.dart';
@@ -26,9 +27,10 @@ abstract class AppRouter {
 
   /// Creates a [GoRouter] with a [GoRouterRefreshStream] that listens to the
   /// [AuthenticationCubit] stream.
-  static GoRouter routerWithAuthStream(Stream<AuthenticationState> stream) {
+  static GoRouter getRouter(BuildContext context) {
     return GoRouter(
       initialLocation: '/login',
+      errorBuilder: (context, state) => const Error404View(),
       routes: [
         GoRoute(
           path: '/login',
@@ -90,21 +92,22 @@ abstract class AppRouter {
           builder: (context, state) => NotificationsView(),
         ),
       ],
-      refreshListenable: GoRouterRefreshStream(stream),
+      refreshListenable:
+          GoRouterRefreshStream(context.read<AuthenticationCubit>().stream),
       redirect: (context, state) {
         // If the user is not authenticated, redirect to the login page.
-        final authState = context.read<AuthenticationCubit>().state;
+        final status = context.read<AuthenticationCubit>().state.status;
 
         // // If the user is authenticated, redirect to the home page (only if
         // // the current location is public page)
         if (publicRoutes.contains(state.uri.toString()) &&
-            authState is AuthenticationAuthenticated) {
+            status == AuthenticationStatus.authenticated) {
           return '/home';
         }
         // If the user is not authenticated, redirect to the login page.
         // (only if the current location is not a public page).
         if (!publicRoutes.contains(state.uri.toString()) &&
-            authState is AuthenticationUnauthenticated) {
+            status == AuthenticationStatus.unauthenticated) {
           return '/login';
         }
 

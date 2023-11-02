@@ -1,25 +1,16 @@
 part of 'authentication_cubit.dart';
 
-abstract class AuthenticationState {}
-
-/// The initial state of the authentication cubit.
-class AuthenticationInitial extends AuthenticationState {}
-
-/// The state of the authentication cubit when the user is unauthenticated.
-class AuthenticationUnauthenticated extends AuthenticationState {}
-
-class AuthenticationLoading extends AuthenticationState {}
-
-/// The state of the authentication cubit when the user is authenticated.
-class AuthenticationAuthenticated extends AuthenticationState {
-  final UserModel? user;
-
-  AuthenticationAuthenticated(this.user);
+enum AuthenticationStatus {
+  authenticated,
+  unauthenticated,
+  loading,
+  unknown,
+  error
 }
 
-/// The state of the authentication cubit when an error occurred.
-class AuthenticationError extends AuthenticationState {
-  final String message;
+class AuthenticationState {
+  final AuthenticationStatus status;
+  final UserModel? user;
 
-  AuthenticationError(this.message);
+  const AuthenticationState(this.status, this.user);
 }
