@@ -1,3 +1,5 @@
+import 'package:ecogest_front/views/home_view.dart';
+import 'package:ecogest_front/views/notifications_view.dart';
 import 'package:ecogest_front/views/settings_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -18,6 +20,10 @@ class ThemeAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   static Size get prefSize => const Size.fromHeight(55.0);
 
+  String _getCurrentRoute(BuildContext context) {
+    return GoRouterState.of(context).uri.toString();
+  }
+
   @override
   Size get preferredSize => prefSize;
 
@@ -26,7 +32,7 @@ class ThemeAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       title: Text(title),
       leading: IconButton(
-        icon: Icon(Icons.arrow_back),
+        icon: const Icon(Icons.arrow_back),
         onPressed: () {
           if (Navigator.canPop(context)) {
             Navigator.pop(context);
@@ -35,9 +41,15 @@ class ThemeAppBar extends StatelessWidget implements PreferredSizeWidget {
       ),
       actions: [
         IconButton(
-          icon: Icon(Icons.settings),
+          icon: (_getCurrentRoute(context) == "/${HomeView.name}"
+              ? const Icon(Icons.notifications)
+              : const Icon(Icons.settings)),
           onPressed: () {
-            GoRouter.of(context).pushNamed(SettingsView.name);
+            if (_getCurrentRoute(context) == "/${HomeView.name}") {
+              GoRouter.of(context).pushNamed(NotificationsView.name);
+            } else {
+              GoRouter.of(context).pushNamed(SettingsView.name);
+            }
           },
         ),
       ],
