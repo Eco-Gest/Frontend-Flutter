@@ -13,11 +13,15 @@ abstract class CommentService {
       'content': content,
     });
 
-    final response = await EcoGestApiDataSource.post('posts/$postId/comments', body, token: token);
+    final response = await EcoGestApiDataSource.post(
+        'posts/$postId/comments', body,
+        token: token);
     if (response.statusCode == 201) {
-      return CommentModel.fromJson(jsonDecode(response.body) as Map<String, dynamic>);
+      return CommentModel.fromJson(
+          jsonDecode(response.body) as Map<String, dynamic>);
     } else {
       throw Exception('Eurreur à la création du commentaire');
     }
   }
-}*/
+}
+*/

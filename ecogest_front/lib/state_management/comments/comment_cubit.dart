@@ -7,7 +7,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class CommentCubit extends Cubit<CommentState> {
   CommentCubit() : super(CommentStateInitial());
 
-  Future<void> createComment({required int postId, required String content}) async {
+  Future<void> createComment(
+      {required int postId, required String content}) async {
     debugPrint('Ici');
 
     try {
@@ -17,11 +18,8 @@ class CommentCubit extends Cubit<CommentState> {
       emit(CommentStateError(error.toString()));
     }
 
-
-
-
     // final comment = CommentModel(
-    //   postId: postId, 
+    //   postId: postId,
     //   // authorId: authorId,
     //   content: content
     // );
@@ -34,4 +32,5 @@ class CommentCubit extends Cubit<CommentState> {
     //   emit(CommentStateError(e.toString()));
     // }
   }
-}*/
+}
+*/

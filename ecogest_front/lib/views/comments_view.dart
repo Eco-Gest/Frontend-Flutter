@@ -1,4 +1,8 @@
+import 'package:ecogest_front/core/router.dart';
+import 'package:ecogest_front/models/user_model.dart';
+import 'package:ecogest_front/state_management/authentication/authentication_cubit.dart';
 import 'package:ecogest_front/state_management/comments/comment_cubit.dart';
+import 'package:ecogest_front/views/home_view.dart';
 import 'package:ecogest_front/widgets/app_bar.dart';
 import 'package:ecogest_front/widgets/bottom_bar.dart';
 import 'package:ecogest_front/widgets/comment/comments_list.dart';
@@ -20,26 +24,28 @@ class CommentsView extends StatelessWidget {
         appBar: const ThemeAppBar(title: 'Commentaires de la publication'),
         bottomNavigationBar: const AppBarFooter(),
         /*
-      body: BlocProvider(
-        create: (context) => CommentCubit(),
-        child: Builder(builder: (context) {
-          return BlocListener<CommentCubit, CommentState>(
-            listener: (context, state) {
-              if (state is CommentStateError) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                      content: Text('Erreur lors de la création du commentaire.')),
-                );
-              }
-              if (state is CommentStateSuccess) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Création du commentaire réussie.')),
-                );
-                GoRouter.of(context).goNamed(
-                  HomeView.name,
-                );
-              }
-            },*/
+        body: BlocProvider(
+          create: (context) => CommentCubit(),
+          child: Builder(builder: (context) {
+            return BlocListener<CommentCubit, CommentState>(
+                listener: (context, state) {
+                  if (state is CommentStateError) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                          content: Text(
+                              'Erreur lors de la création du commentaire.')),
+                    );
+                  }
+                  if (state is CommentStateSuccess) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                          content: Text('Création du commentaire réussie.')),
+                    );
+                    GoRouter.of(context).goNamed(
+                      HomeView.name,
+                    );
+                  }
+                },*/
         body: Column(
           children: [
             if (commentsList.isNotEmpty) ...[
@@ -77,6 +83,8 @@ class CommentsView extends StatelessWidget {
                       //postId: postId,
                       //content: _newCommentController.text,
                       //);
+                      //context.read<CommentCubit>().createComment(
+                      //    postId: postId, content: _newCommentController.text);
                     },
                     icon: const Icon(Icons.send),
                   ),
@@ -87,7 +95,6 @@ class CommentsView extends StatelessWidget {
           ],
         ));
   } //),
-  //)
-  //);
+  //));
 }
 //}

@@ -18,4 +18,5 @@ class CommentStateError extends CommentState {
   final String message;
 
   const CommentStateError(this.message);
-}*/
+}
+*/
