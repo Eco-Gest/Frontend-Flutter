@@ -65,13 +65,19 @@ class PostDetailView extends StatelessWidget {
                           ),
                           const PostSeparator(),
                           // Buttons
-                          PostContentButtons(
-                            likes: state.post!.likes,
-                            comments: state.post!.comments,
-                            isChallenge:
-                                (state.post!.type.toString() == 'challenge')
-                                    ? true
-                                    : false,
+                          BlocProvider<LikeCubit>(
+                              create: (context) => LikeCubit(),
+                              child: PostContentButtonsWrapper(
+                                post: state.post!,
+                                likes: state.post!.likes!.length,
+                                isLiked: state.post!.likes!
+                                    .any((like) => like.userId == user!.id!),
+                                comments: state.post!.comments,
+                                isChallenge:
+                                    (state.post!.type.toString() == 'challenge')
+                                        ? true
+                                        : false,
+                              ),
                           ),
                         ],
                       ),

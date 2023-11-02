@@ -19,7 +19,6 @@ class PostContentAuthor extends StatelessWidget {
   final String? position;
   final String? date;
   final int? postId;
-  final int? postId;
 
   @override
   Widget build(BuildContext context) {
