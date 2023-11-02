@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:ecogest_front/models/category_model.dart';
 import 'package:ecogest_front/models/post_model.dart';
+import 'package:ecogest_front/models/tag_model.dart';
 import 'package:ecogest_front/services/category_service.dart';
 import 'package:ecogest_front/services/post_service.dart';
 import 'package:flutter/material.dart';
@@ -63,7 +64,7 @@ class PostFormCubit extends Cubit<PostFormState> {
     DateTime? startDate,
     DateTime? endDate,
     String? position,
-    String? tag,
+    List<TagModel>? tags,
     String? image,
   }) async {
     if (state is! SelectionState) {
@@ -76,6 +77,7 @@ class PostFormCubit extends Cubit<PostFormState> {
       title: title,
       description: description,
       image: image,
+      tags: tags,
       startDate: startDate?.toIso8601String(),
       endDate: endDate?.toIso8601String(),
       type: selectionState.selectedType.name,

@@ -1,6 +1,9 @@
 import 'package:date_field/date_field.dart';
+import 'package:ecogest_front/assets/ecogest_theme.dart';
 import 'package:ecogest_front/models/post_model.dart';
+import 'package:ecogest_front/models/tag_model.dart';
 import 'package:ecogest_front/models/user_model.dart';
+import 'package:ecogest_front/services/tag_service.dart';
 import 'package:ecogest_front/state_management/authentication/authentication_cubit.dart';
 import 'package:ecogest_front/views/home_view.dart';
 import 'package:ecogest_front/widgets/app_bar.dart';
@@ -9,6 +12,8 @@ import 'package:ecogest_front/widgets/bottom_bar.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ecogest_front/state_management/posts/form_post_cubit.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_tagging_plus/flutter_tagging_plus.dart';
+import 'package:flutter/services.dart';
 
 class PostCreateView extends StatelessWidget {
   PostCreateView({Key? key, this.prefilledPost}) : super(key: key);
@@ -25,6 +30,8 @@ class PostCreateView extends StatelessWidget {
 
   DateTime? startDate;
   DateTime? endDate;
+  String _selectedTagsJson = 'Nothing to show';
+  late List<TagModel> _tagsToSave = [];
 
   final List<bool> _selectedPostType = <bool>[true, false];
 
@@ -279,42 +286,84 @@ class PostCreateView extends StatelessWidget {
                           return const SizedBox();
                         }),
 
-                        // tags
-                        Container(
-                          alignment: Alignment.topCenter,
-                          padding: const EdgeInsets.all(10),
-                          child: TextFormField(
-                            controller: tagController,
-                            decoration: const InputDecoration(
-                              border: OutlineInputBorder(),
-                              labelText: 'Tags',
-                              hintText: 'Entrez un ou plusieurs tags',
+                         Container(
+                            alignment: Alignment.topCenter,
+                            padding: const EdgeInsets.all(10),
+                            child: FlutterTagging<TagModel>(
+                              initialItems: _tagsToSave,
+                              textFieldConfiguration: TextFieldConfiguration(
+                                  decoration: InputDecoration(
+                                      border: InputBorder.none,
+                                      filled: true,
+                                      hintText: 'Saisir un nouveau tag',
+                                      labelText: 'Ajouter un ou plusieurs tags',
+                                  ),
+                                  inputFormatters: [
+                                    FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z]')),
+                                    FilteringTextInputFormatter.deny(' '),
+                                  ],
+                              ),
+                              findSuggestions: TagService.getTagModels,
+                              additionCallback: (value) {
+                                  return TagModel(
+                                          label: value,
+                                  );
+                              },
+                              onAdded: (tag){
+                                // api calls here, triggered when add to tag button is pressed
+                                  return  tag;
+                              },
+                              configureSuggestion: (tag) {
+                                  return SuggestionConfiguration(
+                                      title: Text(tag.label),
+                                      additionWidget: const Chip(
+                                          avatar: Icon(
+                                              Icons.add_circle,
+                                              color: Colors.white,
+                                          ),
+                                          label: Text('Ajouter un nouveau tag'),
+                                          labelStyle: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 14.0,
+                                              fontWeight: FontWeight.w300,
+                                          ),
+                                          backgroundColor: EcogestTheme.primary,
+                                      ),
+                                  );
+                              },
+                              configureChip: (tag) {
+                                  return ChipConfiguration(
+                                      label: Text(tag.label),
+                                      backgroundColor: EcogestTheme.primary,
+                                      labelStyle: TextStyle(color: Colors.white),
+                                      deleteIconColor: Colors.white,
+                                  );
+                              },
+                              onChanged: () {
+                                _tagsToSave
+                                    .map<TagModel>((tag) => tag)
+                                    .toList();
+                              }
+                            ),
+                         ), // tags
+                          // image
+                          Container(
+                            alignment: Alignment.topCenter,
+                            padding: const EdgeInsets.all(10),
+                            child: TextFormField(
+                              controller: imageController,
+                              decoration: const InputDecoration(
+                                border: OutlineInputBorder(),
+                                labelText: 'Image',
+                                hintText: 'Entrez l\'url d\'une image',
+                              ),
+                              autovalidateMode:
+                                  AutovalidateMode.onUserInteraction,
+                              validator: (value) => imageValidation(imageController.text)
+                                  ? null
+                                  : 'Lien vers l\'image doit être une url avec une extension .jpg, .png, .gif, .svg, .webp ou .jpeg',
                             ),
                           ),
-                        ),
-                        // Todo
-                        // résultats des tags ajoutés : tags
-                        // pouvoir les supprimer (idealement)
-
-                        // image
-                        Container(
-                          alignment: Alignment.topCenter,
-                          padding: const EdgeInsets.all(10),
-                          child: TextFormField(
-                            controller: imageController,
-                            decoration: const InputDecoration(
-                              border: OutlineInputBorder(),
-                              labelText: 'Image',
-                              hintText: 'Entrez l\'url d\'une image',
-                            ),
-                            autovalidateMode:
-                                AutovalidateMode.onUserInteraction,
-                            validator: (value) => imageValidation(
-                                    imageController.text)
-                                ? null
-                                : 'Lien vers l\'image doit être une url avec une extension .jpg, .png, .gif, .svg, .webp ou .jpeg',
-                          ),
-                        ),
 
                         // level
                         BlocBuilder<PostFormCubit, PostFormState>(
@@ -360,6 +409,7 @@ class PostCreateView extends StatelessWidget {
                                         position: positionController.text,
                                         startDate: startDate,
                                         endDate: endDate,
+                                        tags: _tagsToSave,
                                         image: imageController.text,
                                       );
                                 }
