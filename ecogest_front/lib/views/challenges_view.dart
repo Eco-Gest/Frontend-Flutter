@@ -1,4 +1,3 @@
-import 'package:ecogest_front/assets/ecogest_theme.dart';
 import 'package:ecogest_front/state_management/authentication/authentication_cubit.dart';
 import 'package:ecogest_front/views/settings_view.dart';
 import 'package:ecogest_front/widgets/challenge_widget.dart';
@@ -18,20 +17,21 @@ class ChallengesView extends StatelessWidget {
     final String backendRouteChallengeCompleted =
         '/users/${user!.id!}/challenges/completed';
     final String backendRouteChallengeNext =
-        '/users/${user!.id!}/challenges/next';
+        '/users/${user.id!}/challenges/next';
     final String backendRouteChallengeInProgress =
-        '/users/${user!.id!}/challenges/in-progress';
-    final String backendRouteActions = '/users/${user!.id!}/actions';
+        '/users/${user.id!}/challenges/in-progress';
+    final String backendRouteActions = '/users/${user.id!}/actions';
     return DefaultTabController(
       length: 4,
       child: Scaffold(
         appBar: AppBar(
           toolbarHeight: 80,
-          title: Text('Mes défis & gestes'),
-          bottom: PreferredSize(
+          title: const Text('Mes défis & gestes'),
+          bottom: const PreferredSize(
+              preferredSize: Size.fromHeight(30.0),
               child: TabBar(
                   isScrollable: true,
-                  unselectedLabelColor: Colors.grey,
+                  unselectedLabelColor: Colors.white,
                   indicatorSize: TabBarIndicatorSize.label,
                   indicatorColor: Colors.black,
                   tabs: [
@@ -47,10 +47,9 @@ class ChallengesView extends StatelessWidget {
                     Tab(
                       child: Text('Gestes'),
                     ),
-                  ]),
-              preferredSize: Size.fromHeight(30.0)),
+                  ])),
           leading: IconButton(
-            icon: Icon(Icons.arrow_back),
+            icon: const Icon(Icons.arrow_back),
             onPressed: () {
               if (Navigator.canPop(context)) {
                 Navigator.pop(context);
@@ -59,7 +58,7 @@ class ChallengesView extends StatelessWidget {
           ),
           actions: [
             IconButton(
-              icon: Icon(Icons.settings),
+              icon: const Icon(Icons.settings),
               onPressed: () {
                 GoRouter.of(context).pushNamed(SettingsView.name);
               },
@@ -74,7 +73,7 @@ class ChallengesView extends StatelessWidget {
             ChallengesWidget(backendRoute: backendRouteActions),
           ],
         ),
-        bottomNavigationBar: AppBarFooter(),
+        bottomNavigationBar: const AppBarFooter(),
       ),
     );
   }
