@@ -7,8 +7,9 @@ class PostsCubit extends Cubit<PostsState> {
 
   Future<void> getPosts(int pageNbr) async {
     try {
+      final PostService postService = PostService();
       emit(PostsStateLoading());
-      final posts = await PostService.getPosts(pageNbr);
+      final posts = await postService.getPosts(pageNbr);
       emit(PostsStateSuccess(posts));
     } catch (error) {
       emit(PostsStateError(
@@ -18,8 +19,9 @@ class PostsCubit extends Cubit<PostsState> {
 
   Future<void> getOnePost(int postId) async {
     try {
+      final PostService postService = PostService();
       emit(PostsStateLoading());
-      final post = await PostService.getOnePost(postId);
+      final post = await postService.getOnePost(postId);
       emit(OnePostStateSuccess(post));
     } catch (error) {
       emit(PostsStateError(
