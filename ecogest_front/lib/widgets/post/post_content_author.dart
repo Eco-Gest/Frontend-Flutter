@@ -41,9 +41,7 @@ class PostContentAuthor extends StatelessWidget {
                   ),
                   if (date != null && (position != null || author!.position != null)) ...[
                     const Text(' | '),
-                  ],
-                PostContentMenu(author:author, postId:postId),
-                          
+                  ],         
             Text(() {
               if (position != null) {
                 return position.toString();
@@ -55,6 +53,7 @@ class PostContentAuthor extends StatelessWidget {
             } ()
               // 'Rennes, France'
             ),
+            PostContentMenu(author:author, postId:postId),
           ],
         ),
         Column(

@@ -16,8 +16,7 @@ class PostEditCubit extends Cubit<PostEditState> {
       final post = await PostService.getOnePost(postId);
       emit(PostEditStateLoaded(post));
     } catch (e) {
-      debugPrint(e.toString());
-      emit(PostEditStateError(e.toString()));
+      emit(PostEditStateError("Erreur rencontrée pour récupérer la publication. Veuillez réessayer."));
     }
   }
 
@@ -26,8 +25,7 @@ class PostEditCubit extends Cubit<PostEditState> {
       final updatedPost = await PostService.updatePost(post);
       emit(PostEditStateSuccess(updatedPost));
     } catch (e) {
-      debugPrint(e.toString());
-      emit(PostEditStateError(e.toString()));
+      emit(PostEditStateError("Erreur rencontrée pour mettre à jours votre publication. Veuillez réessayer."));
     }
   }
 }

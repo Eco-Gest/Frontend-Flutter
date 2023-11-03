@@ -40,18 +40,11 @@ class PostsCubit extends Cubit<PostsState> {
 
     Future<void> deletePost(int postId) async {
     try {
-      emit(PostsStateLoading());
-
-      // Utilisez votre service pour effectuer la suppression
-      await PostService.deletePost(postId);
-
-      // Une fois la suppression réussie, mettez à jour l'état
-      // Vous pouvez choisir de récupérer les posts mis à jour ou d'émettre un nouvel état
-      // Ici, j'émet simplement un état success pour indiquer que la suppression a réussi
-      emit(DeletePostStateSuccess());
+        emit(PostsStateLoading());
+     await PostService.deletePost(postId);
+         emit(DeletePostStateSuccess());
     } catch (error) {
-      // En cas d'erreur lors de la suppression, émettez un état d'erreur
-      emit(PostsStateError(error.toString()));
+        emit(PostsStateError("Erreur rencontrée pour supprimer votre publications. Veuillez réessayer."));
     }
   }
 }
