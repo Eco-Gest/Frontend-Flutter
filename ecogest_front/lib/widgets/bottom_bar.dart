@@ -65,7 +65,7 @@ class AppBarFooter extends StatelessWidget {
             color: (_getCurrentRoute(context) == "/${SearchView.name}"
                 ? EcogestTheme.primary
                 : Colors.blueGrey.shade400),
-            tooltip: 'Home',
+            tooltip: 'Search',
             onPressed: () {
               GoRouter.of(context).pushNamed(SearchView.name);
             },

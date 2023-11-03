@@ -25,7 +25,8 @@ class UserService {
 
     await EcoGestApiDataSource.patch('/me', body, token: token);
 
-    return await getCurrentUser();
+    return user;
+    // return await getCurrentUser();
   }
 
   static Future<UserModel> getUser(int userId) async {
@@ -40,27 +41,31 @@ class UserService {
   static Stream<UserModel?> get getStatus {
     return controller.stream;
   }
-    static Future<List<PointCategoryModel>> getCurrentUserCategoriesPoints() async {
-      final UserModel? currentUser = await UserService.getCurrentUser();
-      
-      // Check if the user model is not null and get the user ID.
-      final int? userId = currentUser?.id;
-      if (userId == null) {
-          throw Exception('User id does not exist');
-      }
 
-      // Get the authentication token.
-      final String? token = await AuthenticationService.getToken();
-      
-      // Make the API request using the user ID.
-      final List<dynamic> responseMap = await EcoGestApiDataSource.get('/users/$userId/categories-points', token: token);
+  static Future<List<PointCategoryModel>>
+      getCurrentUserCategoriesPoints() async {
+    final UserModel currentUser = await UserService.getCurrentUser();
 
-      // Map the response to a list 
-      final List<PointCategoryModel> pointsByCategory = responseMap.map((points) {
-        return PointCategoryModel.fromJson(points);
-      }).toList();
+    // Check if the user model is not null and get the user ID.
+    final int? userId = currentUser.id;
+    if (userId == null) {
+      throw Exception('User id does not exist');
+    }
 
-      // 6. Return the list 
-      return pointsByCategory;
+    // Get the authentication token.
+    final String? token = await AuthenticationService.getToken();
+
+    // Make the API request using the user ID.
+    final List<dynamic> responseMap = await EcoGestApiDataSource.get(
+        '/users/$userId/categories-points',
+        token: token);
+
+    // Map the response to a list
+    final List<PointCategoryModel> pointsByCategory = responseMap.map((points) {
+      return PointCategoryModel.fromJson(points);
+    }).toList();
+
+    // 6. Return the list
+    return pointsByCategory;
   }
 }

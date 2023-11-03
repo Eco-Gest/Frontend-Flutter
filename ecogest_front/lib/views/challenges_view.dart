@@ -13,7 +13,7 @@ class ChallengesView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final user = context.read<AuthenticationCubit>().state.user;
+    final user = context.watch<AuthenticationCubit>().state.user;
     final String backendRouteChallengeCompleted =
         '/users/${user!.id!}/challenges/completed';
     final String backendRouteChallengeNext =

@@ -22,7 +22,7 @@ class PostDetailView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final UserModel? user = context.read<AuthenticationCubit>().state.user;
+    final UserModel? user = context.watch<AuthenticationCubit>().state.user;
     return Scaffold(
       appBar: const ThemeAppBar(title: 'Détail de la publication'),
       bottomNavigationBar: AppBarFooter(),

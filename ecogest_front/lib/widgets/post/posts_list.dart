@@ -31,7 +31,7 @@ class PostsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final UserModel? user = context.read<AuthenticationCubit>().state.user;
+    final UserModel? user = context.watch<AuthenticationCubit>().state.user;
 
     return NotificationListener(
       child: ListView.separated(
@@ -85,7 +85,6 @@ class PostsList extends StatelessWidget {
                                     : false,
                           ),
                         ),
-      
                       ],
                     ),
                   ));

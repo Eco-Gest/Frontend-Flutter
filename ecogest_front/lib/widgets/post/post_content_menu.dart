@@ -31,7 +31,7 @@ class PostContentMenu extends StatelessWidget {
                           GoRouter.of(context).push('/posts/${postId}/edit');
                         } 
                       } else if (value == 'delete') {
-                        context.watch<PostsCubit>().deletePost(postId);
+                        context.read<PostsCubit>().deletePost(postId);
                         GoRouter.of(context).goNamed(
                           HomeView.name,
                         );

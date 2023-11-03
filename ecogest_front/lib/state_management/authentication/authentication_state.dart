@@ -1,7 +1,7 @@
 part of 'authentication_cubit.dart';
 
 class AuthenticationState {
-  final UserModel? user;
+  UserModel? user;
 
   AuthenticationState(this.user);
 }
@@ -26,5 +26,4 @@ class AuthenticationError extends AuthenticationState {
   final String message;
 
   AuthenticationError(this.message) : super(null);
-
 }

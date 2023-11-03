@@ -56,21 +56,21 @@ class NotificationsView extends StatelessWidget {
                                     .image!),
                       ),
                       onTap: () {
-                        if (state.notifications!.elementAt(index).user !=
+                        if (state.notifications!.elementAt(index).post?.id !=
                             null) {
-                          context.pushNamed(UserView.name, pathParameters: {
-                            'id': state.notifications!
-                                .elementAt(index)
-                                .user!
-                                .id!
-                                .toString(),
-                          });
-                        } else {
                           context
                               .pushNamed(PostDetailView.name, pathParameters: {
                             'id': state.notifications!
                                 .elementAt(index)
                                 .post!
+                                .id!
+                                .toString(),
+                          });
+                        } else {
+                          context.pushNamed(UserView.name, pathParameters: {
+                            'id': state.notifications!
+                                .elementAt(index)
+                                .user!
                                 .id!
                                 .toString(),
                           });
