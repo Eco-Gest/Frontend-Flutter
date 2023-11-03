@@ -74,7 +74,6 @@ class PostService {
   }
 
   static Future<PostModel> updatePost(PostModel postModel) async {
-    debugPrint('je rentre dans updatePost');
     final String? token = await AuthenticationService.getToken();
 
     // Create a new map with only the desired fields
