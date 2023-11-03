@@ -1,8 +1,9 @@
-import 'package:flutter/material.dart';
 import 'package:ecogest_front/models/user_model.dart';
+import 'package:ecogest_front/views/user_view.dart';
+import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:ecogest_front/widgets/post/post_content_menu.dart';
-import 'package:go_router/go_router.dart';
 import 'package:ecogest_front/state_management/authentication/authentication_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -23,9 +24,9 @@ class PostContentAuthor extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final user = context.watch<AuthenticationCubit>().state.user;
-
     DateTime dateInFormat = DateTime.parse(date.toString());
-    String publicationDate = DateFormat('dd/MM/yyyy', 'fr_FR').format(dateInFormat);
+    String publicationDate =
+        DateFormat('dd/MM/yyyy', 'fr_FR').format(dateInFormat);
 
     final int postId = this.postId ?? 0;
 
@@ -36,12 +37,11 @@ class PostContentAuthor extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-                Text(
-                    publicationDate
-                  ),
-                  if (date != null && (position != null || author!.position != null)) ...[
-                    const Text(' | '),
-                  ],         
+            Text(publicationDate),
+            if (date != null &&
+                (position != null || author!.position != null)) ...[
+              const Text(' | '),
+            ],
             Text(() {
               if (position != null) {
                 return position.toString();
@@ -50,10 +50,10 @@ class PostContentAuthor extends StatelessWidget {
               } else {
                 return '';
               }
-            } ()
-              // 'Rennes, France'
-            ),
-            PostContentMenu(author:author, postId:postId),
+            }()
+                // 'Rennes, France'
+                ),
+            PostContentMenu(author: author, postId: postId),
           ],
         ),
         Column(
@@ -78,7 +78,16 @@ class PostContentAuthor extends StatelessWidget {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(author?.username.toString() ?? 'Username'),
+                        TextButton(
+                          child:
+                              Text(author?.username.toString() ?? 'Username'),
+                          onPressed: () {
+                            GoRouter.of(context)
+                                .pushNamed(UserView.name, pathParameters: {
+                              'id': author!.id.toString(),
+                            });
+                          },
+                        ),
                         const SizedBox(
                           height: 10,
                         ),
@@ -92,7 +101,7 @@ class PostContentAuthor extends StatelessWidget {
                               fontSize: 12,
                             ),
                           ),
-                        ),
+                        )
                       ],
                     )
                   ],
