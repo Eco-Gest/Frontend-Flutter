@@ -14,7 +14,7 @@ class NotificationsView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const ThemeAppBar(title: 'Notifications'),
-      bottomNavigationBar: AppBarFooter(),
+      bottomNavigationBar: const AppBarFooter(),
       body: SingleChildScrollView(
         child: Stack(
           children: [
@@ -45,11 +45,15 @@ class NotificationsView extends StatelessWidget {
                     itemBuilder: (context, index) => ListTile(
                       title: Text(state.notifications!.elementAt(index).title!),
                       leading: CircleAvatar(
-                        child: state.notifications!.elementAt(index).user?.image == null
-                            ? Image.asset('assets/profile.jpg')
-                            : Image.network(
-                                state.notifications!.elementAt(index).user!.image!,
-                                fit: BoxFit.cover),
+                        backgroundImage:
+                            state.notifications!.elementAt(index).user?.image ==
+                                    null
+                                ? const AssetImage('assets/profile.jpg')
+                                    as ImageProvider
+                                : NetworkImage(state.notifications!
+                                    .elementAt(index)
+                                    .user!
+                                    .image!),
                       ),
                       onTap: () {
                         if (state.notifications!.elementAt(index).user !=

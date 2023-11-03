@@ -30,10 +30,9 @@ class SearchResultsWidget extends StatelessWidget {
               itemCount: state.posts.length,
               itemBuilder: (context, index) => ListTile(
                 leading: CircleAvatar(
-                  child: state.posts.elementAt(index)?.image == null
+                  backgroundImage: state.posts.elementAt(index)?.image == null
                       ? null
-                      : Image.network(state.posts.elementAt(index)!.image!,
-                          fit: BoxFit.cover),
+                      : NetworkImage(state.posts.elementAt(index)!.image!),
                 ),
                 title: Text(state.posts.elementAt(index)?.title ?? 'Titre'),
                 onTap: () {
@@ -43,8 +42,8 @@ class SearchResultsWidget extends StatelessWidget {
                 },
               ),
             ),
-            SizedBox(
-              height: 20, 
+            const SizedBox(
+              height: 20,
             ),
             Text(state.users.isEmpty
                 ? 'Pas d\'utilisateurs'
@@ -54,10 +53,9 @@ class SearchResultsWidget extends StatelessWidget {
               itemCount: state.users.length,
               itemBuilder: (context, index) => ListTile(
                 leading: CircleAvatar(
-                  child: state.users.elementAt(index)?.image == null
-                      ? Image.asset('assets/profile.jpg')
-                      : Image.network(state.users.elementAt(index)!.image!,
-                          fit: BoxFit.cover),
+                  backgroundImage: state.users.elementAt(index)?.image == null
+                      ? const AssetImage('assets/profile.jpg') as ImageProvider
+                      : NetworkImage(state.users.elementAt(index)!.image!),
                 ),
                 title:
                     Text(state.users.elementAt(index)?.username ?? 'Username'),

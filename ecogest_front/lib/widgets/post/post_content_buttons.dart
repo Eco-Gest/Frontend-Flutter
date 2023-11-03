@@ -47,8 +47,7 @@ class PostContentButtons extends StatelessWidget {
             if (likes! > 1) ...[
               TextButton(
                 onPressed: () {
-                  GoRouter.of(context)
-                      .push('/posts/$postId/comments', extra: comments);
+                  //
                 },
                 child: Text(
                   '$likes likes',
@@ -62,7 +61,8 @@ class PostContentButtons extends StatelessWidget {
             if (comments!.isNotEmpty) ...[
               TextButton(
                   onPressed: () {
-                    // TODO: Afficher les commentaires
+                    GoRouter.of(context)
+                        .push('/posts/$postId/comments', extra: comments);
                   },
                   child: Text(
                     '${comments!.length} commentaires',
