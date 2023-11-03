@@ -1,25 +1,33 @@
-import 'package:ecogest_front/models/user_model.dart';
 import 'package:flutter/material.dart';
+import 'package:ecogest_front/models/user_model.dart';
 import 'package:intl/intl.dart';
+import 'package:ecogest_front/widgets/post/post_content_menu.dart';
+import 'package:go_router/go_router.dart';
+import 'package:ecogest_front/state_management/authentication/authentication_cubit.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class PostContentAuthor extends StatelessWidget {
   const PostContentAuthor({
-    super.key,
+    Key? key,
     required this.author,
     this.position,
     this.date,
-  });
+    this.postId,
+  }) : super(key: key);
 
   final UserModel? author;
   final String? position;
   final String? date;
+  final int? postId;
 
   @override
   Widget build(BuildContext context) {
+    final user = context.watch<AuthenticationCubit>().state.user;
 
-    // Transform date from DB to french date format
     DateTime dateInFormat = DateTime.parse(date.toString());
     String publicationDate = DateFormat('dd/MM/yyyy', 'fr_FR').format(dateInFormat);
+
+    final int postId = this.postId ?? 0;
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.end,
@@ -28,12 +36,12 @@ class PostContentAuthor extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            Text(
-              publicationDate
-            ),
-            if (date != null && (position != null || author!.position != null)) ...[
-              const Text(' | '),
-            ],
+                Text(
+                    publicationDate
+                  ),
+                  if (date != null && (position != null || author!.position != null)) ...[
+                    const Text(' | '),
+                  ],         
             Text(() {
               if (position != null) {
                 return position.toString();
@@ -45,6 +53,7 @@ class PostContentAuthor extends StatelessWidget {
             } ()
               // 'Rennes, France'
             ),
+            PostContentMenu(author:author, postId:postId),
           ],
         ),
         Column(
@@ -90,7 +99,7 @@ class PostContentAuthor extends StatelessWidget {
                 )
               ],
             ),
-          ] 
+          ],
         )
       ],
     );

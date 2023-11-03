@@ -39,4 +39,14 @@ class PostsCubit extends Cubit<PostsState> {
           "Erreur rencontrée pour récupérer vos publications. Veuillez réessayer."));
     }
   }
+
+    Future<void> deletePost(int postId) async {
+    try {
+        emit(PostsStateLoading());
+     await PostService.deletePost(postId);
+         emit(DeletePostStateSuccess());
+    } catch (error) {
+        emit(PostsStateError("Erreur rencontrée pour supprimer votre publications. Veuillez réessayer."));
+    }
+  }
 }

@@ -188,7 +188,7 @@ class _UpdateAccountWidget extends State<UpdateAccountWidget> {
                                           TextStyle(color: Colors.redAccent),
                                       border: OutlineInputBorder(),
                                       suffixIcon: Icon(Icons.event_note),
-                                      labelText: 'Dat d\'anniversaire',
+                                      labelText: 'Date d\'anniversaire',
                                     ),
                                     onDateSelected: (value) {
                                       birthdate = value;

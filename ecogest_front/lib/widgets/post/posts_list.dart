@@ -16,11 +16,13 @@ class PostsList extends StatelessWidget {
     required this.posts,
     required this.onScrolled,
     required this.isLastPage,
+    this.postId
   });
 
   static String name = 'posts-list';
   final List<PostModel> posts;
   final bool isLastPage;
+  final int? postId;
 
   // Functions which allows to indicate to the
   // parent view that the page has been scrolled
@@ -53,7 +55,8 @@ class PostsList extends StatelessWidget {
                         PostContentAuthor(
                             author: posts[index].user,
                             position: posts[index].position,
-                            date: posts[index].createdAt),
+                            date: posts[index].createdAt,
+                            postId: posts[index].id),
                         const PostSeparator(),
                         // Post info
                         InkWell(

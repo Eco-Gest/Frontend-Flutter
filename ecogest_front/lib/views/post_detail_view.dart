@@ -24,45 +24,48 @@ class PostDetailView extends StatelessWidget {
   Widget build(BuildContext context) {
     final UserModel? user = context.watch<AuthenticationCubit>().state.user;
     return Scaffold(
-        appBar: const ThemeAppBar(title: 'Détail de la publication'),
-        bottomNavigationBar: AppBarFooter(),
-        body: SingleChildScrollView(
-          child: Stack(
-            children: [
-              BlocProvider<PostsCubit>(
-                create: (context) {
-                  return PostsCubit()..getOnePost(postId);
-                },
-                child: BlocBuilder<PostsCubit, PostsState>(
-                  builder: (context, state) {
-                    if (state is PostsStateInitial ||
-                        state is PostsStateLoading) {
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    } else if (state is PostsStateError) {
-                      return Center(
-                        child: Text(state.message),
-                      );
-                    } else if (state is OnePostStateSuccess) {
-                      return Center(
-                          child: Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Column(
-                          children: [
-                            // Author info
-                            PostContentAuthor(
-                                author: state.post!.user,
-                                position: state.post!.position,
-                                date: state.post!.createdAt),
-                            const PostSeparator(),
-                            // Post info
-                            PostContentInfos(
-                              post: state.post,
-                            ),
-                            const PostSeparator(),
-                            // Buttons
-                            BlocProvider<LikeCubit>(
+      appBar: const ThemeAppBar(title: 'Détail de la publication'),
+      bottomNavigationBar: AppBarFooter(),
+      body: SingleChildScrollView(
+        child: Stack(
+          children: [
+            BlocProvider<PostsCubit>(
+              create: (context) {
+                final cubit = PostsCubit();
+                cubit.getOnePost(postId);
+                return cubit;
+              },
+              child: BlocBuilder<PostsCubit, PostsState>(
+                builder: (context, state) {
+                  if (state is PostsStateInitial ||
+                      state is PostsStateLoading) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  } else if (state is PostsStateError) {
+                    return Center(
+                      child: Text(state.message),
+                    );
+                  } else if (state is OnePostStateSuccess) {
+                    return Center(
+                        child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        children: [
+                          // Author info
+                          PostContentAuthor(
+                              postId: postId,
+                              author: state.post!.user,
+                              position: state.post!.position,
+                              date: state.post!.createdAt),
+                          const PostSeparator(),
+                          // Post info
+                          PostContentInfos(
+                            post: state.post,
+                          ),
+                          const PostSeparator(),
+                          // Buttons
+                          BlocProvider<LikeCubit>(
                               create: (context) => LikeCubit(),
                               child: PostContentButtonsWrapper(
                                 post: state.post!,
@@ -75,17 +78,18 @@ class PostDetailView extends StatelessWidget {
                                         ? true
                                         : false,
                               ),
-                            ),
-                          ],
-                        ),
-                      ));
-                    }
-                    return const SizedBox.shrink();
-                  },
-                ),
-              )
-            ],
-          ),
-        ));
+                          ),
+                        ],
+                      ),
+                    ));
+                  }
+                  return const SizedBox.shrink();
+                },
+              ),
+            )
+          ],
+        ),
+      )
+    );
   }
 }
