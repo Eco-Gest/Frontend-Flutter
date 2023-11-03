@@ -91,4 +91,44 @@ class PostFormCubit extends Cubit<PostFormState> {
       emit(const PostFormStateError("Erreur rencontrée pour votre publication. Veuillez réessayer."));
     }
   }
+
+Future<void> updatePost({
+    required int? postId,
+    required String title,
+    String? description,
+    DateTime? startDate,
+    DateTime? endDate,
+    String? position,
+    List<TagModel>? tags,
+    String? image,
+  }) async {
+    if (state is! SelectionState) {
+      return;
+    }
+    final selectionState = state as SelectionState;
+    final post = PostModel(
+      id: postId,
+      categoryId: selectionState.selectedCategory,
+      position: position,
+      title: title,
+      description: description,
+      image: image,
+      tags: tags,
+      startDate: startDate?.toIso8601String(),
+      endDate: endDate?.toIso8601String(),
+      type: selectionState.selectedType.name,
+      level: selectionState.selectedLevel.name,
+    );
+
+    try {
+      final result = await PostService.updatePost(post);
+      emit(PostFormStateSuccess(result));
+    } catch (e) {
+      debugPrint(e.toString());
+      emit(PostFormStateError(e.toString()));
+    }
+  }
 }
+
+
+
