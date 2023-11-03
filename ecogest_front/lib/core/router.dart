@@ -18,6 +18,7 @@ import 'package:ecogest_front/views/register_view.dart';
 import 'package:ecogest_front/views/login_view.dart';
 import 'package:ecogest_front/views/home_view.dart';
 import 'package:ecogest_front/views/post_create_view.dart';
+import 'package:ecogest_front/views/post_edit_view.dart';
 
 abstract class AppRouter {
   /// Public routes
@@ -52,6 +53,13 @@ abstract class AppRouter {
           path: '/posts/:id',
           name: PostDetailView.name,
           builder: (context, state) => PostDetailView(
+            postId: int.parse(state.pathParameters['id'].toString()),
+          ),
+        ),
+        GoRoute(
+          path: '/posts/:id/edit',
+          name: PostEditView.name,
+          builder: (context, state) => PostEditView(
             postId: int.parse(state.pathParameters['id'].toString()),
           ),
         ),

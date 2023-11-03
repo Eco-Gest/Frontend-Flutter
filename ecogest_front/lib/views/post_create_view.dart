@@ -16,8 +16,9 @@ import 'package:flutter_tagging_plus/flutter_tagging_plus.dart';
 import 'package:flutter/services.dart';
 
 class PostCreateView extends StatelessWidget {
-  PostCreateView({super.key});
+  PostCreateView({Key? key, this.prefilledPost}) : super(key: key);
 
+  final PostModel? prefilledPost;
   static String name = 'post-create';
 
   final formKey = GlobalKey<FormState>();
@@ -170,6 +171,7 @@ class PostCreateView extends StatelessWidget {
                           padding: const EdgeInsets.all(10),
                           child: TextFormField(
                             controller: titleController,
+                            initialValue: prefilledPost?.title,
                             decoration: const InputDecoration(
                               border: OutlineInputBorder(),
                               labelText: 'Titre',
@@ -190,6 +192,7 @@ class PostCreateView extends StatelessWidget {
                           child: TextFormField(
                             textAlign: TextAlign.justify,
                             controller: descriptionController,
+                            initialValue: prefilledPost?.description,
                             autofocus: false,
                             maxLines: 8,
                             decoration: const InputDecoration(
@@ -204,6 +207,7 @@ class PostCreateView extends StatelessWidget {
                           padding: const EdgeInsets.all(10),
                           child: TextFormField(
                             controller: positionController,
+                            initialValue: prefilledPost?.position,
                             decoration: const InputDecoration(
                               border: OutlineInputBorder(),
                               labelText: 'Position',

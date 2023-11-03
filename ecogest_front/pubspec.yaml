@@ -23,6 +23,7 @@ dependencies:
   pusher_channels_flutter: ^2.2.0
   pusher_client: ^2.0.0
   flutter_tagging_plus: ^4.0.2
+  url_launcher: ^6.2.1
 
 dev_dependencies:
   flutter_test:
