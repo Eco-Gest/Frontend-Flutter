@@ -85,7 +85,6 @@ class PostsList extends StatelessWidget {
                                     : false,
                           ),
                         ),
-      
                       ],
                     ),
                   ));
