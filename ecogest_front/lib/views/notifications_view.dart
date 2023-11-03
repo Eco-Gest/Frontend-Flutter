@@ -45,28 +45,33 @@ class NotificationsView extends StatelessWidget {
                     itemBuilder: (context, index) => ListTile(
                       title: Text(state.notifications!.elementAt(index).title!),
                       leading: CircleAvatar(
-                        child: state.notifications!.elementAt(index).user?.image == null
-                            ? Image.asset('assets/profile.jpg')
-                            : Image.network(
-                                state.notifications!.elementAt(index).user!.image!,
-                                fit: BoxFit.cover),
+                        child:
+                            state.notifications!.elementAt(index).user?.image ==
+                                    null
+                                ? Image.asset('assets/profile.jpg')
+                                : Image.network(
+                                    state.notifications!
+                                        .elementAt(index)
+                                        .user!
+                                        .image!,
+                                    fit: BoxFit.cover),
                       ),
                       onTap: () {
-                        if (state.notifications!.elementAt(index).user !=
+                        if (state.notifications!.elementAt(index).post?.id !=
                             null) {
-                          context.pushNamed(UserView.name, pathParameters: {
-                            'id': state.notifications!
-                                .elementAt(index)
-                                .user!
-                                .id!
-                                .toString(),
-                          });
-                        } else {
                           context
                               .pushNamed(PostDetailView.name, pathParameters: {
                             'id': state.notifications!
                                 .elementAt(index)
                                 .post!
+                                .id!
+                                .toString(),
+                          });
+                        } else {
+                          context.pushNamed(UserView.name, pathParameters: {
+                            'id': state.notifications!
+                                .elementAt(index)
+                                .user!
                                 .id!
                                 .toString(),
                           });

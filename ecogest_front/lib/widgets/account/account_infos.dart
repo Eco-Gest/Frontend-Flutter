@@ -73,7 +73,7 @@ class AccountInfo extends StatelessWidget {
                           style: TextStyle(fontSize: 16),
                         ),
                         Text(
-                          user.badgePoints.toString() ?? '0', 
+                          user?.badgePoints.toString() ?? '0', 
                           style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                         ),
                       ],
