@@ -1,10 +1,12 @@
 import 'package:ecogest_front/assets/ecogest_theme.dart';
 import 'package:ecogest_front/state_management/authentication/authentication_cubit.dart';
 import 'package:ecogest_front/state_management/theme_settings/theme_settings_cubit.dart';
+import 'package:ecogest_front/views/legal/legal_notices_view.dart';
 import 'package:ecogest_front/widgets/app_bar.dart';
 import 'package:ecogest_front/widgets/bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 class SettingsView extends StatelessWidget {
   const SettingsView({super.key});
@@ -36,6 +38,11 @@ class SettingsView extends StatelessWidget {
                       },
                     ),
                   ),
+                  TextButton(
+                      onPressed: () {
+                        GoRouter.of(context).pushNamed(LegalNotices.name);
+                      },
+                      child: const Text('Mentions légales')),
                   IconButton(
                     onPressed: () {
                       context.read<AuthenticationCubit>().logout();
