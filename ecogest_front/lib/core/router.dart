@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:ecogest_front/views/challenges_view.dart';
 import 'package:ecogest_front/views/comments_view.dart';
+import 'package:ecogest_front/views/legal/legal_notices_view.dart';
 import 'package:ecogest_front/views/notifications_view.dart';
 import 'package:ecogest_front/views/errors/error404_view.dart';
 import 'package:ecogest_front/views/post_detail_view.dart';
@@ -84,16 +85,15 @@ abstract class AppRouter {
           builder: (context, state) => const ChallengesView(),
         ),
         GoRoute(
-          path: '/posts/:id/comments',
-          name: CommentsView.name,
-          builder: (context, state) {
-            final comments = state.extra! as List;
-            return CommentsView(
-              commentsList: comments, 
-              postId: int.parse(state.pathParameters['id'].toString()),
-            );
-          }
-        ),
+            path: '/posts/:id/comments',
+            name: CommentsView.name,
+            builder: (context, state) {
+              final comments = state.extra! as List;
+              return CommentsView(
+                commentsList: comments,
+                postId: int.parse(state.pathParameters['id'].toString()),
+              );
+            }),
         GoRoute(
           path: '/settings',
           name: SettingsView.name,
@@ -110,6 +110,11 @@ abstract class AppRouter {
           path: '/notifications',
           name: NotificationsView.name,
           builder: (context, state) => NotificationsView(),
+        ),
+        GoRoute(
+          path: '/legal-notices',
+          name: LegalNotices.name,
+          builder: (context, state) => const LegalNotices(),
         ),
       ],
       refreshListenable:
