@@ -135,7 +135,7 @@ u }o--|| upc : has points in
 u }o--|| ut : has 
 cat }|--|| ut : has 
 cat }o--|| upc : has 
-ptag }o--o| tag
-ptag |o--o| p
+ptag ||---|| tag
+ptag ||--o| p
 
 @enduml
