@@ -18,6 +18,7 @@ class OnePostStateSuccess extends PostsState {
 }
 
 class DeletePostStateSuccess extends PostsState {}
+class ReportPostStateSuccess extends PostsState {}
 
 class PostsStateError extends PostsState {
   final String message;

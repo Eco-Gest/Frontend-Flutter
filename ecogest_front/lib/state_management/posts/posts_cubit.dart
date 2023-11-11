@@ -1,4 +1,5 @@
 import 'package:ecogest_front/services/post_service.dart';
+import 'package:ecogest_front/models/post_model.dart';
 import 'package:ecogest_front/state_management/posts/posts_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -49,4 +50,18 @@ class PostsCubit extends Cubit<PostsState> {
         emit(PostsStateError("Erreur rencontrée pour supprimer votre publications. Veuillez réessayer."));
     }
   }
+  
+  Future<void> submitReport(int postId, String result) async {
+    try {
+      emit(PostsStateLoading());
+
+      final postService = PostService(); 
+      await postService.submitReport(postId, result);
+
+      emit(ReportPostStateSuccess());
+    } catch (error) {
+      emit(PostsStateError("Erreur rencontrée lors du signalement. Veuillez réessayer."));
+    }
+  }
+
 }
