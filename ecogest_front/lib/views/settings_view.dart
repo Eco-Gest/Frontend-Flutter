@@ -2,6 +2,7 @@ import 'package:ecogest_front/assets/ecogest_theme.dart';
 import 'package:ecogest_front/state_management/authentication/authentication_cubit.dart';
 import 'package:ecogest_front/state_management/theme_settings/theme_settings_cubit.dart';
 import 'package:ecogest_front/views/legal/legal_notices_view.dart';
+import 'package:ecogest_front/views/legal/privacy_policy_view.dart';
 import 'package:ecogest_front/widgets/app_bar.dart';
 import 'package:ecogest_front/widgets/bottom_bar.dart';
 import 'package:flutter/material.dart';
@@ -75,7 +76,7 @@ class SettingsView extends StatelessWidget {
                   ),
                   TextButton(
                       onPressed: () {
-                        // TODO : add link to the view
+                        GoRouter.of(context).pushNamed(PrivacyPolicy.name);
                       },
                       child: const Text('Politique de confidentialité')),
                   const SizedBox(
