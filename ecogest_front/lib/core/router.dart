@@ -117,11 +117,6 @@ abstract class AppRouter {
           name: LegalNotices.name,
           builder: (context, state) => const LegalNotices(),
         ),
-        GoRoute(
-          path: '/privacy-policy',
-          name: PrivacyPolicy.name,
-          builder: (context, state) => const PrivacyPolicy(),
-        ),
       ],
       refreshListenable:
           GoRouterRefreshStream(context.read<AuthenticationCubit>().stream),
