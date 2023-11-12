@@ -17,42 +17,91 @@ class SettingsView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const ThemeAppBar(title: 'Paramètres'),
-      bottomNavigationBar: AppBarFooter(),
+      bottomNavigationBar: const AppBarFooter(),
       body: SingleChildScrollView(
         child: Stack(
           children: [
             Center(
+                child: Padding(
+              padding: const EdgeInsets.all(16.0),
               child: Column(
                 children: [
-                  ListTile(
-                    title: const Text('Dark Mode'),
-                    trailing:
-                        BlocBuilder<ThemeSettingsCubit, ThemeSettingsState>(
-                      builder: (context, state) {
-                        return Checkbox(
-                            activeColor: EcogestTheme.primary,
-                            value: state.isDarkMode,
-                            onChanged: (value) {
-                              context.read<ThemeSettingsCubit>().toggleTheme();
-                            });
-                      },
-                    ),
+                  Column(
+                    children: [
+                      const Text('Thème'),
+                      BlocBuilder<ThemeSettingsCubit, ThemeSettingsState>(
+                          builder: (context, state) {
+                        // ’.adaptive’ allow to adapt switch according to platform (Android / iOS)
+                        return Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            const Icon(
+                              Icons.light_mode,
+                              size: 30.0,
+                              semanticLabel: 'Mode clair',
+                            ),
+                            Switch.adaptive(
+                              // This bool value toggles the switch.
+                              value: state.isDarkMode,
+                              activeColor: EcogestTheme.primary,
+                              onChanged: (bool value) {
+                                // This is called when the user toggles the switch.
+                                context
+                                    .read<ThemeSettingsCubit>()
+                                    .toggleTheme();
+                              },
+                            ),
+                            const Icon(
+                              Icons.dark_mode,
+                              size: 20.0,
+                              semanticLabel: 'Mode sombre',
+                            ),
+                          ],
+                        );
+                      }),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 16.0,
                   ),
                   TextButton(
                       onPressed: () {
                         GoRouter.of(context).pushNamed(LegalNotices.name);
                       },
                       child: const Text('Mentions légales')),
-                  IconButton(
-                    onPressed: () {
-                      context.read<AuthenticationCubit>().logout();
-                    },
-                    icon: const Icon(Icons.logout),
-                    color: Colors.red,
+                  const SizedBox(
+                    height: 16.0,
                   ),
+                  TextButton(
+                      onPressed: () {
+                        // TODO : add link to the view
+                      },
+                      child: const Text('Politique de confidentialité')),
+                  const SizedBox(
+                    height: 16.0,
+                  ),
+                  TextButton(
+                      onPressed: () {
+                        // TODO : email Tigrou
+                      },
+                      child: const Text('Modifier mes données personnelles')),
+                  const SizedBox(
+                    height: 16.0,
+                  ),
+                  SizedBox(
+                      width: (MediaQuery.of(context).size.width - 26) / 2,
+                      height: 50.0,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          context.read<AuthenticationCubit>().logout();
+                        },
+                        child: const Text('Se déconnecter'),
+                      )),
+                  // ),
                 ],
               ),
-            ),
+            )),
           ],
         ),
       ),
