@@ -5,7 +5,7 @@ import 'package:ecogest_front/widgets/bottom_bar.dart';
 import 'package:ecogest_front/widgets/app_bar.dart';
 
 class PrivacyPolicy extends StatelessWidget {
-  const PrivacyPolicy({Key? key});
+  const PrivacyPolicy({super.key});
 
   static String name = 'privacy-policy';
 
