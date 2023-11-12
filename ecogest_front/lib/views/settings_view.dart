@@ -75,9 +75,7 @@ class SettingsView extends StatelessWidget {
                     height: 16.0,
                   ),
                   TextButton(
-                      onPressed: () {
-                        GoRouter.of(context).pushNamed(PrivacyPolicy.name);
-                      },
+                      onPressed: () {},
                       child: const Text('Politique de confidentialité')),
                   const SizedBox(
                     height: 16.0,
