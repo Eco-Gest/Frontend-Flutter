@@ -23,8 +23,10 @@ class CommentsList extends StatelessWidget {
           // We must loop over the different comments with a `for`.
           for (CommentModel comment in comments) ...[
             CommentElement(
+              commentId: comment.id,
               content: comment.content,
               author: comment.author?.username,
+              authorId: comment.author?.id,
               profilePic: comment.author?.image
             ),
             const SizedBox(

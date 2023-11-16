@@ -1,16 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:ecogest_front/widgets/comment/comment_content_menu.dart';
 
 class CommentElement extends StatelessWidget {
   const CommentElement({
     super.key,
+    required this.commentId,
     required this.content,
     required this.author,
+    required this.authorId,
     this.profilePic,
   });
 
+  final int? commentId;
   final String? content;
   final String? author;
   final String? profilePic;
+  final int? authorId;
 
   @override
   Widget build(BuildContext context) {
@@ -76,8 +81,8 @@ class CommentElement extends StatelessWidget {
                       )
                     ],
                   )        
-                )
-
+                ),
+              CommentContentMenu(authorId: authorId,commentId: commentId, content: content),
               ],
             )
             
