@@ -1,0 +1,21 @@
+@startuml
+left to right direction
+actor "visitor" as v
+rectangle Authentication {
+  usecase "login" as l
+  usecase "register" as r
+}
+v --> l
+v --> r
+
+rectangle Fields as f{
+  usecase "enter an email" as e
+usecase "enter a password" as p
+}
+
+usecase "enter an username" as u
+
+l --> f
+r --> f
+r--> u
+@enduml

@@ -32,7 +32,6 @@ entity "Post" as p {
   --
   *category_id : number <<FK>>
   *author_id : number <<FK>>
-  *tag : [text]
   *title: text
   *description : text
   *image : text
@@ -84,6 +83,12 @@ entity "User_point_category" as upc {
   *total_point : number
 }
 
+Entity "Tag" as tag {
+  *id : number <<generated>>
+  *label : text
+}
+
+
 u |o-down--o{ upp : participates
 p }o---o| upp : contains
 u }o-down--|| p : writes
@@ -96,6 +101,7 @@ p }o---|| c : commented
 p ||---o{ cat : has
 u }o--|| upc : has points in
 cat }o--|| upc : has 
+p }o--o{ tag
 
 
 @enduml
