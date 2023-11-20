@@ -8,6 +8,7 @@ class UserModel {
   final int? badgeId;
   final String? badgeTitle;
   final int? badgePoints;
+  final int? totalPoints;
   final String? image;
   final String? birthdate;
   final String? biography;
@@ -26,6 +27,7 @@ class UserModel {
     this.badgeId,
     this.badgeTitle,
     this.badgePoints,
+    this.totalPoints,
     this.image,
     this.birthdate,
     this.biography,
@@ -48,6 +50,9 @@ class UserModel {
         badgeTitle: json['badge']?['title']?.toString(),
         badgePoints: json['badge'] != null
             ? int.parse(json['badge']['point'].toString())
+            : null,
+        totalPoints: json['total_point'] != null
+            ? int.parse(json['total_point'].toString())
             : null,
         image: json['image']?.toString(),
         birthdate: json['birthdate']?.toString(),
