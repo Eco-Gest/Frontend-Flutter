@@ -57,11 +57,11 @@ class PostContentMenu extends StatelessWidget {
                                   ),
                                   ListTile(
                                     title: Text('Suicide ou conduites autodestructrices'),
-                                    onTap: () => Navigator.pop(context, 'Discours de haine'),
+                                    onTap: () => Navigator.pop(context, 'Suicide ou conduites autodestructrices'),
                                   ),
                                   ListTile(
                                     title: Text('Nudité ou actes sexuels'),
-                                    onTap: () => Navigator.pop(context, 'Discours de haine'),
+                                    onTap: () => Navigator.pop(context, 'Nudité ou actes sexuels'),
                                   ),
                                   ListTile(
                                     title: Text('Spam'),
