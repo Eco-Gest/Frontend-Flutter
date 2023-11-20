@@ -23,7 +23,6 @@ class CommentCubit extends Cubit<CommentState> {
         emit(CommentStateLoading());
      await CommentService.deleteComment(commentId);
          emit(DeleteCommentStateSuccess());
-         debugPrint("Commentaire supprimé");
     } catch (error) {
         emit(DeleteCommentStateError("Erreur rencontrée pour supprimer votre commentaire. Veuillez réessayer."));
     }

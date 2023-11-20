@@ -22,9 +22,8 @@ abstract class CommentService {
       token: token,
     );
     if (response.statusCode == 200) {
-      // La suppression a réussi.
+      throw Exception('Le commentaire a bien été supprimé')
     } else {
-      // La suppression a échoué. Vous pouvez émettre une exception ou gérer l'erreur d'une autre manière.
       throw Exception('Échec de la suppression du message');
     }
   }
