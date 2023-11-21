@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ecogest_front/assets/ecogest_theme.dart';
+import 'package:ecogest_front/assets/color_schemes.g.dart';
 
 class ThemeAppBar extends StatelessWidget implements PreferredSizeWidget {
   const ThemeAppBar({
@@ -18,7 +19,7 @@ class ThemeAppBar extends StatelessWidget implements PreferredSizeWidget {
   final TabController? tabController;
   final List<Widget>? tabs;
 
-  static Size get prefSize => const Size.fromHeight(55.0);
+  static Size get prefSize => const Size.fromHeight(60.0);
 
   String _getCurrentRoute(BuildContext context) {
     return GoRouterState.of(context).uri.toString();
@@ -31,6 +32,7 @@ class ThemeAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       title: Text(title),
+      backgroundColor: lightColorScheme.surface,
       leading: IconButton(
         icon: const Icon(Icons.arrow_back),
         onPressed: () {

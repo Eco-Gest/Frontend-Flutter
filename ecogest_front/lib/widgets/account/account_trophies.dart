@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ecogest_front/models/trophy_model.dart';
 import 'package:ecogest_front/services/trophy_service.dart';
+import 'package:ecogest_front/assets/color_schemes.g.dart';
 
 class AccountTrophies extends StatefulWidget {
   AccountTrophies({Key? key, required this.userId});
@@ -27,11 +28,10 @@ class _AccountTrophiesState extends State<AccountTrophies> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Blue-grey light border
           Container(
             width: double.infinity,
-            height: 2,
-            color: Colors.blueGrey.shade200,
+            height: 1,
+            color: lightColorScheme.outline,
           ),
           SizedBox(height: 12),
           // Title "Mes accomplissements"

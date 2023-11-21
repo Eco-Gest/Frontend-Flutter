@@ -200,17 +200,11 @@ class RegisterView extends StatelessWidget {
                     // register button
                     child: SizedBox(
                       width: 300,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            minimumSize: const Size.fromHeight(30),
-                            alignment: Alignment.topCenter,
-                            padding: const EdgeInsets.all(20),
-                            foregroundColor:
-                                Colors.white, // Color of button text
-                            textStyle: const TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            )),
+                      child: FilledButton(
+                        style: TextButton.styleFrom(
+                          minimumSize: const Size.fromHeight(50),
+                          padding: const EdgeInsets.all(20),
+                        ),
                         onPressed: () {
                           context.read<AuthenticationCubit>().register(
                                 email: emailController.text,
@@ -218,7 +212,9 @@ class RegisterView extends StatelessWidget {
                                 password: passwordController.text,
                               );
                         },
-                        child: const Text("S'inscrire"),
+                        child: const Text(
+                          style: TextStyle(fontSize: 18),
+                          "S'inscrire"),
                       ),
                     ),
                   ),

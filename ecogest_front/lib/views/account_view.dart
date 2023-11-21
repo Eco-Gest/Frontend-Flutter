@@ -8,6 +8,7 @@ import 'package:ecogest_front/widgets/account/account_infos.dart';
 import 'package:ecogest_front/widgets/account/account_trophies.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:ecogest_front/assets/color_schemes.g.dart';
 
 class AccountView extends StatefulWidget {
   const AccountView({Key? key});
@@ -41,7 +42,7 @@ class _AccountViewState extends State<AccountView>
       appBar: AppBar(
         title: const Text('Profil'),
         bottom: TabBar(
-          indicatorColor: Colors.black,
+          indicatorColor: lightColorScheme.primary,
           indicatorSize: TabBarIndicatorSize.label,
           indicatorWeight: 2,
           controller: _tabController,

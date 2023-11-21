@@ -25,11 +25,11 @@ class UnSubscriptionWidget extends StatelessWidget {
         builder: (context, state) {
       if (state is SubscriptionStateInitial) {
         return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-          ElevatedButton(
+          FilledButton(
             child: Text(
               "Me désabonner",
             ),
-            style: ElevatedButton.styleFrom(
+            style: FilledButton.styleFrom(
               fixedSize: userAuthenticatedHasFollowRequestStatus!
                   ? Size(210, 50)
                   : Size((MediaQuery.of(context).size.width) / 2, 50),
@@ -56,11 +56,11 @@ class UnSubscriptionWidget extends StatelessWidget {
       return Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          ElevatedButton(
+          FilledButton(
             child: Text(
               "Me désabonner",
             ),
-            style: ElevatedButton.styleFrom(
+            style: FilledButton.styleFrom(
               fixedSize: userAuthenticatedHasFollowRequestStatus!
                   ? Size(210, 50)
                   : Size((MediaQuery.of(context).size.width) / 2, 50),

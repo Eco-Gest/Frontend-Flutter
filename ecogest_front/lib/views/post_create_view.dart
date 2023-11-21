@@ -1,5 +1,5 @@
 import 'package:date_field/date_field.dart';
-import 'package:ecogest_front/assets/ecogest_theme.dart';
+import 'package:ecogest_front/assets/color_schemes.g.dart';
 import 'package:ecogest_front/models/post_model.dart';
 import 'package:ecogest_front/models/tag_model.dart';
 import 'package:ecogest_front/models/user_model.dart';
@@ -293,8 +293,6 @@ class PostCreateView extends StatelessWidget {
                               initialItems: _tagsToSave,
                               textFieldConfiguration: TextFieldConfiguration(
                                   decoration: InputDecoration(
-                                      border: InputBorder.none,
-                                      filled: true,
                                       hintText: 'Saisir un nouveau tag',
                                       labelText: 'Ajouter un ou plusieurs tags',
                                   ),
@@ -319,22 +317,19 @@ class PostCreateView extends StatelessWidget {
                                       additionWidget: const Chip(
                                           avatar: Icon(
                                               Icons.add_circle,
-                                              color: Colors.white,
                                           ),
                                           label: Text('Ajouter un nouveau tag'),
                                           labelStyle: TextStyle(
-                                              color: Colors.white,
                                               fontSize: 14.0,
                                               fontWeight: FontWeight.w300,
                                           ),
-                                          backgroundColor: EcogestTheme.primary,
                                       ),
                                   );
                               },
                               configureChip: (tag) {
                                   return ChipConfiguration(
                                       label: Text(tag.label),
-                                      backgroundColor: EcogestTheme.primary,
+                                      backgroundColor: lightColorScheme.primary,
                                       labelStyle: TextStyle(color: Colors.white),
                                       deleteIconColor: Colors.white,
                                   );
@@ -395,7 +390,7 @@ class PostCreateView extends StatelessWidget {
                           child: SizedBox(
                             width: (MediaQuery.of(context).size.width - 26) / 2,
                             height: 50.0,
-                            child: ElevatedButton(
+                            child: FilledButton(
                               onPressed: () async {
                                 if (formKey.currentState!.validate()) {
                                   ScaffoldMessenger.of(context).showSnackBar(

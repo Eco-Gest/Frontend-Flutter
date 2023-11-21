@@ -40,7 +40,7 @@ class PostContentButtons extends StatelessWidget {
                 },
                 child: Text(
                   '$likes like',
-                  style: const TextStyle(color: Colors.black),
+                  // style: const TextStyle(color: Colors.black),
                 ),
               ),
             ],
@@ -51,7 +51,7 @@ class PostContentButtons extends StatelessWidget {
                 },
                 child: Text(
                   '$likes likes',
-                  style: const TextStyle(color: Colors.black),
+                  // style: const TextStyle(color: Colors.black),
                 ),
               ),
             ],
@@ -66,7 +66,7 @@ class PostContentButtons extends StatelessWidget {
                   },
                   child: Text(
                     '${comments!.length} commentaires',
-                    style: const TextStyle(color: Colors.black),
+                    // style: const TextStyle(color: Colors.black),
                   )),
             ]
           ],
@@ -78,8 +78,8 @@ class PostContentButtons extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             LikeWidget(postId: post.id!, isLiked: isLiked),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
+            FilledButton(
+              style: FilledButton.styleFrom(
                   padding: const EdgeInsets.all(20),
                   foregroundColor: Colors.white,
                   textStyle: const TextStyle(
@@ -92,8 +92,8 @@ class PostContentButtons extends StatelessWidget {
               },
               child: const Icon(Icons.comment),
             ),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
+            FilledButton(
+              style: FilledButton.styleFrom(
                   padding: const EdgeInsets.all(20),
                   foregroundColor: Colors.white,
                   textStyle: const TextStyle(

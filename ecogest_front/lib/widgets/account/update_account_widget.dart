@@ -3,7 +3,7 @@ import 'package:ecogest_front/models/user_model.dart';
 import 'package:ecogest_front/state_management/user/user_cubit.dart';
 import 'package:ecogest_front/views/account_view.dart';
 import 'package:flutter/material.dart';
-import 'package:ecogest_front/assets/ecogest_theme.dart';
+import 'package:ecogest_front/assets/color_schemes.g.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
@@ -124,7 +124,7 @@ class _UpdateAccountWidget extends State<UpdateAccountWidget> {
                                 ListTile(
                                   title: const Text('Profil privé '),
                                   trailing: Checkbox(
-                                    activeColor: EcogestTheme.primary,
+                                    activeColor: lightColorScheme.primary,
                                     value: widget.isPrivateController,
                                     onChanged: (value) {
                                       setState(() {
@@ -223,7 +223,7 @@ class _UpdateAccountWidget extends State<UpdateAccountWidget> {
                                             26) /
                                         2,
                                     height: 50.0,
-                                    child: ElevatedButton(
+                                    child: FilledButton(
                                       onPressed: () async {
                                         if (formKey.currentState!.validate()) {
                                           ScaffoldMessenger.of(context)

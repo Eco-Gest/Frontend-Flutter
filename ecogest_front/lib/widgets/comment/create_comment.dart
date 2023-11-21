@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ecogest_front/assets/ecogest_theme.dart';
+import 'package:ecogest_front/assets/color_schemes.g.dart';
 import 'package:ecogest_front/state_management/comments/comment_cubit.dart';
 
 class CreateComment extends StatelessWidget {
@@ -12,7 +12,7 @@ class CreateComment extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: EcogestTheme.primary,
+      color: lightColorScheme.primary,
       padding: const EdgeInsets.all(16.0),
       child: TextFormField(
         controller: _newCommentController,

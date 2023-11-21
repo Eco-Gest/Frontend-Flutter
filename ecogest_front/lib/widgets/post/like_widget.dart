@@ -21,8 +21,8 @@ class _LikeWidget extends State<LikeWidget> {
     return Column(children: [
       BlocBuilder<LikeCubit, LikeState>(builder: (context, state) {
         if (state is StateLikeSuccess) {
-          return ElevatedButton(
-            style: ElevatedButton.styleFrom(
+          return FilledButton(
+            style: FilledButton.styleFrom(
                 padding: const EdgeInsets.all(20),
                 foregroundColor: Colors.white,
                 textStyle: const TextStyle(
@@ -40,8 +40,8 @@ class _LikeWidget extends State<LikeWidget> {
           );
         }
         if (state is StateUnlikeSuccess) {
-          return ElevatedButton(
-            style: ElevatedButton.styleFrom(
+          return FilledButton(
+            style: FilledButton.styleFrom(
                 padding: const EdgeInsets.all(20),
                 foregroundColor: Colors.white,
                 textStyle: const TextStyle(
@@ -58,8 +58,8 @@ class _LikeWidget extends State<LikeWidget> {
                 : Icons.thumb_up_alt_outlined),
           );
         }
-        return ElevatedButton(
-          style: ElevatedButton.styleFrom(
+        return FilledButton(
+          style: FilledButton.styleFrom(
               padding: const EdgeInsets.all(20),
               foregroundColor: Colors.white,
               textStyle: const TextStyle(

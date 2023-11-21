@@ -1,4 +1,4 @@
-import 'package:ecogest_front/assets/ecogest_theme.dart';
+import 'package:ecogest_front/assets/color_schemes.g.dart';
 import 'package:ecogest_front/state_management/authentication/authentication_cubit.dart';
 import 'package:ecogest_front/state_management/theme_settings/theme_settings_cubit.dart';
 import 'package:ecogest_front/widgets/app_bar.dart';
@@ -28,7 +28,7 @@ class SettingsView extends StatelessWidget {
                         BlocBuilder<ThemeSettingsCubit, ThemeSettingsState>(
                       builder: (context, state) {
                         return Checkbox(
-                            activeColor: EcogestTheme.primary,
+                            activeColor: lightColorScheme.primary,
                             value: state.isDarkMode,
                             onChanged: (value) {
                               context.read<ThemeSettingsCubit>().toggleTheme();
