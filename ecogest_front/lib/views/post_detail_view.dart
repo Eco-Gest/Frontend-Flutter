@@ -63,7 +63,6 @@ class PostDetailView extends StatelessWidget {
                           PostContentInfos(
                             post: state.post,
                           ),
-                          const PostSeparator(),
                           // Buttons
                           BlocProvider<LikeCubit>(
                               create: (context) => LikeCubit(),

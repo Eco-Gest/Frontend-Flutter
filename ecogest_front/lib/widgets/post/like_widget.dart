@@ -1,6 +1,7 @@
 import 'package:ecogest_front/state_management/like/like_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ecogest_front/assets/color_schemes.g.dart';
 
 class LikeWidget extends StatefulWidget {
   LikeWidget({
@@ -21,55 +22,37 @@ class _LikeWidget extends State<LikeWidget> {
     return Column(children: [
       BlocBuilder<LikeCubit, LikeState>(builder: (context, state) {
         if (state is StateLikeSuccess) {
-          return FilledButton(
-            style: FilledButton.styleFrom(
-                padding: const EdgeInsets.all(20),
-                foregroundColor: Colors.white,
-                textStyle: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                )),
+          return IconButton(
             onPressed: () {
               context
                   .read<LikeCubit>()
                   .toggleLike(widget.postId, widget.isLiked);
             },
-            child: Icon(widget.isLiked
+            color: lightColorScheme.primary,
+            icon: Icon(widget.isLiked
                 ? Icons.thumb_up_alt_rounded
                 : Icons.thumb_up_alt_outlined),
           );
         }
         if (state is StateUnlikeSuccess) {
-          return FilledButton(
-            style: FilledButton.styleFrom(
-                padding: const EdgeInsets.all(20),
-                foregroundColor: Colors.white,
-                textStyle: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                )),
+          return IconButton(
             onPressed: () {
               context
                   .read<LikeCubit>()
                   .toggleLike(widget.postId, widget.isLiked);
             },
-            child: Icon(widget.isLiked
+            color: lightColorScheme.primary,
+            icon: Icon(widget.isLiked
                 ? Icons.thumb_up_alt_rounded
                 : Icons.thumb_up_alt_outlined),
           );
         }
-        return FilledButton(
-          style: FilledButton.styleFrom(
-              padding: const EdgeInsets.all(20),
-              foregroundColor: Colors.white,
-              textStyle: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              )),
+        return IconButton(
           onPressed: () {
             context.read<LikeCubit>().toggleLike(widget.postId, widget.isLiked);
           },
-          child: Icon(widget.isLiked
+          color: lightColorScheme.primary,
+          icon: Icon(widget.isLiked
               ? Icons.thumb_up_alt_rounded
               : Icons.thumb_up_alt_outlined),
         );
