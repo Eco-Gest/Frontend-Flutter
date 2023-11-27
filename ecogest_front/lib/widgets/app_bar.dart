@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ecogest_front/assets/ecogest_theme.dart';
-import 'package:ecogest_front/assets/color_schemes.g.dart';
+import 'package:ecogest_front/assets/ecogest_theme.dart';
 
 class ThemeAppBar extends StatelessWidget implements PreferredSizeWidget {
   const ThemeAppBar({

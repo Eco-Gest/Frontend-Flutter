@@ -1,6 +1,6 @@
 import 'package:ecogest_front/models/user_model.dart';
 import 'package:flutter/material.dart';
-import 'package:ecogest_front/assets/color_schemes.g.dart';
+import 'package:ecogest_front/assets/ecogest_theme.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AccountInfo extends StatelessWidget {

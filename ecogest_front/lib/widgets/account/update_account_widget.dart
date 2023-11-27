@@ -3,7 +3,7 @@ import 'package:ecogest_front/models/user_model.dart';
 import 'package:ecogest_front/state_management/user/user_cubit.dart';
 import 'package:ecogest_front/views/account_view.dart';
 import 'package:flutter/material.dart';
-import 'package:ecogest_front/assets/color_schemes.g.dart';
+import 'package:ecogest_front/assets/ecogest_theme.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 

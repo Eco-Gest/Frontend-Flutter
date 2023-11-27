@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ecogest_front/assets/color_schemes.g.dart';
+import 'package:ecogest_front/assets/ecogest_theme.dart';
 
 class PostSeparator extends StatelessWidget {
   const PostSeparator({

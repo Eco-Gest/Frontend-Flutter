@@ -8,7 +8,7 @@ import 'assets/ecogest_theme.dart';
 import 'package:ecogest_front/state_management/authentication/authentication_cubit.dart';
 import 'package:ecogest_front/core/router.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:ecogest_front/assets/color_schemes.g.dart';
+import 'package:ecogest_front/assets/ecogest_theme.dart';
 
 void main() {
   initializeDateFormatting('fr_FR', null).then((_) => runApp(MainApp()));

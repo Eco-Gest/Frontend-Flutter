@@ -1,7 +1,7 @@
 import 'package:ecogest_front/state_management/like/like_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ecogest_front/assets/color_schemes.g.dart';
+import 'package:ecogest_front/assets/ecogest_theme.dart';
 
 class LikeWidget extends StatefulWidget {
   LikeWidget({

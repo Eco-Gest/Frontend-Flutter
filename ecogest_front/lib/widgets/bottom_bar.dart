@@ -7,7 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:ecogest_front/assets/ecogest_theme.dart';
 import 'package:ecogest_front/views/home_view.dart';
 import 'package:ecogest_front/views/account_view.dart';
-import 'package:ecogest_front/assets/color_schemes.g.dart';
+import 'package:ecogest_front/assets/ecogest_theme.dart';
 
 class AppBarFooter extends StatelessWidget {
   const AppBarFooter({super.key});

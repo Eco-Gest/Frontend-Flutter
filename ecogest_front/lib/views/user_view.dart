@@ -9,7 +9,7 @@ import 'package:ecogest_front/widgets/account/account_infos.dart';
 import 'package:ecogest_front/widgets/account/account_trophies.dart';
 import 'package:ecogest_front/state_management/user/user_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ecogest_front/assets/color_schemes.g.dart';
+import 'package:ecogest_front/assets/ecogest_theme.dart';
 
 class UserView extends StatelessWidget {
   UserView({Key? key, required this.userId});

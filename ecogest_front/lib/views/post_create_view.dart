@@ -1,5 +1,5 @@
 import 'package:date_field/date_field.dart';
-import 'package:ecogest_front/assets/color_schemes.g.dart';
+import 'package:ecogest_front/assets/ecogest_theme.dart';
 import 'package:ecogest_front/models/post_model.dart';
 import 'package:ecogest_front/models/tag_model.dart';
 import 'package:ecogest_front/models/user_model.dart';

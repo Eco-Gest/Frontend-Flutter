@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ecogest_front/models/trophy_model.dart';
 import 'package:ecogest_front/services/trophy_service.dart';
-import 'package:ecogest_front/assets/color_schemes.g.dart';
+import 'package:ecogest_front/assets/ecogest_theme.dart';
 
 class AccountTrophies extends StatefulWidget {
   AccountTrophies({Key? key, required this.userId});

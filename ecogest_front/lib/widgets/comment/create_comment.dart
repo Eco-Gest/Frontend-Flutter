@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ecogest_front/assets/color_schemes.g.dart';
+import 'package:ecogest_front/assets/ecogest_theme.dart';
 import 'package:ecogest_front/state_management/comments/comment_cubit.dart';
 
 class CreateComment extends StatelessWidget {
