@@ -107,8 +107,27 @@ class PostService {
     if (response.statusCode == 200) {
       // La suppression a réussi.
     } else {
-      // La suppression a échoué. Vous pouvez émettre une exception ou gérer l'erreur d'une autre manière.
       throw Exception('Échec de la suppression du message');
     }
   }
+
+Future<void> submitReport(int postId, String result) async {
+  try {
+    final String? token = await AuthenticationService.getToken();
+
+    getOnePost(postId).then((PostModel post) async {
+      final Map<String, dynamic> requestBody = {
+        'postID': post.id,
+        'postTitle': post.title,
+        'authorID': post.authorId,
+        'result': result,
+        'postContent': post.description,
+      };
+
+      await EcoGestApiDataSource.post('/submit-report', requestBody, token: token);
+    });
+  } catch (error) {
+    throw Exception('Échec du signalement');
+  }
+}
 }
