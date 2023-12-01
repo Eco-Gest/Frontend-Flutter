@@ -1,3 +1,4 @@
+import 'package:ecogest_front/widgets/post/category_icon_widget.dart';
 import 'package:ecogest_front/models/post_model.dart';
 import 'package:flutter/material.dart';
 
@@ -71,18 +72,23 @@ class PostContentInfos extends StatelessWidget {
                       // number of points depending on the difficulty
                       if (post!.type.toString() == 'action') ...[
                         Text(
-                          convertLevelToPoint(post!.level.toString()).toString(),
+                          convertLevelToPoint(post!.level.toString())
+                              .toString(),
                           style: const TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 18,
                           ),
                         )
-                      // If the post is a challenge, we display the number
-                      // of points, obtained depending on the duration of
-                      // the challenge and its difficulty
+                        // If the post is a challenge, we display the number
+                        // of points, obtained depending on the duration of
+                        // the challenge and its difficulty
                       ] else ...[
                         Text(
-                          challengePoint(post!.startDate.toString(), post!.endDate.toString(), post!.level.toString()).toString(),
+                          challengePoint(
+                                  post!.startDate.toString(),
+                                  post!.endDate.toString(),
+                                  post!.level.toString())
+                              .toString(),
                           style: const TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 18,
@@ -100,10 +106,7 @@ class PostContentInfos extends StatelessWidget {
                               NetworkImage(post!.category!.image.toString()),
                         )
                       ] else ...[
-                        const Icon(
-                          Icons.category_outlined,
-                          size: 15,
-                        )
+                        CategoryIconWidget(catId: post!.categoryId),
                       ],
                       Text(' ${post!.category!.title.toString()}'),
                     ],
