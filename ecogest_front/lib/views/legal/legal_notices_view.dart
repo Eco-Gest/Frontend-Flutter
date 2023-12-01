@@ -1,8 +1,11 @@
+import 'package:ecogest_front/assets/ecogest_theme.dart';
 import 'package:ecogest_front/widgets/legal_title_widget.dart';
 import 'package:ecogest_front/widgets/post/post_separator.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:ecogest_front/widgets/bottom_bar.dart';
 import 'package:ecogest_front/widgets/app_bar.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class LegalNotices extends StatelessWidget {
   const LegalNotices({Key? key});
@@ -11,41 +14,66 @@ class LegalNotices extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-        appBar: ThemeAppBar(title: 'Mentions Légales'),
-        bottomNavigationBar: AppBarFooter(),
+    return Scaffold(
+        appBar: const ThemeAppBar(title: 'Mentions Légales'),
+        bottomNavigationBar: const AppBarFooter(),
         body: SingleChildScrollView(
             child: Padding(
-          padding: EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(16.0),
           child: Column(
             children: [
               // Editeur
               Column(children: [
-                LegalTitle(textContent: 'Éditeur du site :'),
-                Text('Société EcO\'Gest'),
-                Text('3 Bd Michelet, 13008 Marseille'),
-                Text('Téléphone : 01.23.45.67.89'),
-                Text('E-mail : contact@egogest.com'),
+                const LegalTitle(textContent: 'Éditeur du site :'),
+                const Text('Société EcO\'Gest'),
+                const Text('2 Rue George Sand, 36120 Ardentes'),
+                const Text('Téléphone : 01.23.45.67.89'),
+                RichText(
+                  text: TextSpan(
+                    children: [
+                      const TextSpan(
+                        text: 'E-mail : ',
+                      ),
+                      TextSpan(
+                        text: 'report@ecogest.dev',
+                        style: const TextStyle(color: EcogestTheme.primary),
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () async {
+                            // Launch email application
+                            final Uri emailLaunchUri = Uri(
+                              scheme: 'mailto',
+                              path: 'report@ecogest.io',
+                            );
+                            try {
+                              await launchUrl(emailLaunchUri);
+                            } catch (e) {
+                              throw Exception("Contact non éffectué");
+                            }
+                          },
+                      ),
+                    ],
+                  ),
+                ),
               ]),
-              PostSeparator(),
+              const PostSeparator(),
               // Directeur
-              Column(children: [
+              const Column(children: [
                 LegalTitle(textContent: 'Directeur de la publication :'),
                 Text('Tigrou'),
               ]),
-              PostSeparator(),
+              const PostSeparator(),
               // Hébergement
               // TODO : A complété
-              Column(children: [
+              const Column(children: [
                 LegalTitle(textContent: 'Hébergement du site :'),
                 Text('[Nom de l\'hébergeur]'),
                 Text('[Adresse de l\'hébergeur]'),
                 Text(
                     'Téléphone de l\'hébergeur : [Numéro de téléphone de l\'hébergeur]'),
               ]),
-              PostSeparator(),
+              const PostSeparator(),
               // CGU
-              Column(children: [
+              const Column(children: [
                 LegalTitle(
                     textContent: 'Conditions générales d\'utilisation :'),
                 LegalTitle(
@@ -68,16 +96,16 @@ class LegalNotices extends StatelessWidget {
                 Text(
                     'Veuillez consulter notre politique de confidentialité pour en savoir plus sur la manière dont nous collectons, utilisons et protégeons vos données personnelles.'),
               ]),
-              PostSeparator(),
+              const PostSeparator(),
               // Confidentialité
-              Column(children: [
+              const Column(children: [
                 LegalTitle(textContent: 'Politique de confidentialité :'),
                 Text(
                     'Pour en savoir plus sur notre politique de confidentialité, veuillez consulter notre page dédiée.'),
               ]),
-              PostSeparator(),
+              const PostSeparator(),
               // Cookie
-              Column(children: [
+              const Column(children: [
                 LegalTitle(textContent: 'Cookies :'),
                 Text(
                     'Ce site web n\'utilise pas de cookie. Pour en savoir plus sur l\'utilisation des cookies, veuillez consulter notre politique de cookies.'),
