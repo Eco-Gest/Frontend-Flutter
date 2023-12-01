@@ -8,6 +8,7 @@ import 'package:ecogest_front/widgets/bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SettingsView extends StatelessWidget {
   const SettingsView({super.key});
@@ -83,8 +84,28 @@ class SettingsView extends StatelessWidget {
                     height: 16.0,
                   ),
                   TextButton(
-                      onPressed: () {
-                        // TODO : email Tigrou
+                      onPressed: () async {
+                        // Launch email application
+                        const String subject =
+                            'Demande de modification de mes données personnelles';
+                        const String body =
+                            'Je souhaite modifier mes informations personnelles dans votre base de données.';
+                        const String email = 'tigrou-dpo@ecogest.dev';
+
+                        final Uri emailLaunchUri = Uri(
+                          scheme: 'mailto',
+                          path: email,
+                          queryParameters: {
+                            // temporary fix for + replacing spaces
+                            'subject': subject.replaceAll(' ', '_'),
+                            'body': body.replaceAll(' ', '_'),
+                          },
+                        );
+                        try {
+                          await launchUrl(emailLaunchUri);
+                        } catch (e) {
+                          throw Exception("Demande non éffectué");
+                        }
                       },
                       child: const Text('Modifier mes données personnelles')),
                   const SizedBox(
