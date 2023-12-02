@@ -1,7 +1,6 @@
 part of 'form_post_cubit.dart';
 
-
-abstract class PostFormState  {
+abstract class PostFormState {
   const PostFormState();
 }
 
@@ -12,9 +11,8 @@ class SelectionState extends PostFormState {
     required this.selectableLevels,
     required this.selectedType,
     required this.selectedCategory,
-    required this.selectedLevel, 
+    required this.selectedLevel,
   });
-
 
   final List<PostType> selectableTypes;
   final List<PostLevel> selectableLevels;
@@ -30,7 +28,6 @@ class SelectionState extends PostFormState {
     PostType? selectedType,
     PostLevel? selectedLevel,
     int? selectedCategory,
-
   }) {
     return SelectionState(
       selectableTypes: selectableTypes ?? this.selectableTypes,
@@ -41,22 +38,22 @@ class SelectionState extends PostFormState {
       selectedCategory: selectedCategory ?? this.selectedCategory,
     );
   }
-
 }
-
 
 /// The initial state of the form cubit.
-class PostFormStateInitial extends PostFormState {
-}
+class PostFormStateInitial extends PostFormState {}
 
 /// The state of the form cubit when the form is completed.
-class PostFormStateCompleted extends PostFormState {
-
-}
+class PostFormStateCompleted extends PostFormState {}
 
 /// The state of the form cubit when the form is successful.
 class PostFormStateSuccess extends PostFormState {
   const PostFormStateSuccess(this.post);
+
+  final PostModel post;
+}
+class PostFormStateEdit extends PostFormState {
+  const PostFormStateEdit(this.post);
 
   final PostModel post;
 }
@@ -67,6 +64,3 @@ class PostFormStateError extends PostFormState {
 
   const PostFormStateError(this.message);
 }
-  
-
-

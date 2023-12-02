@@ -68,30 +68,34 @@ class _AccountViewState extends State<AccountView>
         ],
       ),
       bottomNavigationBar: const AppBarFooter(),
-      body: TabBarView(
-        controller: _tabController,
+      body: Stack(
         children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 26.0),
-            child: ListView(
-              children: [
-                // Account Info Widget
-                AccountInfo(user: user!),
-                SizedBox(height: 20),
-                // New Widget: Account Trophies
-                AccountTrophies(
-                  userId: user!.id!,
+          TabBarView(
+            controller: _tabController,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 26.0),
+                child: ListView(
+                  children: [
+                    // Account Info Widget
+                    AccountInfo(user: user!),
+                    SizedBox(height: 20),
+                    // New Widget: Account Trophies
+                    AccountTrophies(
+                      userId: user!.id!,
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 26.0),
+                child: UpdateAccountWidget(
+                  user: user!,
+                  isPrivateController: user!.isPrivate!,
+                ),
+              )
+            ],
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 26.0),
-            child: UpdateAccountWidget(
-              user: user!,
-              isPrivateController: user!.isPrivate!,
-            ),
-          )
         ],
       ),
     );

@@ -11,11 +11,11 @@ class SubscriptionWidget extends StatelessWidget {
       {super.key,
       required this.userId,
       required this.status,
-      this.userAuthenticatedHasFollowRequestStatus});
+      this.hasFollowRequest});
 
   int userId;
   String status;
-  bool? userAuthenticatedHasFollowRequestStatus;
+  bool? hasFollowRequest;
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +30,7 @@ class SubscriptionWidget extends StatelessWidget {
             style: ElevatedButton.styleFrom(
               backgroundColor:
                   status == "subscribe" ? EcogestTheme.primary : Colors.white,
-              fixedSize: userAuthenticatedHasFollowRequestStatus!
+              fixedSize: hasFollowRequest!
                   ? Size(210, 50)
                   : Size((MediaQuery.of(context).size.width) / 2, 50),
               shape: RoundedRectangleBorder(
@@ -44,8 +44,8 @@ class SubscriptionWidget extends StatelessWidget {
           ),
           ApproveOrDeclineSubscriptionWidget(
               userId: userId,
-              userAuthenticatedHasFollowRequestStatus:
-                  userAuthenticatedHasFollowRequestStatus!),
+              hasFollowRequest:
+                  hasFollowRequest!),
         ]);
       }
       return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
@@ -56,7 +56,7 @@ class SubscriptionWidget extends StatelessWidget {
           style: ElevatedButton.styleFrom(
             backgroundColor:
                 status == "subscribe" ? EcogestTheme.primary : Colors.white,
-            fixedSize: userAuthenticatedHasFollowRequestStatus!
+            fixedSize: hasFollowRequest!
                 ? Size(210, 50)
                 : Size((MediaQuery.of(context).size.width) / 2, 50),
             shape: RoundedRectangleBorder(
@@ -70,8 +70,8 @@ class SubscriptionWidget extends StatelessWidget {
         ),
         ApproveOrDeclineSubscriptionWidget(
             userId: userId,
-            userAuthenticatedHasFollowRequestStatus:
-                userAuthenticatedHasFollowRequestStatus!),
+            hasFollowRequest:
+                hasFollowRequest!),
       ]);
     });
   }

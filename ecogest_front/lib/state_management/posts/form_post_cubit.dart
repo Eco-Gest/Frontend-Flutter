@@ -21,8 +21,12 @@ class PostFormCubit extends Cubit<PostFormState> {
           selectedLevel: PostLevel.easy,
         ));
 
+  static final PostService postService = PostService();
+  static final CategoryService categoryService = CategoryService();
+
+
   Future<void> getDefaults() async {
-    final categories = await CategoryService.getCategories();
+    final categories = await categoryService.getCategories();
     final firstCategory =
         categories.firstWhere((element) => element.id == 1).id;
 
@@ -85,14 +89,15 @@ class PostFormCubit extends Cubit<PostFormState> {
     );
 
     try {
-      final result = await PostService.createPost(post);
+      final result = await postService.createPost(post);
       emit(PostFormStateSuccess(result));
     } catch (e) {
-      emit(const PostFormStateError("Erreur rencontrée pour votre publication. Veuillez réessayer."));
+      emit(const PostFormStateError(
+          "Erreur rencontrée pour votre publication. Veuillez réessayer."));
     }
   }
 
-Future<void> updatePost({
+  Future<void> updatePost({
     required int? postId,
     required String title,
     String? description,
@@ -121,7 +126,7 @@ Future<void> updatePost({
     );
 
     try {
-      final result = await PostService.updatePost(post);
+      final result = await postService.updatePost(post);
       emit(PostFormStateSuccess(result));
     } catch (e) {
       debugPrint(e.toString());
@@ -129,6 +134,3 @@ Future<void> updatePost({
     }
   }
 }
-
-
-

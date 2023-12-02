@@ -12,7 +12,7 @@ class HomeView extends StatelessWidget {
   static String name = 'home';
   int currentPage = 1;
 
-  List<PostModel> allPosts = List.empty();
+  List<PostModel> allPosts =[];
   bool noMorePosts = false;
 
   @override

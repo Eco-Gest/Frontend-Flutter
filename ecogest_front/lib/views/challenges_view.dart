@@ -13,14 +13,12 @@ class ChallengesView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final user = context.watch<AuthenticationCubit>().state.user;
-    final String backendRouteChallengeCompleted =
-        '/users/${user!.id!}/challenges/completed';
-    final String backendRouteChallengeNext =
-        '/users/${user.id!}/challenges/next';
-    final String backendRouteChallengeInProgress =
-        '/users/${user.id!}/challenges/in-progress';
-    final String backendRouteActions = '/users/${user.id!}/actions';
+    const String keywordRouteChallengeCompleted = "completed";
+    const String keywordRouteChallengeNext = "next";
+    const String keywordRouteChallengeInProgress = "inProgress";
+    const String keywordRouteActions = 'actions';
+    final int userId = context.watch<AuthenticationCubit>().state.user!.id!;
+
     return DefaultTabController(
       length: 4,
       child: Scaffold(
@@ -67,10 +65,13 @@ class ChallengesView extends StatelessWidget {
         ),
         body: TabBarView(
           children: <Widget>[
-            ChallengesWidget(backendRoute: backendRouteChallengeInProgress),
-            ChallengesWidget(backendRoute: backendRouteChallengeNext),
-            ChallengesWidget(backendRoute: backendRouteChallengeCompleted),
-            ChallengesWidget(backendRoute: backendRouteActions),
+            ChallengesWidget(
+                keywordRoute: keywordRouteChallengeInProgress, userId: userId),
+            ChallengesWidget(
+                keywordRoute: keywordRouteChallengeNext, userId: userId),
+            ChallengesWidget(
+                keywordRoute: keywordRouteChallengeCompleted, userId: userId),
+            ChallengesWidget(keywordRoute: keywordRouteActions, userId: userId),
           ],
         ),
         bottomNavigationBar: const AppBarFooter(),

@@ -29,7 +29,7 @@ abstract class AppRouter {
 
   /// Creates a [GoRouter] with a [GoRouterRefreshStream] that listens to the
   /// [AuthenticationCubit] stream.
-  static GoRouter getRouter(BuildContext context) {
+  static GoRouter routerWithAuthStream(Stream<AuthenticationState> stream) {
     return GoRouter(
       initialLocation: '/login',
       errorBuilder: (context, state) => const Error404View(),
@@ -84,16 +84,15 @@ abstract class AppRouter {
           builder: (context, state) => const ChallengesView(),
         ),
         GoRoute(
-          path: '/posts/:id/comments',
-          name: CommentsView.name,
-          builder: (context, state) {
-            final comments = state.extra! as List;
-            return CommentsView(
-              commentsList: comments, 
-              postId: int.parse(state.pathParameters['id'].toString()),
-            );
-          }
-        ),
+            path: '/posts/:id/comments',
+            name: CommentsView.name,
+            builder: (context, state) {
+              final comments = state.extra! as List;
+              return CommentsView(
+                commentsList: comments,
+                postId: int.parse(state.pathParameters['id'].toString()),
+              );
+            }),
         GoRoute(
           path: '/settings',
           name: SettingsView.name,
@@ -113,7 +112,7 @@ abstract class AppRouter {
         ),
       ],
       refreshListenable:
-          GoRouterRefreshStream(context.read<AuthenticationCubit>().stream),
+          GoRouterRefreshStream(stream),
       redirect: (context, state) {
         // If the user is not authenticated, redirect to the login page.
         final status = context.read<AuthenticationCubit>().state;

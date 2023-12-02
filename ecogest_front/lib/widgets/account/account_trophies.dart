@@ -22,49 +22,45 @@ class _AccountTrophiesState extends State<AccountTrophies> {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Blue-grey light border
-          Container(
-            width: double.infinity,
-            height: 2,
-            color: Colors.blueGrey.shade200,
-          ),
-          SizedBox(height: 12),
-          // Title "Mes accomplissements"
-          Text(
-            'Accomplissements',
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-          ),
-          SizedBox(height: 14),
-          // List of trophies
-          FutureBuilder<List<TrophyModel>>(
-            future: _trophiesFuture,
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                // Loading indicator or placeholder
-                return CircularProgressIndicator();
-              } else if (snapshot.hasError) {
-                // Handle error state
-                return Text(
-                    'Erreur de chargement des trophées: ${snapshot.error}');
-              } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                // No trophies available
-                return Text('Aucun trophée disponible.');
-              } else {
-                // Display the list of trophies
-                return Column(
-                  children: _buildTrophyItems(snapshot.data!),
-                );
-              }
-            },
-          ),
-        ],
-      ),
-      ),
+   return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Blue-grey light border
+        Container(
+          width: double.infinity,
+          height: 2,
+          color: Colors.blueGrey.shade200,
+        ),
+        SizedBox(height: 12),
+        // Title "Mes accomplissements"
+        Text(
+          'Accomplissements',
+          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+        ),
+        SizedBox(height: 14),
+        // List of trophies
+        FutureBuilder<List<TrophyModel>>(
+          future: _trophiesFuture,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              // Loading indicator or placeholder
+              return CircularProgressIndicator();
+            } else if (snapshot.hasError) {
+              // Handle error state
+              return Text(
+                  'Erreur de chargement des trophées: ${snapshot.error}');
+            } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+              // No trophies available
+              return Text('Aucun trophée disponible.');
+            } else {
+              // Display the list of trophies
+              return Column(
+                children: _buildTrophyItems(snapshot.data!),
+              );
+            }
+          },
+        ),
+      ],
     );
   }
 
@@ -119,7 +115,6 @@ class _AccountTrophiesState extends State<AccountTrophies> {
             text: TextSpan(
               style: TextStyle(
                 fontSize: 16,
-
                 color: Colors.black,
               ),
               children: [
@@ -130,7 +125,6 @@ class _AccountTrophiesState extends State<AccountTrophies> {
                   ),
                 ),
                 TextSpan(
-
                   text: '${_getCategoryName(categoryId)}',
                   style: TextStyle(
                     fontWeight: FontWeight.normal,

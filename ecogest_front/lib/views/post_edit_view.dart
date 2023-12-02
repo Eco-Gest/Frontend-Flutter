@@ -1,6 +1,8 @@
+import 'package:ecogest_front/state_management/posts/form_post_cubit.dart';
+import 'package:ecogest_front/state_management/posts/posts_cubit.dart';
+import 'package:ecogest_front/state_management/posts/posts_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ecogest_front/state_management/posts/post_edit_cubit.dart';
 import 'package:ecogest_front/widgets/app_bar.dart';
 import 'package:ecogest_front/widgets/bottom_bar.dart';
 import 'package:ecogest_front/widgets/post/post_form_widget.dart';
@@ -19,24 +21,26 @@ class PostEditView extends StatelessWidget {
       body: SingleChildScrollView(
         child: Stack(
           children: [
-            BlocProvider<PostEditCubit>(
-              create: (context) {
-                final cubit = PostEditCubit();
-                cubit.getPostDetails(postId);
-                return cubit;
-              },
-              child: BlocBuilder<PostEditCubit, PostEditState>(
+            MultiBlocProvider(
+              providers: [
+                BlocProvider<PostFormCubit>(
+                  create: (context) => PostFormCubit(),
+                ),
+                BlocProvider<PostsCubit>(
+                  create: (context) => PostsCubit()..getOnePost(postId),
+                ),
+              ],
+              child: BlocBuilder<PostsCubit, PostsState>(
                 builder: (context, state) {
-                  if (state is PostEditStateInitial ||
-                      state is PostsEditStateLoading) {
+                  if (state is PostsStateInitial) {
                     return const Center(
                       child: CircularProgressIndicator(),
                     );
-                  } else if (state is PostEditStateError) {
+                  } else if (state is PostsStateError) {
                     return Center(
                       child: Text(state.message),
                     );
-                  } else if (state is PostEditStateLoaded) {
+                  } else if (state is OnePostStateSuccess) {
                     return Center(
                       child: Padding(
                         padding: const EdgeInsets.all(16.0),

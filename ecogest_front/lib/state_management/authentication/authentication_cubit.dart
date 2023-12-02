@@ -6,16 +6,19 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 part 'authentication_state.dart';
 
 class AuthenticationCubit extends Cubit<AuthenticationState> {
-  AuthenticationCubit() : super(AuthenticationInitial());
+  AuthenticationCubit() : super(AuthenticationInitial()) {
+    // Get the current user when the cubit is initialized.
+    getCurrentUser();
+  }
 
-  void getStatus() {
-    UserService.getStatus.asBroadcastStream().listen((user) {
-      if (user == null) {
-        emit(AuthenticationUnauthenticated());
-      } else {
-        emit(AuthenticationAuthenticated(user));
-      }
-    });
+  Future<void> getCurrentUser() async {
+    final token = await AuthenticationService.getToken();
+    if (token != null) {
+      final user = await UserService.getCurrentUser();
+      emit(AuthenticationAuthenticated(user));
+    } else {
+      emit(AuthenticationUnauthenticated());
+    }
   }
 
   Future<void> login({required String email, required String password}) async {

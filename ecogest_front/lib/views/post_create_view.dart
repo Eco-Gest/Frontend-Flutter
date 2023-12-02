@@ -70,7 +70,6 @@ class PostCreateView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final UserModel user = context.watch<AuthenticationCubit>().state.user!;
     return Scaffold(
       appBar: ThemeAppBar(
         title: 'Créer un post ',
@@ -95,9 +94,8 @@ class PostCreateView extends StatelessWidget {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(content: Text('Publication réussie')),
                       );
-                      GoRouter.of(context).goNamed(
-                        HomeView.name,
-                      );
+                      GoRouter.of(context)
+                          .goNamed(HomeView.name);
                     }
                   },
                   child: Form(
@@ -286,84 +284,85 @@ class PostCreateView extends StatelessWidget {
                           return const SizedBox();
                         }),
 
-                         Container(
-                            alignment: Alignment.topCenter,
-                            padding: const EdgeInsets.all(10),
-                            child: FlutterTagging<TagModel>(
+                        Container(
+                          alignment: Alignment.topCenter,
+                          padding: const EdgeInsets.all(10),
+                          child: FlutterTagging<TagModel>(
                               initialItems: _tagsToSave,
                               textFieldConfiguration: TextFieldConfiguration(
-                                  decoration: InputDecoration(
-                                      border: InputBorder.none,
-                                      filled: true,
-                                      hintText: 'Saisir un nouveau tag',
-                                      labelText: 'Ajouter un ou plusieurs tags',
-                                  ),
-                                  inputFormatters: [
-                                    FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z]')),
-                                    FilteringTextInputFormatter.deny(' '),
-                                  ],
+                                decoration: InputDecoration(
+                                  border: InputBorder.none,
+                                  filled: true,
+                                  hintText: 'Saisir un nouveau tag',
+                                  labelText: 'Ajouter un ou plusieurs tags',
+                                ),
+                                inputFormatters: [
+                                  FilteringTextInputFormatter.allow(
+                                      RegExp(r'[a-zA-Z]')),
+                                  FilteringTextInputFormatter.deny(' '),
+                                ],
                               ),
                               findSuggestions: TagService.getTagModels,
                               additionCallback: (value) {
-                                  return TagModel(
-                                          label: value,
-                                  );
+                                return TagModel(
+                                  label: value,
+                                );
                               },
-                              onAdded: (tag){
+                              onAdded: (tag) {
                                 // api calls here, triggered when add to tag button is pressed
-                                  return  tag;
+                                return tag;
                               },
                               configureSuggestion: (tag) {
-                                  return SuggestionConfiguration(
-                                      title: Text(tag.label),
-                                      additionWidget: const Chip(
-                                          avatar: Icon(
-                                              Icons.add_circle,
-                                              color: Colors.white,
-                                          ),
-                                          label: Text('Ajouter un nouveau tag'),
-                                          labelStyle: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 14.0,
-                                              fontWeight: FontWeight.w300,
-                                          ),
-                                          backgroundColor: EcogestTheme.primary,
-                                      ),
-                                  );
+                                return SuggestionConfiguration(
+                                  title: Text(tag.label),
+                                  additionWidget: const Chip(
+                                    avatar: Icon(
+                                      Icons.add_circle,
+                                      color: Colors.white,
+                                    ),
+                                    label: Text('Ajouter un nouveau tag'),
+                                    labelStyle: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 14.0,
+                                      fontWeight: FontWeight.w300,
+                                    ),
+                                    backgroundColor: EcogestTheme.primary,
+                                  ),
+                                );
                               },
                               configureChip: (tag) {
-                                  return ChipConfiguration(
-                                      label: Text(tag.label),
-                                      backgroundColor: EcogestTheme.primary,
-                                      labelStyle: TextStyle(color: Colors.white),
-                                      deleteIconColor: Colors.white,
-                                  );
+                                return ChipConfiguration(
+                                  label: Text(tag.label),
+                                  backgroundColor: EcogestTheme.primary,
+                                  labelStyle: TextStyle(color: Colors.white),
+                                  deleteIconColor: Colors.white,
+                                );
                               },
                               onChanged: () {
                                 _tagsToSave
                                     .map<TagModel>((tag) => tag)
                                     .toList();
-                              }
+                              }),
+                        ), // tags
+                        // image
+                        Container(
+                          alignment: Alignment.topCenter,
+                          padding: const EdgeInsets.all(10),
+                          child: TextFormField(
+                            controller: imageController,
+                            decoration: const InputDecoration(
+                              border: OutlineInputBorder(),
+                              labelText: 'Image',
+                              hintText: 'Entrez l\'url d\'une image',
                             ),
-                         ), // tags
-                          // image
-                          Container(
-                            alignment: Alignment.topCenter,
-                            padding: const EdgeInsets.all(10),
-                            child: TextFormField(
-                              controller: imageController,
-                              decoration: const InputDecoration(
-                                border: OutlineInputBorder(),
-                                labelText: 'Image',
-                                hintText: 'Entrez l\'url d\'une image',
-                              ),
-                              autovalidateMode:
-                                  AutovalidateMode.onUserInteraction,
-                              validator: (value) => imageValidation(imageController.text)
-                                  ? null
-                                  : 'Lien vers l\'image doit être une url avec une extension .jpg, .png, .gif, .svg, .webp ou .jpeg',
-                            ),
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            validator: (value) => imageValidation(
+                                    imageController.text)
+                                ? null
+                                : 'Lien vers l\'image doit être une url avec une extension .jpg, .png, .gif, .svg, .webp ou .jpeg',
                           ),
+                        ),
 
                         // level
                         BlocBuilder<PostFormCubit, PostFormState>(

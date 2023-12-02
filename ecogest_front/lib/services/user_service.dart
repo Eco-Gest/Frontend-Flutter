@@ -6,15 +6,12 @@ import 'package:ecogest_front/models/points_category_model.dart';
 import 'package:ecogest_front/services/authentication_service.dart';
 
 class UserService {
-  static final controller = StreamController<UserModel?>();
-
   static Future<UserModel> getCurrentUser() async {
     final String? token = await AuthenticationService.getToken();
 
     var responseMap = await EcoGestApiDataSource.get('/me', token: token);
 
     final user = UserModel.fromJson(responseMap);
-    controller.add(user);
     return user;
   }
 
@@ -36,10 +33,6 @@ class UserService {
         await EcoGestApiDataSource.get('/users/$userId', token: token);
 
     return UserModel.fromJson(responseMap);
-  }
-
-  static Stream<UserModel?> get getStatus {
-    return controller.stream;
   }
 
   static Future<List<PointCategoryModel>>

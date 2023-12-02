@@ -12,10 +12,10 @@ class UnSubscriptionWidget extends StatelessWidget {
   UnSubscriptionWidget(
       {super.key,
       required this.userId,
-      this.userAuthenticatedHasFollowRequestStatus});
+      this.hasFollowRequest});
 
   int userId;
-  bool? userAuthenticatedHasFollowRequestStatus;
+  bool? hasFollowRequest;
 
   static String name = 'search';
 
@@ -30,7 +30,7 @@ class UnSubscriptionWidget extends StatelessWidget {
               "Me désabonner",
             ),
             style: ElevatedButton.styleFrom(
-              fixedSize: userAuthenticatedHasFollowRequestStatus!
+              fixedSize: hasFollowRequest!
                   ? Size(210, 50)
                   : Size((MediaQuery.of(context).size.width) / 2, 50),
               shape: RoundedRectangleBorder(
@@ -49,8 +49,8 @@ class UnSubscriptionWidget extends StatelessWidget {
           ),
           ApproveOrDeclineSubscriptionWidget(
               userId: userId,
-              userAuthenticatedHasFollowRequestStatus:
-                  userAuthenticatedHasFollowRequestStatus!),
+              hasFollowRequest:
+                  hasFollowRequest!),
         ]);
       }
       return Row(
@@ -61,7 +61,7 @@ class UnSubscriptionWidget extends StatelessWidget {
               "Me désabonner",
             ),
             style: ElevatedButton.styleFrom(
-              fixedSize: userAuthenticatedHasFollowRequestStatus!
+              fixedSize: hasFollowRequest!
                   ? Size(210, 50)
                   : Size((MediaQuery.of(context).size.width) / 2, 50),
               shape: RoundedRectangleBorder(
@@ -80,8 +80,8 @@ class UnSubscriptionWidget extends StatelessWidget {
           ),
           ApproveOrDeclineSubscriptionWidget(
               userId: userId,
-              userAuthenticatedHasFollowRequestStatus:
-                  userAuthenticatedHasFollowRequestStatus!),
+              hasFollowRequest:
+                  hasFollowRequest!),
         ],
       );
     });

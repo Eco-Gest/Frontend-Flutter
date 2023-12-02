@@ -54,7 +54,7 @@ class UserView extends StatelessWidget {
                     .firstOrNull;
 
                 String? status = userIsSubscribed?.status;
-                bool? userAuthenticatedHasFollowRequestStatus =
+                bool? hasFollowRequest =
                     userAuthenticatedHasFollowRequest?.status == "pending"
                         ? true
                         : false;
@@ -86,8 +86,8 @@ class UserView extends StatelessWidget {
                               child: SubscriptionWidget(
                                   userId: state.user!.id!,
                                   status: status,
-                                  userAuthenticatedHasFollowRequestStatus:
-                                      userAuthenticatedHasFollowRequestStatus),
+                                  hasFollowRequest:
+                                      hasFollowRequest),
                             ),
                           ],
                         ),
@@ -106,8 +106,8 @@ class UserView extends StatelessWidget {
                             create: (_) => SubscriptionCubit(),
                             child: UnSubscriptionWidget(
                               userId: state.user!.id!,
-                              userAuthenticatedHasFollowRequestStatus:
-                                  userAuthenticatedHasFollowRequestStatus,
+                              hasFollowRequest:
+                                  hasFollowRequest,
                             ),
                           ),
                           SizedBox(height: 20),
@@ -144,8 +144,8 @@ class UserView extends StatelessWidget {
                             child: SubscriptionWidget(
                                 userId: state.user!.id!,
                                 status: status,
-                                userAuthenticatedHasFollowRequestStatus:
-                                    userAuthenticatedHasFollowRequestStatus),
+                                hasFollowRequest:
+                                    hasFollowRequest),
                           ),
                           SizedBox(height: 20),
 
@@ -168,8 +168,8 @@ class UserView extends StatelessWidget {
                           create: (_) => SubscriptionCubit(),
                           child: UnSubscriptionWidget(
                             userId: state.user!.id!,
-                            userAuthenticatedHasFollowRequestStatus:
-                                userAuthenticatedHasFollowRequestStatus,
+                            hasFollowRequest:
+                                hasFollowRequest,
                           ),
                         ),
                         SizedBox(height: 20),
