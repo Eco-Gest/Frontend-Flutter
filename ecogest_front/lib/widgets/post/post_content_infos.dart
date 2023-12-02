@@ -1,3 +1,4 @@
+import 'package:ecogest_front/widgets/post/category_icon_widget.dart';
 import 'package:ecogest_front/models/post_model.dart';
 import 'package:flutter/material.dart';
 import 'package:ecogest_front/widgets/post/post_separator.dart';
@@ -57,13 +58,14 @@ class PostContentInfos extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Si le post est une action, nous avons seulement besoin du
-                // nombre de points en fonction de la difficulté
+                // If the post is an action, we only need the
+                // number of points depending on the difficulty
                 if (post!.type.toString() == 'action') ...[
                   Row(
                     children: [
                       Text(
-                        convertLevelToPoint(post!.level.toString()).toString(),
+                        convertLevelToPoint(post!.level.toString())
+                        .toString(),
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 18,
@@ -73,8 +75,9 @@ class PostContentInfos extends StatelessWidget {
                     ],
                   ),
                 ]
-                // Si le post est un défi, nous affichons le nombre de points,
-                // obtenu en fonction de la durée du défi et de sa difficulté
+                // If the post is a challenge, we display the number
+                // of points, obtained depending on the duration of
+                // the challenge and its difficulty
                 else ...[
                   Row(
                     children: [
@@ -104,10 +107,7 @@ class PostContentInfos extends StatelessWidget {
                         NetworkImage(post!.category!.image.toString()),
                   )
                 ] else ...[
-                  const Icon(
-                    Icons.category,
-                    size: 20,
-                  )
+                  CategoryIconWidget(catId: post!.categoryId),
                 ],
                 const SizedBox(width: 5),
                 Text(' ${post!.category!.title.toString()}'),

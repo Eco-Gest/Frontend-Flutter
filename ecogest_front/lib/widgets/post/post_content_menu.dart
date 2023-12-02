@@ -57,11 +57,11 @@ class PostContentMenu extends StatelessWidget {
                                   ),
                                   ListTile(
                                     title: Text('Suicide ou conduites autodestructrices'),
-                                    onTap: () => Navigator.pop(context, 'Discours de haine'),
+                                    onTap: () => Navigator.pop(context, 'Suicide ou conduites autodestructrices'),
                                   ),
                                   ListTile(
                                     title: Text('Nudité ou actes sexuels'),
-                                    onTap: () => Navigator.pop(context, 'Discours de haine'),
+                                    onTap: () => Navigator.pop(context, 'Nudité ou actes sexuels'),
                                   ),
                                   ListTile(
                                     title: Text('Spam'),
@@ -76,33 +76,12 @@ class PostContentMenu extends StatelessWidget {
                             );
                           },
                         );
-
-                        // Check if a reporting option was selected
                         if (result != null) {
-                          // Launch email application
-                          final String subject = 'Signalement de post - ID: $postId, Titre: ${author?.username ?? ''}';
-                          final String body = 'Raison du signalement: $result';
-                          final String email = 'report@ecogest.io';
-                          
-                          final Uri emailLaunchUri = Uri(
-                            scheme: 'mailto',
-                            path: email,
-                            queryParameters: {
-                              // temporary fix for + replacing spaces
-                              'subject': subject.replaceAll(' ', '_'),
-                              'body': body.replaceAll(' ', '_'),
-                            },
-                          );
-                          try {
-                            await launchUrl(emailLaunchUri);
-                          } catch(e) {
-                              throw Exception("Signalement non éffectué");
-                          }
-
-
+                          await context.read<PostsCubit>().submitReport(postId, result);
+                          await context.read<PostsCubit>().getPosts(1);
                           ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text('Signalement de type "$result" enregistré. Merci !'),
+                            const SnackBar(
+                              content: Text('Signalement enregistré. Merci !'),
                             ),
                           );
                         }
