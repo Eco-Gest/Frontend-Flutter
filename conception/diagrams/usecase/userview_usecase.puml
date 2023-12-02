@@ -1,0 +1,39 @@
+@startuml
+actor "user authentified" as u
+rectangle UserView as uok {
+ rectangle AccountInfo as ud{
+  usecase "username" 
+  usecase "image" 
+  usecase "biography"
+rectangle badge as b{
+  usecase "title" 
+}
+rectangle userPostParticipationTotal as uppt{
+  usecase "number of post participation" 
+}
+rectangle pointsTotal as pt{
+  usecase "total point all categories" 
+}
+}
+}
+
+rectangle trophy as t{
+  usecase "list of trophies by category" 
+}
+
+rectangle subscribe as sub {
+  usecase "ask to follow this user" 
+}
+
+
+rectangle answerToTheAskingOfFollowing as ans {
+  usecase "accept the asking of following" 
+  usecase "deny the asking of following" 
+}
+
+u -r-> uok
+u -l-> t : if user is not private or is followed by user authentifed 
+u --> sub : if user authentified doesn't follow this user and if it's not his own account
+u --> ans : if user authentified has a asking of following from this user with a statut pending
+
+@enduml

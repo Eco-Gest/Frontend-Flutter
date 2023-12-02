@@ -63,7 +63,6 @@ entity "Post" as p {
   *position : text
   *type : enum (challenge, action)
   *level : enum (easy, medium, hard)
-  *tag : [text]
   *start_date : datetime
   *end_date : datetime
 }
@@ -109,6 +108,17 @@ Entity "Post_like" as pl {
   *user_id : number <<FK>>
 }
 
+Entity "Post_tag" as ptag {
+  *post_id : number <<FK>>
+  *tag_id : number <<FK>>
+}
+
+Entity "Tag" as tag {
+  *id : number <<generated>>
+  *label : text
+}
+
+
 u |o-down--o{ upp : participates
 p }o---o| upp : contains
 u }o-down--|| p : writes
@@ -125,5 +135,7 @@ u }o--|| upc : has points in
 u }o--|| ut : has 
 cat }|--|| ut : has 
 cat }o--|| upc : has 
+ptag ||---|| tag
+ptag ||--o| p
 
 @enduml

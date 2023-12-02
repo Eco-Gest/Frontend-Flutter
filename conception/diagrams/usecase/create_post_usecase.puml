@@ -1,0 +1,23 @@
+@startuml
+actor "user authentified" as u
+rectangle CreatePost as co {
+ rectangle Type as ty {
+ usecase "challenge (defi)" as ch
+usecase "action (geste)" as g
+}
+ rectangle Fields as f {
+      usecase "enter a title" as uc1
+usecase "enter a description" as uc2 
+usecase "enter a position" as uc3
+usecase "choose a level" as uc4
+usecase "choose a category" as uc5
+}
+ rectangle Challenge as c {
+usecase "choose a start date"
+usecase "choose a end date"
+ }
+}
+u --> ty : choose a type of post
+ty --> f 
+ch --> c
+@enduml
