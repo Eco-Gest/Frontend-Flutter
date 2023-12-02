@@ -47,7 +47,6 @@ class MainApp extends StatelessWidget {
                      // textTheme: GoogleFonts.openSansTextTheme(),
                   //   brightness: state.brightness,
                   // ),
-                  routerConfig: AppRouter.getRouter(context),
                   routerConfig: router,
                 );
               });
