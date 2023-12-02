@@ -36,7 +36,7 @@ class LegalNotices extends StatelessWidget {
                       ),
                       TextSpan(
                         text: 'report@ecogest.dev',
-                        style: const TextStyle(color: EcogestTheme.primary),
+                        style: TextStyle(color: lightColorScheme.primary),
                         recognizer: TapGestureRecognizer()
                           ..onTap = () async {
                             // Launch email application

@@ -46,7 +46,7 @@ class SettingsView extends StatelessWidget {
                             Switch.adaptive(
                               // This bool value toggles the switch.
                               value: state.isDarkMode,
-                              activeColor: EcogestTheme.primary,
+                              activeColor: lightColorScheme.primary,
                               onChanged: (bool value) {
                                 // This is called when the user toggles the switch.
                                 context

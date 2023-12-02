@@ -124,7 +124,7 @@ class PrivacyPolicy extends StatelessWidget {
                       ),
                       TextSpan(
                         text: 'contact@egogest.dev',
-                        style: const TextStyle(color: EcogestTheme.primary),
+                        style: TextStyle(color: lightColorScheme.primary),
                         recognizer: TapGestureRecognizer()
                           ..onTap = () async {
                             // Launch email application
