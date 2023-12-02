@@ -290,17 +290,14 @@ class PostCreateView extends StatelessWidget {
                           child: FlutterTagging<TagModel>(
                               initialItems: _tagsToSave,
                               textFieldConfiguration: TextFieldConfiguration(
-                                decoration: InputDecoration(
-                                  border: InputBorder.none,
-                                  filled: true,
-                                  hintText: 'Saisir un nouveau tag',
-                                  labelText: 'Ajouter un ou plusieurs tags',
-                                ),
-                                inputFormatters: [
-                                  FilteringTextInputFormatter.allow(
-                                      RegExp(r'[a-zA-Z]')),
-                                  FilteringTextInputFormatter.deny(' '),
-                                ],
+                                  decoration: InputDecoration(
+                                      hintText: 'Saisir un nouveau tag',
+                                      labelText: 'Ajouter un ou plusieurs tags',
+                                  ),
+                                  inputFormatters: [
+                                    FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z]')),
+                                    FilteringTextInputFormatter.deny(' '),
+                                  ],
                               ),
                               findSuggestions: TagService.getTagModels,
                               additionCallback: (value) {
@@ -313,30 +310,27 @@ class PostCreateView extends StatelessWidget {
                                 return tag;
                               },
                               configureSuggestion: (tag) {
-                                return SuggestionConfiguration(
-                                  title: Text(tag.label),
-                                  additionWidget: const Chip(
-                                    avatar: Icon(
-                                      Icons.add_circle,
-                                      color: Colors.white,
-                                    ),
-                                    label: Text('Ajouter un nouveau tag'),
-                                    labelStyle: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 14.0,
-                                      fontWeight: FontWeight.w300,
-                                    ),
-                                    backgroundColor: EcogestTheme.primary,
-                                  ),
-                                );
+                                  return SuggestionConfiguration(
+                                      title: Text(tag.label),
+                                      additionWidget: const Chip(
+                                          avatar: Icon(
+                                              Icons.add_circle,
+                                          ),
+                                          label: Text('Ajouter un nouveau tag'),
+                                          labelStyle: TextStyle(
+                                              fontSize: 14.0,
+                                              fontWeight: FontWeight.w300,
+                                          ),
+                                      ),
+                                  );
                               },
                               configureChip: (tag) {
-                                return ChipConfiguration(
-                                  label: Text(tag.label),
-                                  backgroundColor: EcogestTheme.primary,
-                                  labelStyle: TextStyle(color: Colors.white),
-                                  deleteIconColor: Colors.white,
-                                );
+                                  return ChipConfiguration(
+                                      label: Text(tag.label),
+                                      backgroundColor: lightColorScheme.primary,
+                                      labelStyle: TextStyle(color: Colors.white),
+                                      deleteIconColor: Colors.white,
+                                  );
                               },
                               onChanged: () {
                                 _tagsToSave
@@ -394,7 +388,7 @@ class PostCreateView extends StatelessWidget {
                           child: SizedBox(
                             width: (MediaQuery.of(context).size.width - 26) / 2,
                             height: 50.0,
-                            child: ElevatedButton(
+                            child: FilledButton(
                               onPressed: () async {
                                 if (formKey.currentState!.validate()) {
                                   ScaffoldMessenger.of(context).showSnackBar(

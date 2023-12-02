@@ -124,7 +124,7 @@ class _UpdateAccountWidget extends State<UpdateAccountWidget> {
                                 ListTile(
                                   title: const Text('Profil privé '),
                                   trailing: Checkbox(
-                                    activeColor: EcogestTheme.primary,
+                                    activeColor: lightColorScheme.primary,
                                     value: widget.isPrivateController,
                                     onChanged: (value) {
                                       setState(() {
@@ -223,7 +223,7 @@ class _UpdateAccountWidget extends State<UpdateAccountWidget> {
                                             26) /
                                         2,
                                     height: 50.0,
-                                    child: ElevatedButton(
+                                    child: FilledButton(
                                       onPressed: () async {
                                         if (formKey.currentState!.validate()) {
                                           ScaffoldMessenger.of(context)

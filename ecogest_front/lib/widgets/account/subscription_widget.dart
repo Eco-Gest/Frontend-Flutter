@@ -1,4 +1,5 @@
 import 'package:ecogest_front/assets/ecogest_theme.dart';
+import 'package:ecogest_front/assets/ecogest_theme.dart';
 import 'package:ecogest_front/state_management/subscription/subscription_cubit.dart';
 import 'package:ecogest_front/state_management/subscription/subscription_state.dart';
 import 'package:ecogest_front/widgets/account/approve_or_decline_subscription_widget.dart';
@@ -23,11 +24,11 @@ class SubscriptionWidget extends StatelessWidget {
         builder: (context, state) {
       if (state is SubscriptionStateInitial) {
         return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-          ElevatedButton(
+          FilledButton(
             child: Text(
               status == "subscribe" ? 'Suivre' : "Annuler",
             ),
-            style: ElevatedButton.styleFrom(
+            style: FilledButton.styleFrom(
               backgroundColor:
                   status == "subscribe" ? EcogestTheme.primary : Colors.white,
               fixedSize: hasFollowRequest!
@@ -49,11 +50,11 @@ class SubscriptionWidget extends StatelessWidget {
         ]);
       }
       return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-        ElevatedButton(
+        FilledButton(
           child: Text(
             status == "subscribe" ? 'Suivre' : "Annuler",
           ),
-          style: ElevatedButton.styleFrom(
+          style: FilledButton.styleFrom(
             backgroundColor:
                 status == "subscribe" ? EcogestTheme.primary : Colors.white,
             fixedSize: hasFollowRequest!

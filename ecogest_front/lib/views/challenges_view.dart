@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ecogest_front/widgets/bottom_bar.dart';
 import 'package:go_router/go_router.dart';
+import 'package:ecogest_front/assets/ecogest_theme.dart';
 
 class ChallengesView extends StatelessWidget {
   const ChallengesView({super.key});
@@ -25,27 +26,24 @@ class ChallengesView extends StatelessWidget {
         appBar: AppBar(
           toolbarHeight: 80,
           title: const Text('Mes défis & gestes'),
-          bottom: const PreferredSize(
-              preferredSize: Size.fromHeight(30.0),
-              child: TabBar(
-                  isScrollable: true,
-                  unselectedLabelColor: Colors.white,
+          bottom: TabBar(
                   indicatorSize: TabBarIndicatorSize.label,
-                  indicatorColor: Colors.black,
+                  indicatorColor:lightColorScheme.primary,
+                  indicatorWeight: 4,
                   tabs: [
                     Tab(
-                      child: Text('Défis en cours'),
+                      child: Text('En cours'),
                     ),
                     Tab(
-                      child: Text('Prochains défis'),
+                      child: Text('À venir'),
                     ),
                     Tab(
-                      child: Text('Défis réalisés'),
+                      child: Text('Réalisés'),
                     ),
                     Tab(
                       child: Text('Gestes'),
                     ),
-                  ])),
+                  ]),
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
             onPressed: () {

@@ -50,11 +50,13 @@ class AccountInfo extends StatelessWidget {
                       ),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
-                        color: EcogestTheme.primary,
+                        color: lightColorScheme.secondaryContainer,
                       ),
                       child: Text(
                         user?.badgeTitle ?? 'Badge',
-                        style: TextStyle(fontSize: 14),
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: lightColorScheme.onSecondaryContainer,),
                       ),
                     ),
                   ],
@@ -81,7 +83,7 @@ class AccountInfo extends StatelessWidget {
                     Container(
                       width: 1.0, // Width of the border
                       height: 60.0, // Height of the border, adjust as needed
-                      color: Colors.blueGrey.shade400, // Border color
+                      color: lightColorScheme.outline, // Border color
                     ),
                     Column(
                       children: [

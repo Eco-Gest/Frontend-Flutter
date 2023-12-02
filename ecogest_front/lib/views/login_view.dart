@@ -108,6 +108,7 @@ class LoginView extends StatelessWidget {
                     child: const Padding(
                       padding: EdgeInsets.all(16.0),
                       child: Text(
+                        style: TextStyle(fontSize: 18),
                         'Mot de passe oublié ?',
                       ),
                     ),
@@ -156,26 +157,24 @@ class LoginView extends StatelessWidget {
                     },
 
                     // Connect button
+                    
                     child: SizedBox(
                       width: 300,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            minimumSize: const Size.fromHeight(30),
-                            alignment: Alignment.topCenter,
-                            padding: const EdgeInsets.all(20),
-                            foregroundColor:
-                                Colors.white, // Color of button text
-                            textStyle: const TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            )),
+                      child: FilledButton(
+                        style: TextButton.styleFrom(
+                          minimumSize: const Size.fromHeight(50),
+                          padding: const EdgeInsets.all(20),
+                        ),
                         onPressed: () {
                           context.read<AuthenticationCubit>().login(
-                                email: emailController.text,
-                                password: passwordController.text,
-                              );
+                            email: emailController.text,
+                            password: passwordController.text,
+                          );
                         },
-                        child: const Text('Se connecter'),
+                        child: const Text(
+                          style: TextStyle(fontSize: 18),
+                          'Se connecter',
+                        ),
                       ),
                     ),
                   ),
@@ -194,10 +193,11 @@ class LoginView extends StatelessWidget {
                       ),
                       TextButton(
                         style: TextButton.styleFrom(
-                            textStyle: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        )),
+                          textStyle: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                         onPressed: () {
                           GoRouter.of(context).goNamed(RegisterView.name);
                         },

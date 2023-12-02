@@ -342,7 +342,7 @@ class PostFormWidget extends StatelessWidget {
                       child: SizedBox(
                         width: (MediaQuery.of(context).size.width - 26) / 2,
                         height: 50.0,
-                        child: ElevatedButton(
+                        child: FilledButton(
                           onPressed: () async {
                             if (formKey.currentState!.validate()) {
                               ScaffoldMessenger.of(context).showSnackBar(

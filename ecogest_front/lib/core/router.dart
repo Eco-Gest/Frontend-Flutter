@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:ecogest_front/views/challenges_view.dart';
 import 'package:ecogest_front/views/comments_view.dart';
+import 'package:ecogest_front/views/legal/legal_notices_view.dart';
+import 'package:ecogest_front/views/legal/privacy_policy_view.dart';
 import 'package:ecogest_front/views/notifications_view.dart';
 import 'package:ecogest_front/views/errors/error404_view.dart';
 import 'package:ecogest_front/views/post_detail_view.dart';
@@ -109,6 +111,16 @@ abstract class AppRouter {
           path: '/notifications',
           name: NotificationsView.name,
           builder: (context, state) => NotificationsView(),
+        ),
+        GoRoute(
+          path: '/legal-notices',
+          name: LegalNotices.name,
+          builder: (context, state) => const LegalNotices(),
+        ),
+        GoRoute(
+          path: '/privacy-policy',
+          name: PrivacyPolicy.name,
+          builder: (context, state) => const PrivacyPolicy(),
         ),
       ],
       refreshListenable:

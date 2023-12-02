@@ -20,8 +20,8 @@ class ParticipationWidget extends StatelessWidget {
           } else if (state is ParticipationStateError) {
             return Center(child: Text(state.message));
           }
-          return ElevatedButton(
-            style: ElevatedButton.styleFrom(
+          return FilledButton(
+            style: FilledButton.styleFrom(
                 minimumSize: const Size.fromHeight(30),
                 alignment: Alignment.topCenter,
                 padding: const EdgeInsets.all(20),

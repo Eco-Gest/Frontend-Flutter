@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:ecogest_front/assets/ecogest_theme.dart';
 import 'package:ecogest_front/views/home_view.dart';
 import 'package:ecogest_front/views/account_view.dart';
+import 'package:ecogest_front/assets/ecogest_theme.dart';
 
 class AppBarFooter extends StatelessWidget {
   const AppBarFooter({super.key});
@@ -18,23 +19,16 @@ class AppBarFooter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 60.0,
-      decoration: BoxDecoration(
-        border: Border(
-          top: BorderSide(
-            color: Colors.blueGrey.shade100,
-            width: 1.0,
-          ),
-        ),
-      ),
+      color: lightColorScheme.surface,
+      height: 65.0,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
           IconButton(
             icon: const Icon(Icons.home),
             color:  ( _getCurrentRoute(context) == "/${HomeView.name}"
-                ? EcogestTheme.primary
-                : Colors.blueGrey.shade400),
+                ? lightColorScheme.primary
+                : lightColorScheme.onSurfaceVariant),
             tooltip: 'Home',
             onPressed: () {
               GoRouter.of(context).pushNamed(HomeView.name);
@@ -43,28 +37,30 @@ class AppBarFooter extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.emoji_events),
             color: (_getCurrentRoute(context) == "/${ChallengesView.name}"
-                ? EcogestTheme.primary
-                : Colors.blueGrey.shade400),
+                ? lightColorScheme.primary
+                : lightColorScheme.onSurfaceVariant),
             tooltip: 'Challenge & action',
             onPressed: () {
               GoRouter.of(context).pushNamed(ChallengesView.name);
             },
           ),
-          IconButton(
-            icon: const Icon(Icons.add_circle),
-            color:  ( _getCurrentRoute(context) == "/${PostCreateView.name}"
-                ? EcogestTheme.primary
-                : Colors.blueGrey.shade400),
-            tooltip: 'Add challenge or action',
+          ElevatedButton(
             onPressed: () {
               GoRouter.of(context).pushNamed(PostCreateView.name);
             },
+            style: ElevatedButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16.0),
+              ),
+              minimumSize: Size.square(60), 
+            ),
+            child: const Icon(Icons.add),
           ),
           IconButton(
             icon: const Icon(Icons.search),
             color: (_getCurrentRoute(context) == "/${SearchView.name}"
-                ? EcogestTheme.primary
-                : Colors.blueGrey.shade400),
+                ? lightColorScheme.primary
+                : lightColorScheme.onSurfaceVariant),
             tooltip: 'Search',
             onPressed: () {
               GoRouter.of(context).pushNamed(SearchView.name);
@@ -73,8 +69,8 @@ class AppBarFooter extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.person),
             color:  ( _getCurrentRoute(context) == "/${AccountView.name}"
-                ? EcogestTheme.primary
-                : Colors.blueGrey.shade400),
+                ? lightColorScheme.primary
+                : lightColorScheme.onSurfaceVariant),
             tooltip: 'Your Account',
             onPressed: () {
               GoRouter.of(context).pushNamed(AccountView.name);

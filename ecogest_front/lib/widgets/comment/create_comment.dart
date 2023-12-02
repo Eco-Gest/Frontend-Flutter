@@ -12,7 +12,7 @@ class CreateComment extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: EcogestTheme.primary,
+      color: lightColorScheme.primary,
       padding: const EdgeInsets.all(16.0),
       child: TextFormField(
         controller: _newCommentController,
