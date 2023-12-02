@@ -21,11 +21,6 @@ abstract class CommentService {
       '/posts/comments/$commentId', {},
       token: token,
     );
-    if (response.statusCode == 200) {
-      throw Exception('Le commentaire a bien été supprimé')
-    } else {
-      throw Exception('Échec de la suppression du message');
-    }
   }
   
   static Future<void> submitReport(int commentId, int authorId, String content, String result) async {
