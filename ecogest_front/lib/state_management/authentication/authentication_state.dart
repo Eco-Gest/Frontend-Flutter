@@ -13,17 +13,11 @@ class AuthenticationInitial extends AuthenticationState {
 
 /// The state of the authentication cubit when the user is unauthenticated.
 class AuthenticationUnauthenticated extends AuthenticationState {
-  AuthenticationUnauthenticated() : super(null);
+  final String message;
+  AuthenticationUnauthenticated(this.message) : super(null);
 }
 
 /// The state of the authentication cubit when the user is authenticated.
 class AuthenticationAuthenticated extends AuthenticationState {
   AuthenticationAuthenticated(user) : super(user);
-}
-
-/// The state of the authentication cubit when an error occurred.
-class AuthenticationError extends AuthenticationState {
-  final String message;
-
-  AuthenticationError(this.message) : super(null);
 }
