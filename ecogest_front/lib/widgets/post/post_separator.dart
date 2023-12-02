@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ecogest_front/assets/ecogest_theme.dart';
 
 class PostSeparator extends StatelessWidget {
   const PostSeparator({
@@ -7,20 +8,18 @@ class PostSeparator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Column(
+    return Column(
       children: [
         SizedBox(
-          height: 10,
+          height: 5,
         ),
         Divider(
           height: 10,
           thickness: 1,
-          indent: 20,
-          endIndent: 20,
-          color: Colors.grey,
+          color: lightColorScheme.outline,
         ),
         SizedBox(
-          height: 10,
+          height: 5,
         ),
       ],
     );

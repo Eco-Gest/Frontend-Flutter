@@ -8,6 +8,7 @@ import 'assets/ecogest_theme.dart';
 import 'package:ecogest_front/state_management/authentication/authentication_cubit.dart';
 import 'package:ecogest_front/core/router.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:ecogest_front/assets/ecogest_theme.dart';
 
 void main() {
   initializeDateFormatting('fr_FR', null).then((_) => runApp(MainApp()));
@@ -35,12 +36,14 @@ class MainApp extends StatelessWidget {
                 return MaterialApp.router(
                   title: "EcO'Gest",
                   debugShowCheckedModeBanner: false,
-                  theme: ThemeData(
-                    // TODO improve dark theme
-                    primarySwatch: EcogestTheme.primary,
-                    textTheme: GoogleFonts.openSansTextTheme(),
-                    brightness: state.brightness,
-                  ),
+                  theme: ThemeData(useMaterial3: true, colorScheme: lightColorScheme),
+                  // darkTheme: ThemeData(useMaterial3: true, colorScheme: darkColorScheme),
+                  // theme: ThemeData(
+                     // TODO improve dark theme
+                     // primarySwatch: EcogestTheme.primary,
+                     // textTheme: GoogleFonts.openSansTextTheme(),
+                  //   brightness: state.brightness,
+                  // ),
                   routerConfig: AppRouter.getRouter(context),
                 );
               });

@@ -9,6 +9,7 @@ import 'package:ecogest_front/widgets/post/post_separator.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ecogest_front/assets/ecogest_theme.dart';
 
 class PostsList extends StatelessWidget {
   PostsList({
@@ -44,7 +45,7 @@ class PostsList extends StatelessWidget {
               return Container(
                   decoration: BoxDecoration(
                       border: Border.all(
-                    color: Colors.grey,
+                    color: lightColorScheme.outline,
                     width: 0.5,
                   )),
                   child: Padding(
@@ -67,7 +68,6 @@ class PostsList extends StatelessWidget {
                           },
                           child: PostContentInfos(post: posts[index]),
                         ),
-                        const PostSeparator(),
                         // Buttons
                         BlocProvider<LikeCubit>(
                           create: (context) => LikeCubit(),

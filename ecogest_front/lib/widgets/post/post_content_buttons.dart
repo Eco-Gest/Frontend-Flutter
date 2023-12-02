@@ -7,6 +7,8 @@ import 'package:ecogest_front/widgets/post/participation_widet.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ecogest_front/assets/ecogest_theme.dart';
+import 'package:ecogest_front/widgets/post/post_separator.dart';
 
 class PostContentButtons extends StatelessWidget {
   PostContentButtons({
@@ -40,7 +42,7 @@ class PostContentButtons extends StatelessWidget {
                 },
                 child: Text(
                   '$likes like',
-                  style: const TextStyle(color: Colors.black),
+                  style: TextStyle(color: lightColorScheme.onBackground),
                 ),
               ),
             ],
@@ -51,7 +53,7 @@ class PostContentButtons extends StatelessWidget {
                 },
                 child: Text(
                   '$likes likes',
-                  style: const TextStyle(color: Colors.black),
+                  style: TextStyle(color: lightColorScheme.onBackground),
                 ),
               ),
             ],
@@ -66,45 +68,31 @@ class PostContentButtons extends StatelessWidget {
                   },
                   child: Text(
                     '${comments!.length} commentaires',
-                    style: const TextStyle(color: Colors.black),
+                    style: TextStyle(color: lightColorScheme.onBackground),
                   )),
             ]
           ],
         ),
-        const SizedBox(
-          height: 10,
-        ),
+        const PostSeparator(),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             LikeWidget(postId: post.id!, isLiked: isLiked),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.all(20),
-                  foregroundColor: Colors.white,
-                  textStyle: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  )),
+            IconButton(
               onPressed: () {
                 GoRouter.of(context)
                     .push('/posts/$postId/comments', extra: comments);
               },
-              child: const Icon(Icons.comment),
+              color: lightColorScheme.primary,
+              icon: const Icon(Icons.comment),
             ),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.all(20),
-                  foregroundColor: Colors.white,
-                  textStyle: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  )),
+            IconButton(
               onPressed: () {
                 debugPrint('Click pour partager la publication');
                 // TODO : Partager la publication
               },
-              child: const Icon(Icons.share),
+              color: lightColorScheme.primary,
+              icon: const Icon(Icons.share),
             ),
           ],
         ),

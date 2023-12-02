@@ -28,11 +28,11 @@ class SearchBarWidget extends StatelessWidget {
                 : 'Recherche non valide',
           ),
         ),
-        ElevatedButton(
+        FilledButton(
           child: const Text(
             'Rechercher',
           ),
-          style: ElevatedButton.styleFrom(
+          style: FilledButton.styleFrom(
             fixedSize: Size(400, 50),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10.0),
