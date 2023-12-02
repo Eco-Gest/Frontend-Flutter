@@ -5,15 +5,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ChallengesWidget extends StatelessWidget {
-  const ChallengesWidget({super.key, required this.backendRoute});
-  final String backendRoute;
+  const ChallengesWidget({super.key, required this.keywordRoute, required this.userId});
+  final String keywordRoute;
+  final int userId;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: BlocProvider<PostsCubit>(
       create: (context) {
         final cubit = PostsCubit();
-        cubit.getUserPostsFiltered(backendRoute);
+        cubit.getUserPostsFiltered(keywordRoute, userId);
         return cubit;
       },
       child: BlocBuilder<PostsCubit, PostsState>(

@@ -9,10 +9,10 @@ class ApproveOrDeclineSubscriptionWidget extends StatelessWidget {
   ApproveOrDeclineSubscriptionWidget(
       {super.key,
       required this.userId,
-      required this.userAuthenticatedHasFollowRequestStatus});
+      required this.hasFollowRequest});
 
   int userId;
-  bool userAuthenticatedHasFollowRequestStatus;
+  bool hasFollowRequest;
 
   static List<String> selectabelChoiceApproveOrDecline = [
     "Accepter",
@@ -21,7 +21,7 @@ class ApproveOrDeclineSubscriptionWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (userAuthenticatedHasFollowRequestStatus) {
+    if (hasFollowRequest) {
       return Row(
         children: [
           SizedBox(

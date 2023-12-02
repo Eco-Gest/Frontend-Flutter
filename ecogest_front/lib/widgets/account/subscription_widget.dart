@@ -1,5 +1,4 @@
 import 'package:ecogest_front/assets/ecogest_theme.dart';
-import 'package:ecogest_front/assets/ecogest_theme.dart';
 import 'package:ecogest_front/state_management/subscription/subscription_cubit.dart';
 import 'package:ecogest_front/state_management/subscription/subscription_state.dart';
 import 'package:ecogest_front/widgets/account/approve_or_decline_subscription_widget.dart';
@@ -12,11 +11,11 @@ class SubscriptionWidget extends StatelessWidget {
       {super.key,
       required this.userId,
       required this.status,
-      this.userAuthenticatedHasFollowRequestStatus});
+      this.hasFollowRequest});
 
   int userId;
   String status;
-  bool? userAuthenticatedHasFollowRequestStatus;
+  bool? hasFollowRequest;
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +30,7 @@ class SubscriptionWidget extends StatelessWidget {
             style: FilledButton.styleFrom(
               backgroundColor:
                   status == "subscribe" ? lightColorScheme.primary : Colors.white,
-              fixedSize: userAuthenticatedHasFollowRequestStatus!
+              fixedSize: hasFollowRequest!
                   ? Size(210, 50)
                   : Size((MediaQuery.of(context).size.width) / 2, 50),
               shape: RoundedRectangleBorder(
@@ -45,8 +44,8 @@ class SubscriptionWidget extends StatelessWidget {
           ),
           ApproveOrDeclineSubscriptionWidget(
               userId: userId,
-              userAuthenticatedHasFollowRequestStatus:
-                  userAuthenticatedHasFollowRequestStatus!),
+              hasFollowRequest:
+                  hasFollowRequest!),
         ]);
       }
       return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
@@ -57,7 +56,7 @@ class SubscriptionWidget extends StatelessWidget {
           style: FilledButton.styleFrom(
             backgroundColor:
                 status == "subscribe" ? lightColorScheme.primary : Colors.white,
-            fixedSize: userAuthenticatedHasFollowRequestStatus!
+            fixedSize: hasFollowRequest!
                 ? Size(210, 50)
                 : Size((MediaQuery.of(context).size.width) / 2, 50),
             shape: RoundedRectangleBorder(
@@ -71,8 +70,8 @@ class SubscriptionWidget extends StatelessWidget {
         ),
         ApproveOrDeclineSubscriptionWidget(
             userId: userId,
-            userAuthenticatedHasFollowRequestStatus:
-                userAuthenticatedHasFollowRequestStatus!),
+            hasFollowRequest:
+                hasFollowRequest!),
       ]);
     });
   }

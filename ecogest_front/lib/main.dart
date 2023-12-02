@@ -11,21 +11,24 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:ecogest_front/assets/ecogest_theme.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   initializeDateFormatting('fr_FR', null).then((_) => runApp(MainApp()));
 }
 
 class MainApp extends StatelessWidget {
   MainApp({super.key});
+  final AuthenticationCubit authenticationCubit = AuthenticationCubit();
 
   Widget build(BuildContext context) {
+    final GoRouter router = AppRouter.routerWithAuthStream(
+      authenticationCubit.stream,
+    );
     return MultiBlocProvider(
         providers: [
           BlocProvider<ThemeSettingsCubit>(
             create: (context) => ThemeSettingsCubit(),
           ),
-          BlocProvider<AuthenticationCubit>(
-            create: (context) => AuthenticationCubit()..getStatus(),
-          ),
+          BlocProvider.value(value: authenticationCubit),
         ],
         child: Builder(
           builder: (context) {
@@ -44,7 +47,7 @@ class MainApp extends StatelessWidget {
                      // textTheme: GoogleFonts.openSansTextTheme(),
                   //   brightness: state.brightness,
                   // ),
-                  routerConfig: AppRouter.getRouter(context),
+                  routerConfig: router,
                 );
               });
             });
@@ -52,4 +55,3 @@ class MainApp extends StatelessWidget {
         ));
   }
 }
-

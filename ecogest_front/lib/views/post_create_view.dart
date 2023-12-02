@@ -70,7 +70,6 @@ class PostCreateView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final UserModel user = context.watch<AuthenticationCubit>().state.user!;
     return Scaffold(
       appBar: ThemeAppBar(
         title: 'Créer un post ',
@@ -95,9 +94,8 @@ class PostCreateView extends StatelessWidget {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(content: Text('Publication réussie')),
                       );
-                      GoRouter.of(context).goNamed(
-                        HomeView.name,
-                      );
+                      GoRouter.of(context)
+                          .goNamed(HomeView.name);
                     }
                   },
                   child: Form(
@@ -286,10 +284,10 @@ class PostCreateView extends StatelessWidget {
                           return const SizedBox();
                         }),
 
-                         Container(
-                            alignment: Alignment.topCenter,
-                            padding: const EdgeInsets.all(10),
-                            child: FlutterTagging<TagModel>(
+                        Container(
+                          alignment: Alignment.topCenter,
+                          padding: const EdgeInsets.all(10),
+                          child: FlutterTagging<TagModel>(
                               initialItems: _tagsToSave,
                               textFieldConfiguration: TextFieldConfiguration(
                                   decoration: InputDecoration(
@@ -303,13 +301,13 @@ class PostCreateView extends StatelessWidget {
                               ),
                               findSuggestions: TagService.getTagModels,
                               additionCallback: (value) {
-                                  return TagModel(
-                                          label: value,
-                                  );
+                                return TagModel(
+                                  label: value,
+                                );
                               },
-                              onAdded: (tag){
+                              onAdded: (tag) {
                                 // api calls here, triggered when add to tag button is pressed
-                                  return  tag;
+                                return tag;
                               },
                               configureSuggestion: (tag) {
                                   return SuggestionConfiguration(
@@ -338,27 +336,27 @@ class PostCreateView extends StatelessWidget {
                                 _tagsToSave
                                     .map<TagModel>((tag) => tag)
                                     .toList();
-                              }
+                              }),
+                        ), // tags
+                        // image
+                        Container(
+                          alignment: Alignment.topCenter,
+                          padding: const EdgeInsets.all(10),
+                          child: TextFormField(
+                            controller: imageController,
+                            decoration: const InputDecoration(
+                              border: OutlineInputBorder(),
+                              labelText: 'Image',
+                              hintText: 'Entrez l\'url d\'une image',
                             ),
-                         ), // tags
-                          // image
-                          Container(
-                            alignment: Alignment.topCenter,
-                            padding: const EdgeInsets.all(10),
-                            child: TextFormField(
-                              controller: imageController,
-                              decoration: const InputDecoration(
-                                border: OutlineInputBorder(),
-                                labelText: 'Image',
-                                hintText: 'Entrez l\'url d\'une image',
-                              ),
-                              autovalidateMode:
-                                  AutovalidateMode.onUserInteraction,
-                              validator: (value) => imageValidation(imageController.text)
-                                  ? null
-                                  : 'Lien vers l\'image doit être une url avec une extension .jpg, .png, .gif, .svg, .webp ou .jpeg',
-                            ),
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            validator: (value) => imageValidation(
+                                    imageController.text)
+                                ? null
+                                : 'Lien vers l\'image doit être une url avec une extension .jpg, .png, .gif, .svg, .webp ou .jpeg',
                           ),
+                        ),
 
                         // level
                         BlocBuilder<PostFormCubit, PostFormState>(
