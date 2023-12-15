@@ -1,3 +1,5 @@
+import 'package:ecogest_front/models/subscription_model.dart';
+import 'package:ecogest_front/models/user_model.dart';
 import 'package:ecogest_front/state_management/authentication/authentication_cubit.dart';
 import 'package:ecogest_front/state_management/subscription/subscription_cubit.dart';
 import 'package:ecogest_front/widgets/account/subscription_widget.dart';
@@ -9,9 +11,8 @@ import 'package:ecogest_front/widgets/account/account_infos.dart';
 import 'package:ecogest_front/widgets/account/account_trophies.dart';
 import 'package:ecogest_front/state_management/user/user_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ecogest_front/assets/ecogest_theme.dart';
 
-class UserView extends StatelessWidget {
+class UserView extends StatefulWidget {
   UserView({Key? key, required this.userId});
 
   final int userId;
@@ -19,9 +20,15 @@ class UserView extends StatelessWidget {
   static String name = 'users';
 
   @override
+  _UserView createState() => _UserView();
+}
+
+class _UserView extends State<UserView> {
+  @override
   Widget build(BuildContext context) {
+    int userId = widget.userId;
     return Scaffold(
-      appBar: ThemeAppBar(title: "Profil"),
+      appBar: const ThemeAppBar(title: "Profil"),
       bottomNavigationBar: const AppBarFooter(),
       body: BlocProvider<UserCubit>(
         create: (context) {
@@ -42,88 +49,30 @@ class UserView extends StatelessWidget {
             } else if (state is UserSuccess) {
               final authenticationState =
                   context.read<AuthenticationCubit>().state;
-                final userAuthenticated = authenticationState.user;
-                final userIsSubscribed = userAuthenticated!.following!
-                    .where((subscription) =>
-                        subscription!.followingId == state.user!.id!)
-                    .firstOrNull;
+              UserModel? userAuthenticated = authenticationState.user;
+     
+              bool? isFollowing = state.isFollowing;
+              bool? isFollowed = state.isFollowed;
 
-                final userAuthenticatedHasFollowRequest = userAuthenticated!
-                    .followers!
-                    .where((subscription) =>
-                        subscription!.followerId == state.user!.id!)
-                    .firstOrNull;
+              bool isFollowingPending = false;
+              if (isFollowing == null) {
+                isFollowingPending = false;
+              } else if (isFollowing == false) {
+                isFollowingPending = true;
+              }
 
-                String? status = userIsSubscribed?.status;
-                bool? hasFollowRequest =
-                    userAuthenticatedHasFollowRequest?.status == "pending"
-                        ? true
-                        : false;
+              bool isFollowedPending = false;
+              if (isFollowed == null) {
+                isFollowedPending = false;
+              } else if (isFollowed == false) {
+                isFollowedPending = true;
+              }
 
-                if (userAuthenticated.id != state.user!.id!) {
-                  // user private
-                  if (state.user!.isPrivate!) {
-                    // status pending
-                    if (status == "pending" || status == null) {
-                      status = status == null ? "subscribe" : "cancel";
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 26.0),
-                        child: Column(
-                          children: [
-                            // Account Info Widget
-                            AccountInfo(user: state.user!),
-                            SizedBox(height: 20),
-                            Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 10.0),
-                              child: Container(
-                                height: 1.0,
-                                width: MediaQuery.of(context).size.width,
-                                color: lightColorScheme.outline,
-                              ),
-                            ),
-                            SizedBox(height: 20),
-                            BlocProvider<SubscriptionCubit>(
-                              create: (_) => SubscriptionCubit(),
-                              child: SubscriptionWidget(
-                                  userId: state.user!.id!,
-                                  status: status,
-                                  hasFollowRequest:
-                                      hasFollowRequest),
-                            ),
-                          ],
-                        ),
-                      );
-                    }
-
-                    // status approved
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 26.0),
-                      child: Column(
-                        children: [
-                          // Account Info Widget
-                          AccountInfo(user: state.user!),
-                          SizedBox(height: 20),
-                          BlocProvider<SubscriptionCubit>(
-                            create: (_) => SubscriptionCubit(),
-                            child: UnSubscriptionWidget(
-                              userId: state.user!.id!,
-                              hasFollowRequest:
-                                  hasFollowRequest,
-                            ),
-                          ),
-                          SizedBox(height: 20),
-
-                          // New Widget: Account Trophies
-                          AccountTrophies(userId: state.user!.id!),
-                        ],
-                      ),
-                    );
-                  }
-
-                  // user public
+              if (userAuthenticated!.id != userId) {
+                // user private
+                if (state.user!.isPrivate!) {
                   // status pending
-                  if (status == "pending" || status == null) {
-                    status = status == null ? "subscribe" : "cancel";
+                  if (isFollowing == null || isFollowing == false) {
                     return Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 26.0),
                       child: Column(
@@ -143,10 +92,38 @@ class UserView extends StatelessWidget {
                           BlocProvider<SubscriptionCubit>(
                             create: (_) => SubscriptionCubit(),
                             child: SubscriptionWidget(
-                                userId: state.user!.id!,
-                                status: status,
-                                hasFollowRequest:
-                                    hasFollowRequest),
+                              userId: state.user!.id!,
+                              isFollowingPending: isFollowingPending,
+                              isFollowedPending: isFollowedPending,
+                              onSubscriptionButton: () {
+                                setState(() {
+                                  isFollowingPending = !isFollowingPending;
+                                  isFollowing = !isFollowing!;
+                                });
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  }
+
+                  if (isFollowed == null || isFollowed == false) {
+                    isFollowed = false;
+                    // status approved
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 26.0),
+                      child: Column(
+                        children: [
+                          // Account Info Widget
+                          AccountInfo(user: state.user!),
+                          SizedBox(height: 20),
+                          BlocProvider<SubscriptionCubit>(
+                            create: (_) => SubscriptionCubit(),
+                            child: UnSubscriptionWidget(
+                              userId: state.user!.id!,
+                              isFollowed: isFollowed,
+                            ),
                           ),
                           SizedBox(height: 20),
 
@@ -156,8 +133,11 @@ class UserView extends StatelessWidget {
                       ),
                     );
                   }
+                }
 
-                  // status approved
+                // user public
+                // status pending
+                if (isFollowing == null || isFollowing == false) {
                   return Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 26.0),
                     child: Column(
@@ -165,12 +145,27 @@ class UserView extends StatelessWidget {
                         // Account Info Widget
                         AccountInfo(user: state.user!),
                         SizedBox(height: 20),
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 10.0),
+                          child: Container(
+                            height: 1.0,
+                            width: MediaQuery.of(context).size.width,
+                            color: Colors.black,
+                          ),
+                        ),
+                        SizedBox(height: 20),
                         BlocProvider<SubscriptionCubit>(
                           create: (_) => SubscriptionCubit(),
-                          child: UnSubscriptionWidget(
+                          child: SubscriptionWidget(
                             userId: state.user!.id!,
-                            hasFollowRequest:
-                                hasFollowRequest,
+                            isFollowingPending: isFollowingPending,
+                            isFollowedPending: isFollowedPending,
+                            onSubscriptionButton: () {
+                              setState(() {
+                                isFollowingPending = !isFollowingPending;
+                                isFollowing = !isFollowing!;
+                              });
+                            },
                           ),
                         ),
                         SizedBox(height: 20),
@@ -182,7 +177,7 @@ class UserView extends StatelessWidget {
                   );
                 }
 
-                // user.id == userAuthenticated.id
+                // status approved
                 return Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 26.0),
                   child: Column(
@@ -190,11 +185,35 @@ class UserView extends StatelessWidget {
                       // Account Info Widget
                       AccountInfo(user: state.user!),
                       SizedBox(height: 20),
+                      BlocProvider<SubscriptionCubit>(
+                        create: (_) => SubscriptionCubit(),
+                        child: UnSubscriptionWidget(
+                          userId: state.user!.id!,
+                          isFollowed: isFollowedPending,
+                        ),
+                      ),
+                      SizedBox(height: 20),
+
                       // New Widget: Account Trophies
                       AccountTrophies(userId: state.user!.id!),
                     ],
                   ),
                 );
+              }
+
+              // user.id == userAuthenticated.id
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 26.0),
+                child: Column(
+                  children: [
+                    // Account Info Widget
+                    AccountInfo(user: state.user!),
+                    SizedBox(height: 20),
+                    // New Widget: Account Trophies
+                    AccountTrophies(userId: state.user!.id!),
+                  ],
+                ),
+              );
             }
             return const SizedBox.shrink();
           },

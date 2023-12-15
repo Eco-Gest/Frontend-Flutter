@@ -5,14 +5,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class SubscriptionCubit extends Cubit<SubscriptionState> {
   SubscriptionCubit() : super(SubscriptionStateInitial());
 
-  Future<void> subscription(int userId, String state) async {
+  Future<void> subscription(int userId, bool state) async {
     try {
-      if (state == "subscribe") {
+      if (!state) {
         await SubscriptionService.subscribe(userId);
-      } else if (state == "cancel") {
+        emit(SubscriptionStateSuccess());
+      } else {
         await SubscriptionService.cancel(userId);
+        emit(SubscriptionCancelStateSuccess());
       }
-      emit(SubscriptionStateSuccess());
     } catch (error) {
       emit(SubscriptionStateError("Erreur rencontrée. Veuillez réessayer."));
     }
@@ -22,21 +23,22 @@ class SubscriptionCubit extends Cubit<SubscriptionState> {
     try {
       emit(SubscriptionStateLoading());
       await SubscriptionService.unSubscribe(userId);
-      emit(SubscriptionStateSuccess());
+      emit(UnSubscriptionStateSuccess());
     } catch (error) {
       emit(SubscriptionStateError("Erreur rencontrée. Veuillez réessayer."));
     }
   }
 
-  Future<void> approveOrDeclineSubscription(int userId, String approveOrDecline) async {
+  Future<void> approveOrDeclineSubscription(
+      int userId, String approveOrDecline) async {
     try {
       emit(SubscriptionStateLoading());
       if (approveOrDecline == "Accepter") {
         await SubscriptionService.approve(userId);
       } else {
-        await SubscriptionService.cancel(userId);
+        await SubscriptionService.decline(userId);
       }
-      emit(SubscriptionStateSuccess());
+      emit(SubscriptionApproveOrDeclineStateSuccess());
     } catch (error) {
       emit(SubscriptionStateError("Erreur rencontrée. Veuillez réessayer."));
     }

@@ -1,4 +1,5 @@
 import 'package:ecogest_front/models/user_model.dart';
+import 'package:ecogest_front/services/subscription_service.dart';
 import 'package:ecogest_front/services/user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,7 +13,12 @@ class UserCubit extends Cubit<UserState> {
     try {
       emit(UserLoading());
       final user = await UserService.getUser(userId);
-      emit(UserSuccess(user));
+      final userAuthenticated = await UserService.getCurrentUser();
+
+      final isFollowed = SubscriptionService.isFollowed(userAuthenticated, user);
+      final isFollowing =  SubscriptionService.isFollowing(userAuthenticated, user);
+
+      emit(UserSuccess(user, isFollowed, isFollowing));
     } catch (error) {
       emit(UserError("Erreur rencontrée. Veuillez réessayer."));
     }
@@ -38,7 +44,7 @@ class UserCubit extends Cubit<UserState> {
     try {
       emit(UserLoading());
       await UserService.updateUserAccount(user);
-      emit(UserSuccess(user));
+      emit(UserAccountSuccess(user));
     } catch (error) {
       emit(UserError("Erreur rencontrée pour la mise à jour de vos données. Veuillez réessayer."));
     }

@@ -7,7 +7,7 @@ class SubscriptionModel {
   final String? updatedAt;
 
   const SubscriptionModel({
-    required this.id,
+    this.id,
     this.followerId,
     this.followingId,
     this.status,
