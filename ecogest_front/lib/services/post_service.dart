@@ -159,20 +159,9 @@ class PostService {
   Future<PostModel> updatePost(PostModel postModel) async {
     final String? token = await AuthenticationService.getToken();
 
-    // Create a new map with only the desired fields
-    final Map<String, dynamic> requestBody = {
-      "tags": postModel.tags,
-      "title": postModel.title,
-      "description": postModel.description,
-      "image": postModel.image,
-      "position": postModel.position,
-      "type": postModel.type,
-      "level": postModel.level,
-      "start_date": postModel.startDate,
-      "end_date": postModel.endDate,
-    };
+    final body = postModel.toJson();
 
-    await EcoGestApiDataSource.patch('/posts/${postModel.id}', requestBody,
+    await EcoGestApiDataSource.patch('/posts/${postModel.id}', body,
         token: token);
 
     return postModel;

@@ -40,6 +40,19 @@ class PostFormCubit extends Cubit<PostFormState> {
     ));
   }
 
+  Future<void> getValuesEdit(PostType type, int categoryId, PostLevel level) async {
+    final categories = await categoryService.getCategories();
+
+    emit(SelectionState(
+      selectableTypes: PostType.values,
+      selectableCategories: categories,
+      selectableLevels: PostLevel.values,
+      selectedType: type,
+      selectedCategory: categoryId,
+      selectedLevel: level,
+    ));
+  }
+
   String? selectPostType(PostType type) {
     if (state is SelectionState) {
       final selectionState = state as SelectionState;
@@ -129,7 +142,6 @@ class PostFormCubit extends Cubit<PostFormState> {
       final result = await postService.updatePost(post);
       emit(PostFormStateSuccess(result));
     } catch (e) {
-      debugPrint(e.toString());
       emit(PostFormStateError(e.toString()));
     }
   }
