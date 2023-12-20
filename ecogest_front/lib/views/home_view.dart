@@ -23,7 +23,7 @@ class HomeView extends StatelessWidget {
       body: BlocProvider<PostsCubit>(
         create: (context) {
           final cubit = PostsCubit();
-          cubit.getPosts(currentPage);
+          cubit.getPosts(currentPage, false);
           return cubit;
         },
         child: BlocBuilder<PostsCubit, PostsState>(
@@ -42,13 +42,14 @@ class HomeView extends StatelessWidget {
               return PostsList(
                 posts: allPosts,
                 isLastPage: noMorePosts,
+                currentPage: currentPage,
                 onScrolled: () {
                   // If during the last call we have not retrieved a new post,
                   // it is because we have reached the end of the complete list of posts
                   // -> No need to reload the page again when user scroll down
                   if (!noMorePosts) {
                     currentPage = currentPage + 1;
-                    context.read<PostsCubit>().getPosts(currentPage);
+                    context.read<PostsCubit>().getPosts(currentPage, false);
                   }
                 },
               );

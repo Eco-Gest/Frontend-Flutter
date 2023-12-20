@@ -1,3 +1,4 @@
+import 'package:ecogest_front/models/user_model.dart';
 import 'package:ecogest_front/state_management/authentication/authentication_cubit.dart';
 import 'package:ecogest_front/views/settings_view.dart';
 import 'package:ecogest_front/widgets/account/update_account_widget.dart';
@@ -11,7 +12,7 @@ import 'package:go_router/go_router.dart';
 import 'package:ecogest_front/assets/ecogest_theme.dart';
 
 class AccountView extends StatefulWidget {
-  const AccountView({Key? key});
+  const AccountView({super.key});
 
   static String name = 'account';
 
@@ -22,6 +23,15 @@ class AccountView extends StatefulWidget {
 class _AccountViewState extends State<AccountView>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
+
+  GlobalKey<RefreshIndicatorState> refreshIndicatorKey =
+      GlobalKey<RefreshIndicatorState>();
+
+  Future<void> refreshData() async {
+    setState(() {
+      context.read<AuthenticationCubit>().getCurrentUser();
+    });
+  }
 
   @override
   void initState() {
@@ -37,7 +47,7 @@ class _AccountViewState extends State<AccountView>
 
   @override
   Widget build(BuildContext context) {
-    final user = context.watch<AuthenticationCubit>().state.user;
+    UserModel? user = context.read<AuthenticationCubit>().state.user;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Profil'),
@@ -69,13 +79,15 @@ class _AccountViewState extends State<AccountView>
         ],
       ),
       bottomNavigationBar: const AppBarFooter(),
-      body: Stack(
-        children: [
-          TabBarView(
-            controller: _tabController,
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 26.0),
+      body: Stack(children: [
+        TabBarView(
+          controller: _tabController,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 26.0),
+              child: RefreshIndicator(
+                key: refreshIndicatorKey,
+                onRefresh: refreshData,
                 child: ListView(
                   children: [
                     // Account Info Widget
@@ -83,22 +95,22 @@ class _AccountViewState extends State<AccountView>
                     SizedBox(height: 20),
                     // New Widget: Account Trophies
                     AccountTrophies(
-                      userId: user!.id!,
+                      userId: user.id!,
                     ),
                   ],
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 26.0),
-                child: UpdateAccountWidget(
-                  user: user!,
-                  isPrivateController: user!.isPrivate!,
-                ),
-              )
-            ],
-          ),
-        ],
-      ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 26.0),
+              child: UpdateAccountWidget(
+                user: user!,
+                isPrivateController: user!.isPrivate!,
+              ),
+            )
+          ],
+        ),
+      ]),
     );
   }
 }
