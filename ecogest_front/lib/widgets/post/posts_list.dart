@@ -2,8 +2,9 @@ import 'package:ecogest_front/models/post_model.dart';
 import 'package:ecogest_front/models/user_model.dart';
 import 'package:ecogest_front/state_management/authentication/authentication_cubit.dart';
 import 'package:ecogest_front/state_management/like/like_cubit.dart';
+import 'package:ecogest_front/state_management/posts/posts_cubit.dart';
 import 'package:ecogest_front/widgets/post/post_content_author.dart';
-import 'package:ecogest_front/widgets/post/post_content_buttons_wrapper.dart';
+import 'package:ecogest_front/widgets/post/post_content_buttons.dart';
 import 'package:ecogest_front/widgets/post/post_content_infos.dart';
 import 'package:ecogest_front/widgets/post/post_separator.dart';
 import 'package:flutter/material.dart';
@@ -11,31 +12,53 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ecogest_front/assets/ecogest_theme.dart';
 
-class PostsList extends StatelessWidget {
-  PostsList({
-    super.key,
-    required this.posts,
-    required this.onScrolled,
-    required this.isLastPage,
-    this.postId
-  });
+class PostsList extends StatefulWidget {
+  PostsList(
+      {super.key,
+      required this.posts,
+      required this.onScrolled,
+      required this.isLastPage,
+      this.currentPage,
+      this.postId});
 
   static String name = 'posts-list';
   final List<PostModel> posts;
   final bool isLastPage;
   final int? postId;
+  final int? currentPage;
+  final Function() onScrolled;
 
+  @override
+  _PostsList createState() => _PostsList();
+}
+
+class _PostsList extends State<PostsList> {
   // Functions which allows to indicate to the
   // parent view that the page has been scrolled
-  final Function() onScrolled;
   final ScrollController _scrollController = ScrollController();
+
+  GlobalKey<RefreshIndicatorState> refreshIndicatorKey =
+      GlobalKey<RefreshIndicatorState>();
+
+  Future<void> refreshData() async {
+    setState(() {
+      context.read<PostsCubit>().getPosts(widget.currentPage!, true);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    final UserModel? user = context.watch<AuthenticationCubit>().state.user;
+    final List<PostModel> posts = widget.posts;
+    final bool isLastPage = widget.isLastPage;
+    final int? postId = widget.postId;
+    final Function() onScrolled = widget.onScrolled;
+    final UserModel? user = context.read<AuthenticationCubit>().state.user;
 
     return NotificationListener(
-      child: ListView.separated(
+      child: RefreshIndicator(
+        key: refreshIndicatorKey,
+        onRefresh: refreshData,
+        child: ListView.separated(
           padding: const EdgeInsets.all(16),
           controller: _scrollController,
           separatorBuilder: (context, index) => const SizedBox(height: 16),
@@ -71,7 +94,7 @@ class PostsList extends StatelessWidget {
                         // Buttons
                         BlocProvider<LikeCubit>(
                           create: (context) => LikeCubit(),
-                          child: PostContentButtonsWrapper(
+                          child: PostContentButtons(
                             post: posts[index],
                             likes: posts[index].likes!.length,
                             isLiked: posts[index]
@@ -94,7 +117,9 @@ class PostsList extends StatelessWidget {
               );
             }
             return const SizedBox.shrink();
-          }),
+          },
+        ),
+      ),
       // Listen to scroll events in the goal to load more posts
       onNotification: (notification) {
         if (notification is ScrollEndNotification) {

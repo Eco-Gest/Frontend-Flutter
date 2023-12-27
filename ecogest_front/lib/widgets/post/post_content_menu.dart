@@ -78,7 +78,7 @@ class PostContentMenu extends StatelessWidget {
                         );
                         if (result != null) {
                           await context.read<PostsCubit>().submitReport(postId, result);
-                          await context.read<PostsCubit>().getPosts(1);
+                          await context.read<PostsCubit>().getPosts(1, false);
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
                               content: Text('Signalement enregistré. Merci !'),

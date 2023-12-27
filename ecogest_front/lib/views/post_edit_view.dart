@@ -27,7 +27,7 @@ class PostEditView extends StatelessWidget {
                   create: (context) => PostFormCubit(),
                 ),
                 BlocProvider<PostsCubit>(
-                  create: (context) => PostsCubit()..getOnePost(postId),
+                  create: (context) => PostsCubit()..getOnePost(postId, false),
                 ),
               ],
               child: BlocBuilder<PostsCubit, PostsState>(

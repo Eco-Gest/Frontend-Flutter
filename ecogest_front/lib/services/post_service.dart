@@ -4,17 +4,16 @@ import 'package:ecogest_front/services/authentication_service.dart';
 import 'package:flutter/material.dart';
 
 class PostService {
-
   List<PostModel> allPosts = [];
   List<PostModel>? completedPosts;
   List<PostModel>? nextPosts;
   List<PostModel>? inProgressPosts;
   List<PostModel>? actionsPosts;
 
-  Future<List<PostModel>> getPosts(int pageNbr) async {
+  Future<List<PostModel>> getPosts(int pageNbr, bool forceReload) async {
     final String? token = await AuthenticationService.getToken();
 
-    if (allPosts.isEmpty || pageNbr > 1) {
+    if (allPosts.isEmpty || pageNbr > 1 || forceReload) {
       final List<dynamic> responseMap =
           await EcoGestApiDataSource.get('/posts?page=$pageNbr', token: token);
 
@@ -121,10 +120,12 @@ class PostService {
     return actionsPosts;
   }
 
-  Future<PostModel> getOnePost(int postId) async {
-    for (PostModel post in allPosts) {
-      if (post.id! == postId) {
-        return post;
+  Future<PostModel> getOnePost(int postId, bool forceReload) async {
+    if (!forceReload) {
+      for (PostModel post in allPosts) {
+        if (post.id! == postId) {
+          return post;
+        }
       }
     }
     final String? token = await AuthenticationService.getToken();
@@ -181,7 +182,7 @@ class PostService {
     try {
       final String? token = await AuthenticationService.getToken();
 
-      getOnePost(postId).then((PostModel post) async {
+      getOnePost(postId, false).then((PostModel post) async {
         final Map<String, dynamic> requestBody = {
           'postID': post.id,
           'postTitle': post.title,

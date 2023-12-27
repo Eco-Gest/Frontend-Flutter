@@ -10,7 +10,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ecogest_front/assets/ecogest_theme.dart';
 import 'package:ecogest_front/widgets/post/post_separator.dart';
 
-class PostContentButtons extends StatelessWidget {
+class PostContentButtons extends StatefulWidget {
   PostContentButtons({
     super.key,
     required this.isChallenge,
@@ -27,9 +27,19 @@ class PostContentButtons extends StatelessWidget {
   bool isLiked;
 
   @override
+  _PostContentButtons createState() => _PostContentButtons();
+}
+
+class _PostContentButtons extends State<PostContentButtons> {
+  @override
   Widget build(BuildContext context) {
-    final user = context.watch<AuthenticationCubit>().state.user;
-    final int postId = post.id!;
+    final user = context.read<AuthenticationCubit>().state.user;
+    final PostModel post = widget.post;
+    final bool? isChallenge = widget.isChallenge;
+    int? likes = widget.likes;
+    final List? comments = widget.comments;
+    bool isLiked = widget.isLiked;
+    int postId = post.id!;
 
     return Column(
       children: [
@@ -77,7 +87,19 @@ class PostContentButtons extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            LikeWidget(postId: post.id!, isLiked: isLiked),
+            LikeWidget(
+              postId: post.id!,
+              isLiked: isLiked,
+              changeIsLikedValue: () {
+                if (isLiked) {
+                  isLiked = false;
+                  likes = likes! - 1;
+                } else {
+                  isLiked = true;
+                  likes = likes! + 1;
+                }
+              },
+            ),
             IconButton(
               onPressed: () {
                 GoRouter.of(context)
