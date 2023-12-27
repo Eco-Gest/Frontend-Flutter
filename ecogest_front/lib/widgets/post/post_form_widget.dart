@@ -1,7 +1,9 @@
 import 'package:date_field/date_field.dart';
+import 'package:ecogest_front/assets/ecogest_theme.dart';
 import 'package:ecogest_front/models/post_model.dart';
 import 'package:ecogest_front/models/tag_model.dart';
 import 'package:ecogest_front/models/user_model.dart';
+import 'package:ecogest_front/services/tag_service.dart';
 import 'package:ecogest_front/state_management/authentication/authentication_cubit.dart';
 import 'package:ecogest_front/views/home_view.dart';
 import 'package:flutter/material.dart';
@@ -29,7 +31,7 @@ class PostFormWidget extends StatelessWidget {
   String _selectedTagsJson = 'Nothing to show';
   late List<TagModel> _tagsToSave = [];
 
-  final List<bool> _selectedPostType = <bool>[true, false];
+  late List<bool> _selectedPostType;
 
   bool datesValidation() {
     if (startDate != null && endDate != null) {
@@ -70,12 +72,21 @@ class PostFormWidget extends StatelessWidget {
     descriptionController.text = prefilledPost?.description ?? '';
     positionController.text = prefilledPost?.position ?? '';
     imageController.text = prefilledPost?.image ?? '';
-
+    if (prefilledPost!.type == "action") {
+      _selectedPostType = [true, false];
+    } else {
+      _selectedPostType = [false, true];
+    }
+    _tagsToSave.addAll(prefilledPost!.tags!);
     final authenticationState = context.read<AuthenticationCubit>().state;
     if (authenticationState is AuthenticationAuthenticated) {
       final UserModel? user = authenticationState.user;
       return BlocProvider(
-        create: (context) => PostFormCubit()..getDefaults(),
+        create: (context) => PostFormCubit()
+          ..getValuesEdit(
+              PostType.fromValue(prefilledPost!.type!),
+              prefilledPost!.categoryId!,
+              PostLevel.fromValue(prefilledPost!.level!)),
         child: Builder(builder: (context) {
           return BlocListener<PostFormCubit, PostFormState>(
             listener: (context, state) {
@@ -84,7 +95,10 @@ class PostFormWidget extends StatelessWidget {
                   const SnackBar(
                       content: Text('Erreur lors de la publication.')),
                 );
-                context.read<PostFormCubit>().getDefaults();
+                context.read<PostFormCubit>().getValuesEdit(
+                    PostType.fromValue(prefilledPost!.type!),
+                    prefilledPost!.categoryId!,
+                    PostLevel.fromValue(prefilledPost!.level!));
               }
               if (state is PostFormStateSuccess) {
                 ScaffoldMessenger.of(context).showSnackBar(
@@ -111,8 +125,7 @@ class PostFormWidget extends StatelessWidget {
                               ToggleButtons(
                             constraints: BoxConstraints(
                                 minWidth:
-                                    (MediaQuery.of(context).size.width -
-                                            60) /
+                                    (MediaQuery.of(context).size.width - 60) /
                                         2,
                                 minHeight: 50.0),
                             onPressed: (int index) {
@@ -120,10 +133,8 @@ class PostFormWidget extends StatelessWidget {
                                   i < _selectedPostType.length;
                                   i++) {
                                 _selectedPostType[i] = i == index;
-                                context
-                                    .read<PostFormCubit>()
-                                    .selectPostType(
-                                        state.selectableTypes[index]);
+                                context.read<PostFormCubit>().selectPostType(
+                                    state.selectableTypes[index]);
                               }
                             },
                             isSelected: _selectedPostType,
@@ -157,7 +168,7 @@ class PostFormWidget extends StatelessWidget {
                                   .selectCategory(value as int);
                             },
                           ),
-                        );
+                              );
                       }
                       return const CircularProgressIndicator();
                     }),
@@ -212,8 +223,7 @@ class PostFormWidget extends StatelessWidget {
                       startDate = DateTime.now();
                       endDate = startDate!.add(const Duration(days: 1));
                       if (state is SelectionState &&
-                          state.selectedType == PostType.challenge
-) {
+                          state.selectedType == PostType.challenge) {
                         return Column(children: [
                           // date debut
                           Container(
@@ -276,22 +286,59 @@ class PostFormWidget extends StatelessWidget {
                       return const SizedBox();
                     }),
 
-                    // tags
                     Container(
                       alignment: Alignment.topCenter,
                       padding: const EdgeInsets.all(10),
-                      child: TextFormField(
-                        controller: tagController,
-                        decoration: const InputDecoration(
-                          border: OutlineInputBorder(),
-                          labelText: 'Tags',
-                          hintText: 'Entrez un ou plusieurs tags',
-                        ),
-                      ),
+                      child: FlutterTagging<TagModel>(
+                          initialItems: _tagsToSave,
+                          textFieldConfiguration: TextFieldConfiguration(
+                            decoration: InputDecoration(
+                              hintText: 'Saisir un nouveau tag',
+                              labelText: 'Ajouter un ou plusieurs tags',
+                            ),
+                            inputFormatters: [
+                              FilteringTextInputFormatter.allow(
+                                  RegExp(r'[a-zA-Z]')),
+                              FilteringTextInputFormatter.deny(' '),
+                            ],
+                          ),
+                          findSuggestions: TagService.getTagModels,
+                          additionCallback: (value) {
+                            return TagModel(
+                              label: value,
+                            );
+                          },
+                          onAdded: (tag) {
+                            // api calls here, triggered when add to tag button is pressed
+                            return tag;
+                          },
+                          configureSuggestion: (tag) {
+                            return SuggestionConfiguration(
+                              title: Text(tag.label),
+                              additionWidget: const Chip(
+                                avatar: Icon(
+                                  Icons.add_circle,
+                                ),
+                                label: Text('Ajouter un nouveau tag'),
+                                labelStyle: TextStyle(
+                                  fontSize: 14.0,
+                                  fontWeight: FontWeight.w300,
+                                ),
+                              ),
+                            );
+                          },
+                          configureChip: (tag) {
+                            return ChipConfiguration(
+                              label: Text(tag.label),
+                              backgroundColor: lightColorScheme.primary,
+                              labelStyle: TextStyle(color: Colors.white),
+                              deleteIconColor: Colors.white,
+                            );
+                          },
+                          onChanged: () {
+                            _tagsToSave.map<TagModel>((tag) => tag).toList();
+                          }),
                     ),
-                    // Todo
-                    // résultats des tags ajoutés : tags
-                    // pouvoir les supprimer (idealment)
 
                     // image
                     Container(
@@ -305,10 +352,10 @@ class PostFormWidget extends StatelessWidget {
                           hintText: 'Entrez l\'url d\'une image',
                         ),
                         autovalidateMode: AutovalidateMode.onUserInteraction,
-                        validator: (value) =>
-                            imageValidation(imageController.text)
-                                ? null
-                                : 'Lien vers l\'image doit être une url avec une extension .jpg, .png, .gif, .svg, .webp ou .jpeg',
+                        validator: (value) => imageValidation(
+                                imageController.text)
+                            ? null
+                            : 'Lien vers l\'image doit être une url avec une extension .jpg, .png, .gif, .svg, .webp ou .jpeg',
                       ),
                     ),
 
@@ -322,8 +369,7 @@ class PostFormWidget extends StatelessWidget {
                           child: DropdownButtonFormField(
                             value: state.selectedLevel,
                             items: state.selectableLevels
-                                .map<DropdownMenuItem<PostLevel>>(
-                                    (level) {
+                                .map<DropdownMenuItem<PostLevel>>((level) {
                               return DropdownMenuItem<PostLevel>(
                                   value: level, child: Text(level.displayName));
                             }).toList(),

@@ -4,13 +4,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ecogest_front/assets/ecogest_theme.dart';
 
 class LikeWidget extends StatefulWidget {
-  LikeWidget({
-    super.key,
-    required this.isLiked,
-    required this.postId,
-  });
+  LikeWidget(
+      {super.key,
+      required this.isLiked,
+      required this.postId,
+      required this.changeIsLikedValue});
   int postId;
   bool isLiked;
+  final Function changeIsLikedValue;
 
   @override
   _LikeWidget createState() => _LikeWidget();
@@ -27,6 +28,8 @@ class _LikeWidget extends State<LikeWidget> {
               context
                   .read<LikeCubit>()
                   .toggleLike(widget.postId, widget.isLiked);
+              widget.isLiked = !widget.isLiked;
+              widget.changeIsLikedValue;
             },
             color: lightColorScheme.primary,
             icon: Icon(widget.isLiked
@@ -40,6 +43,8 @@ class _LikeWidget extends State<LikeWidget> {
               context
                   .read<LikeCubit>()
                   .toggleLike(widget.postId, widget.isLiked);
+              widget.isLiked = !widget.isLiked;
+              widget.changeIsLikedValue;
             },
             color: lightColorScheme.primary,
             icon: Icon(widget.isLiked
@@ -50,6 +55,8 @@ class _LikeWidget extends State<LikeWidget> {
         return IconButton(
           onPressed: () {
             context.read<LikeCubit>().toggleLike(widget.postId, widget.isLiked);
+            widget.isLiked = !widget.isLiked;
+            widget.changeIsLikedValue;
           },
           color: lightColorScheme.primary,
           icon: Icon(widget.isLiked

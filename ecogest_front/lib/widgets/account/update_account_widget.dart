@@ -82,7 +82,7 @@ class UpdateAccountWidget extends StatelessWidget {
                                   'Erreur lors de la mise à jour de vos données.')),
                         );
                       }
-                      if (state is UserSuccess) {
+                      if (state is UserAccountSuccess) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(content: Text('Mise à jour réussie')),
                         );
