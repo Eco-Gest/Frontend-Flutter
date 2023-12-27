@@ -9,12 +9,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 class UpdateAccountWidget extends StatelessWidget {
-  UpdateAccountWidget(
-      {super.key, required this.user, required this.isPrivateController});
+  UpdateAccountWidget({super.key, required this.user});
   final formKey = GlobalKey<FormState>();
 
   UserModel user;
-  final bool isPrivateController;
   final usernameController = TextEditingController();
   final imageController = TextEditingController();
   final positionController = TextEditingController();
@@ -58,14 +56,14 @@ class UpdateAccountWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // UserModel user = widget.user;
-    usernameController.text = user!.username ?? "";
+    usernameController.text = user.username ?? "";
     imageController.text = user.image ?? "";
     positionController.text = user.position ?? "";
     biographyController.text = user.biography ?? "";
     birthdate = user.birthdate == '' || user.birthdate == null
         ? null
         : DateTime.parse(user.birthdate!);
+    bool isPrivateController = user.isPrivate!;
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -93,7 +91,7 @@ class UpdateAccountWidget extends StatelessWidget {
                     child: Form(
                       key: formKey,
                       child: Column(children: <Widget>[
-                        SizedBox(height: 20),
+                        const SizedBox(height: 20),
                         BlocBuilder<UserCubit, UserState>(
                           builder: (BuildContext context, UserState state) {
                             return Column(
@@ -116,7 +114,11 @@ class UpdateAccountWidget extends StatelessWidget {
                                   ),
                                 ),
                                 CheckboxPrivateAccountWidget(
-                                    isPrivateController: isPrivateController),
+                                  isPrivateController: isPrivateController,
+                                  changePrivateValue: () => {
+                                    isPrivateController = !isPrivateController
+                                  },
+                                ),
                                 Container(
                                   alignment: Alignment.topCenter,
                                   padding: const EdgeInsets.all(10),
@@ -233,7 +235,7 @@ class UpdateAccountWidget extends StatelessWidget {
                                               .pushNamed(AccountView.name);
                                         }
                                       },
-                                      child: const Text('Publier'),
+                                      child: const Text('Mettre à jour mon profil'),
                                     ),
                                   ),
                                 ),

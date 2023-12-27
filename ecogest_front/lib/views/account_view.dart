@@ -37,7 +37,7 @@ class _AccountViewState extends State<AccountView>
 
   @override
   Widget build(BuildContext context) {
-    final user = context.watch<AuthenticationCubit>().state.user;
+    final user = context.read<AuthenticationCubit>().state.user;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Profil'),
@@ -91,8 +91,7 @@ class _AccountViewState extends State<AccountView>
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 26.0),
                 child: UpdateAccountWidget(
-                  user: user!,
-                  isPrivateController: user!.isPrivate!,
+                  user: user,
                 ),
               )
             ],

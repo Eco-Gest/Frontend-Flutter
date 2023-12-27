@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 
 class CheckboxPrivateAccountWidget extends StatefulWidget {
   CheckboxPrivateAccountWidget(
-      {super.key, required this.isPrivateController});
+      {super.key, required this.changePrivateValue, required this.isPrivateController});
 
+  final Function() changePrivateValue;
   bool isPrivateController;
 
   @override
@@ -21,7 +22,8 @@ class _CheckboxPrivateAccountWidget
         value: widget.isPrivateController,
         onChanged: (bool? value) {
           setState(() {
-            widget.isPrivateController = value!;
+           widget.changePrivateValue();
+           widget.isPrivateController = value!;
           });
         });
   }
