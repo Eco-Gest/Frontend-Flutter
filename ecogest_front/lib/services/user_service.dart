@@ -23,7 +23,6 @@ class UserService {
     await EcoGestApiDataSource.patch('/me', body, token: token);
 
     return user;
-    // return await getCurrentUser();
   }
 
   static Future<UserModel> getUser(int userId) async {

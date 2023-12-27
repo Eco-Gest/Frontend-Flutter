@@ -2,25 +2,17 @@ import 'package:date_field/date_field.dart';
 import 'package:ecogest_front/models/user_model.dart';
 import 'package:ecogest_front/state_management/user/user_cubit.dart';
 import 'package:ecogest_front/views/account_view.dart';
+import 'package:ecogest_front/widgets/account/checkbox_private_account.dart';
 import 'package:flutter/material.dart';
 import 'package:ecogest_front/assets/ecogest_theme.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
-class UpdateAccountWidget extends StatefulWidget {
-  UpdateAccountWidget(
-      {super.key, required this.user, required this.isPrivateController});
-
-  UserModel user;
-  bool isPrivateController;
-
-  @override
-  _UpdateAccountWidget createState() => _UpdateAccountWidget();
-}
-
-class _UpdateAccountWidget extends State<UpdateAccountWidget> {
+class UpdateAccountWidget extends StatelessWidget {
+  UpdateAccountWidget({super.key, required this.user});
   final formKey = GlobalKey<FormState>();
 
+  UserModel user;
   final usernameController = TextEditingController();
   final imageController = TextEditingController();
   final positionController = TextEditingController();
@@ -64,14 +56,14 @@ class _UpdateAccountWidget extends State<UpdateAccountWidget> {
 
   @override
   Widget build(BuildContext context) {
-    UserModel user = widget.user;
-    usernameController.text = user!.username ?? "";
+    usernameController.text = user.username ?? "";
     imageController.text = user.image ?? "";
     positionController.text = user.position ?? "";
     biographyController.text = user.biography ?? "";
     birthdate = user.birthdate == '' || user.birthdate == null
         ? null
         : DateTime.parse(user.birthdate!);
+    bool isPrivateController = user.isPrivate!;
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -99,7 +91,7 @@ class _UpdateAccountWidget extends State<UpdateAccountWidget> {
                     child: Form(
                       key: formKey,
                       child: Column(children: <Widget>[
-                        SizedBox(height: 20),
+                        const SizedBox(height: 20),
                         BlocBuilder<UserCubit, UserState>(
                           builder: (BuildContext context, UserState state) {
                             return Column(
@@ -121,17 +113,11 @@ class _UpdateAccountWidget extends State<UpdateAccountWidget> {
                                         : 'Veuillez entrer un nom d\'utilisateur valide',
                                   ),
                                 ),
-                                ListTile(
-                                  title: const Text('Profil privé '),
-                                  trailing: Checkbox(
-                                    activeColor: lightColorScheme.primary,
-                                    value: widget.isPrivateController,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        widget.isPrivateController = value!;
-                                      });
-                                    },
-                                  ),
+                                CheckboxPrivateAccountWidget(
+                                  isPrivateController: isPrivateController,
+                                  changePrivateValue: () => {
+                                    isPrivateController = !isPrivateController
+                                  },
                                 ),
                                 Container(
                                   alignment: Alignment.topCenter,
@@ -243,11 +229,13 @@ class _UpdateAccountWidget extends State<UpdateAccountWidget> {
                                                       biographyController.text,
                                                   birthdate: birthdate,
                                                   image: imageController.text,
-                                                  isPrivate: widget
-                                                      .isPrivateController);
+                                                  isPrivate:
+                                                      isPrivateController);
+                                          GoRouter.of(context)
+                                              .pushNamed(AccountView.name);
                                         }
                                       },
-                                      child: const Text('Publier'),
+                                      child: const Text('Mettre à jour mon profil'),
                                     ),
                                   ),
                                 ),

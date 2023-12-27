@@ -100,17 +100,16 @@ class _AccountViewState extends State<AccountView>
                   ],
                 ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 26.0),
-              child: UpdateAccountWidget(
-                user: user!,
-                isPrivateController: user!.isPrivate!,
-              ),
-            )
-          ],
-        ),
-      ]),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 26.0),
+                child: UpdateAccountWidget(
+                  user: user,
+                ),
+              )
+            ],
+          ),
+        ],
+      ),
     );
   }
 }
