@@ -22,7 +22,7 @@ class RegisterView extends StatelessWidget {
   // A function that validate user entered password
   bool validatePassword(String pass) {
     //regular expression to check if string
-    RegExp passValid = RegExp(r"(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W)");
+    RegExp passValid = RegExp(r"(?=.{8,})(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W)");
     String passwordToTest = pass.trim();
     if (passValid.hasMatch(passwordToTest)) {
       return true;

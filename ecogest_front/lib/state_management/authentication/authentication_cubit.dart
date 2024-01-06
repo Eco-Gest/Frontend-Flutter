@@ -17,7 +17,8 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
       final user = await UserService.getCurrentUser();
       emit(AuthenticationAuthenticated(user));
     } else {
-      emit(AuthenticationUnauthenticated("Erreur dans la récupération de vos données"));
+      emit(AuthenticationUnauthenticated(
+          "Erreur dans la récupération de vos données"));
     }
   }
 
@@ -29,7 +30,8 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
     } catch (e) {
       // Failed to login, failed to parse the token or
       // error while getting the user
-      emit(AuthenticationUnauthenticated("Erreur lors de votre connexion. Veuillez réessayer."));
+      emit(AuthenticationUnauthenticated(
+          "Erreur lors de votre connexion. Veuillez réessayer."));
     }
   }
 
@@ -38,18 +40,20 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
       required String password,
       required String username}) async {
     try {
-      final user = await AuthenticationService.register(
+      await AuthenticationService.register(
           email: email, password: password, username: username);
+      final user = await UserService.getCurrentUser();
       emit(AuthenticationAuthenticated(user));
     } catch (e) {
       // Failed to login, failed to parse the token or
       // error while getting the user
-      emit(AuthenticationUnauthenticated("Erreur lors de votre inscription. Veuillez réessayer."));
+      emit(AuthenticationUnauthenticated(
+          "Erreur lors de votre inscription. Veuillez réessayer."));
     }
   }
 
   Future<void> logout() async {
     await AuthenticationService.logout();
-       emit(AuthenticationUnauthenticated("Déconnecté."));
+    emit(AuthenticationUnauthenticated("Déconnecté."));
   }
 }
