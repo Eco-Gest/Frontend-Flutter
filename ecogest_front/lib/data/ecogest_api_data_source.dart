@@ -3,19 +3,13 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class EcoGestApiDataSource {
   // static const _baseUrl = 'https://ecogest-api-ce3f0245de21.herokuapp.com/api';
 
-  static const _baseUrl = "http://localhost:8080/api";
+  // static const _baseUrl = "http://localhost:8080/api";
 
-  /// In this example, we use the Flutter Secure Storage plugin to
-  /// store the token
-  static const storage = FlutterSecureStorage();
-
-  /// The key used to store the token in the local storage
-  static const key = 'token';
+  static const _baseUrl = "https://ecogest.onrender.com/api";
 
   static Map<String, String> _getHeaders(String? token) {
     return <String, String>{
@@ -75,16 +69,6 @@ class EcoGestApiDataSource {
     } else {
       throw Exception(error);
     }
-  }
-
-  static Future<String> getToken() async {
-    String? token = await storage.read(key: key);
-
-    if (token == null) {
-      throw Exception('Token not found in local storage');
-    }
-
-    return token;
   }
 
   static Future<dynamic> delete(String endpoint, Object body,
