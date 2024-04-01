@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:date_field/date_field.dart';
 import 'package:ecogest_front/models/user_model.dart';
 import 'package:ecogest_front/state_management/user/user_cubit.dart';
@@ -7,14 +9,20 @@ import 'package:flutter/material.dart';
 import 'package:ecogest_front/assets/ecogest_theme.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:image_picker/image_picker.dart';
 
-class UpdateAccountWidget extends StatelessWidget {
+class UpdateAccountWidget extends StatefulWidget {
   UpdateAccountWidget({super.key, required this.user});
+  final UserModel user;
+
+  @override
+  _UpdateAccountWidget createState() => _UpdateAccountWidget();
+}
+
+class _UpdateAccountWidget extends State<UpdateAccountWidget> {
   final formKey = GlobalKey<FormState>();
 
-  UserModel user;
   final usernameController = TextEditingController();
-  final imageController = TextEditingController();
   final positionController = TextEditingController();
   final biographyController = TextEditingController();
   DateTime? birthdate;
@@ -30,34 +38,22 @@ class UpdateAccountWidget extends StatelessWidget {
     }
   }
 
-  bool imageValidation(String? image) {
-    final List<String> fileFormatImg3Chars = ['jpg', 'png', 'gif', 'svg'];
-    final List<String> fileFormatImg4Chars = [
-      'webp',
-      'jpeg',
-    ];
-    if (image == null || image.isEmpty) {
-      return true;
-    } else if (image.length <= 15) {
-      return false;
-    } else {
-      final startOfUrl = image.substring(0, 8);
-      final last3CharOfUrl = image.substring(image.length - 3);
-      final last4CharOfUrl = image.substring(image.length - 4);
-      if (startOfUrl == 'http://' || startOfUrl == 'https://') {
-        if (fileFormatImg3Chars.contains(last3CharOfUrl) ||
-            fileFormatImg4Chars.contains(last4CharOfUrl)) {
-          return true;
-        }
+  File? _image;
+  final picker = ImagePicker();
+
+  Future getImage() async {
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+    setState(() {
+      if (pickedFile != null) {
+        _image = File(pickedFile.path);
       }
-    }
-    return false;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    UserModel user = widget.user;
     usernameController.text = user.username ?? "";
-    imageController.text = user.image ?? "";
     positionController.text = user.position ?? "";
     biographyController.text = user.biography ?? "";
     birthdate = user.birthdate == '' || user.birthdate == null
@@ -147,7 +143,6 @@ class UpdateAccountWidget extends StatelessWidget {
                                         AutovalidateMode.onUserInteraction,
                                   ),
                                 ),
-
                                 Container(
                                   padding: const EdgeInsets.all(10),
                                   constraints: BoxConstraints(
@@ -181,27 +176,15 @@ class UpdateAccountWidget extends StatelessWidget {
                                     },
                                   ),
                                 ),
-
-                                // image
-                                Container(
-                                  alignment: Alignment.topCenter,
-                                  padding: const EdgeInsets.all(10),
-                                  child: TextFormField(
-                                    controller: imageController,
-                                    decoration: const InputDecoration(
-                                      border: OutlineInputBorder(),
-                                      labelText: 'Image',
-                                      hintText: 'Entrez l\'url d\'une image',
+                                Column(
+                                  children: [
+                                    const Text('Sélectionnez une image'),
+                                    OutlinedButton(
+                                      onPressed: getImage,
+                                      child: _buildImage(),
                                     ),
-                                    autovalidateMode:
-                                        AutovalidateMode.onUserInteraction,
-                                    validator: (value) => imageValidation(
-                                            imageController.text)
-                                        ? null
-                                        : 'Lien vers l\'image doit être une url avec une extension .jpg, .png, .gif, .svg, .webp ou .jpeg',
-                                  ),
+                                  ],
                                 ),
-
                                 Padding(
                                   padding: const EdgeInsets.all(30.0),
                                   child: SizedBox(
@@ -228,14 +211,15 @@ class UpdateAccountWidget extends StatelessWidget {
                                                   biography:
                                                       biographyController.text,
                                                   birthdate: birthdate,
-                                                  image: imageController.text,
+                                                  image: _image?.path ?? "",
                                                   isPrivate:
                                                       isPrivateController);
                                           GoRouter.of(context)
                                               .pushNamed(AccountView.name);
                                         }
                                       },
-                                      child: const Text('Mettre à jour mon profil'),
+                                      child: const Text(
+                                          'Mettre à jour mon profil'),
                                     ),
                                   ),
                                 ),
@@ -253,5 +237,19 @@ class UpdateAccountWidget extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Widget _buildImage() {
+    if (_image == null) {
+      return const Padding(
+        padding: EdgeInsets.all(10),
+        child: Icon(
+          Icons.add,
+          color: Colors.grey,
+        ),
+      );
+    } else {
+      return Text(_image!.path);
+    }
   }
 }

@@ -2,6 +2,7 @@ import 'package:ecogest_front/state_management/like/like_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ecogest_front/assets/ecogest_theme.dart';
+import 'package:ecogest_front/state_management/theme_settings/theme_settings_cubit.dart';
 
 class LikeWidget extends StatefulWidget {
   LikeWidget(
@@ -31,7 +32,9 @@ class _LikeWidget extends State<LikeWidget> {
               widget.isLiked = !widget.isLiked;
               widget.changeIsLikedValue;
             },
-            color: lightColorScheme.primary,
+            color: context.read<ThemeSettingsCubit>().state.isDarkMode
+                ? darkColorScheme.primary
+                : lightColorScheme.primary,
             icon: Icon(widget.isLiked
                 ? Icons.thumb_up_alt_rounded
                 : Icons.thumb_up_alt_outlined),
@@ -46,7 +49,9 @@ class _LikeWidget extends State<LikeWidget> {
               widget.isLiked = !widget.isLiked;
               widget.changeIsLikedValue;
             },
-            color: lightColorScheme.primary,
+            color: context.read<ThemeSettingsCubit>().state.isDarkMode
+                ? darkColorScheme.primary
+                : lightColorScheme.primary,
             icon: Icon(widget.isLiked
                 ? Icons.thumb_up_alt_rounded
                 : Icons.thumb_up_alt_outlined),
@@ -58,7 +63,9 @@ class _LikeWidget extends State<LikeWidget> {
             widget.isLiked = !widget.isLiked;
             widget.changeIsLikedValue;
           },
-          color: lightColorScheme.primary,
+          color: context.read<ThemeSettingsCubit>().state.isDarkMode
+              ? darkColorScheme.primary
+              : lightColorScheme.primary,
           icon: Icon(widget.isLiked
               ? Icons.thumb_up_alt_rounded
               : Icons.thumb_up_alt_outlined),

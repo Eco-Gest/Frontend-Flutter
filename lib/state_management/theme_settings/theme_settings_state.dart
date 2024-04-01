@@ -1,19 +1,19 @@
 part of 'theme_settings_cubit.dart';
 
 class ThemeSettingsState {
-  final Brightness brightness;
+  final ThemeMode themeMode;
 
   ThemeSettingsState({
-    required this.brightness,
+    required this.themeMode,
   });
 
-  bool get isDarkMode => brightness == Brightness.dark;
+  bool get isDarkMode => themeMode == ThemeMode.dark;
 
   ThemeSettingsState copyWith({
-    Brightness? brightness,
+    ThemeMode? themeMode,
   }) {
     return ThemeSettingsState(
-      brightness: brightness ?? this.brightness,
+      themeMode: themeMode ?? this.themeMode,
     );
   }
 }

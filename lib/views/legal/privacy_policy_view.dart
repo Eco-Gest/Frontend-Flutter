@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:ecogest_front/widgets/bottom_bar.dart';
 import 'package:ecogest_front/widgets/app_bar.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ecogest_front/state_management/theme_settings/theme_settings_cubit.dart';
 
 class PrivacyPolicy extends StatelessWidget {
   const PrivacyPolicy({super.key});
@@ -124,7 +126,14 @@ class PrivacyPolicy extends StatelessWidget {
                       ),
                       TextSpan(
                         text: 'contact@egogest.dev',
-                        style: TextStyle(color: lightColorScheme.primary),
+                        style: TextStyle(
+                          color: context
+                                  .read<ThemeSettingsCubit>()
+                                  .state
+                                  .isDarkMode
+                              ? darkColorScheme.primary
+                              : lightColorScheme.primary,
+                        ),
                         recognizer: TapGestureRecognizer()
                           ..onTap = () async {
                             // Launch email application

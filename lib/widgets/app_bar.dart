@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ecogest_front/assets/ecogest_theme.dart';
-import 'package:ecogest_front/assets/ecogest_theme.dart';
+import 'package:ecogest_front/state_management/theme_settings/theme_settings_cubit.dart';
 
 class ThemeAppBar extends StatelessWidget implements PreferredSizeWidget {
   const ThemeAppBar({
@@ -32,7 +32,9 @@ class ThemeAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       title: Text(title),
-      backgroundColor: lightColorScheme.surface,
+      backgroundColor: context.read<ThemeSettingsCubit>().state.isDarkMode
+          ? darkColorScheme.surface
+          : lightColorScheme.surface,
       leading: IconButton(
         icon: const Icon(Icons.arrow_back),
         onPressed: () {

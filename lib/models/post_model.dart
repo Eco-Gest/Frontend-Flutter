@@ -1,3 +1,4 @@
+import 'package:ecogest_front/data/ecogest_api_data_source.dart';
 import 'package:ecogest_front/models/category_model.dart';
 import 'package:ecogest_front/models/comment_model.dart';
 import 'package:ecogest_front/models/like_model.dart';
@@ -66,10 +67,15 @@ class PostModel {
       authorId: json['author_id'] != null
           ? int.parse(json['author_id'].toString())
           : null,
-      tags: json['tags'] != null ? List.from(json['tags']).map((e)=>TagModel.fromJson(e)).toList() :  null,
+      tags: json['tags'] != null
+          ? List.from(json['tags']).map((e) => TagModel.fromJson(e)).toList()
+          : null,
       title: json['title']?.toString(),
       description: json['description']?.toString(),
-      image: json['image']?.toString(),
+      image: json['image'] != null
+          ? Uri.parse(EcoGestApiDataSource.baseUrl + '/image/' + json['image'])
+              .toString()
+          : null,
       position: json['position']?.toString(),
       type: json['type']?.toString() ?? "",
       level: json['level']?.toString() ?? "",
@@ -84,16 +90,14 @@ class PostModel {
           ? userPostParticipationList(json['user_post_participation'])
           : null,
       likes: json['like'] != null ? listLike(json['like']) : null,
-      category: json['category'] != null ?
-          CategoryModel.fromJson(json['category'] as Map<String, Object?>) : null,
-      comments: json['comment'] != null
-            ? commentList(json['comment'])
-            : null,
+      category: json['category'] != null
+          ? CategoryModel.fromJson(json['category'] as Map<String, Object?>)
+          : null,
+      comments: json['comment'] != null ? commentList(json['comment']) : null,
     );
   }
 
   Map<String, dynamic> toJson() {
-      
     return {
       'id': id,
       'category_id': categoryId,
@@ -115,13 +119,12 @@ class PostModel {
     };
   }
 
-  static List<CommentModel?>? commentList(
-      List<dynamic> responseList) {
+  static List<CommentModel?>? commentList(List<dynamic> responseList) {
     return responseList.map((comment) {
       return CommentModel.fromJson(comment as Map<String, dynamic>);
-   }).toList();
+    }).toList();
   }
-  
+
   static List<LikeModel>? listLike(List<dynamic> responseList) {
     return responseList.map((like) {
       return LikeModel.fromJson(like as Map<String, dynamic>);

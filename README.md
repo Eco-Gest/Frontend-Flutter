@@ -1,4 +1,4 @@
-# Bienvenue sur la partie frontend du projet Ecogest réalisé avec Flutter
+# ecogest_front
 
 # lancer le projet
 cd ecogest_front

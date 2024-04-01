@@ -6,6 +6,7 @@ import 'package:ecogest_front/widgets/account/approve_or_decline_subscription_wi
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ecogest_front/state_management/theme_settings/theme_settings_cubit.dart';
 
 class SubscriptionWidget extends StatefulWidget {
   SubscriptionWidget(
@@ -31,7 +32,6 @@ class _SubscriptionWidget extends State<SubscriptionWidget> {
     bool isFollowed = widget.isFollowedPending;
     int userId = widget.userId;
     bool isFollowing = widget.isFollowingPending;
-
     return BlocBuilder<SubscriptionCubit, SubscriptionState>(
         builder: (context, state) {
       if (state is SubscriptionStateSuccess) {
@@ -80,7 +80,10 @@ class _SubscriptionWidget extends State<SubscriptionWidget> {
               style: TextStyle(color: Colors.white),
             ),
             style: FilledButton.styleFrom(
-              backgroundColor: lightColorScheme.primary,
+              backgroundColor:
+                  context.read<ThemeSettingsCubit>().state.isDarkMode
+                      ? darkColorScheme.primary
+                      : lightColorScheme.primary,
               fixedSize: isFollowed
                   ? Size(210, 50)
                   : Size((MediaQuery.of(context).size.width) / 2, 50),
@@ -117,8 +120,11 @@ class _SubscriptionWidget extends State<SubscriptionWidget> {
             style: TextStyle(color: isFollowing ? Colors.black : Colors.white),
           ),
           style: FilledButton.styleFrom(
-            backgroundColor:
-                isFollowing ? Colors.white : lightColorScheme.primary,
+            backgroundColor: (isFollowing
+                ? Colors.white
+                : context.read<ThemeSettingsCubit>().state.isDarkMode
+                    ? darkColorScheme.primary
+                    : lightColorScheme.primary),
             fixedSize: isFollowing
                 ? Size(210, 50)
                 : Size((MediaQuery.of(context).size.width) / 2, 50),

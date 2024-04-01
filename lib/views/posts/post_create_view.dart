@@ -2,9 +2,7 @@ import 'package:date_field/date_field.dart';
 import 'package:ecogest_front/assets/ecogest_theme.dart';
 import 'package:ecogest_front/models/post_model.dart';
 import 'package:ecogest_front/models/tag_model.dart';
-import 'package:ecogest_front/models/user_model.dart';
 import 'package:ecogest_front/services/tag_service.dart';
-import 'package:ecogest_front/state_management/authentication/authentication_cubit.dart';
 import 'package:ecogest_front/views/home_view.dart';
 import 'package:ecogest_front/widgets/app_bar.dart';
 import 'package:flutter/material.dart';
@@ -14,23 +12,27 @@ import 'package:ecogest_front/state_management/posts/form_post_cubit.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_tagging_plus/flutter_tagging_plus.dart';
 import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
 
-class PostCreateView extends StatelessWidget {
-  PostCreateView({Key? key, this.prefilledPost}) : super(key: key);
-
-  final PostModel? prefilledPost;
+class PostCreateView extends StatefulWidget {
+  const PostCreateView({Key? key}) : super(key: key);
   static String name = 'post-create';
 
+  @override
+  _PostCreateView createState() => _PostCreateView();
+}
+
+class _PostCreateView extends State<PostCreateView> {
   final formKey = GlobalKey<FormState>();
   final titleController = TextEditingController();
   final descriptionController = TextEditingController();
   final positionController = TextEditingController();
   final tagController = TextEditingController();
-  final imageController = TextEditingController();
 
   DateTime? startDate;
   DateTime? endDate;
-  String _selectedTagsJson = 'Nothing to show';
+
   late List<TagModel> _tagsToSave = [];
 
   final List<bool> _selectedPostType = <bool>[true, false];
@@ -44,34 +46,22 @@ class PostCreateView extends StatelessWidget {
     return false;
   }
 
-  bool imageValidation(String? image) {
-    final List<String> fileFormatImg3Chars = ['jpg', 'png', 'gif', 'svg'];
-    final List<String> fileFormatImg4Chars = [
-      'webp',
-      'jpeg',
-    ];
-    if (image == null || image.isEmpty) {
-      return true;
-    } else if (image.length <= 15) {
-      return false;
-    } else {
-      final startOfUrl = image.substring(0, 8);
-      final last3CharOfUrl = image.substring(image.length - 3);
-      final last4CharOfUrl = image.substring(image.length - 4);
-      if (startOfUrl == 'http://' || startOfUrl == 'https://') {
-        if (fileFormatImg3Chars.contains(last3CharOfUrl) ||
-            fileFormatImg4Chars.contains(last4CharOfUrl)) {
-          return true;
-        }
+  File? _image;
+  final picker = ImagePicker();
+
+  Future getImage() async {
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+    setState(() {
+      if (pickedFile != null) {
+        _image = File(pickedFile.path);
       }
-    }
-    return false;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: ThemeAppBar(
+      appBar: const ThemeAppBar(
         title: 'Créer un post ',
       ),
       bottomNavigationBar: const AppBarFooter(),
@@ -94,8 +84,7 @@ class PostCreateView extends StatelessWidget {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(content: Text('Publication réussie')),
                       );
-                      GoRouter.of(context)
-                          .goNamed(HomeView.name);
+                      GoRouter.of(context).goNamed(HomeView.name);
                     }
                   },
                   child: Form(
@@ -169,7 +158,6 @@ class PostCreateView extends StatelessWidget {
                           padding: const EdgeInsets.all(10),
                           child: TextFormField(
                             controller: titleController,
-                            initialValue: prefilledPost?.title,
                             decoration: const InputDecoration(
                               border: OutlineInputBorder(),
                               labelText: 'Titre',
@@ -190,7 +178,6 @@ class PostCreateView extends StatelessWidget {
                           child: TextFormField(
                             textAlign: TextAlign.justify,
                             controller: descriptionController,
-                            initialValue: prefilledPost?.description,
                             autofocus: false,
                             maxLines: 8,
                             decoration: const InputDecoration(
@@ -205,7 +192,6 @@ class PostCreateView extends StatelessWidget {
                           padding: const EdgeInsets.all(10),
                           child: TextFormField(
                             controller: positionController,
-                            initialValue: prefilledPost?.position,
                             decoration: const InputDecoration(
                               border: OutlineInputBorder(),
                               labelText: 'Position',
@@ -290,14 +276,15 @@ class PostCreateView extends StatelessWidget {
                           child: FlutterTagging<TagModel>(
                               initialItems: _tagsToSave,
                               textFieldConfiguration: TextFieldConfiguration(
-                                  decoration: InputDecoration(
-                                      hintText: 'Saisir un nouveau tag',
-                                      labelText: 'Ajouter un ou plusieurs tags',
-                                  ),
-                                  inputFormatters: [
-                                    FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z]')),
-                                    FilteringTextInputFormatter.deny(' '),
-                                  ],
+                                decoration: const InputDecoration(
+                                  hintText: 'Saisir un nouveau tag',
+                                  labelText: 'Ajouter un ou plusieurs tags',
+                                ),
+                                inputFormatters: [
+                                  FilteringTextInputFormatter.allow(
+                                      RegExp(r'[a-zA-Z]')),
+                                  FilteringTextInputFormatter.deny(' '),
+                                ],
                               ),
                               findSuggestions: TagService.getTagModels,
                               additionCallback: (value) {
@@ -310,27 +297,27 @@ class PostCreateView extends StatelessWidget {
                                 return tag;
                               },
                               configureSuggestion: (tag) {
-                                  return SuggestionConfiguration(
-                                      title: Text(tag.label),
-                                      additionWidget: const Chip(
-                                          avatar: Icon(
-                                              Icons.add_circle,
-                                          ),
-                                          label: Text('Ajouter un nouveau tag'),
-                                          labelStyle: TextStyle(
-                                              fontSize: 14.0,
-                                              fontWeight: FontWeight.w300,
-                                          ),
-                                      ),
-                                  );
+                                return SuggestionConfiguration(
+                                  title: Text(tag.label),
+                                  additionWidget: const Chip(
+                                    avatar: Icon(
+                                      Icons.add_circle,
+                                    ),
+                                    label: Text('Ajouter un nouveau tag'),
+                                    labelStyle: TextStyle(
+                                      fontSize: 14.0,
+                                      fontWeight: FontWeight.w300,
+                                    ),
+                                  ),
+                                );
                               },
                               configureChip: (tag) {
-                                  return ChipConfiguration(
-                                      label: Text(tag.label),
-                                      backgroundColor: lightColorScheme.primary,
-                                      labelStyle: TextStyle(color: Colors.white),
-                                      deleteIconColor: Colors.white,
-                                  );
+                                return ChipConfiguration(
+                                  label: Text(tag.label),
+                                  backgroundColor: lightColorScheme.primary,
+                                  labelStyle: const TextStyle(color: Colors.white),
+                                  deleteIconColor: Colors.white,
+                                );
                               },
                               onChanged: () {
                                 _tagsToSave
@@ -339,25 +326,15 @@ class PostCreateView extends StatelessWidget {
                               }),
                         ), // tags
                         // image
-                        Container(
-                          alignment: Alignment.topCenter,
-                          padding: const EdgeInsets.all(10),
-                          child: TextFormField(
-                            controller: imageController,
-                            decoration: const InputDecoration(
-                              border: OutlineInputBorder(),
-                              labelText: 'Image',
-                              hintText: 'Entrez l\'url d\'une image',
+                        Column(
+                          children: [
+                            const Text('Sélectionnez une image'),
+                            OutlinedButton(
+                              onPressed: getImage,
+                              child: _buildImage(),
                             ),
-                            autovalidateMode:
-                                AutovalidateMode.onUserInteraction,
-                            validator: (value) => imageValidation(
-                                    imageController.text)
-                                ? null
-                                : 'Lien vers l\'image doit être une url avec une extension .jpg, .png, .gif, .svg, .webp ou .jpeg',
-                          ),
+                          ],
                         ),
-
                         // level
                         BlocBuilder<PostFormCubit, PostFormState>(
                             builder: (context, state) {
@@ -403,7 +380,7 @@ class PostCreateView extends StatelessWidget {
                                         startDate: startDate,
                                         endDate: endDate,
                                         tags: _tagsToSave,
-                                        image: imageController.text,
+                                        image: _image?.path,
                                       );
                                 }
                               },
@@ -421,5 +398,19 @@ class PostCreateView extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Widget _buildImage() {
+    if (_image == null) {
+      return const Padding(
+        padding: EdgeInsets.all(10),
+        child: Icon(
+          Icons.add,
+          color: Colors.grey,
+        ),
+      );
+    } else {
+      return Text(_image!.path);
+    }
   }
 }

@@ -1,3 +1,4 @@
+import 'package:ecogest_front/data/ecogest_api_data_source.dart';
 import 'package:ecogest_front/models/subscription_model.dart';
 import 'package:ecogest_front/models/user_post_participation_model.dart';
 
@@ -54,7 +55,11 @@ class UserModel {
         totalPoints: json['total_point'] != null
             ? int.parse(json['total_point'].toString())
             : null,
-        image: json['image']?.toString(),
+        image: json['image'] != null
+            ? Uri.parse(
+                    EcoGestApiDataSource.baseUrl + '/image/' + json['image'])
+                .toString()
+            : null,
         birthdate: json['birthdate']?.toString(),
         biography: json['biography']?.toString(),
         position: json['position']?.toString(),
@@ -62,7 +67,9 @@ class UserModel {
         createdAt: json['created_at']?.toString(),
         updatedAt: json['updated_at']?.toString(),
         postParticipationCount: json['user_post_participation'] != null
-            ? userPostParticipationList(json['user_post_participation'])?.length.toString()
+            ? userPostParticipationList(json['user_post_participation'])
+                ?.length
+                .toString()
             : null,
         followers: json['follower'] != null
             ? subscriptionList(json['follower'])

@@ -10,6 +10,7 @@ import 'package:ecogest_front/widgets/account/account_trophies.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ecogest_front/assets/ecogest_theme.dart';
+import 'package:ecogest_front/state_management/theme_settings/theme_settings_cubit.dart';
 
 class AccountView extends StatefulWidget {
   const AccountView({super.key});
@@ -52,7 +53,9 @@ class _AccountViewState extends State<AccountView>
       appBar: AppBar(
         title: const Text('Profil'),
         bottom: TabBar(
-          indicatorColor: lightColorScheme.primary,
+          indicatorColor: context.read<ThemeSettingsCubit>().state.isDarkMode
+              ? darkColorScheme.surface
+              : lightColorScheme.surface,
           indicatorSize: TabBarIndicatorSize.label,
           indicatorWeight: 2,
           controller: _tabController,

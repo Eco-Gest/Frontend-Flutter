@@ -2,6 +2,9 @@ import 'package:ecogest_front/widgets/post/category_icon_widget.dart';
 import 'package:ecogest_front/models/post_model.dart';
 import 'package:flutter/material.dart';
 import 'package:ecogest_front/widgets/post/post_separator.dart';
+import 'package:ecogest_front/state_management/theme_settings/theme_settings_cubit.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ecogest_front/assets/ecogest_theme.dart';
 
 class PostContentInfos extends StatelessWidget {
   const PostContentInfos({
@@ -64,8 +67,7 @@ class PostContentInfos extends StatelessWidget {
                   Row(
                     children: [
                       Text(
-                        convertLevelToPoint(post!.level.toString())
-                        .toString(),
+                        convertLevelToPoint(post!.level.toString()).toString(),
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 18,
@@ -168,7 +170,10 @@ class PostContentInfos extends StatelessWidget {
                 },
                 child: Text(
                   '#${tag.label}',
-                  style: const TextStyle(color: Colors.black),
+                  style: TextStyle(
+                      color: context.read<ThemeSettingsCubit>().state.isDarkMode
+                          ? darkColorScheme.onPrimaryContainer
+                          : lightColorScheme.onPrimaryContainer),
                 ),
               );
             }).toList(),

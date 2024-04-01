@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ecogest_front/state_management/search/search_cubit.dart';
 import 'package:go_router/go_router.dart';
-import 'package:ecogest_front/views/post_detail_view.dart';
+import 'package:ecogest_front/views/posts/post_detail_view.dart';
 
 class SearchResultsWidget extends StatelessWidget {
   const SearchResultsWidget({super.key});

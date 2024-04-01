@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:date_field/date_field.dart';
 import 'package:ecogest_front/assets/ecogest_theme.dart';
 import 'package:ecogest_front/models/post_model.dart';
@@ -12,14 +14,22 @@ import 'package:ecogest_front/state_management/posts/form_post_cubit.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_tagging_plus/flutter_tagging_plus.dart';
 import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
 
-class PostFormWidget extends StatelessWidget {
+class PostFormWidget extends StatefulWidget {
   PostFormWidget({Key? key, this.prefilledPost}) : super(key: key);
 
-  final PostModel? prefilledPost;
+  PostModel? prefilledPost;
+
+  @override
+  _PostFormWidget createState() => _PostFormWidget();
+}
+
+class _PostFormWidget extends State<PostFormWidget> {
+  final formKey = GlobalKey<FormState>();
+
   static String name = 'post-create';
 
-  final formKey = GlobalKey<FormState>();
   final titleController = TextEditingController();
   final descriptionController = TextEditingController();
   final positionController = TextEditingController();
@@ -42,32 +52,22 @@ class PostFormWidget extends StatelessWidget {
     return false;
   }
 
-  bool imageValidation(String? image) {
-    final List<String> fileFormatImg3Chars = ['jpg', 'png', 'gif', 'svg'];
-    final List<String> fileFormatImg4Chars = [
-      'webp',
-      'jpeg',
-    ];
-    if (image == null || image.isEmpty) {
-      return true;
-    } else if (image.length <= 15) {
-      return false;
-    } else {
-      final startOfUrl = image.substring(0, 8);
-      final last3CharOfUrl = image.substring(image.length - 3);
-      final last4CharOfUrl = image.substring(image.length - 4);
-      if (startOfUrl == 'http://' || startOfUrl == 'https://') {
-        if (fileFormatImg3Chars.contains(last3CharOfUrl) ||
-            fileFormatImg4Chars.contains(last4CharOfUrl)) {
-          return true;
-        }
+  File? _image;
+  final picker = ImagePicker();
+
+  Future getImage() async {
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+    setState(() {
+      if (pickedFile != null) {
+        _image = File(pickedFile.path);
       }
-    }
-    return false;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    PostModel? prefilledPost = widget.prefilledPost;
+
     titleController.text = prefilledPost?.title ?? '';
     descriptionController.text = prefilledPost?.description ?? '';
     positionController.text = prefilledPost?.position ?? '';
@@ -168,7 +168,7 @@ class PostFormWidget extends StatelessWidget {
                                   .selectCategory(value as int);
                             },
                           ),
-                              );
+                        );
                       }
                       return const CircularProgressIndicator();
                     }),
@@ -341,22 +341,14 @@ class PostFormWidget extends StatelessWidget {
                     ),
 
                     // image
-                    Container(
-                      alignment: Alignment.topCenter,
-                      padding: const EdgeInsets.all(10),
-                      child: TextFormField(
-                        controller: imageController,
-                        decoration: const InputDecoration(
-                          border: OutlineInputBorder(),
-                          labelText: 'Image',
-                          hintText: 'Entrez l\'url d\'une image',
+                    Column(
+                      children: [
+                        const Text('Sélectionnez une image'),
+                        OutlinedButton(
+                          onPressed: getImage,
+                          child: _buildImage(),
                         ),
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        validator: (value) => imageValidation(
-                                imageController.text)
-                            ? null
-                            : 'Lien vers l\'image doit être une url avec une extension .jpg, .png, .gif, .svg, .webp ou .jpeg',
-                      ),
+                      ],
                     ),
 
                     // level
@@ -403,7 +395,7 @@ class PostFormWidget extends StatelessWidget {
                                     startDate: startDate,
                                     endDate: endDate,
                                     tags: _tagsToSave,
-                                    image: imageController.text,
+                                    image: _image?.path,
                                   );
                             }
                           },
@@ -425,6 +417,20 @@ class PostFormWidget extends StatelessWidget {
           child: Text('Problème : utilisateur non authentifié'),
         ),
       );
+    }
+  }
+
+  Widget _buildImage() {
+    if (_image == null) {
+      return const Padding(
+        padding: EdgeInsets.all(10),
+        child: Icon(
+          Icons.add,
+          color: Colors.grey,
+        ),
+      );
+    } else {
+      return Text(_image!.path);
     }
   }
 }

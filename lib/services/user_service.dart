@@ -20,8 +20,13 @@ class UserService {
 
     final body = user.toJson();
 
-    await EcoGestApiDataSource.patch('/me', body, token: token);
+    final result = await EcoGestApiDataSource.patch('/me', body, token: token);
 
+    if (user.image != null) {
+      await EcoGestApiDataSource.addImage(
+          '/users/${result['id']}/uploadImage', user.image!,
+          token: token);
+    }
     return user;
   }
 

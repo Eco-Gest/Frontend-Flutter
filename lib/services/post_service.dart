@@ -140,6 +140,12 @@ class PostService {
     final result =
         await EcoGestApiDataSource.post('/posts', body, token: token);
 
+    if (postModel.image != null) {
+      await EcoGestApiDataSource.addImage(
+          '/posts/${result['id']}/uploadImage', postModel.image!,
+          token: token);
+    }
+
     allPosts.insert(0, PostModel.fromJson(result));
 
     return postModel;
@@ -162,8 +168,15 @@ class PostService {
 
     final body = postModel.toJson();
 
-    await EcoGestApiDataSource.patch('/posts/${postModel.id}', body,
+    final result = await EcoGestApiDataSource.patch(
+        '/posts/${postModel.id}', body,
         token: token);
+
+    if (postModel.image != null) {
+      await EcoGestApiDataSource.addImage(
+          '/posts/${result['id']}/uploadImage', postModel.image!,
+          token: token);
+    }
 
     return postModel;
   }

@@ -1,5 +1,5 @@
 import 'package:ecogest_front/state_management/notifications/notifications_cubit.dart';
-import 'package:ecogest_front/views/post_detail_view.dart';
+import 'package:ecogest_front/views/posts/post_detail_view.dart';
 import 'package:ecogest_front/views/user_view.dart';
 import 'package:ecogest_front/widgets/app_bar.dart';
 import 'package:ecogest_front/widgets/bottom_bar.dart';

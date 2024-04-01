@@ -9,6 +9,7 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ecogest_front/assets/ecogest_theme.dart';
 import 'package:ecogest_front/widgets/post/post_separator.dart';
+import 'package:ecogest_front/state_management/theme_settings/theme_settings_cubit.dart';
 
 class PostContentButtons extends StatefulWidget {
   PostContentButtons({
@@ -52,7 +53,10 @@ class _PostContentButtons extends State<PostContentButtons> {
                 },
                 child: Text(
                   '$likes like',
-                  style: TextStyle(color: lightColorScheme.onBackground),
+                  style: TextStyle(
+                      color: context.read<ThemeSettingsCubit>().state.isDarkMode
+                          ? darkColorScheme.onBackground
+                          : lightColorScheme.onBackground),
                 ),
               ),
             ],
@@ -63,7 +67,10 @@ class _PostContentButtons extends State<PostContentButtons> {
                 },
                 child: Text(
                   '$likes likes',
-                  style: TextStyle(color: lightColorScheme.onBackground),
+                  style: TextStyle(
+                      color: context.read<ThemeSettingsCubit>().state.isDarkMode
+                          ? darkColorScheme.onBackground
+                          : lightColorScheme.onBackground),
                 ),
               ),
             ],
@@ -73,65 +80,105 @@ class _PostContentButtons extends State<PostContentButtons> {
             if (comments!.isNotEmpty) ...[
               TextButton(
                   onPressed: () {
-                    GoRouter.of(context)
-                        .push('/posts/$postId/comments', extra: comments);
+                    // TODO : Afficher les likes
                   },
                   child: Text(
-                    '${comments!.length} commentaires',
-                    style: TextStyle(color: lightColorScheme.onBackground),
-                  )),
-            ]
-          ],
-        ),
-        const PostSeparator(),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            LikeWidget(
-              postId: post.id!,
-              isLiked: isLiked,
-              changeIsLikedValue: () {
-                if (isLiked) {
-                  isLiked = false;
-                  likes = likes! - 1;
-                } else {
-                  isLiked = true;
-                  likes = likes! + 1;
-                }
-              },
-            ),
-            IconButton(
-              onPressed: () {
-                GoRouter.of(context)
-                    .push('/posts/$postId/comments', extra: comments);
-              },
-              color: lightColorScheme.primary,
-              icon: const Icon(Icons.comment),
-            ),
-            IconButton(
-              onPressed: () {
-                debugPrint('Click pour partager la publication');
-                // TODO : Partager la publication
-              },
-              color: lightColorScheme.primary,
-              icon: const Icon(Icons.share),
-            ),
-          ],
-        ),
-        const SizedBox(
-          height: 10,
-        ),
-        if (isChallenge!) ...[
-          BlocProvider<ParticipationCubit>(
-            create: (_) => ParticipationCubit(),
-            child: ParticipationWidget(
-                postId: post.id!,
-                isAlreadyParticipant: post.userPostParticipation!.any(
-                    (participation) =>
-                        participation.participantId! == user!.id!)),
+                    '$likes like',
+                    style: TextStyle(
+                        color: context.read<ThemeSettingsCubit>().state.isDarkMode
+                            ? darkColorScheme.onBackground
+                            : lightColorScheme.onBackground),
+                  ),
+                ),
+              ],
+              if (likes! > 1) ...[
+                TextButton(
+                  onPressed: () {
+                    //
+                  },
+                  child: Text(
+                    '$likes likes',
+                    style: TextStyle(
+                        color:  context.read<ThemeSettingsCubit>().state.isDarkMode
+                            ? darkColorScheme.onBackground
+                            : lightColorScheme.onBackground),
+                  ),
+                ),
+              ],
+              if (likes! > 0 && comments!.isNotEmpty) ...[
+                const Text(' | '),
+              ],
+              if (comments!.isNotEmpty) ...[
+                TextButton(
+                    onPressed: () {
+                      GoRouter.of(context)
+                          .push('/posts/$postId/comments', extra: comments);
+                    },
+                    child: Text(
+                      '${comments!.length} commentaires',
+                      style: TextStyle(
+                          color:  context.read<ThemeSettingsCubit>().state.isDarkMode
+                              ? darkColorScheme.onBackground
+                              : lightColorScheme.onBackground),
+                    )),
+              ]
+            ],
           ),
-        ]
-      ],
-    );
+          const PostSeparator(),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              LikeWidget(
+                postId: post.id!,
+                isLiked: isLiked,
+                changeIsLikedValue: () {
+                  if (isLiked) {
+                    isLiked = false;
+                    likes = likes! - 1;
+                  } else {
+                    isLiked = true;
+                    likes = likes! + 1;
+                  }
+                },
+              ),
+              IconButton(
+                onPressed: () {
+                  GoRouter.of(context)
+                      .push('/posts/$postId/comments', extra: comments);
+                },
+                color:  context.read<ThemeSettingsCubit>().state.isDarkMode
+                    ? darkColorScheme.primary
+                    : lightColorScheme.primary,
+                icon: const Icon(Icons.comment),
+              ),
+              IconButton(
+                onPressed: () {
+                  debugPrint('Click pour partager la publication');
+                  // TODO : Partager la publication
+                },
+                color:  context.read<ThemeSettingsCubit>().state.isDarkMode
+                    ? darkColorScheme.primary
+                    : lightColorScheme.primary,
+                icon: const Icon(Icons.share),
+              ),
+            ],
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          if (isChallenge! &&
+              DateTime.parse(post.startDate!).isBefore(DateTime.now()) &&
+              DateTime.parse(post.endDate!).isAfter(DateTime.now())) ...[
+            BlocProvider<ParticipationCubit>(
+              create: (_) => ParticipationCubit(),
+              child: ParticipationWidget(
+                  postId: post.id!,
+                  isAlreadyParticipant: post.userPostParticipation!.any(
+                      (participation) =>
+                          participation.participantId! == user!.id!)),
+            ),
+          ]
+        ],
+      );
   }
 }

@@ -7,9 +7,13 @@ import 'package:http/http.dart' as http;
 class EcoGestApiDataSource {
   // static const _baseUrl = 'https://ecogest-api-ce3f0245de21.herokuapp.com/api';
 
-  // static const _baseUrl = "http://localhost:8080/api";
+  static const _baseUrl = "http://localhost:8080/api";
 
-  static const _baseUrl = "https://ecogest.onrender.com/api";
+  static get baseUrl  {
+    return _baseUrl;
+  }
+
+  // static const _baseUrl = "https://ecogest.onrender.com/api";
 
   static Map<String, String> _getHeaders(String? token) {
     return <String, String>{
@@ -86,6 +90,27 @@ class EcoGestApiDataSource {
       return jsonDecode(response.body);
     } else {
       throw Exception(error);
+    }
+  }
+
+  static Future<bool> addImage(String endpoint, String filepath,
+      {String? token}) async {
+
+    Map<String, String> headers = {
+      'Content-Type': 'multipart/form-data',
+      'Authorization': 'Bearer $token'
+    };
+
+    var request = http.MultipartRequest('POST', Uri.parse('$_baseUrl$endpoint'))
+      ..headers.addAll(headers)
+      ..files.add(await http.MultipartFile.fromPath('image', filepath));
+
+    var response = await request.send();
+
+    if (response.statusCode > 199 && response.statusCode <= 299) {
+      return true;
+    } else {
+      return false;
     }
   }
 }

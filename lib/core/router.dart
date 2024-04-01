@@ -1,12 +1,12 @@
 import 'dart:async';
 
-import 'package:ecogest_front/views/challenges_view.dart';
+import 'package:ecogest_front/views/posts/challenges_view.dart';
 import 'package:ecogest_front/views/comments_view.dart';
 import 'package:ecogest_front/views/legal/legal_notices_view.dart';
 import 'package:ecogest_front/views/legal/privacy_policy_view.dart';
 import 'package:ecogest_front/views/notifications_view.dart';
 import 'package:ecogest_front/views/errors/error404_view.dart';
-import 'package:ecogest_front/views/post_detail_view.dart';
+import 'package:ecogest_front/views/posts/post_detail_view.dart';
 import 'package:ecogest_front/views/account_view.dart';
 import 'package:ecogest_front/views/settings_view.dart';
 import 'package:ecogest_front/views/user_view.dart';
@@ -16,11 +16,11 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:ecogest_front/state_management/authentication/authentication_cubit.dart';
-import 'package:ecogest_front/views/register_view.dart';
-import 'package:ecogest_front/views/login_view.dart';
+import 'package:ecogest_front/views/auth/register_view.dart';
+import 'package:ecogest_front/views/auth/login_view.dart';
 import 'package:ecogest_front/views/home_view.dart';
-import 'package:ecogest_front/views/post_create_view.dart';
-import 'package:ecogest_front/views/post_edit_view.dart';
+import 'package:ecogest_front/views/posts/post_create_view.dart';
+import 'package:ecogest_front/views/posts/post_edit_view.dart';
 
 abstract class AppRouter {
   /// Public routes
