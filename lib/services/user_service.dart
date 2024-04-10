@@ -65,4 +65,22 @@ class UserService {
     // 6. Return the list
     return pointsByCategory;
   }
+
+  static Future<void> submitReport(int userId, String result) async {
+    try {
+      final String? token = await AuthenticationService.getToken();
+
+      final Map<String, dynamic> requestBody = {
+        'ID': userId,
+        'title': 'profil',
+        'authorID': userId,
+        'result': result,
+        'content': 'Profil de l\'utilisateur signalé',
+      };
+      await EcoGestApiDataSource.post('/submit-report', requestBody,
+          token: token);
+    } catch (error) {
+      throw Exception('Échec du signalement');
+    }
+  }
 }

@@ -1,7 +1,6 @@
 import 'package:ecogest_front/data/ecogest_api_data_source.dart';
 import 'package:ecogest_front/models/post_model.dart';
 import 'package:ecogest_front/services/authentication_service.dart';
-import 'package:flutter/material.dart';
 
 class PostService {
   List<PostModel> allPosts = [];
@@ -197,11 +196,11 @@ class PostService {
 
       getOnePost(postId, false).then((PostModel post) async {
         final Map<String, dynamic> requestBody = {
-          'postID': post.id,
-          'postTitle': post.title,
+          'ID': post.id,
+          'title': post.title,
           'authorID': post.authorId,
           'result': result,
-          'postContent': post.description,
+          'content': post.description,
         };
 
         await EcoGestApiDataSource.post('/submit-report', requestBody,
