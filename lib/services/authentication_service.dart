@@ -1,8 +1,12 @@
 import 'package:ecogest_front/data/ecogest_api_data_source.dart';
 import 'package:ecogest_front/models/user_model.dart';
+import 'package:ecogest_front/services/notifications_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthenticationService {
+
+  static final NotificationsService notificationsService = NotificationsService();
+
   static Future<void> login({
     required String email,
     required String password,
@@ -34,6 +38,9 @@ class AuthenticationService {
     // We save the token in the local storage
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString('token', token);
+
+    // connect to pusher 
+    notificationsService.connectPusher();
   }
 
   static Future<UserModel> register({
@@ -70,12 +77,17 @@ class AuthenticationService {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString('token', token);
 
+    // connect to pusher 
+    notificationsService.connectPusher();
+
     return UserModel.fromJson(response);
   }
 
   static Future<void> logout() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.remove('token');
+    // end connection to pusher
+    notificationsService.disconnectPusher();
   }
 
   static Future<String?> getToken() async {
