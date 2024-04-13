@@ -86,4 +86,23 @@ class AuthenticationService {
       return null;
     }
   }
+
+  static Future<void> resetPassword({
+    required String email,
+  }) async {
+    // Check if the email is valid
+    if (email.isEmpty) {
+      throw Exception('Invalid email or password');
+    }
+
+    // We create a request object to send to the API
+    final request = {
+      'email': email,
+    };
+
+    // We send the request to the API and get the response
+    final response = await EcoGestApiDataSource.post('/mail-reset-password', request,
+        error: 'Failed to send mail to reset password');
+    return response;
+  }
 }
