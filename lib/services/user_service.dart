@@ -4,6 +4,7 @@ import 'package:ecogest_front/data/ecogest_api_data_source.dart';
 import 'package:ecogest_front/models/user_model.dart';
 import 'package:ecogest_front/models/points_category_model.dart';
 import 'package:ecogest_front/services/authentication_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class UserService {
   static Future<UserModel> getCurrentUser() async {
@@ -12,6 +13,10 @@ class UserService {
     var responseMap = await EcoGestApiDataSource.get('/me', token: token);
 
     final user = UserModel.fromJson(responseMap);
+
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('userId', '${user.id}');
+
     return user;
   }
 

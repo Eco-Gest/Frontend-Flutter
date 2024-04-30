@@ -1,6 +1,6 @@
 import 'package:ecogest_front/data/ecogest_api_data_source.dart';
 import 'package:ecogest_front/models/user_model.dart';
-import 'package:ecogest_front/services/notifications_service.dart';
+import 'package:ecogest_front/services/notifications/notifications_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthenticationService {

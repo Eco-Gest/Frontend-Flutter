@@ -1,5 +1,5 @@
 import 'package:ecogest_front/models/notification_model.dart';
-import 'package:ecogest_front/services/notifications_service.dart';
+import 'package:ecogest_front/services/notifications/notifications_service.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
