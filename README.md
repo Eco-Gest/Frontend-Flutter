@@ -7,6 +7,11 @@ cd ecogest_front
 
 `flutter pub get`
 
+# Créer le fichier .env 
+
+`cp .env.example .env`
+et remplir les variables d'environnement dans le fichier .env avec pusher
+
 # lancer le projet dans chrome 
 
 `flutter run -d chrome`
