@@ -1,5 +1,6 @@
 import 'package:ecogest_front/services/post_service.dart';
 import 'package:ecogest_front/state_management/posts/posts_state.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class PostsCubit extends Cubit<PostsState> {
@@ -25,6 +26,7 @@ class PostsCubit extends Cubit<PostsState> {
       final post = await postService.getOnePost(postId, forceReload);
       emit(OnePostStateSuccess(post));
     } catch (error) {
+      debugPrint(error.toString());
       emit(PostsStateError(
           "Erreur rencontrée pour récupérer la publication. Veuillez réessayer."));
     }

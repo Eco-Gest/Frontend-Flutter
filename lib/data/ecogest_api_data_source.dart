@@ -8,8 +8,8 @@ class EcoGestApiDataSource {
   // static const _baseUrl = 'https://ecogest-api-ce3f0245de21.herokuapp.com/api';
 
   // to test on android emulator try this for HTTP request:
-  static const _baseUrl = "http://10.0.2.2:8080/api";
-  // static const _baseUrl = "http://localhost:8080/api";
+  // static const _baseUrl = "http://10.0.2.2:8080/api";
+  static const _baseUrl = "http://localhost:8080/api";
 
   static get baseUrl  {
     return _baseUrl;

@@ -54,8 +54,8 @@ class _OnePostWidget extends State<OnePostWidget> {
                     PostContentAuthor(
                         postId: widget.post.id!,
                         author: post.user,
-                        position: post!.position,
-                        date: post!.createdAt),
+                        position: post.position,
+                        date: post.createdAt),
                     const PostSeparator(),
                     // Post info
                     PostContentInfos(
