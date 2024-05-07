@@ -2,17 +2,14 @@ import 'package:ecogest_front/data/ecogest_api_data_source.dart';
 import 'package:ecogest_front/models/subscription_model.dart';
 import 'package:ecogest_front/models/user_model.dart';
 import 'package:ecogest_front/services/authentication_service.dart';
+import 'package:flutter/material.dart';
 
 class SubscriptionService {
-  static Future<SubscriptionModel> subscribe(int userId) async {
+  static Future<void> subscribe(int userId) async {
     final String? token = await AuthenticationService.getToken();
 
-    final response = await EcoGestApiDataSource.post(
-        '/users/$userId/subscribe', {},
+    await EcoGestApiDataSource.post('/users/$userId/subscribe', {},
         token: token);
-
-    final subscription = SubscriptionModel.fromJson(response);
-    return subscription;
   }
 
   static Future<void> unSubscribe(int userId) async {
@@ -49,8 +46,15 @@ class SubscriptionService {
         token: token);
   }
 
+  static Future<void> removeFollower(int userId) async {
+    final String? token = await AuthenticationService.getToken();
+
+    await EcoGestApiDataSource.delete('/remove-follower/$userId', {},
+        token: token);
+  }
+
   static bool? isFollowing(UserModel userAuthenticated, UserModel user) {
-    SubscriptionModel? userFollowing = userAuthenticated!.following!
+    SubscriptionModel? userFollowing = userAuthenticated.following!
         .where((subscription) => subscription!.followingId == user.id!)
         .firstOrNull;
     if (userFollowing == null) {

@@ -5,41 +5,45 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ChallengesWidget extends StatelessWidget {
-  const ChallengesWidget({super.key, required this.keywordRoute, required this.userId});
+  const ChallengesWidget(
+      {super.key, required this.keywordRoute, required this.userId});
   final String keywordRoute;
   final int userId;
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: BlocProvider<PostsCubit>(
-      create: (context) {
-        final cubit = PostsCubit();
-        cubit.getUserPostsFiltered(keywordRoute, userId);
-        return cubit;
-      },
-      child: BlocBuilder<PostsCubit, PostsState>(
-        builder: (context, state) {
-          if (state is PostsStateInitial || state is PostsStateLoading) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          } else if (state is PostsStateError) {
-            return Center(child: Text(state.message));
-          } else if (state is PostsStateSuccess) {
-            if (state.posts.isEmpty) {
-              return  Center(
-                child: const Text('Oops aucun défi ici'),
-              );
-            }
-            return PostsList(
-              posts: state.posts,
-              onScrolled: () {},
-              isLastPage: false,
-            );
-          }
-          return const SizedBox.shrink();
-        },
-      ),
-    ));
+    return Column(
+      children: [
+        BlocProvider<PostsCubit>(
+          create: (context) {
+            final cubit = PostsCubit();
+            cubit.getUserPostsFiltered(keywordRoute, userId);
+            return cubit;
+          },
+          child: BlocBuilder<PostsCubit, PostsState>(
+            builder: (context, state) {
+              if (state is PostsStateInitial || state is PostsStateLoading) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              } else if (state is PostsStateError) {
+                return Center(child: Text(state.message));
+              } else if (state is PostsStateSuccess) {
+                if (state.posts.isEmpty) {
+                  return const Center(
+                    child: Text('Oops aucun défi ici'),
+                  );
+                }
+                return PostsList(
+                  posts: state.posts,
+                  onScrolled: () {},
+                  isLastPage: false,
+                );
+              }
+              return const SizedBox.shrink();
+            },
+          ),
+        ),
+      ],
+    );
   }
 }

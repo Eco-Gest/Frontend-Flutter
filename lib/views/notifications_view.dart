@@ -1,6 +1,6 @@
 import 'package:ecogest_front/state_management/notifications/notifications_cubit.dart';
 import 'package:ecogest_front/views/posts/post_detail_view.dart';
-import 'package:ecogest_front/views/user_view.dart';
+import 'package:ecogest_front/views/users/user_view.dart';
 import 'package:ecogest_front/widgets/app_bar.dart';
 import 'package:ecogest_front/widgets/bottom_bar.dart';
 import 'package:flutter/material.dart';
@@ -35,8 +35,11 @@ class NotificationsView extends StatelessWidget {
                   return Center(child: Text(state.message));
                 } else if (state is NotificationsStateSuccess) {
                   if (state.notifications!.isEmpty) {
-                    return const Center(
-                      child: Text('Pas de notifications'),
+                    return Container(
+                      padding: const EdgeInsets.all(16),
+                      child: const Center(
+                        child: Text('Pas de notifications pour le moment'),
+                      ),
                     );
                   }
                   return ListView.builder(

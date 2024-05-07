@@ -1,4 +1,4 @@
-import 'package:ecogest_front/views/account_view.dart';
+import 'package:ecogest_front/views/users/account_view.dart';
 import 'package:ecogest_front/views/search_view.dart';
 import 'package:ecogest_front/views/posts/post_create_view.dart';
 import 'package:ecogest_front/views/posts/challenges_view.dart';

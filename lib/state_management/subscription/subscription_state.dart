@@ -18,3 +18,5 @@ class SubscriptionStateError extends SubscriptionState {
 
   SubscriptionStateError(this.message);
 }
+
+class RemoveFollowerStateSuccess extends SubscriptionState {}

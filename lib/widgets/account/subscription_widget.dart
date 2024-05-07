@@ -37,14 +37,10 @@ class _SubscriptionWidget extends State<SubscriptionWidget> {
       if (state is SubscriptionStateSuccess) {
         return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
           FilledButton(
-            child: const Text(
-              "Annuler",
-              style: TextStyle(color: Colors.black),
-            ),
             style: FilledButton.styleFrom(
               backgroundColor: Colors.white,
               fixedSize: isFollowed
-                  ? Size(210, 50)
+                  ? const Size(210, 50)
                   : Size((MediaQuery.of(context).size.width) / 2, 50),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10.0),
@@ -57,6 +53,10 @@ class _SubscriptionWidget extends State<SubscriptionWidget> {
                   .subscription(userId, isFollowing);
               isFollowing = !isFollowing;
             },
+            child: const Text(
+              "Annuler",
+              style: TextStyle(color: Colors.black),
+            ),
           ),
           if (isFollowed) ...[
             ApproveOrDeclineSubscriptionWidget(
@@ -75,10 +75,6 @@ class _SubscriptionWidget extends State<SubscriptionWidget> {
       if (state is SubscriptionCancelStateSuccess) {
         return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
           FilledButton(
-            child: const Text(
-              'Suivre',
-              style: TextStyle(color: Colors.white),
-            ),
             style: FilledButton.styleFrom(
               backgroundColor:
                   context.read<ThemeSettingsCubit>().state.isDarkMode
@@ -98,6 +94,10 @@ class _SubscriptionWidget extends State<SubscriptionWidget> {
                   .subscription(userId, isFollowing);
               isFollowing = !isFollowing;
             },
+            child: const Text(
+              'Suivre',
+              style: TextStyle(color: Colors.white),
+            ),
           ),
           if (isFollowed) ...[
             ApproveOrDeclineSubscriptionWidget(
@@ -115,10 +115,6 @@ class _SubscriptionWidget extends State<SubscriptionWidget> {
 
       return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
         FilledButton(
-          child: Text(
-            isFollowing ? 'Annuler' : 'Suivre',
-            style: TextStyle(color: isFollowing ? Colors.black : Colors.white),
-          ),
           style: FilledButton.styleFrom(
             backgroundColor: (isFollowing
                 ? Colors.white
@@ -137,6 +133,10 @@ class _SubscriptionWidget extends State<SubscriptionWidget> {
             context.read<SubscriptionCubit>().subscription(userId, isFollowing);
             isFollowing = !isFollowing;
           },
+          child: Text(
+            isFollowing ? 'Annuler' : 'Suivre',
+            style: TextStyle(color: isFollowing ? Colors.black : Colors.white),
+          ),
         ),
         if (isFollowed) ...[
           ApproveOrDeclineSubscriptionWidget(

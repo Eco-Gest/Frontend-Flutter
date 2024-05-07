@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:ecogest_front/models/trophy_model.dart';
+import 'package:ecogest_front/models/user_model.dart';
 import 'package:ecogest_front/views/posts/challenges_view.dart';
 import 'package:ecogest_front/views/comments_view.dart';
 import 'package:ecogest_front/views/legal/legal_notices_view.dart';
@@ -7,10 +9,12 @@ import 'package:ecogest_front/views/legal/privacy_policy_view.dart';
 import 'package:ecogest_front/views/notifications_view.dart';
 import 'package:ecogest_front/views/errors/error404_view.dart';
 import 'package:ecogest_front/views/posts/post_detail_view.dart';
-import 'package:ecogest_front/views/account_view.dart';
+import 'package:ecogest_front/views/users/account_view.dart';
 import 'package:ecogest_front/views/settings_view.dart';
-import 'package:ecogest_front/views/user_view.dart';
+import 'package:ecogest_front/views/users/trophies_view.dart';
+import 'package:ecogest_front/views/users/user_view.dart';
 import 'package:ecogest_front/views/search_view.dart';
+import 'package:ecogest_front/views/users/subscriptions_list_view.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -122,9 +126,22 @@ abstract class AppRouter {
           name: PrivacyPolicy.name,
           builder: (context, state) => const PrivacyPolicy(),
         ),
+        GoRoute(
+          path: '/user/follow',
+          name: SubscriptionsListView.name,
+          builder: (context, state) => SubscriptionsListView(
+            user:state.extra! as UserModel
+          ),
+        ),
+        GoRoute(
+          path: '/trophies',
+          name: TrophiesView.name,
+          builder: (context, state) => TrophiesView(
+            trophies: state.extra! as List<TrophyModel>
+          ),
+        ),
       ],
-      refreshListenable:
-          GoRouterRefreshStream(stream),
+      refreshListenable: GoRouterRefreshStream(stream),
       redirect: (context, state) {
         // If the user is not authenticated, redirect to the login page.
         final status = context.read<AuthenticationCubit>().state;

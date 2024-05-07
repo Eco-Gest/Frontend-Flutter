@@ -54,18 +54,18 @@ class _AccountViewState extends State<AccountView>
         title: const Text('Profil'),
         bottom: TabBar(
           indicatorColor: context.read<ThemeSettingsCubit>().state.isDarkMode
-              ? darkColorScheme.surface
-              : lightColorScheme.surface,
+              ? darkColorScheme.primary
+              : lightColorScheme.primary,
           indicatorSize: TabBarIndicatorSize.label,
           indicatorWeight: 2,
           controller: _tabController,
-          tabs: [
+          tabs: const [
             Tab(text: 'Mon profil'),
             Tab(text: 'Editer mon profil'),
           ],
         ),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () {
             if (Navigator.canPop(context)) {
               Navigator.pop(context);
@@ -74,7 +74,7 @@ class _AccountViewState extends State<AccountView>
         ),
         actions: [
           IconButton(
-            icon: Icon(Icons.settings),
+            icon: const Icon(Icons.settings),
             onPressed: () {
               GoRouter.of(context).pushNamed(SettingsView.name);
             },
@@ -82,37 +82,41 @@ class _AccountViewState extends State<AccountView>
         ],
       ),
       bottomNavigationBar: const AppBarFooter(),
-      body: Stack(children: [
-        TabBarView(
-          controller: _tabController,
+      body: SingleChildScrollView(
+        child: Stack(
           children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 26.0),
-              child: RefreshIndicator(
-                key: refreshIndicatorKey,
-                onRefresh: refreshData,
-                child: ListView(
-                  children: [
-                    // Account Info Widget
-                    AccountInfo(user: user!),
-                    SizedBox(height: 20),
-                    // New Widget: Account Trophies
-                    AccountTrophies(
-                      userId: user.id!,
+            TabBarView(
+              controller: _tabController,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 26.0),
+                  child: RefreshIndicator(
+                    key: refreshIndicatorKey,
+                    onRefresh: refreshData,
+                    child: ListView(
+                      children: [
+                        // Account Info Widget
+                        AccountInfo(user: user!),
+                        const SizedBox(height: 20),
+                        // New Widget: Account Trophies
+                        AccountTrophies(
+                          userId: user.id!,
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
-              ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 26.0),
+                  child: UpdateAccountWidget(
+                    user: user,
+                  ),
+                )
+              ],
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 26.0),
-              child: UpdateAccountWidget(
-                user: user,
-              ),
-            )
           ],
         ),
-      ]),
+      ),
     );
   }
 }

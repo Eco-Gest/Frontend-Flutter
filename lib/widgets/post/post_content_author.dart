@@ -1,5 +1,5 @@
 import 'package:ecogest_front/models/user_model.dart';
-import 'package:ecogest_front/views/user_view.dart';
+import 'package:ecogest_front/views/users/user_view.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';

@@ -1,7 +1,7 @@
 import 'package:ecogest_front/assets/ecogest_theme.dart';
 import 'package:ecogest_front/state_management/subscription/subscription_cubit.dart';
 import 'package:ecogest_front/state_management/subscription/subscription_state.dart';
-import 'package:ecogest_front/views/user_view.dart';
+import 'package:ecogest_front/views/users/user_view.dart';
 import 'package:ecogest_front/widgets/account/approve_or_decline_subscription_widget.dart';
 
 import 'package:flutter/material.dart';

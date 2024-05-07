@@ -4,6 +4,7 @@ import 'package:ecogest_front/data/ecogest_api_data_source.dart';
 import 'package:ecogest_front/models/user_model.dart';
 import 'package:ecogest_front/models/points_category_model.dart';
 import 'package:ecogest_front/services/authentication_service.dart';
+import 'package:flutter/material.dart';
 
 class UserService {
   static Future<UserModel> getCurrentUser() async {

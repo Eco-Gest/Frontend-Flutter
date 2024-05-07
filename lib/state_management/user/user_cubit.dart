@@ -22,7 +22,7 @@ class UserCubit extends Cubit<UserState> {
 
       emit(UserSuccess(user, isFollowed, isFollowing));
     } catch (error) {
-      emit(UserError("Erreur rencontrée. Veuillez réessayer."));
+      emit(UserError(error.toString()));
     }
   }
 
