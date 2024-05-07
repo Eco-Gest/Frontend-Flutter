@@ -29,10 +29,10 @@ abstract class CommentService {
 
       final Map<String, dynamic> requestBody = {
         'ID': commentId,
-        'Title': 'commentaire',
+        'title': 'commentaire',
         'authorID': authorId,
         'result': result,
-        'Content': content,
+        'content': content,
       };
 
       await EcoGestApiDataSource.post('/submit-report', requestBody, token: token);

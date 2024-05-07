@@ -7,7 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 part 'user_state.dart';
 
 class UserCubit extends Cubit<UserState> {
-  UserCubit() : super(UserInitial()) {}
+  UserCubit() : super(UserInitial());
 
   Future<void> getUser(int userId) async {
     try {
@@ -15,8 +15,10 @@ class UserCubit extends Cubit<UserState> {
       final user = await UserService.getUser(userId);
       final userAuthenticated = await UserService.getCurrentUser();
 
-      final isFollowed = SubscriptionService.isFollowed(userAuthenticated, user);
-      final isFollowing =  SubscriptionService.isFollowing(userAuthenticated, user);
+      final isFollowed =
+          SubscriptionService.isFollowed(userAuthenticated, user);
+      final isFollowing =
+          SubscriptionService.isFollowing(userAuthenticated, user);
 
       emit(UserSuccess(user, isFollowed, isFollowing));
     } catch (error) {
@@ -46,7 +48,21 @@ class UserCubit extends Cubit<UserState> {
       await UserService.updateUserAccount(user);
       emit(UserAccountSuccess(user));
     } catch (error) {
-      emit(UserError("Erreur rencontrée pour la mise à jour de vos données. Veuillez réessayer."));
+      emit(UserError(
+          "Erreur rencontrée pour la mise à jour de vos données. Veuillez réessayer."));
+    }
+  }
+
+  Future<void> submitReport(int userId, String result) async {
+    try {
+      emit(UserLoading());
+      await UserService.submitReport(userId, result);
+      final user = await UserService.getUser(userId);
+
+      emit(UserSuccess(user, null, null));
+    } catch (error) {
+      emit(UserError(
+          "Erreur rencontrée lors du signalement. Veuillez réessayer."));
     }
   }
 }

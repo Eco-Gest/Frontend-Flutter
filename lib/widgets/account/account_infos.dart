@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:ecogest_front/assets/ecogest_theme.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ecogest_front/state_management/theme_settings/theme_settings_cubit.dart';
+import 'package:ecogest_front/state_management/authentication/authentication_cubit.dart';
+import 'package:ecogest_front/widgets/account/user_profile_menu.dart';
 
 class AccountInfo extends StatelessWidget {
   AccountInfo({Key? key, required this.user});
@@ -11,6 +13,9 @@ class AccountInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final authenticationState = context.read<AuthenticationCubit>().state;
+    final userAuthenticated = authenticationState.user;
+
     return Center(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -25,8 +30,8 @@ class AccountInfo extends StatelessWidget {
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   image: DecorationImage(
-                    image: user?.image != null
-                        ? NetworkImage(user!.image!) as ImageProvider<Object>
+                    image: user.image != null
+                        ? NetworkImage(user.image!) as ImageProvider<Object>
                         : AssetImage('assets/profile.jpg')
                             as ImageProvider<Object>,
                     fit: BoxFit.cover,
@@ -66,6 +71,8 @@ class AccountInfo extends StatelessWidget {
                   ),
                 ],
               ),
+          if (userAuthenticated != null && userAuthenticated.id != user.id)
+                UserProfileMenu(userId: user.id!),
             ],
           ),
           SizedBox(height: 16),

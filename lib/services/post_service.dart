@@ -4,6 +4,7 @@ import 'package:ecogest_front/services/authentication_service.dart';
 import 'package:ecogest_front/services/notifications/notifications_service.dart';
 import 'package:flutter/material.dart';
 
+
 class PostService {
   List<PostModel> allPosts = [];
   List<PostModel>? completedPosts;
@@ -200,11 +201,11 @@ class PostService {
 
       getOnePost(postId, false).then((PostModel post) async {
         final Map<String, dynamic> requestBody = {
-          'postID': post.id,
-          'postTitle': post.title,
+          'ID': post.id,
+          'title': post.title,
           'authorID': post.authorId,
           'result': result,
-          'postContent': post.description,
+          'content': post.description,
         };
 
         await EcoGestApiDataSource.post('/submit-report', requestBody,
