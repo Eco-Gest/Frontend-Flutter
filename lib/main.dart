@@ -1,6 +1,10 @@
+import 'package:ecogest_front/services/notifications/local_notification_service.dart';
+import 'package:ecogest_front/services/notifications/notifications_service.dart';
 import 'package:ecogest_front/state_management/theme_settings/theme_settings_cubit.dart';
+import 'package:ecogest_front/views/notifications_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -9,15 +13,59 @@ import 'package:ecogest_front/state_management/authentication/authentication_cub
 import 'package:ecogest_front/core/router.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:ecogest_front/assets/ecogest_theme.dart';
+import 'package:notification_permissions/notification_permissions.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load();
+
   initializeDateFormatting('fr_FR', null).then((_) => runApp(MainApp()));
 }
 
-class MainApp extends StatelessWidget {
+class MainApp extends StatefulWidget {
   MainApp({super.key});
+
+  @override
+  State<MainApp> createState() => _MainApp();
+}
+
+class _MainApp extends State<MainApp> {
   final AuthenticationCubit authenticationCubit = AuthenticationCubit();
+
+  final NotificationsService notificationsService = NotificationsService();
+
+  late Future<String?> permissionStatusFuture;
+
+  var permGranted = "granted";
+  var permDenied = "denied";
+  var permUnknown = "unknown";
+  var permProvisional = "provisional";
+
+  /// Checks the notification permission status
+  Future<String?> getCheckNotificationPermStatus() {
+    return NotificationPermissions.getNotificationPermissionStatus()
+        .then((status) {
+      switch (status) {
+        case PermissionStatus.denied:
+          return permDenied;
+        case PermissionStatus.granted:
+          return permGranted;
+        case PermissionStatus.unknown:
+          return permUnknown;
+        case PermissionStatus.provisional:
+          return permProvisional;
+        default:
+          return null;
+      }
+    });
+  }
+
+  @override
+  void initState() {
+    listenToNotification();
+    permissionStatusFuture = getCheckNotificationPermStatus();
+    super.initState();
+  }
 
   Widget build(BuildContext context) {
     final GoRouter router = AppRouter.routerWithAuthStream(
@@ -37,22 +85,26 @@ class MainApp extends StatelessWidget {
               return BlocBuilder<ThemeSettingsCubit, ThemeSettingsState>(
                   builder: (context, state) {
                 return MaterialApp.router(
-                  title: "EcO'Gest",
+                  title: "Ecogest",
                   debugShowCheckedModeBanner: false,
-                  theme: ThemeData(useMaterial3: true, colorScheme: lightColorScheme),
-                  darkTheme: ThemeData(useMaterial3: true, colorScheme: darkColorScheme),
+                  theme: ThemeData(
+                      useMaterial3: true, colorScheme: lightColorScheme),
+                  darkTheme: ThemeData(
+                      useMaterial3: true, colorScheme: darkColorScheme),
                   themeMode: state.themeMode,
-                  // theme: ThemeData(
-                     // TODO improve dark theme
-                     // primarySwatch: EcogestTheme.primary,
-                     // textTheme: GoogleFonts.openSansTextTheme(),
-                  //   brightness: state.brightness,
-                  // ),
                   routerConfig: router,
                 );
               });
             });
           },
         ));
+  }
+
+  void listenToNotification() => notificationsService
+      .localNotificationService.selectNotificationStream.stream
+      .listen(onNotificationListener);
+
+  void onNotificationListener(String? payload) {
+    GoRouter.of(context).push(NotificationsView.name);
   }
 }
