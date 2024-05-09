@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_config/flutter_config.dart';
 import 'package:crypto/crypto.dart';
 import 'package:ecogest_front/data/ecogest_api_data_source.dart';
 import 'package:ecogest_front/models/notification_model.dart';
@@ -36,8 +36,8 @@ class NotificationsService {
 
     try {
       await pusher.init(
-        apiKey: dotenv.env['PUSHER_APP_KEY'].toString(),
-        cluster: dotenv.env['PUSHER_APP_CLUSTER'].toString(),
+        apiKey: FlutterConfig.get('PUSHER_APP_KEY').toString(),
+        cluster: FlutterConfig.get('PUSHER_APP_CLUSTER').toString(),
         onEvent: onEvent,
         onAuthorizer: onAuthorizer,
       );
@@ -89,7 +89,7 @@ class NotificationsService {
   }
 
   getSignature(String value) {
-    final key = utf8.encode(dotenv.env['PUSHER_APP_SECRET'].toString());
+    final key = utf8.encode(FlutterConfig.get('PUSHER_APP_SECRET').toString());
     final bytes = utf8.encode(value);
 
     final hmacSha256 = Hmac(sha256, key); // HMAC-SHA256
@@ -99,7 +99,8 @@ class NotificationsService {
 
   dynamic onAuthorizer(String channelName, String socketId, dynamic options) {
     return {
-      "auth": "${dotenv.env['PUSHER_APP_KEY']}:${getSignature("$socketId:$channelName")}",
+      "auth":
+          "${FlutterConfig.get('PUSHER_APP_KEY')}:${getSignature("$socketId:$channelName")}",
     };
   }
 }

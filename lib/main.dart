@@ -1,12 +1,15 @@
+import 'dart:async';
+
 import 'package:ecogest_front/services/notifications/local_notification_service.dart';
 import 'package:ecogest_front/services/notifications/notifications_service.dart';
 import 'package:ecogest_front/state_management/theme_settings/theme_settings_cubit.dart';
 import 'package:ecogest_front/views/notifications_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_config/flutter_config.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 import 'assets/ecogest_theme.dart';
 import 'package:ecogest_front/state_management/authentication/authentication_cubit.dart';
@@ -17,7 +20,8 @@ import 'package:notification_permissions/notification_permissions.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await dotenv.load();
+   await FlutterConfig.loadEnvVariables();
+  unawaited(MobileAds.instance.initialize());
 
   initializeDateFormatting('fr_FR', null).then((_) => runApp(MainApp()));
 }
