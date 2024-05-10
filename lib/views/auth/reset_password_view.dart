@@ -47,6 +47,7 @@ class _ResetPasswordView extends State<ResetPasswordView> {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
+                      SizedBox(height: 20),
                       Text(
                         'Veuillez entrer l\'adresse email associée à votre compte pour modifier votre mot de passe.',
                         style: TextStyle(
@@ -57,7 +58,7 @@ class _ResetPasswordView extends State<ResetPasswordView> {
                   ),
                   Container(
                     alignment: Alignment.topCenter,
-                    padding: const EdgeInsets.all(10),
+                    padding: const EdgeInsets.only(left: 10, right: 10, top: 20, bottom: 20),
                     child: TextFormField(
                       controller: emailController,
                       decoration: const InputDecoration(
@@ -100,32 +101,45 @@ class _ResetPasswordView extends State<ResetPasswordView> {
                                   ),
                                 ),
                                 Center(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(16.0),
-                                    child: Column(
-                                      children: [
-                                        Container(
-                                          alignment: Alignment.topCenter,
-                                          padding: const EdgeInsets.all(20),
-                                          width: 300,
-                                          child: Image.asset('assets/logo/logo-color.png'),
+                                  child: Column(
+                                    children: [
+                                      Container(
+                                        alignment: Alignment.topCenter,
+                                        padding: const EdgeInsets.all(20),
+                                        width: 300,
+                                        child: Image.asset('assets/logo/logo-color.png'),
+                                      ),
+                                      const Padding(
+                                        padding: EdgeInsets.symmetric(vertical: 40, horizontal: 20),
+                                        child: Column(
+                                          children: [
+                                            Text(
+                                              "Un e-mail de réinitialisation de mot de passe a été envoyé à l'adresse fournie. Veuillez suivre les instructions pour réinitialiser votre mot de passe.",
+                                              style: TextStyle(
+                                                fontSize: 16
+                                              ),
+                                            ),
+                                            SizedBox(height: 16),
+                                            Text(
+                                              "Une fois terminé, vous pourrez vous reconnecter à l'application avec vos nouvelles informations d'identification.",
+                                              style: TextStyle(
+                                                fontSize: 16
+                                              ),
+                                            ),
+                                          ],
                                         ),
-                                        const SizedBox(height: 20),
-                                        const Text(
-                                          "Un email de réinitialisation de mot de passe a été envoyé à l'adresse que vous avez fournie. Veuillez vérifier votre boîte de réception et suivre les instructions fournies dans l'email pour réinitialiser votre mot de passe."
+                                      ),
+                                      const Text(
+                                        "Vous avez réinitialisé votre mot de passe ?",
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
                                         ),
-                                        const SizedBox(height: 10),
-                                        const Text(
-                                          "Une fois que vous avez modifié votre mot de passe avec succès, vous pouvez revenir sur l'application pour vous connecter en utilisant vos nouvelles informations d'identification."
-                                        ),
-                                        const SizedBox(height: 20),
-                                        const Text(
-                                          "Vous avez réinitialisé votre mot de passe ?",
-                                          style: TextStyle(
-                                            fontSize: 18
-                                          ),
-                                        ),
-                                        FilledButton(
+                                      ),
+                                      const SizedBox(height: 20),
+                                      SizedBox(
+                                        width: 300,
+                                        child: FilledButton(
                                           style: TextButton.styleFrom(
                                             minimumSize: const Size.fromHeight(50),
                                             padding: const EdgeInsets.all(20),
@@ -138,9 +152,9 @@ class _ResetPasswordView extends State<ResetPasswordView> {
                                             'Se connecter',
                                           ),
                                         ),
-                                      ],
-                                    ),
-                                  )
+                                      )
+                                    ],
+                                  ),
                                 ),
                               ],
                             );
@@ -156,7 +170,6 @@ class _ResetPasswordView extends State<ResetPasswordView> {
                           padding: const EdgeInsets.all(20),
                         ),
                         onPressed: () {
-                          debugPrint(emailController.text);
                           context.read<AuthenticationCubit>().resetPassword(
                             email: emailController.text
                           );
