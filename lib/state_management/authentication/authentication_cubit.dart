@@ -52,6 +52,16 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
     }
   }
 
+  Future<void> resetPassword({required String email}) async {
+    try {
+      await AuthenticationService.resetPassword(email: email);
+      emit(AuthenticationResetPasswordStateSuccess("Email envoyé"));
+    } catch (e) {
+      // Failed to send the email or the user email doesn't exist
+      emit(AuthenticationResetPasswordStateError("Erreur lors de l'envoi de l'email. Veuillez réessayer."));
+    }
+  }
+
   Future<void> logout() async {
     await AuthenticationService.logout();
     emit(AuthenticationUnauthenticated("Déconnecté."));

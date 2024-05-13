@@ -21,3 +21,15 @@ class AuthenticationUnauthenticated extends AuthenticationState {
 class AuthenticationAuthenticated extends AuthenticationState {
   AuthenticationAuthenticated(user) : super(user);
 }
+
+/// The state of the authentication cubit when the reset password failed.
+class AuthenticationResetPasswordStateError extends AuthenticationState {
+  final String message;
+  AuthenticationResetPasswordStateError(this.message) : super(null);
+}
+
+/// The state of the authentication cubit when the reset password was successful (but the user remains unauthenticated).
+class AuthenticationResetPasswordStateSuccess extends AuthenticationState {
+  final String message;
+  AuthenticationResetPasswordStateSuccess(this.message) : super(null);
+}
