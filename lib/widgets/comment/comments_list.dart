@@ -25,7 +25,7 @@ class CommentsList extends StatelessWidget {
             CommentElement(
               commentId: comment.id,
               content: comment.content,
-              author: comment.author?.username,
+              author: comment.author?.username ?? 'Utilisateur inconnu',
               authorId: comment.author?.id,
               profilePic: comment.author?.image
             ),
