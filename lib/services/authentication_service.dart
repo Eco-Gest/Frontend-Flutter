@@ -113,7 +113,7 @@ class AuthenticationService {
     };
 
     // We send the request to the API and get the response
-    final response = await EcoGestApiDataSource.post('/mail-reset-password', request,
+    final response = await EcoGestApiDataSource.post('/request-reset-password', request,
         error: 'Failed to send mail to reset password');
     return response;
   }
