@@ -4,8 +4,8 @@ import 'package:ecogest_front/services/notifications/notifications_service.dart'
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthenticationService {
-
-  static final NotificationsService notificationsService = NotificationsService();
+  static final NotificationsService notificationsService =
+      NotificationsService();
 
   static Future<void> login({
     required String email,
@@ -39,7 +39,7 @@ class AuthenticationService {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString('token', token);
 
-    // connect to pusher 
+    // connect to pusher
     notificationsService.connectPusher();
   }
 
@@ -64,6 +64,9 @@ class AuthenticationService {
     final response = await EcoGestApiDataSource.post('/register', request,
         error: 'Failed to register');
 
+    if (response['message'] != null) {
+      throw Exception(response['message']);
+    }
     // We get the token from the response
     String token;
     try {
@@ -77,7 +80,7 @@ class AuthenticationService {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString('token', token);
 
-    // connect to pusher 
+    // connect to pusher
     notificationsService.connectPusher();
 
     return UserModel.fromJson(response);
@@ -113,7 +116,8 @@ class AuthenticationService {
     };
 
     // We send the request to the API and get the response
-    final response = await EcoGestApiDataSource.post('/mail-reset-password', request,
+    final response = await EcoGestApiDataSource.post(
+        '/mail-reset-password', request,
         error: 'Failed to send mail to reset password');
     return response;
   }
