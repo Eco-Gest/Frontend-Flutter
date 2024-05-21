@@ -140,7 +140,8 @@ class PostContentInfos extends StatelessWidget {
             ] else ...[
               Row(
                 children: [
-                  if (post!.userPostParticipation != null && post!.userPostParticipation!.length > 1) ...[
+                  if (post?.userPostParticipation != null &&
+                      post!.userPostParticipation!.length > 1) ...[
                     for (UserPostParticipationModel userPostParticipation
                         in post!.userPostParticipation!.take(4)) ...[
                       if (userPostParticipation.user?.id != post?.authorId &&
