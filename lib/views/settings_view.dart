@@ -1,6 +1,7 @@
 import 'package:ecogest_front/assets/ecogest_theme.dart';
 import 'package:ecogest_front/state_management/authentication/authentication_cubit.dart';
 import 'package:ecogest_front/state_management/theme_settings/theme_settings_cubit.dart';
+import 'package:ecogest_front/views/legal/change_password_view.dart';
 import 'package:ecogest_front/views/legal/legal_notices_view.dart';
 import 'package:ecogest_front/views/legal/privacy_policy_view.dart';
 import 'package:ecogest_front/widgets/app_bar.dart';
@@ -108,6 +109,14 @@ class SettingsView extends StatelessWidget {
                         }
                       },
                       child: const Text('Modifier mes données personnelles')),
+                  const SizedBox(
+                    height: 16.0,
+                  ),
+                  TextButton(
+                      onPressed: () {
+                        GoRouter.of(context).pushNamed(ChangePasswordView.name);
+                      },
+                      child: const Text('Modifier mon mot de passe')),
                   const SizedBox(
                     height: 16.0,
                   ),
