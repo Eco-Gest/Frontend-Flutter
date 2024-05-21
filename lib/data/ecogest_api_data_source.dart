@@ -11,7 +11,7 @@ class EcoGestApiDataSource {
   // static const _baseUrl = "http://10.0.2.2:8080/api";
   static const _baseUrl = "http://localhost:8080/api";
 
-  static get baseUrl  {
+  static get baseUrl {
     return _baseUrl;
   }
 
@@ -53,6 +53,8 @@ class EcoGestApiDataSource {
     );
 
     if (response.statusCode > 199 && response.statusCode <= 299) {
+      return jsonDecode(response.body);
+    } else if (response.statusCode == 409) {
       return jsonDecode(response.body);
     } else {
       throw Exception(error);
@@ -97,7 +99,6 @@ class EcoGestApiDataSource {
 
   static Future<bool> addImage(String endpoint, String filepath,
       {String? token}) async {
-
     Map<String, String> headers = {
       'Content-Type': 'multipart/form-data',
       'Authorization': 'Bearer $token'
