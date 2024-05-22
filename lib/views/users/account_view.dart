@@ -1,5 +1,6 @@
 import 'package:ecogest_front/models/user_model.dart';
 import 'package:ecogest_front/state_management/authentication/authentication_cubit.dart';
+import 'package:ecogest_front/state_management/users_relation/users_relation_cubit.dart';
 import 'package:ecogest_front/views/settings_view.dart';
 import 'package:ecogest_front/widgets/account/update_account_widget.dart';
 import 'package:flutter/material.dart';
@@ -82,7 +83,12 @@ class _AccountViewState extends State<AccountView>
         ],
       ),
       bottomNavigationBar: const AppBarFooter(),
-      body: SingleChildScrollView(
+      body: MultiBlocProvider(
+        providers: [
+          BlocProvider<UsersRelationCubit>(
+            create: (_) => UsersRelationCubit(),
+          ),
+        ],
         child: Stack(
           children: [
             TabBarView(
@@ -96,7 +102,10 @@ class _AccountViewState extends State<AccountView>
                     child: ListView(
                       children: [
                         // Account Info Widget
-                        AccountInfo(user: user!),
+                        AccountInfo(
+                          user: user!,
+                          isBlocked: false,
+                        ),
                         const SizedBox(height: 20),
                         // New Widget: Account Trophies
                         AccountTrophies(

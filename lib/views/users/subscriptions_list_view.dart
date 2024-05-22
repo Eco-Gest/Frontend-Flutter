@@ -1,4 +1,4 @@
-import 'package:ecogest_front/models/subscription_model.dart';
+import 'package:ecogest_front/models/users_relation_model.dart';
 import 'package:ecogest_front/models/user_model.dart';
 import 'package:ecogest_front/state_management/authentication/authentication_cubit.dart';
 import 'package:ecogest_front/views/settings_view.dart';

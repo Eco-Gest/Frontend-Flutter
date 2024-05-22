@@ -18,15 +18,6 @@ class PostDetailView extends StatefulWidget {
 
 class _PostDetailView extends State<PostDetailView> {
   List<String> items = List.generate(20, (index) => 'Item ${index + 1}');
-  GlobalKey<RefreshIndicatorState> refreshIndicatorKey =
-      GlobalKey<RefreshIndicatorState>();
-
-  Future<void> refreshData() async {
-    setState(() {
-      context.read<PostsCubit>().getOnePost(widget.postId, true);
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     final int postId = widget.postId;

@@ -1,6 +1,6 @@
 import 'package:ecogest_front/models/user_model.dart';
 
-class SubscriptionModel {
+class UsersRelationModel {
   final int? id;
   final int? followerId;
   final UserModel? follower;
@@ -10,7 +10,7 @@ class SubscriptionModel {
   final String? createdAt;
   final String? updatedAt;
 
-  const SubscriptionModel({
+  const UsersRelationModel({
     this.id,
     this.followerId,
     this.follower,
@@ -21,8 +21,8 @@ class SubscriptionModel {
     this.updatedAt,
   });
 
-  factory SubscriptionModel.fromJson(Map<String, dynamic> json) {
-    return SubscriptionModel(
+  factory UsersRelationModel.fromJson(Map<String, dynamic> json) {
+    return UsersRelationModel(
       id: json['id'] != null ? int.parse(json['id'].toString()) : null,
       followerId: json['follower_id'] != null
           ? int.parse(json['follower_id'].toString())

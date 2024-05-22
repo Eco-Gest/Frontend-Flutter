@@ -1,5 +1,5 @@
 import 'package:ecogest_front/models/user_model.dart';
-import 'package:ecogest_front/services/subscription_service.dart';
+import 'package:ecogest_front/services/users_relation_service.dart';
 import 'package:ecogest_front/services/user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -16,11 +16,12 @@ class UserCubit extends Cubit<UserState> {
       final userAuthenticated = await UserService.getCurrentUser();
 
       final isFollowed =
-          SubscriptionService.isFollowed(userAuthenticated, user);
+          UsersRelationService.isFollowed(userAuthenticated, user);
       final isFollowing =
-          SubscriptionService.isFollowing(userAuthenticated, user);
-
-      emit(UserSuccess(user, isFollowed, isFollowing));
+          UsersRelationService.isFollowing(userAuthenticated, user);
+      final isBlocked =
+          UsersRelationService.isBlocked(userAuthenticated, user);
+      emit(UserSuccess(user, isFollowed, isFollowing, isBlocked));
     } catch (error) {
       emit(UserError(error.toString()));
     }
@@ -59,7 +60,7 @@ class UserCubit extends Cubit<UserState> {
       await UserService.submitReport(userId, result);
       final user = await UserService.getUser(userId);
 
-      emit(UserSuccess(user, null, null));
+      emit(UserSuccess(user, null, null, null));
     } catch (error) {
       emit(UserError(
           "Erreur rencontrée lors du signalement. Veuillez réessayer."));

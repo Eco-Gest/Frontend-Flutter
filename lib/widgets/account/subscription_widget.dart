@@ -1,7 +1,7 @@
 import 'package:ecogest_front/assets/ecogest_theme.dart';
-import 'package:ecogest_front/models/subscription_model.dart';
-import 'package:ecogest_front/state_management/subscription/subscription_cubit.dart';
-import 'package:ecogest_front/state_management/subscription/subscription_state.dart';
+import 'package:ecogest_front/models/users_relation_model.dart';
+import 'package:ecogest_front/state_management/users_relation/users_relation_cubit.dart';
+import 'package:ecogest_front/state_management/users_relation/users_relation_state.dart';
 import 'package:ecogest_front/widgets/account/approve_or_decline_subscription_widget.dart';
 
 import 'package:flutter/material.dart';
@@ -32,7 +32,7 @@ class _SubscriptionWidget extends State<SubscriptionWidget> {
     bool isFollowed = widget.isFollowedPending;
     int userId = widget.userId;
     bool isFollowing = widget.isFollowingPending;
-    return BlocBuilder<SubscriptionCubit, SubscriptionState>(
+    return BlocBuilder<UsersRelationCubit, UsersRelationState>(
         builder: (context, state) {
       if (state is SubscriptionStateSuccess) {
         return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
@@ -49,7 +49,7 @@ class _SubscriptionWidget extends State<SubscriptionWidget> {
             onPressed: () {
               widget.onSubscriptionButton;
               context
-                  .read<SubscriptionCubit>()
+                  .read<UsersRelationCubit>()
                   .subscription(userId, isFollowing);
               isFollowing = !isFollowing;
             },
@@ -90,7 +90,7 @@ class _SubscriptionWidget extends State<SubscriptionWidget> {
             onPressed: () {
               widget.onSubscriptionButton;
               context
-                  .read<SubscriptionCubit>()
+                  .read<UsersRelationCubit>()
                   .subscription(userId, isFollowing);
               isFollowing = !isFollowing;
             },
@@ -130,7 +130,7 @@ class _SubscriptionWidget extends State<SubscriptionWidget> {
           ),
           onPressed: () {
             widget.onSubscriptionButton;
-            context.read<SubscriptionCubit>().subscription(userId, isFollowing);
+            context.read<UsersRelationCubit>().subscription(userId, isFollowing);
             isFollowing = !isFollowing;
           },
           child: Text(

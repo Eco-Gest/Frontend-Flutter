@@ -1,10 +1,9 @@
 import 'package:ecogest_front/data/ecogest_api_data_source.dart';
-import 'package:ecogest_front/models/subscription_model.dart';
+import 'package:ecogest_front/models/users_relation_model.dart';
 import 'package:ecogest_front/models/user_model.dart';
 import 'package:ecogest_front/services/authentication_service.dart';
-import 'package:flutter/material.dart';
 
-class SubscriptionService {
+class UsersRelationService {
   static Future<void> subscribe(int userId) async {
     final String? token = await AuthenticationService.getToken();
 
@@ -27,14 +26,14 @@ class SubscriptionService {
         token: token);
   }
 
-  static Future<SubscriptionModel> approve(int userId) async {
+  static Future<UsersRelationModel> approve(int userId) async {
     final String? token = await AuthenticationService.getToken();
 
     final response = await EcoGestApiDataSource.post(
         '/users/$userId/accept-subscription-request', {},
         token: token);
 
-    final subscription = SubscriptionModel.fromJson(response);
+    final subscription = UsersRelationModel.fromJson(response);
     return subscription;
   }
 
@@ -53,8 +52,21 @@ class SubscriptionService {
         token: token);
   }
 
+  static Future<void> blockUser(int userId) async {
+    final String? token = await AuthenticationService.getToken();
+
+    await EcoGestApiDataSource.post('/users/$userId/block', {}, token: token);
+  }
+
+  static Future<void> unBlockUser(int userId) async {
+    final String? token = await AuthenticationService.getToken();
+
+    await EcoGestApiDataSource.delete('/users/$userId/unblock', {},
+        token: token);
+  }
+
   static bool? isFollowing(UserModel userAuthenticated, UserModel user) {
-    SubscriptionModel? userFollowing = userAuthenticated.following!
+    UsersRelationModel? userFollowing = userAuthenticated.following!
         .where((subscription) => subscription!.followingId == user.id!)
         .firstOrNull;
     if (userFollowing == null) {
@@ -65,12 +77,22 @@ class SubscriptionService {
   }
 
   static bool? isFollowed(UserModel userAuthenticated, UserModel user) {
-    SubscriptionModel? userFollower = userAuthenticated.followers!
+    UsersRelationModel? userFollower = userAuthenticated.followers!
         .where((subscription) => subscription!.followerId == user.id!)
         .firstOrNull;
     if (userFollower == null) {
       return null;
     }
     return userFollower.status == "approved";
+  }
+
+  static bool? isBlocked(UserModel userAuthenticated, UserModel user) {
+    UsersRelationModel? usersRelationModel = userAuthenticated.following!
+        .where((subscription) => subscription!.followingId == user.id!)
+        .firstOrNull;
+    if (usersRelationModel == null) {
+      return null;
+    }
+    return usersRelationModel.status == "blocked";
   }
 }

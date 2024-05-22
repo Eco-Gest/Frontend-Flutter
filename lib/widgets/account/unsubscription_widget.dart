@@ -1,6 +1,6 @@
 import 'package:ecogest_front/assets/ecogest_theme.dart';
-import 'package:ecogest_front/state_management/subscription/subscription_cubit.dart';
-import 'package:ecogest_front/state_management/subscription/subscription_state.dart';
+import 'package:ecogest_front/state_management/users_relation/users_relation_cubit.dart';
+import 'package:ecogest_front/state_management/users_relation/users_relation_state.dart';
 import 'package:ecogest_front/views/users/user_view.dart';
 import 'package:ecogest_front/widgets/account/approve_or_decline_subscription_widget.dart';
 
@@ -29,9 +29,9 @@ class _UnSubscriptionWidget extends State<UnSubscriptionWidget> {
   Widget build(BuildContext context) {
     bool isFollowed = widget.isFollowed;
 
-    return BlocBuilder<SubscriptionCubit, SubscriptionState>(
+    return BlocBuilder<UsersRelationCubit, UsersRelationState>(
         builder: (context, state) {
-      if (state is SubscriptionStateInitial) {
+      if (state is UsersRelationStateInitial) {
         return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
           ElevatedButton(
             child: Text(
@@ -46,7 +46,7 @@ class _UnSubscriptionWidget extends State<UnSubscriptionWidget> {
               ),
             ),
             onPressed: () {
-              context.read<SubscriptionCubit>().unSubscribe(widget.userId);
+              context.read<UsersRelationCubit>().unSubscribe(widget.userId);
               if (Navigator.canPop(context)) {
                 Navigator.pop(context);
               }
@@ -84,7 +84,7 @@ class _UnSubscriptionWidget extends State<UnSubscriptionWidget> {
               ),
             ),
             onPressed: () {
-              context.read<SubscriptionCubit>().unSubscribe(widget.userId);
+              context.read<UsersRelationCubit>().unSubscribe(widget.userId);
               if (Navigator.canPop(context)) {
                 Navigator.pop(context);
               }

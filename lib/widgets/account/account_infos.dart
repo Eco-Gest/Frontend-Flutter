@@ -1,5 +1,6 @@
 import 'package:ecogest_front/models/user_model.dart';
-import 'package:ecogest_front/state_management/subscription/subscription_cubit.dart';
+import 'package:ecogest_front/state_management/user/user_cubit.dart';
+import 'package:ecogest_front/state_management/users_relation/users_relation_cubit.dart';
 import 'package:ecogest_front/views/users/subscriptions_list_view.dart';
 import 'package:flutter/material.dart';
 import 'package:ecogest_front/assets/ecogest_theme.dart';
@@ -9,22 +10,40 @@ import 'package:ecogest_front/state_management/authentication/authentication_cub
 import 'package:ecogest_front/widgets/account/user_profile_menu.dart';
 import 'package:go_router/go_router.dart';
 
-class AccountInfo extends StatelessWidget {
-  const AccountInfo({super.key, required this.user});
+class AccountInfo extends StatefulWidget {
+  AccountInfo({super.key, required this.user, required this.isBlocked});
 
   final UserModel user;
+  final bool isBlocked;
+
+  static String name = 'account';
+
+  @override
+  _AccountInfo createState() => _AccountInfo();
+}
+
+class _AccountInfo extends State<AccountInfo>
+    with SingleTickerProviderStateMixin {
+  GlobalKey<RefreshIndicatorState> refreshIndicatorKey =
+      GlobalKey<RefreshIndicatorState>();
+
+  Future<void> refreshData() async {
+    setState(() {
+      context.read<UserCubit>().getUser(widget.user.id!);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    final UserModel user = widget.user;
+    final bool isBlocked = widget.isBlocked;
+
     final authenticationState = context.read<AuthenticationCubit>().state;
     final userAuthenticated = authenticationState.user;
 
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider<SubscriptionCubit>(
-          create: (_) => SubscriptionCubit(),
-        ),
-      ],
+    return RefreshIndicator(
+      key: refreshIndicatorKey,
+      onRefresh: refreshData,
       child: Center(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -90,7 +109,11 @@ class AccountInfo extends StatelessWidget {
                 ),
                 if (userAuthenticated != null &&
                     userAuthenticated.id != user.id)
-                  UserProfileMenu(userId: user.id!),
+                  UserProfileMenu(
+                    userId: user.id!,
+                    username: user.username ?? "Utilisateur",
+                    isBlocked: isBlocked,
+                  ),
               ],
             ),
             const SizedBox(height: 16),

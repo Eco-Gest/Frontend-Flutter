@@ -1,7 +1,5 @@
-
 import 'package:ecogest_front/state_management/authentication/authentication_cubit.dart';
-import 'package:ecogest_front/state_management/subscription/subscription_cubit.dart';
-import 'package:ecogest_front/state_management/subscription/subscription_state.dart';
+import 'package:ecogest_front/state_management/users_relation/users_relation_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:ecogest_front/state_management/user/user_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,9 +8,13 @@ class UserProfileMenu extends StatelessWidget {
   const UserProfileMenu({
     Key? key,
     required this.userId,
+    required this.username,
+    required this.isBlocked,
   }) : super(key: key);
 
   final int? userId;
+  final String username;
+  final bool isBlocked;
 
   @override
   Widget build(BuildContext context) {
@@ -23,39 +25,39 @@ class UserProfileMenu extends StatelessWidget {
             context: context,
             builder: (BuildContext context) {
               return AlertDialog(
-                title: Text('Pourquoi signalez-vous ce profil ?'),
+                title: const Text('Pourquoi signalez-vous ce profil ?'),
                 content: Column(
                   children: [
                     ListTile(
-                      title: Text('Contenu inapproprié et harcèlement'),
+                      title: const Text('Contenu inapproprié et harcèlement'),
                       onTap: () =>
                           Navigator.pop(context, 'Contenu inapproprié'),
                     ),
                     ListTile(
-                      title: Text('Discours de haine'),
+                      title: const Text('Discours de haine'),
                       onTap: () => Navigator.pop(context, 'Discours de haine'),
                     ),
                     ListTile(
-                      title: Text('Atteinte à la vie privé'),
+                      title: const Text('Atteinte à la vie privé'),
                       onTap: () =>
                           Navigator.pop(context, 'Atteinte à la vie privé'),
                     ),
                     ListTile(
-                      title: Text('Suicide ou conduites autodestructrices'),
+                      title: const Text('Suicide ou conduites autodestructrices'),
                       onTap: () => Navigator.pop(
                           context, 'Suicide ou conduites autodestructrices'),
                     ),
                     ListTile(
-                      title: Text('Nudité ou actes sexuels'),
+                      title: const Text('Nudité ou actes sexuels'),
                       onTap: () =>
                           Navigator.pop(context, 'Nudité ou actes sexuels'),
                     ),
                     ListTile(
-                      title: Text('Spam'),
+                      title: const Text('Spam'),
                       onTap: () => Navigator.pop(context, 'Spam'),
                     ),
                     ListTile(
-                      title: Text('Autre'),
+                      title: const Text('Autre'),
                       onTap: () => Navigator.pop(context, 'Autre'),
                     ),
                   ],
@@ -82,20 +84,38 @@ class UserProfileMenu extends StatelessWidget {
           final removeFollower = PopupMenuItem<String>(
             child: const Text('Retirer de mes abonnements'),
             onTap: () => {
-              context.read<SubscriptionCubit>().removeFollower(userId!),
+              context.read<UsersRelationCubit>().removeFollower(userId!),
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('$username a été retiré de vos abonnements'),
+                ),
+              ),
             },
           );
           items.add(removeFollower);
+        }
+        if (context.read<AuthenticationCubit>().state.user?.following?.any(
+                (s) => s!.followingId == userId && s.status == "blocked") ==
+            false && isBlocked == false) {
+          final blockUser = PopupMenuItem<String>(
+            child: const Text('Bloquer'),
+            onTap: () => {
+              context.read<UsersRelationCubit>().blockUser(userId!),
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('Vous avez bloqué $username'),
+                ),
+              ),
+            },
+          );
+          items.add(blockUser);
         }
         const report = PopupMenuItem<String>(
           value: 'report',
           child: Text('Signaler'),
         );
-        const block = PopupMenuItem<String>(
-          value: 'block',
-          child: Text('Bloquer'),
-        );
-        items.addAll([block, report]);
+
+        items.addAll([report]);
         return items;
       },
     );
