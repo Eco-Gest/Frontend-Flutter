@@ -144,8 +144,7 @@ class PostContentInfos extends StatelessWidget {
                       post!.userPostParticipation!.length > 1) ...[
                     for (UserPostParticipationModel userPostParticipation
                         in post!.userPostParticipation!.take(4)) ...[
-                      if (userPostParticipation.user?.id != post?.authorId &&
-                          userPostParticipation.user?.image != null) ...[
+                      if (userPostParticipation.user?.id != post?.authorId) ...[
                         GestureDetector(
                           onTap: () {
                             GoRouter.of(context)
@@ -153,10 +152,15 @@ class PostContentInfos extends StatelessWidget {
                               'id': userPostParticipation.user!.id!.toString(),
                             });
                           },
-                          child: CircleAvatar(
-                            backgroundImage: NetworkImage(
-                                userPostParticipation.user!.image.toString()),
-                          ),
+                          child: userPostParticipation.user?.image != null
+                              ? CircleAvatar(
+                                  backgroundImage: NetworkImage(
+                                      userPostParticipation.user!.image
+                                          .toString()),
+                                )
+                              : const CircleAvatar(
+                                  child: Icon(Icons.person),
+                                ),
                         ),
                       ],
                     ],
