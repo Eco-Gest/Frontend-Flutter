@@ -28,7 +28,7 @@ class UserService {
 
     final result = await EcoGestApiDataSource.patch('/me', body, token: token);
 
-    if (user.image != null) {
+    if (user.image != null && user.image!.isNotEmpty) {
       await EcoGestApiDataSource.addImage(
           '/users/${result['id']}/uploadImage', user.image!,
           token: token);
