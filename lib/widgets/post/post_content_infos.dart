@@ -1,3 +1,5 @@
+import 'package:ecogest_front/models/user_post_participation_model.dart';
+import 'package:ecogest_front/views/user_view.dart';
 import 'package:ecogest_front/widgets/post/category_icon_widget.dart';
 import 'package:ecogest_front/models/post_model.dart';
 import 'package:flutter/material.dart';
@@ -5,6 +7,7 @@ import 'package:ecogest_front/widgets/post/post_separator.dart';
 import 'package:ecogest_front/state_management/theme_settings/theme_settings_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ecogest_front/assets/ecogest_theme.dart';
+import 'package:go_router/go_router.dart';
 
 class PostContentInfos extends StatelessWidget {
   const PostContentInfos({
@@ -16,6 +19,12 @@ class PostContentInfos extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    post?.userPostParticipation?.sort((a, b) {
+      if (a.createdAt != null && b.createdAt != null) {
+        return a.updatedAt!.compareTo(b.updatedAt!);
+      }
+      return 0;
+    });
     // Return the number of points earned
     // based on the difficulty of the action
     int convertLevelToPoint(String level) {
@@ -115,26 +124,57 @@ class PostContentInfos extends StatelessWidget {
                 Text(' ${post!.category!.title.toString()}'),
               ],
             ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                FilledButton.tonal(
-                  onPressed: () {
-                    debugPrint('Click on ${post!.type.toString()}');
-                    // TODO : Afficher les défis
-                  },
-                  child: Text(
-                    (() {
-                      if (post!.type.toString() == 'action') {
-                        return 'Geste';
-                      } else {
-                        return 'Défi';
-                      }
-                    }()),
+            if (post!.type.toString() == 'action') ...[
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  FilledButton.tonal(
+                    onPressed: () {
+                      debugPrint('Click on ${post!.type.toString()}');
+                      // TODO : Afficher les défis
+                    },
+                    child: const Text("Geste"),
                   ),
-                ),
-              ],
-            ),
+                ],
+              ),
+            ] else ...[
+              Row(
+                children: [
+                  if (post?.userPostParticipation != null &&
+                      post!.userPostParticipation!.length > 1) ...[
+                    for (UserPostParticipationModel userPostParticipation
+                        in post!.userPostParticipation!.take(4)) ...[
+                      if (userPostParticipation.user?.id != post?.authorId) ...[
+                        GestureDetector(
+                          onTap: () {
+                            GoRouter.of(context)
+                                .pushNamed(UserView.name, pathParameters: {
+                              'id': userPostParticipation.user!.id!.toString(),
+                            });
+                          },
+                          child: userPostParticipation.user?.image != null
+                              ? CircleAvatar(
+                                  backgroundImage: NetworkImage(
+                                      userPostParticipation.user!.image
+                                          .toString()),
+                                )
+                              : const CircleAvatar(
+                                  child: Icon(Icons.person),
+                                ),
+                        ),
+                      ],
+                    ],
+                  ] else ...[
+                    FilledButton.tonal(
+                      onPressed: () {
+                        debugPrint('Click on ${post!.type.toString()}');
+                      },
+                      child: const Text("Défi"),
+                    ),
+                  ]
+                ],
+              )
+            ],
           ],
         ),
         const PostSeparator(),
