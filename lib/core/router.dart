@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:ecogest_front/models/trophy_model.dart';
 import 'package:ecogest_front/models/user_model.dart';
+import 'package:ecogest_front/views/auth/reset_password_view.dart';
+import 'package:ecogest_front/views/legal/change_password_view.dart';
 import 'package:ecogest_front/views/posts/challenges_view.dart';
 import 'package:ecogest_front/views/comments_view.dart';
 import 'package:ecogest_front/views/legal/legal_notices_view.dart';
@@ -31,6 +33,7 @@ abstract class AppRouter {
   static List<String> get publicRoutes => [
         '/login',
         '/register',
+        '/reset-password',
       ];
 
   /// Creates a [GoRouter] with a [GoRouterRefreshStream] that listens to the
@@ -49,6 +52,11 @@ abstract class AppRouter {
           path: '/register',
           name: RegisterView.name,
           builder: (context, state) => RegisterView(),
+        ),
+        GoRoute(
+          path: '/reset-password',
+          name: ResetPasswordView.name,
+          builder: (context, state) => ResetPasswordView(),
         ),
         GoRoute(
           path: '/home',
@@ -139,6 +147,11 @@ abstract class AppRouter {
           builder: (context, state) => TrophiesView(
             trophies: state.extra! as List<TrophyModel>
           ),
+        ),
+        GoRoute(
+          path: '/change-password',
+          name: ChangePasswordView.name,
+          builder: (context, state) => const ChangePasswordView(),
         ),
       ],
       refreshListenable: GoRouterRefreshStream(stream),

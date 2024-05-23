@@ -1,3 +1,4 @@
+import 'package:ecogest_front/views/auth/reset_password_view.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -127,7 +128,7 @@ class _LoginView extends State<LoginView> {
                   // Forgot password
                   TextButton(
                     onPressed: () {
-                      //TODO: redirect to forgot password screen
+                      GoRouter.of(context).goNamed(ResetPasswordView.name);
                     },
                     child: const Padding(
                       padding: EdgeInsets.all(16.0),

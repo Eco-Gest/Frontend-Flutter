@@ -35,7 +35,7 @@ class PostContentAuthor extends StatelessWidget {
       children: [
         Row(
           children: [
-            if (author!.image != null) ...[
+            if (author?.image != null) ...[
               CircleAvatar(
                 backgroundImage: NetworkImage(author!.image.toString()),
               )
@@ -49,11 +49,16 @@ class PostContentAuthor extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 TextButton(
-                  child: Text(author?.username.toString() ?? 'Username'),
+                  child: Text(
+                    author?.username.toString() ?? 'Utilisateur inconnu',
+                  ),
                   onPressed: () {
-                    GoRouter.of(context).pushNamed(UserView.name, pathParameters: {
-                      'id': author!.id.toString(),
-                    });
+                    if (author?.username != null) {
+                      GoRouter.of(context)
+                          .pushNamed(UserView.name, pathParameters: {
+                        'id': author!.id.toString(),
+                      });
+                    }
                   },
                 ),
                 const SizedBox(height: 5),
@@ -72,17 +77,18 @@ class PostContentAuthor extends StatelessWidget {
             ),
           ],
         ),
-                Row(
+        Row(
           children: [
             Text(publicationDate),
-            if (date != null && (position != null || author!.position != null)) ...[
+            if (date != null &&
+                (position != null || author?.position != null)) ...[
               const Text(' | '),
             ],
             Text(() {
               if (position != null) {
                 return position.toString();
-              } else if (author!.position != null) {
-                return author!.position.toString();
+              } else if (author?.position != null) {
+                return author?.position.toString() ?? '';
               } else {
                 return '';
               }

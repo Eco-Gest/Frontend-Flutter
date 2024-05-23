@@ -1,8 +1,12 @@
 import 'package:ecogest_front/data/ecogest_api_data_source.dart';
 import 'package:ecogest_front/models/user_model.dart';
+import 'package:ecogest_front/services/notifications/notifications_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthenticationService {
+  static final NotificationsService notificationsService =
+      NotificationsService();
+
   static Future<void> login({
     required String email,
     required String password,
@@ -34,6 +38,9 @@ class AuthenticationService {
     // We save the token in the local storage
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString('token', token);
+
+    // connect to pusher
+    notificationsService.connectPusher();
   }
 
   static Future<UserModel> register({
@@ -57,6 +64,9 @@ class AuthenticationService {
     final response = await EcoGestApiDataSource.post('/register', request,
         error: 'Failed to register');
 
+    if (response['message'] != null) {
+      throw Exception(response['message']);
+    }
     // We get the token from the response
     String token;
     try {
@@ -70,12 +80,17 @@ class AuthenticationService {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString('token', token);
 
+    // connect to pusher
+    notificationsService.connectPusher();
+
     return UserModel.fromJson(response);
   }
 
   static Future<void> logout() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.remove('token');
+    // end connection to pusher
+    notificationsService.disconnectPusher();
   }
 
   static Future<String?> getToken() async {
@@ -85,5 +100,24 @@ class AuthenticationService {
     } catch (e) {
       return null;
     }
+  }
+
+  static Future<void> resetPassword({
+    required String email,
+  }) async {
+    // Check if the email is valid
+    if (email.isEmpty) {
+      throw Exception('Invalid email or password');
+    }
+
+    // We create a request object to send to the API
+    final request = {
+      'email': email,
+    };
+
+    // We send the request to the API and get the response
+    final response = await EcoGestApiDataSource.post('/request-reset-password', request,
+        error: 'Failed to send mail to reset password');
+    return response;
   }
 }

@@ -57,7 +57,9 @@ class _RegisterView extends State<RegisterView> {
     return true;
   }
 
+  @override
   void initState() {
+    super.initState();
     _passwordVisible = false;
   }
 
@@ -187,10 +189,10 @@ class _RegisterView extends State<RegisterView> {
 
                       if (status is AuthenticationUnauthenticated) {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
+                           SnackBar(
                             content: Text(
-                              "Erreur lors de l'inscription. Veuillez réessayer.",
-                              style: TextStyle(color: Colors.white),
+                              status.message,
+                              style: const TextStyle(color: Colors.white),
                             ),
                             backgroundColor: Colors.red,
                           ),
@@ -211,7 +213,7 @@ class _RegisterView extends State<RegisterView> {
                                   ),
                                 ),
                                 // Centered CircularProgressIndicator
-                                Center(
+                                const Center(
                                   child: CircularProgressIndicator(),
                                 ),
                               ],

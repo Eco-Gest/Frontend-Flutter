@@ -5,6 +5,7 @@ import 'package:ecogest_front/models/user_model.dart';
 import 'package:ecogest_front/models/points_category_model.dart';
 import 'package:ecogest_front/services/authentication_service.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class UserService {
   static Future<UserModel> getCurrentUser() async {
@@ -13,6 +14,10 @@ class UserService {
     var responseMap = await EcoGestApiDataSource.get('/me', token: token);
 
     final user = UserModel.fromJson(responseMap);
+
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('userId', '${user.id}');
+
     return user;
   }
 
@@ -82,6 +87,25 @@ class UserService {
           token: token);
     } catch (error) {
       throw Exception('Échec du signalement');
+    }
+  }
+
+  static Future<void> changePassword(
+      {required String oldPassword,
+      required String password,
+      required String passwordRepeated}) async {
+    try {
+      final String? token = await AuthenticationService.getToken();
+      final Map<String, dynamic> requestBody = {
+        'old_password': oldPassword,
+        'new_password': password,
+        'confirm_password': passwordRepeated,
+      };
+
+      await EcoGestApiDataSource.post('/change-password', requestBody,
+          token: token);
+    } catch (error) {
+      throw Exception('Échec du changement de mot de passe');
     }
   }
 }
