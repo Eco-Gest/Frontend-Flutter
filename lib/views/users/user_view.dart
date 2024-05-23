@@ -166,7 +166,7 @@ class _UserView extends State<UserView> {
                                 ),
                               );
                             }
-                            if (usersRelationState is UnBlockStateSuccess) {
+                            if (usersRelationState is! BlockStateSuccess) {
                               // user private
                               if (state.user!.isPrivate!) {
                                 // status pending

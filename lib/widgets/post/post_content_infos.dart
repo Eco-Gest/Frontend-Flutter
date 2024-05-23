@@ -1,5 +1,5 @@
 import 'package:ecogest_front/models/user_post_participation_model.dart';
-import 'package:ecogest_front/views/user_view.dart';
+import 'package:ecogest_front/views/users/user_view.dart';
 import 'package:ecogest_front/widgets/post/category_icon_widget.dart';
 import 'package:ecogest_front/models/post_model.dart';
 import 'package:flutter/material.dart';
