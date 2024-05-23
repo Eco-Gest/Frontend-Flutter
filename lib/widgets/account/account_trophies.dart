@@ -1,7 +1,9 @@
+import 'package:ecogest_front/views/users/trophies_view.dart';
 import 'package:flutter/material.dart';
 import 'package:ecogest_front/models/trophy_model.dart';
 import 'package:ecogest_front/services/trophy_service.dart';
 import 'package:ecogest_front/assets/ecogest_theme.dart';
+import 'package:go_router/go_router.dart';
 
 class AccountTrophies extends StatefulWidget {
   AccountTrophies({Key? key, required this.userId});
@@ -23,7 +25,7 @@ class _AccountTrophiesState extends State<AccountTrophies> {
 
   @override
   Widget build(BuildContext context) {
-   return Column(
+    return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // Blue-grey light border
@@ -32,31 +34,45 @@ class _AccountTrophiesState extends State<AccountTrophies> {
           height: 2,
           color: Colors.blueGrey.shade200,
         ),
-        SizedBox(height: 12),
+        const SizedBox(height: 12),
         // Title "Mes accomplissements"
-        Text(
+        const Text(
           'Accomplissements',
           style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         ),
-        SizedBox(height: 14),
+        const SizedBox(height: 14),
         // List of trophies
         FutureBuilder<List<TrophyModel>>(
           future: _trophiesFuture,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               // Loading indicator or placeholder
-              return CircularProgressIndicator();
+              return const CircularProgressIndicator();
             } else if (snapshot.hasError) {
               // Handle error state
               return Text(
                   'Erreur de chargement des trophées: ${snapshot.error}');
             } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
               // No trophies available
-              return Text('Aucun trophée disponible.');
+              return const Text('Aucun trophée disponible.');
             } else {
               // Display the list of trophies
               return Column(
-                children: _buildTrophyItems(snapshot.data!),
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: _buildTrophyItems(snapshot.data!),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      GoRouter.of(context).pushNamed(TrophiesView.name, extra: snapshot.data!);
+                    },
+                    child: const Text(
+                      'Voir tous les trophées >',
+                      style: TextStyle(fontSize: 16),
+                    ),
+                  ),
+                ],
               );
             }
           },
@@ -68,7 +84,8 @@ class _AccountTrophiesState extends State<AccountTrophies> {
   List<Widget> _buildTrophyItems(List<TrophyModel> trophies) {
     // Count occurrences of each category ID
     Map<int, int> categoryCounts = {};
-    for (var trophy in trophies) {
+    for (int i = 0; i < trophies.length && i < 4; i++) {
+      final TrophyModel trophy = trophies[i];
       int categoryId = trophy.category_id!;
       categoryCounts[categoryId] = (categoryCounts[categoryId] ?? 0) + 1;
     }
@@ -110,50 +127,9 @@ class _AccountTrophiesState extends State<AccountTrophies> {
             height: 70,
             fit: BoxFit.cover,
           ),
-          SizedBox(width: 16),
-          // Right: Text
-          RichText(
-            text: TextSpan(
-              style: TextStyle(
-                fontSize: 16,
-                color: Colors.black,
-              ),
-              children: [
-                TextSpan(
-                  text: '$count X ',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                TextSpan(
-                  text: '${_getCategoryName(categoryId)}',
-                  style: TextStyle(
-                    fontWeight: FontWeight.normal,
-                  ),
-                ),
-              ],
-            ),
-          ),
+          const SizedBox(width: 16),
         ],
       ),
     );
-  }
-
-  String _getCategoryName(int? categoryId) {
-    // Map category IDs to category names
-    Map<int, String> categoryNameMap = {
-      1: 'As de la Mobilité Douce',
-      2: 'Gourmand.e Responsable',
-      3: 'Expert.e du Recyclage',
-      4: 'Gardien.ne de la Nature',
-      5: 'Génie de l\'Énergie',
-      6: 'Pro du Bricolage',
-      7: 'Magicien.ne des Technologies',
-      8: 'Explorateur.trice de la Seconde Vie',
-      9: 'Maître.sse des Gestes et Défis Divers',
-    };
-
-    // Get the category name based on category ID
-    return categoryNameMap[categoryId] ?? 'Categorie inconnue';
   }
 }

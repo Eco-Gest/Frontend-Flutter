@@ -1,7 +1,7 @@
 import 'package:ecogest_front/assets/ecogest_theme.dart';
-import 'package:ecogest_front/models/subscription_model.dart';
-import 'package:ecogest_front/state_management/subscription/subscription_cubit.dart';
-import 'package:ecogest_front/state_management/subscription/subscription_state.dart';
+import 'package:ecogest_front/models/users_relation_model.dart';
+import 'package:ecogest_front/state_management/users_relation/users_relation_cubit.dart';
+import 'package:ecogest_front/state_management/users_relation/users_relation_state.dart';
 import 'package:ecogest_front/widgets/account/approve_or_decline_subscription_widget.dart';
 
 import 'package:flutter/material.dart';
@@ -32,19 +32,15 @@ class _SubscriptionWidget extends State<SubscriptionWidget> {
     bool isFollowed = widget.isFollowedPending;
     int userId = widget.userId;
     bool isFollowing = widget.isFollowingPending;
-    return BlocBuilder<SubscriptionCubit, SubscriptionState>(
+    return BlocBuilder<UsersRelationCubit, UsersRelationState>(
         builder: (context, state) {
       if (state is SubscriptionStateSuccess) {
         return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
           FilledButton(
-            child: const Text(
-              "Annuler",
-              style: TextStyle(color: Colors.black),
-            ),
             style: FilledButton.styleFrom(
               backgroundColor: Colors.white,
               fixedSize: isFollowed
-                  ? Size(210, 50)
+                  ? const Size(210, 50)
                   : Size((MediaQuery.of(context).size.width) / 2, 50),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10.0),
@@ -53,10 +49,14 @@ class _SubscriptionWidget extends State<SubscriptionWidget> {
             onPressed: () {
               widget.onSubscriptionButton;
               context
-                  .read<SubscriptionCubit>()
+                  .read<UsersRelationCubit>()
                   .subscription(userId, isFollowing);
               isFollowing = !isFollowing;
             },
+            child: const Text(
+              "Annuler",
+              style: TextStyle(color: Colors.black),
+            ),
           ),
           if (isFollowed) ...[
             ApproveOrDeclineSubscriptionWidget(
@@ -75,10 +75,6 @@ class _SubscriptionWidget extends State<SubscriptionWidget> {
       if (state is SubscriptionCancelStateSuccess) {
         return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
           FilledButton(
-            child: const Text(
-              'Suivre',
-              style: TextStyle(color: Colors.white),
-            ),
             style: FilledButton.styleFrom(
               backgroundColor:
                   context.read<ThemeSettingsCubit>().state.isDarkMode
@@ -94,10 +90,14 @@ class _SubscriptionWidget extends State<SubscriptionWidget> {
             onPressed: () {
               widget.onSubscriptionButton;
               context
-                  .read<SubscriptionCubit>()
+                  .read<UsersRelationCubit>()
                   .subscription(userId, isFollowing);
               isFollowing = !isFollowing;
             },
+            child: const Text(
+              'Suivre',
+              style: TextStyle(color: Colors.white),
+            ),
           ),
           if (isFollowed) ...[
             ApproveOrDeclineSubscriptionWidget(
@@ -115,10 +115,6 @@ class _SubscriptionWidget extends State<SubscriptionWidget> {
 
       return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
         FilledButton(
-          child: Text(
-            isFollowing ? 'Annuler' : 'Suivre',
-            style: TextStyle(color: isFollowing ? Colors.black : Colors.white),
-          ),
           style: FilledButton.styleFrom(
             backgroundColor: (isFollowing
                 ? Colors.white
@@ -134,9 +130,13 @@ class _SubscriptionWidget extends State<SubscriptionWidget> {
           ),
           onPressed: () {
             widget.onSubscriptionButton;
-            context.read<SubscriptionCubit>().subscription(userId, isFollowing);
+            context.read<UsersRelationCubit>().subscription(userId, isFollowing);
             isFollowing = !isFollowing;
           },
+          child: Text(
+            isFollowing ? 'Annuler' : 'Suivre',
+            style: TextStyle(color: isFollowing ? Colors.black : Colors.white),
+          ),
         ),
         if (isFollowed) ...[
           ApproveOrDeclineSubscriptionWidget(

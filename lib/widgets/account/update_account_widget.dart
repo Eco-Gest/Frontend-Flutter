@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:date_field/date_field.dart';
 import 'package:ecogest_front/models/user_model.dart';
 import 'package:ecogest_front/state_management/user/user_cubit.dart';
-import 'package:ecogest_front/views/account_view.dart';
+import 'package:ecogest_front/views/users/account_view.dart';
 import 'package:ecogest_front/widgets/account/checkbox_private_account.dart';
 import 'package:flutter/material.dart';
 import 'package:ecogest_front/assets/ecogest_theme.dart';

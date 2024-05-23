@@ -1,5 +1,5 @@
-import 'package:ecogest_front/state_management/subscription/subscription_cubit.dart';
-import 'package:ecogest_front/state_management/subscription/subscription_state.dart';
+import 'package:ecogest_front/state_management/users_relation/users_relation_cubit.dart';
+import 'package:ecogest_front/state_management/users_relation/users_relation_state.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -33,7 +33,7 @@ class _ApproveOrDeclineSubscriptionWidget
   Widget build(BuildContext context) {
     int userId = widget.userId;
     bool isFollowed = widget.isFollowed;
-    return BlocBuilder<SubscriptionCubit, SubscriptionState>(
+    return BlocBuilder<UsersRelationCubit, UsersRelationState>(
         builder: (context, state) {
       if (state is! SubscriptionApproveOrDeclineStateSuccess &&
           hasAnswered == false) {
@@ -59,7 +59,7 @@ class _ApproveOrDeclineSubscriptionWidget
                 }).toList(),
                 onChanged: (value) {
                   context
-                      .read<SubscriptionCubit>()
+                      .read<UsersRelationCubit>()
                       .approveOrDeclineSubscription(userId, value!);
                   widget.onApproveOrDeclineButton;
                   hasAnswered = true;

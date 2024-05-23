@@ -1,5 +1,5 @@
 import 'package:ecogest_front/data/ecogest_api_data_source.dart';
-import 'package:ecogest_front/models/subscription_model.dart';
+import 'package:ecogest_front/models/users_relation_model.dart';
 import 'package:ecogest_front/models/user_post_participation_model.dart';
 
 class UserModel {
@@ -18,8 +18,8 @@ class UserModel {
   final String? createdAt;
   final String? updatedAt;
   final String? postParticipationCount;
-  final List<SubscriptionModel?>? followers;
-  final List<SubscriptionModel?>? following;
+  final List<UsersRelationModel?>? followers;
+  final List<UsersRelationModel?>? following;
 
   const UserModel({
     this.id,
@@ -90,10 +90,10 @@ class UserModel {
     return data;
   }
 
-  static List<SubscriptionModel?>? subscriptionList(
+  static List<UsersRelationModel?>? subscriptionList(
       List<dynamic> responseList) {
     return responseList.map((follower) {
-      return SubscriptionModel.fromJson(follower as Map<String, dynamic>);
+      return UsersRelationModel.fromJson(follower as Map<String, dynamic>);
     }).toList();
   }
 

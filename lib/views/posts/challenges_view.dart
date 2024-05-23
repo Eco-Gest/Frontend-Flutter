@@ -33,7 +33,7 @@ class ChallengesView extends StatelessWidget {
                       ? darkColorScheme.primary
                       : lightColorScheme.primary,
                       indicatorWeight: 4,
-                      tabs: [
+                      tabs: const [
                         Tab(
                           child: Text('En cours'),
                         ),

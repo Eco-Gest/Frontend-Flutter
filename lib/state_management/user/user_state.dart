@@ -10,7 +10,9 @@ class UserSuccess extends UserState {
   final UserModel? user;
   final bool? isFollowed;
   final bool? isFollowing;
-  UserSuccess(this.user, this.isFollowed, this.isFollowing);
+  final bool? isBlocked;
+
+  UserSuccess(this.user, this.isFollowed, this.isFollowing, this.isBlocked);
 }
 
 class UserAccountSuccess extends UserState {

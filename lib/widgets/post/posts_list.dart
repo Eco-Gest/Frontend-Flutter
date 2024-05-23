@@ -50,7 +50,6 @@ class _PostsList extends State<PostsList> {
   Widget build(BuildContext context) {
     final List<PostModel> posts = widget.posts;
     final bool isLastPage = widget.isLastPage;
-    final int? postId = widget.postId;
     final Function() onScrolled = widget.onScrolled;
     final UserModel? user = context.read<AuthenticationCubit>().state.user;
 
@@ -59,6 +58,8 @@ class _PostsList extends State<PostsList> {
         key: refreshIndicatorKey,
         onRefresh: refreshData,
         child: ListView.separated(
+          scrollDirection: Axis.vertical,
+          shrinkWrap: true,
           padding: const EdgeInsets.all(16),
           controller: _scrollController,
           separatorBuilder: (context, index) => const SizedBox(height: 16),
