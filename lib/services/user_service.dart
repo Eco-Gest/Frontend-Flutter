@@ -88,4 +88,23 @@ class UserService {
       throw Exception('Échec du signalement');
     }
   }
+
+  static Future<void> changePassword(
+      {required String oldPassword,
+      required String password,
+      required String passwordRepeated}) async {
+    try {
+      final String? token = await AuthenticationService.getToken();
+      final Map<String, dynamic> requestBody = {
+        'old_password': oldPassword,
+        'new_password': password,
+        'confirm_password': passwordRepeated,
+      };
+
+      await EcoGestApiDataSource.post('/change-password', requestBody,
+          token: token);
+    } catch (error) {
+      throw Exception('Échec du changement de mot de passe');
+    }
+  }
 }

@@ -47,8 +47,16 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
     } catch (e) {
       // Failed to login, failed to parse the token or
       // error while getting the user
-      emit(AuthenticationUnauthenticated(
-          "Erreur lors de votre inscription. Veuillez réessayer."));
+      if (e.toString().contains('Username')) {
+        emit(AuthenticationUnauthenticated(
+            'Nom d\'utilisateur déjà utilisé. Veuillez en choisir un autre.'));
+      } else if (e.toString().contains('Email')) {
+        emit(AuthenticationUnauthenticated(
+            'Adresse mail déjà utilisée. Veuillez vous connecter.'));
+      } else {
+        emit(AuthenticationUnauthenticated(
+            "Erreur lors de votre inscription. Veuillez réessayer."));
+      }
     }
   }
 
@@ -58,7 +66,8 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
       emit(AuthenticationResetPasswordStateSuccess("Email envoyé"));
     } catch (e) {
       // Failed to send the email or the user email doesn't exist
-      emit(AuthenticationResetPasswordStateError("Erreur lors de l'envoi de l'email. Veuillez réessayer."));
+      emit(AuthenticationResetPasswordStateError(
+          "Erreur lors de l'envoi de l'email. Veuillez réessayer."));
     }
   }
 

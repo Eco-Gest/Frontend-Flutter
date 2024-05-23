@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:ecogest_front/views/auth/reset_password_view.dart';
+import 'package:ecogest_front/views/legal/change_password_view.dart';
 import 'package:ecogest_front/views/posts/challenges_view.dart';
 import 'package:ecogest_front/views/comments_view.dart';
 import 'package:ecogest_front/views/legal/legal_notices_view.dart';
@@ -129,9 +130,13 @@ abstract class AppRouter {
           name: PrivacyPolicy.name,
           builder: (context, state) => const PrivacyPolicy(),
         ),
+        GoRoute(
+          path: '/change-password',
+          name: ChangePasswordView.name,
+          builder: (context, state) => const ChangePasswordView(),
+        ),
       ],
-      refreshListenable:
-          GoRouterRefreshStream(stream),
+      refreshListenable: GoRouterRefreshStream(stream),
       redirect: (context, state) {
         // If the user is not authenticated, redirect to the login page.
         final status = context.read<AuthenticationCubit>().state;

@@ -65,4 +65,22 @@ class UserCubit extends Cubit<UserState> {
           "Erreur rencontrée lors du signalement. Veuillez réessayer."));
     }
   }
+
+  Future<void> changePassword(
+      {required String oldPassword,
+      required String password,
+      required String passwordRepeated}) async {
+    try {
+      emit(UserLoading());
+      await UserService.changePassword(
+          oldPassword: oldPassword,
+          password: password,
+          passwordRepeated: passwordRepeated);
+      final user = await UserService.getCurrentUser();
+      emit(UserSuccess(user, null, null));
+    } catch (error) {
+      emit(UserError(
+          "Erreur rencontrée lors du changement de mot de passe. Veuillez réessayer."));
+    }
+  }
 }
