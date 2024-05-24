@@ -188,8 +188,8 @@ class _UpdateAccountWidget extends State<UpdateAccountWidget> {
                                 Padding(
                                   padding: const EdgeInsets.all(30.0),
                                   child: SizedBox(
-                                    width: (MediaQuery.of(context).size.width -
-                                            26) /
+                                    width: (MediaQuery.of(context).size.width +
+                                            60) /
                                         2,
                                     height: 50.0,
                                     child: FilledButton(
