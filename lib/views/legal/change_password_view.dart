@@ -1,5 +1,5 @@
 import 'package:ecogest_front/state_management/user/user_cubit.dart';
-import 'package:ecogest_front/views/account_view.dart';
+import 'package:ecogest_front/views/users/account_view.dart';
 import 'package:ecogest_front/views/home_view.dart';
 import 'package:flutter/material.dart';
 import 'package:ecogest_front/widgets/bottom_bar.dart';

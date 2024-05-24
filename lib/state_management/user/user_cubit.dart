@@ -78,7 +78,7 @@ class UserCubit extends Cubit<UserState> {
           password: password,
           passwordRepeated: passwordRepeated);
       final user = await UserService.getCurrentUser();
-      emit(UserSuccess(user, null, null));
+      emit(UserSuccess(user, null, null, null));
     } catch (error) {
       emit(UserError(
           "Erreur rencontrée lors du changement de mot de passe. Veuillez réessayer."));
