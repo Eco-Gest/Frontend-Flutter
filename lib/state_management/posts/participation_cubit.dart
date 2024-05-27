@@ -15,4 +15,15 @@ class ParticipationCubit extends Cubit<ParticipationState> {
           "Erreur lors de votre inscription à cette publication"));
     }
   }
+  Future<void> endChallenge(int postId) async {
+    try {
+      emit(ParticipationStateLoading());
+    await ParticipationService.endChallenge(postId);
+      emit(ParticipationStateSuccess());
+    } catch (error) {
+      emit(ParticipationStateError(
+          "Erreur rencontrée pour terminer ce défi"));
+    }
+  }
+  
 }

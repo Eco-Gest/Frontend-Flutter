@@ -19,6 +19,7 @@ class PostContentButtons extends StatefulWidget {
     required this.isLiked,
     required this.post,
     this.comments,
+    required this.canEndChallenge,
   });
 
   final PostModel post;
@@ -26,6 +27,7 @@ class PostContentButtons extends StatefulWidget {
   int? likes;
   final List? comments;
   bool isLiked;
+  final bool canEndChallenge;
 
   @override
   _PostContentButtons createState() => _PostContentButtons();
@@ -41,7 +43,7 @@ class _PostContentButtons extends State<PostContentButtons> {
     final List? comments = widget.comments;
     bool isLiked = widget.isLiked;
     int postId = post.id!;
-
+    bool canEndChallenge = widget.canEndChallenge;
     return Column(
       children: [
         Row(
@@ -79,106 +81,109 @@ class _PostContentButtons extends State<PostContentButtons> {
             ],
             if (comments!.isNotEmpty) ...[
               TextButton(
-                  onPressed: () {
-                    // TODO : Afficher les likes
-                  },
-                  child: Text(
-                    '$likes like',
-                    style: TextStyle(
-                        color: context.read<ThemeSettingsCubit>().state.isDarkMode
-                            ? darkColorScheme.onBackground
-                            : lightColorScheme.onBackground),
-                  ),
-                ),
-              ],
-              if (likes! > 1) ...[
-                TextButton(
-                  onPressed: () {
-                    //
-                  },
-                  child: Text(
-                    '$likes likes',
-                    style: TextStyle(
-                        color:  context.read<ThemeSettingsCubit>().state.isDarkMode
-                            ? darkColorScheme.onBackground
-                            : lightColorScheme.onBackground),
-                  ),
-                ),
-              ],
-              if (likes! > 0 && comments!.isNotEmpty) ...[
-                const Text(' | '),
-              ],
-              if (comments!.isNotEmpty) ...[
-                TextButton(
-                    onPressed: () {
-                      GoRouter.of(context)
-                          .push('/posts/$postId/comments', extra: comments);
-                    },
-                    child: Text(
-                      '${comments!.length} commentaires',
-                      style: TextStyle(
-                          color:  context.read<ThemeSettingsCubit>().state.isDarkMode
-                              ? darkColorScheme.onBackground
-                              : lightColorScheme.onBackground),
-                    )),
-              ]
-            ],
-          ),
-          const PostSeparator(),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              LikeWidget(
-                postId: post.id!,
-                isLiked: isLiked,
-                changeIsLikedValue: () {
-                  if (isLiked) {
-                    isLiked = false;
-                    likes = likes! - 1;
-                  } else {
-                    isLiked = true;
-                    likes = likes! + 1;
-                  }
-                },
-              ),
-              IconButton(
                 onPressed: () {
-                  GoRouter.of(context)
-                      .push('/posts/$postId/comments', extra: comments);
+                  // TODO : Afficher les likes
                 },
-                color:  context.read<ThemeSettingsCubit>().state.isDarkMode
-                    ? darkColorScheme.primary
-                    : lightColorScheme.primary,
-                icon: const Icon(Icons.comment),
-              ),
-              IconButton(
-                onPressed: () {
-                  debugPrint('Click pour partager la publication');
-                  // TODO : Partager la publication
-                },
-                color:  context.read<ThemeSettingsCubit>().state.isDarkMode
-                    ? darkColorScheme.primary
-                    : lightColorScheme.primary,
-                icon: const Icon(Icons.share),
+                child: Text(
+                  '$likes like',
+                  style: TextStyle(
+                      color: context.read<ThemeSettingsCubit>().state.isDarkMode
+                          ? darkColorScheme.onBackground
+                          : lightColorScheme.onBackground),
+                ),
               ),
             ],
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          if (isChallenge! &&
-              DateTime.parse(post.startDate!).isBefore(DateTime.now()) &&
-              DateTime.parse(post.endDate!).isAfter(DateTime.now())) ...[
-            BlocProvider<ParticipationCubit>(
-              create: (_) => ParticipationCubit(),
-              child: ParticipationWidget(
-                  postId: post.id!,
-                  isAlreadyParticipant: post.userPostParticipation!.any(
-                      (participation) =>
-                          participation.participantId! == user!.id!)),
+            if (likes! > 1) ...[
+              TextButton(
+                onPressed: () {
+                  //
+                },
+                child: Text(
+                  '$likes likes',
+                  style: TextStyle(
+                      color: context.read<ThemeSettingsCubit>().state.isDarkMode
+                          ? darkColorScheme.onBackground
+                          : lightColorScheme.onBackground),
+                ),
+              ),
+            ],
+            if (likes! > 0 && comments!.isNotEmpty) ...[
+              const Text(' | '),
+            ],
+            if (comments!.isNotEmpty) ...[
+              TextButton(
+                  onPressed: () {
+                    GoRouter.of(context)
+                        .push('/posts/$postId/comments', extra: comments);
+                  },
+                  child: Text(
+                    '${comments!.length} commentaires',
+                    style: TextStyle(
+                        color:
+                            context.read<ThemeSettingsCubit>().state.isDarkMode
+                                ? darkColorScheme.onBackground
+                                : lightColorScheme.onBackground),
+                  )),
+            ]
+          ],
+        ),
+        const PostSeparator(),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            LikeWidget(
+              postId: post.id!,
+              isLiked: isLiked,
+              changeIsLikedValue: () {
+                if (isLiked) {
+                  isLiked = false;
+                  likes = likes! - 1;
+                } else {
+                  isLiked = true;
+                  likes = likes! + 1;
+                }
+              },
             ),
-          ]
-        ],
-      );
+            IconButton(
+              onPressed: () {
+                GoRouter.of(context)
+                    .push('/posts/$postId/comments', extra: comments);
+              },
+              color: context.read<ThemeSettingsCubit>().state.isDarkMode
+                  ? darkColorScheme.primary
+                  : lightColorScheme.primary,
+              icon: const Icon(Icons.comment),
+            ),
+            IconButton(
+              onPressed: () {
+                debugPrint('Click pour partager la publication');
+                // TODO : Partager la publication
+              },
+              color: context.read<ThemeSettingsCubit>().state.isDarkMode
+                  ? darkColorScheme.primary
+                  : lightColorScheme.primary,
+              icon: const Icon(Icons.share),
+            ),
+          ],
+        ),
+        const SizedBox(
+          height: 10,
+        ),
+        // if (isChallenge! &&
+        //     DateTime.parse(post.startDate!).isBefore(DateTime.now()) &&
+        //     DateTime.parse(post.endDate!).isAfter(DateTime.now())) ...[
+          if (isChallenge!) ...[
+          BlocProvider<ParticipationCubit>(
+            create: (_) => ParticipationCubit(),
+            child: ParticipationWidget(
+              postId: post.id!,
+              isAlreadyParticipant: post.userPostParticipation!.any(
+                  (participation) => participation.participantId! == user!.id!),
+              canEndChallenge: canEndChallenge,
+            ),
+          ),
+        ]
+      ],
+    );
   }
 }
