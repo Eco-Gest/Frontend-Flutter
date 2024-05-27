@@ -35,6 +35,20 @@ class _OnePostWidget extends State<OnePostWidget> {
     });
   }
 
+  bool canEndChallenge(PostModel post) {
+    if (post.type == 'challenge' && post.userPostParticipation != null) {
+      if (post.userPostParticipation!
+          .where((upp) =>
+              upp.isCompleted == false &&
+              upp.participantId ==
+                  context.read<AuthenticationCubit>().state.user!.id)
+          .isNotEmpty) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   @override
   Widget build(BuildContext context) {
     final UserModel? user = context.watch<AuthenticationCubit>().state.user;
@@ -73,6 +87,7 @@ class _OnePostWidget extends State<OnePostWidget> {
                         isChallenge: (post.type.toString() == 'challenge')
                             ? true
                             : false,
+                        canEndChallenge: canEndChallenge(post),
                       ),
                     ),
                   ],

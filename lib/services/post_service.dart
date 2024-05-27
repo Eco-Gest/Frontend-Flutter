@@ -4,14 +4,14 @@ import 'package:ecogest_front/services/authentication_service.dart';
 import 'package:ecogest_front/services/notifications/notifications_service.dart';
 import 'package:flutter/material.dart';
 
-
 class PostService {
   List<PostModel> allPosts = [];
   List<PostModel>? completedPosts;
   List<PostModel>? nextPosts;
   List<PostModel>? inProgressPosts;
   List<PostModel>? actionsPosts;
-  static final NotificationsService notificationsService = NotificationsService();
+  static final NotificationsService notificationsService =
+      NotificationsService();
 
   Future<List<PostModel>> getPosts(int pageNbr, bool forceReload) async {
     final String? token = await AuthenticationService.getToken();
@@ -25,7 +25,7 @@ class PostService {
       }).toList();
       allPosts = posts;
     }
-    // connect to pusher 
+    // connect to pusher
     notificationsService.connectPusher();
     return allPosts;
   }
@@ -51,77 +51,44 @@ class PostService {
       String keywordRoute, String? token, int userId) async {
     String backendRoute = '/users/$userId/challenges/completed';
 
-    if (completedPosts == null) {
-      final List<dynamic> responseMap =
-          await EcoGestApiDataSource.get(backendRoute, token: token);
-      final posts = responseMap.map((post) {
-        return PostModel.fromJson(post);
-      }).toList();
-      if (posts.isEmpty) {
-        completedPosts = [];
-      } else {
-        completedPosts = posts;
-      }
-    }
-
-    return completedPosts;
+    final List<dynamic> responseMap =
+        await EcoGestApiDataSource.get(backendRoute, token: token);
+    return responseMap.map((post) {
+      return PostModel.fromJson(post);
+    }).toList();
   }
 
   Future<List<PostModel>?> getNextPosts(
       String keywordRoute, String? token, int userId) async {
     String backendRoute = '/users/$userId/challenges/next';
 
-    if (nextPosts == null) {
-      final List<dynamic> responseMap =
-          await EcoGestApiDataSource.get(backendRoute, token: token);
-      final posts = responseMap.map((post) {
-        return PostModel.fromJson(post);
-      }).toList();
-      if (posts.isEmpty) {
-        nextPosts = [];
-      } else {
-        nextPosts = posts;
-      }
-    }
-    return nextPosts;
+    final List<dynamic> responseMap =
+        await EcoGestApiDataSource.get(backendRoute, token: token);
+    return responseMap.map((post) {
+      return PostModel.fromJson(post);
+    }).toList();
   }
 
   Future<List<PostModel>?> getInProgressPosts(
       String keywordRoute, String? token, int userId) async {
     String backendRoute = '/users/$userId/challenges/in-progress';
 
-    if (inProgressPosts == null) {
-      final List<dynamic> responseMap =
-          await EcoGestApiDataSource.get(backendRoute, token: token);
-      final posts = responseMap.map((post) {
-        return PostModel.fromJson(post);
-      }).toList();
-      if (posts.isEmpty) {
-        inProgressPosts = [];
-      } else {
-        inProgressPosts = posts;
-      }
-    }
-    return inProgressPosts;
+    final List<dynamic> responseMap =
+        await EcoGestApiDataSource.get(backendRoute, token: token);
+    return responseMap.map((post) {
+      return PostModel.fromJson(post);
+    }).toList();
   }
 
   Future<List<PostModel>?> getActionsPosts(
       String keywordRoute, String? token, int userId) async {
     String backendRoute = '/users/$userId/actions';
 
-    if (actionsPosts == null) {
-      final List<dynamic> responseMap =
-          await EcoGestApiDataSource.get(backendRoute, token: token);
-      final posts = responseMap.map((post) {
-        return PostModel.fromJson(post);
-      }).toList();
-      if (posts.isEmpty) {
-        actionsPosts = [];
-      } else {
-        actionsPosts = posts;
-      }
-    }
-    return actionsPosts;
+    final List<dynamic> responseMap =
+        await EcoGestApiDataSource.get(backendRoute, token: token);
+    return responseMap.map((post) {
+      return PostModel.fromJson(post);
+    }).toList();
   }
 
   Future<PostModel> getOnePost(int postId, bool forceReload) async {
