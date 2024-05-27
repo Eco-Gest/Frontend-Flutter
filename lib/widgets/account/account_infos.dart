@@ -110,9 +110,9 @@ class _AccountInfo extends State<AccountInfo>
                 if (userAuthenticated != null &&
                     userAuthenticated.id != user.id)
                   UserProfileMenu(
-                    userId: user.id!,
                     username: user.username ?? "Utilisateur",
                     isBlocked: isBlocked,
+                    user: user
                   ),
               ],
             ),

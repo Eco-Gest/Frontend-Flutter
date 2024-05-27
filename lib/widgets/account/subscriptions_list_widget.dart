@@ -125,7 +125,7 @@ class _SubscriptionsListWidget extends State<SubscriptionsListWidget> {
                                 style: TextStyle(color: Colors.white),
                               ),
                             ),
-                          ]
+                          ] 
                         ]),
                   );
                 });
