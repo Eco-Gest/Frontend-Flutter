@@ -289,7 +289,7 @@ class _UserView extends State<UserView> {
                                       ),
                                       const SizedBox(height: 20),
                                       Padding(
-                                        padding: EdgeInsets.symmetric(
+                                        padding: const EdgeInsets.symmetric(
                                             horizontal: 10.0),
                                         child: Container(
                                           height: 1.0,
@@ -351,6 +351,10 @@ class _UserView extends State<UserView> {
 
                                     // New Widget: Account Trophies
                                     AccountTrophies(userId: state.user!.id!),
+                                    const SizedBox(height: 20),
+
+                                    PostsUserviewWidget(
+                                        userId: state.user!.id!),
                                   ],
                                 ),
                               );
