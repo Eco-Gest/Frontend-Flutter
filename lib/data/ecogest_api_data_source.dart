@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
 class EcoGestApiDataSource {
@@ -18,9 +19,11 @@ class EcoGestApiDataSource {
   // static const _baseUrl = "https://ecogest.onrender.com/api";
 
   static Map<String, String> _getHeaders(String? token) {
+    String apiKey = dotenv.env['API_KEY'].toString();
     return <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
-      if (token != null) 'Authorization': 'Bearer $token'
+      if (token != null) 'Authorization': 'Bearer $token',
+      'x-api-key': apiKey,
     };
   }
 
