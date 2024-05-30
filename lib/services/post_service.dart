@@ -143,6 +143,10 @@ class PostService {
         '/posts/${postModel.id}', body,
         token: token);
 
+    if (result['error'] != null) {
+      throw Exception(result['error']);
+    }
+
     if (postModel.image != null) {
       await EcoGestApiDataSource.addImage(
           '/posts/${result['id']}/uploadImage', postModel.image!,
