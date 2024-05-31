@@ -66,7 +66,7 @@ class _OnePostWidget extends State<OnePostWidget> {
                   children: [
                     // Author info
                     PostContentAuthor(
-                        postId: widget.post.id!,
+                        post: widget.post,
                         author: post.user,
                         position: post.position,
                         date: post.createdAt),

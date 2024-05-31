@@ -77,6 +77,8 @@ class EcoGestApiDataSource {
 
     if (response.statusCode > 199 && response.statusCode <= 299) {
       return jsonDecode(response.body);
+    } else if (response.statusCode == 409) {
+      return jsonDecode(response.body);
     } else {
       throw Exception(error);
     }

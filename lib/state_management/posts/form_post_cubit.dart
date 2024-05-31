@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:ecogest_front/models/category_model.dart';
 import 'package:ecogest_front/models/post_model.dart';
 import 'package:ecogest_front/models/tag_model.dart';
@@ -24,7 +22,6 @@ class PostFormCubit extends Cubit<PostFormState> {
   static final PostService postService = PostService();
   static final CategoryService categoryService = CategoryService();
 
-
   Future<void> getDefaults() async {
     final categories = await categoryService.getCategories();
     final firstCategory =
@@ -40,7 +37,8 @@ class PostFormCubit extends Cubit<PostFormState> {
     ));
   }
 
-  Future<void> getValuesEdit(PostType type, int categoryId, PostLevel level) async {
+  Future<void> getValuesEdit(
+      PostType type, int categoryId, PostLevel level) async {
     final categories = await categoryService.getCategories();
 
     emit(SelectionState(
@@ -59,6 +57,7 @@ class PostFormCubit extends Cubit<PostFormState> {
       emit(selectionState.copyWith(selectedType: type));
       return type.name;
     }
+    return null;
   }
 
   void selectPostLevel(PostLevel level) {
@@ -106,7 +105,7 @@ class PostFormCubit extends Cubit<PostFormState> {
       emit(PostFormStateSuccess(result));
     } catch (e) {
       emit(const PostFormStateError(
-          "Erreur rencontrée pour votre publication. Veuillez réessayer."));
+          "Erreur rencontrée lors de la création de votre publication. Veuillez réessayer."));
     }
   }
 
@@ -142,7 +141,13 @@ class PostFormCubit extends Cubit<PostFormState> {
       final result = await postService.updatePost(post);
       emit(PostFormStateSuccess(result));
     } catch (e) {
-      emit(PostFormStateError(e.toString()));
+      if (e.toString().contains('participants')) {
+        emit(const PostFormStateError(
+            "Vous ne pouvez pas mettre à jour cette publication car il y a d'autres participants."));
+      } else {
+        emit(const PostFormStateError(
+            "Erreur rencontrée lors de la mise à jour de votre publication. Veuillez réessayer."));
+      }
     }
   }
 }

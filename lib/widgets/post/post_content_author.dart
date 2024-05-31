@@ -1,3 +1,4 @@
+import 'package:ecogest_front/models/post_model.dart';
 import 'package:ecogest_front/models/user_model.dart';
 import 'package:ecogest_front/views/users/user_view.dart';
 import 'package:flutter/material.dart';
@@ -13,22 +14,21 @@ class PostContentAuthor extends StatelessWidget {
     required this.author,
     this.position,
     this.date,
-    this.postId,
+    required this.post,
   }) : super(key: key);
 
   final UserModel? author;
   final String? position;
   final String? date;
-  final int? postId;
+  final PostModel post;
 
   @override
   Widget build(BuildContext context) {
-    final user = context.watch<AuthenticationCubit>().state.user;
     DateTime dateInFormat = DateTime.parse(date.toString());
     String publicationDate =
         DateFormat('dd/MM/yyyy', 'fr_FR').format(dateInFormat);
 
-    final int postId = this.postId ?? 0;
+    final int postId = post.id!;
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -95,7 +95,7 @@ class PostContentAuthor extends StatelessWidget {
             }()),
           ],
         ),
-        PostContentMenu(author: author, postId: postId),
+        PostContentMenu(author: author, post: post),
       ],
     );
   }

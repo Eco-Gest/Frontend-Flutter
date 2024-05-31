@@ -95,7 +95,7 @@ class _PostsList extends State<PostsList> {
                             author: posts[index].user,
                             position: posts[index].position,
                             date: posts[index].createdAt,
-                            postId: posts[index].id),
+                            post: posts[index]),
                         const PostSeparator(),
                         // Post info
                         InkWell(
