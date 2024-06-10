@@ -1,7 +1,6 @@
 import 'package:ecogest_front/services/users_relation_service.dart';
 import 'package:ecogest_front/state_management/users_relation/users_relation_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter/material.dart';	
 
 class UsersRelationCubit extends Cubit<UsersRelationState> {
   UsersRelationCubit() : super(UsersRelationStateInitial());
@@ -21,7 +20,6 @@ class UsersRelationCubit extends Cubit<UsersRelationState> {
   }
 
   Future<void> unSubscribe(int userId) async {
-    debugPrint("unSubscribe");
     try {
       emit(UsersRelationStateLoading());
       await UsersRelationService.unSubscribe(userId);
@@ -47,7 +45,6 @@ class UsersRelationCubit extends Cubit<UsersRelationState> {
   }
 
   Future<void> removeFollower(int userId) async {
-    debugPrint("removeFollower");
     try {
       emit(UsersRelationStateLoading());
       await UsersRelationService.removeFollower(userId);
