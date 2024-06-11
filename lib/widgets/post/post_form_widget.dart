@@ -230,7 +230,7 @@ class _PostFormWidget extends State<PostFormWidget> {
                                 ? null
                                 : "Dates non valides. Veuillez sélectionner une date de début et de fin.",
                             initialValue: startDate,
-                            initialDate: startDate,
+                            initialPickerDateTime: startDate,
                             mode: DateTimeFieldPickerMode.date,
                             decoration: const InputDecoration(
                               hintStyle: TextStyle(color: Colors.black45),
@@ -239,7 +239,7 @@ class _PostFormWidget extends State<PostFormWidget> {
                               suffixIcon: Icon(Icons.event_note),
                               labelText: 'Date',
                             ),
-                            onDateSelected: (value) {
+                            onChanged: (value) {
                               startDate = value;
                             },
                           ),
@@ -257,7 +257,7 @@ class _PostFormWidget extends State<PostFormWidget> {
                                 ? null
                                 : 'Dates non valides. La date de fin doit être au moins un jour après la date de début.',
                             initialValue: endDate,
-                            initialDate: endDate,
+                            initialPickerDateTime: endDate,
                             mode: DateTimeFieldPickerMode.date,
                             decoration: const InputDecoration(
                               hintStyle: TextStyle(color: Colors.black45),
@@ -266,7 +266,7 @@ class _PostFormWidget extends State<PostFormWidget> {
                               suffixIcon: Icon(Icons.event_note),
                               labelText: 'Date',
                             ),
-                            onDateSelected: (value) {
+                            onChanged: (value) {
                               endDate = value;
                             },
                           ),

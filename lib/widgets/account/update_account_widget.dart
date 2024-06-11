@@ -157,7 +157,7 @@ class _UpdateAccountWidget extends State<UpdateAccountWidget> {
                                         DateTime.now().year - 20,
                                         DateTime.now().month,
                                         DateTime.now().day),
-                                    initialDate: DateTime(
+                                    initialPickerDateTime: DateTime(
                                         DateTime.now().year - 20,
                                         DateTime.now().month,
                                         DateTime.now().day),
@@ -171,7 +171,7 @@ class _UpdateAccountWidget extends State<UpdateAccountWidget> {
                                       suffixIcon: Icon(Icons.event_note),
                                       labelText: 'Date d\'anniversaire',
                                     ),
-                                    onDateSelected: (value) {
+                                    onChanged: (value) {
                                       birthdate = value;
                                     },
                                   ),
