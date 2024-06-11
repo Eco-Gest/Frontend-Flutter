@@ -23,7 +23,7 @@ class UsersRelationCubit extends Cubit<UsersRelationState> {
     try {
       emit(UsersRelationStateLoading());
       await UsersRelationService.unSubscribe(userId);
-      emit(UnSubscriptionStateSuccess());
+      emit(UnSubscriptionStateSuccess(userId));
     } catch (error) {
       emit(UsersRelationStateError("Erreur rencontrée. Veuillez réessayer."));
     }
@@ -48,7 +48,7 @@ class UsersRelationCubit extends Cubit<UsersRelationState> {
     try {
       emit(UsersRelationStateLoading());
       await UsersRelationService.removeFollower(userId);
-      emit(RemoveFollowerStateSuccess());
+      emit(RemoveFollowerStateSuccess(userId));
     } catch (error) {
       emit(UsersRelationStateError("Erreur rencontrée. Veuillez réessayer."));
     }
