@@ -10,6 +10,7 @@ import 'package:ecogest_front/assets/ecogest_theme.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 
 class UpdateAccountWidget extends StatefulWidget {
   UpdateAccountWidget({super.key, required this.user});
@@ -162,6 +163,7 @@ class _UpdateAccountWidget extends State<UpdateAccountWidget> {
                                         DateTime.now().month,
                                         DateTime.now().day),
                                     mode: DateTimeFieldPickerMode.date,
+                                    dateFormat: DateFormat.yMMMd('fr_FR'),
                                     decoration: const InputDecoration(
                                       hintStyle:
                                           TextStyle(color: Colors.black45),
@@ -171,7 +173,7 @@ class _UpdateAccountWidget extends State<UpdateAccountWidget> {
                                       suffixIcon: Icon(Icons.event_note),
                                       labelText: 'Date d\'anniversaire',
                                     ),
-                                    onChanged: (value) {
+                                    onChanged: (DateTime? value) {
                                       birthdate = value;
                                     },
                                   ),
