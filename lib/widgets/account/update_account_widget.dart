@@ -61,6 +61,8 @@ class _UpdateAccountWidget extends State<UpdateAccountWidget> {
         ? null
         : DateTime.parse(user.birthdate!);
     bool isPrivateController = user.isPrivate!;
+    final DateTime defaultDate = DateTime.now().subtract(Duration(days: 365 * 20));
+    
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -154,14 +156,8 @@ class _UpdateAccountWidget extends State<UpdateAccountWidget> {
                                   child: DateTimeFormField(
                                     autovalidateMode:
                                         AutovalidateMode.onUserInteraction,
-                                    initialValue: DateTime(
-                                        DateTime.now().year - 20,
-                                        DateTime.now().month,
-                                        DateTime.now().day),
-                                    initialPickerDateTime: DateTime(
-                                        DateTime.now().year - 20,
-                                        DateTime.now().month,
-                                        DateTime.now().day),
+                                    initialValue: birthdate ?? defaultDate,
+                                    initialPickerDateTime: birthdate ?? defaultDate,
                                     mode: DateTimeFieldPickerMode.date,
                                     dateFormat: DateFormat.yMMMd('fr_FR'),
                                     decoration: const InputDecoration(
