@@ -123,7 +123,7 @@ class SettingsView extends StatelessWidget {
                   SizedBox(
                       width: (MediaQuery.of(context).size.width - 26) / 2,
                       height: 50.0,
-                      child: ElevatedButton(
+                      child: FilledButton(
                         onPressed: () {
                           context.read<AuthenticationCubit>().logout();
                         },

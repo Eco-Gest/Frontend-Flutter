@@ -130,7 +130,7 @@ class _ChangePasswordView extends State<ChangePasswordView> {
                         obscureText: !_passwordVisible,
                         decoration: InputDecoration(
                           border: const OutlineInputBorder(),
-                          labelText: 'Nouveua mot de passe',
+                          labelText: 'Nouveau mot de passe',
                           hintText: 'Entrez votre nouveau mot de passe',
                           suffixIcon: IconButton(
                             icon: Icon(
