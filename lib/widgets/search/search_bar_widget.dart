@@ -28,21 +28,22 @@ class SearchBarWidget extends StatelessWidget {
                 : 'Recherche non valide',
           ),
         ),
-        FilledButton(
-          child: const Text(
-            'Rechercher',
-          ),
-          style: FilledButton.styleFrom(
-            fixedSize: Size(400, 50),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10.0),
+        SizedBox(
+          width: 300,
+          child: FilledButton(
+            style: TextButton.styleFrom(
+              minimumSize: const Size.fromHeight(50),
+              padding: const EdgeInsets.all(20),
             ),
+            onPressed: () {
+              context
+                  .read<SearchCubit>()
+                  .getSearchResults(queryController.text);
+            },
+            child: const Text(style: TextStyle(fontSize: 18), "Rechercher"),
           ),
-          onPressed: () {
-            context.read<SearchCubit>().getSearchResults(queryController.text);
-          },
         ),
-          SizedBox(height: 20),
+        SizedBox(height: 20),
       ],
     );
   }
