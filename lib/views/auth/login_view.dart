@@ -42,200 +42,203 @@ class _LoginView extends State<LoginView> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
-        child: Stack(
-          children: [
-            Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  // Logo
-                  Container(
-                    alignment: Alignment.topCenter,
-                    padding: const EdgeInsets.all(20),
-                    width: 300,
-                    child: Image.asset('assets/logo/logo-color.png'),
-                  ),
-
-                  Container(
-                    alignment: Alignment.center,
-                    padding: const EdgeInsets.all(10),
-                    child: const Column(children: [
-                      Text(
-                        'Vous avez déjà un compte ?',
-                        style: TextStyle(fontSize: 18),
+        child: Padding(
+        padding: const EdgeInsets.only(top: 40),
+            child: Stack(
+              children: [
+                Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      // Logo
+                      Container(
+                        alignment: Alignment.topCenter,
+                        padding: const EdgeInsets.all(20),
+                        width: 300,
+                        child: Image.asset('assets/logo/logo-color.png'),
                       ),
-                      Text(
-                        'Heureux de vous revoir',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      )
-                    ]),
-                  ),
 
-                  // Input email
-                  Container(
-                    alignment: Alignment.topCenter,
-                    padding: const EdgeInsets.all(10),
-                    child: TextFormField(
-                      controller: emailController,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'Email',
-                        hintText: 'Entrez votre email',
-                      ),
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                      validator: (value) => EmailValidator.validate(value!)
-                          ? null
-                          : 'Veuillez entrer un email valide',
-                    ),
-                  ),
-
-                  // Input password
-                  Container(
-                    alignment: Alignment.topCenter,
-                    padding: const EdgeInsets.all(10),
-                    child: TextFormField(
-                      controller: passwordController,
-                      obscureText: !_passwordVisible,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'Mot de passe',
-                        hintText: 'Entrez votre mot de passe',
-                        suffixIcon: IconButton(
-                          icon: Icon(
-                            _passwordVisible
-                                ? Icons.visibility_off
-                                : Icons.visibility,
+                      Container(
+                        alignment: Alignment.center,
+                        padding: const EdgeInsets.all(10),
+                        child: const Column(children: [
+                          Text(
+                            'Vous avez déjà un compte ?',
+                            style: TextStyle(fontSize: 18),
                           ),
-                          onPressed: () {
-                            setState(() {
-                              _passwordVisible = !_passwordVisible;
-                            });
-                          },
-                        ),
-                      ),
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                      validator: (value) => (validatePassword(value!) &&
-                              value.length >= 8)
-                          ? null
-                          : 'Le mot de passe doit ếtre long de 8 caractères \net doit contenir une lettre majuscule et minuscule \nun chiffre et un caractère spécial',
-                    ),
-                  ),
-
-                  // Forgot password
-                  TextButton(
-                    onPressed: () {
-                      GoRouter.of(context).goNamed(ResetPasswordView.name);
-                    },
-                    child: const Padding(
-                      padding: EdgeInsets.all(16.0),
-                      child: Text(
-                        style: TextStyle(fontSize: 18),
-                        'Mot de passe oublié ?',
-                      ),
-                    ),
-                  ),
-
-                  BlocListener<AuthenticationCubit, AuthenticationState>(
-                    // Error message if user is not allowed to connect
-                    listener: (context, state) {
-                      final status = context.read<AuthenticationCubit>().state;
-
-                      if (status is AuthenticationUnauthenticated) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text(
-                              "Identifiants incorrects",
-                              style: TextStyle(color: Colors.white),
+                          Text(
+                            'Heureux de vous revoir',
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
                             ),
-                            backgroundColor: Colors.red,
+                          )
+                        ]),
+                      ),
+
+                      // Input email
+                      Container(
+                        alignment: Alignment.topCenter,
+                        padding: const EdgeInsets.all(10),
+                        child: TextFormField(
+                          controller: emailController,
+                          decoration: const InputDecoration(
+                            border: OutlineInputBorder(),
+                            labelText: 'Email',
+                            hintText: 'Entrez votre email',
                           ),
-                        );
-                      } else if (status is AuthenticationAuthenticated) {
-                        // Show only CircularProgressIndicator
-                        showDialog(
-                          context: context,
-                          barrierDismissible: false,
-                          builder: (context) {
-                            return Stack(
-                              children: [
-                                // Background: Full-screen white background
-                                Positioned.fill(
-                                  child: Container(
-                                    color: Colors
-                                        .white, // Adjust the opacity as needed
-                                  ),
-                                ),
-                                // Centered CircularProgressIndicator
-                                Center(
-                                  child: CircularProgressIndicator(),
-                                ),
-                              ],
-                            );
-                          },
-                        );
-                      }
-                    },
-
-                    // Connect button
-
-                    child: SizedBox(
-                      width: 300,
-                      child: FilledButton(
-                        style: TextButton.styleFrom(
-                          minimumSize: const Size.fromHeight(50),
-                          padding: const EdgeInsets.all(20),
-                        ),
-                        onPressed: () {
-                          context.read<AuthenticationCubit>().login(
-                                email: emailController.text,
-                                password: passwordController.text,
-                              );
-                        },
-                        child: const Text(
-                          style: TextStyle(fontSize: 18),
-                          'Se connecter',
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
+                          validator: (value) => EmailValidator.validate(value!)
+                              ? null
+                              : 'Veuillez entrer un email valide',
                         ),
                       ),
-                    ),
-                  ),
 
-                  // Link s'inscrire
-                  Container(
-                    alignment: Alignment.center,
-                    padding: const EdgeInsets.all(40),
-                    child: Column(children: [
-                      const Text(
-                        'Vous souhaitez créer un compte ?',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 18,
+                      // Input password
+                      Container(
+                        alignment: Alignment.topCenter,
+                        padding: const EdgeInsets.all(10),
+                        child: TextFormField(
+                          controller: passwordController,
+                          obscureText: !_passwordVisible,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            labelText: 'Mot de passe',
+                            hintText: 'Entrez votre mot de passe',
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                _passwordVisible
+                                    ? Icons.visibility_off
+                                    : Icons.visibility,
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  _passwordVisible = !_passwordVisible;
+                                });
+                              },
+                            ),
+                          ),
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
+                          validator: (value) => (validatePassword(value!) &&
+                                  value.length >= 8)
+                              ? null
+                              : 'Le mot de passe doit ếtre long de 8 caractères \net doit contenir une lettre majuscule et minuscule \nun chiffre et un caractère spécial',
                         ),
                       ),
+
+                      // Forgot password
                       TextButton(
-                        style: TextButton.styleFrom(
-                          textStyle: const TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
+                        onPressed: () {
+                          GoRouter.of(context).goNamed(ResetPasswordView.name);
+                        },
+                        child: const Padding(
+                          padding: EdgeInsets.all(16.0),
+                          child: Text(
+                            style: TextStyle(fontSize: 18),
+                            'Mot de passe oublié ?',
                           ),
                         ),
-                        onPressed: () {
-                          GoRouter.of(context).goNamed(RegisterView.name);
+                      ),
+
+                      BlocListener<AuthenticationCubit, AuthenticationState>(
+                        // Error message if user is not allowed to connect
+                        listener: (context, state) {
+                          final status = context.read<AuthenticationCubit>().state;
+
+                          if (status is AuthenticationUnauthenticated) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text(
+                                  "Identifiants incorrects",
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                                backgroundColor: Colors.red,
+                              ),
+                            );
+                          } else if (status is AuthenticationAuthenticated) {
+                            // Show only CircularProgressIndicator
+                            showDialog(
+                              context: context,
+                              barrierDismissible: false,
+                              builder: (context) {
+                                return Stack(
+                                  children: [
+                                    // Background: Full-screen white background
+                                    Positioned.fill(
+                                      child: Container(
+                                        color: Colors
+                                            .white, // Adjust the opacity as needed
+                                      ),
+                                    ),
+                                    // Centered CircularProgressIndicator
+                                    Center(
+                                      child: CircularProgressIndicator(),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          }
                         },
-                        child: const Text(
-                          'S\'inscrire',
+
+                        // Connect button
+
+                        child: SizedBox(
+                          width: 300,
+                          child: FilledButton(
+                            style: TextButton.styleFrom(
+                              minimumSize: const Size.fromHeight(50),
+                              padding: const EdgeInsets.all(20),
+                            ),
+                            onPressed: () {
+                              context.read<AuthenticationCubit>().login(
+                                    email: emailController.text,
+                                    password: passwordController.text,
+                                  );
+                            },
+                            child: const Text(
+                              style: TextStyle(fontSize: 18),
+                              'Se connecter',
+                            ),
+                          ),
                         ),
                       ),
-                    ]),
+
+                      // Link s'inscrire
+                      Container(
+                        alignment: Alignment.center,
+                        padding: const EdgeInsets.all(40),
+                        child: Column(children: [
+                          const Text(
+                            'Vous souhaitez créer un compte ?',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 18,
+                            ),
+                          ),
+                          TextButton(
+                            style: TextButton.styleFrom(
+                              textStyle: const TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            onPressed: () {
+                              GoRouter.of(context).goNamed(RegisterView.name);
+                            },
+                            child: const Text(
+                              'S\'inscrire',
+                            ),
+                          ),
+                        ]),
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
       ),
     );
   }
