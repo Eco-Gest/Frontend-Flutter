@@ -14,12 +14,14 @@ import 'package:ecogest_front/core/router.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:ecogest_front/assets/ecogest_theme.dart';
 import 'package:notification_permissions/notification_permissions.dart';
+import 'package:intl/intl.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load();
-
-  initializeDateFormatting('fr_FR', null).then((_) => runApp(MainApp()));
+  await initializeDateFormatting('fr_FR', null);
+  runApp(MainApp());
 }
 
 class MainApp extends StatefulWidget {
@@ -93,6 +95,14 @@ class _MainApp extends State<MainApp> {
                       useMaterial3: true, colorScheme: darkColorScheme),
                   themeMode: state.themeMode,
                   routerConfig: router,
+                  localizationsDelegates: [
+                      GlobalMaterialLocalizations.delegate,
+                      GlobalWidgetsLocalizations.delegate,
+                      GlobalCupertinoLocalizations.delegate,
+                    ],
+                    supportedLocales: [
+                      const Locale('fr', 'FR'),
+                    ],
                 );
               });
             });

@@ -10,6 +10,7 @@ import 'package:ecogest_front/assets/ecogest_theme.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 
 class UpdateAccountWidget extends StatefulWidget {
   UpdateAccountWidget({super.key, required this.user});
@@ -60,6 +61,8 @@ class _UpdateAccountWidget extends State<UpdateAccountWidget> {
         ? null
         : DateTime.parse(user.birthdate!);
     bool isPrivateController = user.isPrivate!;
+    final DateTime defaultDate = DateTime.now().subtract(Duration(days: 365 * 20));
+    
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -153,15 +156,10 @@ class _UpdateAccountWidget extends State<UpdateAccountWidget> {
                                   child: DateTimeFormField(
                                     autovalidateMode:
                                         AutovalidateMode.onUserInteraction,
-                                    initialValue: DateTime(
-                                        DateTime.now().year - 20,
-                                        DateTime.now().month,
-                                        DateTime.now().day),
-                                    initialPickerDateTime: DateTime(
-                                        DateTime.now().year - 20,
-                                        DateTime.now().month,
-                                        DateTime.now().day),
+                                    initialValue: birthdate ?? defaultDate,
+                                    initialPickerDateTime: birthdate ?? defaultDate,
                                     mode: DateTimeFieldPickerMode.date,
+                                    dateFormat: DateFormat.yMMMd('fr_FR'),
                                     decoration: const InputDecoration(
                                       hintStyle:
                                           TextStyle(color: Colors.black45),
@@ -171,7 +169,7 @@ class _UpdateAccountWidget extends State<UpdateAccountWidget> {
                                       suffixIcon: Icon(Icons.event_note),
                                       labelText: 'Date d\'anniversaire',
                                     ),
-                                    onChanged: (value) {
+                                    onChanged: (DateTime? value) {
                                       birthdate = value;
                                     },
                                   ),
