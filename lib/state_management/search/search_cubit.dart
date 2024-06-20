@@ -8,15 +8,15 @@ part 'search_state.dart';
 class SearchCubit extends Cubit<SearchState> {
   SearchCubit() : super(SearchStateInitial());
 
-  Future<void> getSearchResults(String query) async {
+  Future<void> getSearchResults(String untrimmedQuery) async {
     try {
       emit(SearchStateLoading());
+      final query = untrimmedQuery.trim();
       final users = await SearchService.searchUsers(query);
       final posts = await SearchService.searchPosts(query);
       emit(SearchStateSuccess(users, posts));
     } catch (error) {
-      emit(SearchStateError(error.toString()));
-      // emit(SearchStateError("Erreur rencontrée pour votre recherche. Veuillez réessayer."));
+      emit(SearchStateError("Une erreur est survenue lors de votre recherche. Veuillez réessayer."));
     }
   }
 }

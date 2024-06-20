@@ -19,7 +19,12 @@ class SearchResultsWidget extends StatelessWidget {
             child: CircularProgressIndicator(),
           );
         } else if (state is SearchStateError) {
-          return Center(child: Text(state.message));
+          return Center(
+             child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 16.0), // Ajustez la valeur pour définir la marge souhaitée
+                child: Text(state.message),
+              ),
+            );
         } else if (state is SearchStateSuccess) {
           return Column(children: [
             Text(state.posts.isEmpty
