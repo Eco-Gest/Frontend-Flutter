@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:date_field/date_field.dart';
 import 'package:ecogest_front/models/user_model.dart';
 import 'package:ecogest_front/state_management/user/user_cubit.dart';
@@ -10,6 +9,7 @@ import 'package:ecogest_front/assets/ecogest_theme.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:intl/intl.dart';
 
 class UpdateAccountWidget extends StatefulWidget {
@@ -177,9 +177,9 @@ class _UpdateAccountWidget extends State<UpdateAccountWidget> {
                                 Column(
                                   children: [
                                     const Text('Sélectionnez une image'),
-                                    OutlinedButton(
-                                      onPressed: getImage,
-                                      child: _buildImage(),
+                                    GestureDetector(
+                                      onTap: getImage,
+                                      child: _buildImage(user.image),
                                     ),
                                   ],
                                 ),
@@ -237,17 +237,49 @@ class _UpdateAccountWidget extends State<UpdateAccountWidget> {
     );
   }
 
-  Widget _buildImage() {
-    if (_image == null) {
-      return const Padding(
-        padding: EdgeInsets.all(10),
-        child: Icon(
-          Icons.add,
-          color: Colors.grey,
+  Widget _buildImage(String? userImageUrl) {
+    if (_image == null && userImageUrl == null) {
+      return Container(
+        width: 120,
+        height: 120,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          border: Border.all(color: Colors.grey, width: 2),
+        ),
+        child: Center(
+          child: Icon(
+            Icons.add,
+            color: Colors.grey,
+          ),
         ),
       );
     } else {
-      return Text(_image!.path);
+      return Stack(
+        alignment: Alignment.center,
+        children: [
+          Container(
+            width: 120,
+            height: 120,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all(color: Colors.grey, width: 2),
+              image: DecorationImage(
+                image: _image != null
+                    ? (kIsWeb
+                        ? NetworkImage(_image!.path) as ImageProvider<Object>
+                        : FileImage(_image!))
+                    : NetworkImage(userImageUrl!),
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+          Icon(
+            Icons.add,
+            color: Colors.grey.withOpacity(0.6),
+            size: 40,
+          ),
+        ],
+      );
     }
   }
 }

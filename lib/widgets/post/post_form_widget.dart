@@ -13,6 +13,7 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter_tagging_plus/flutter_tagging_plus.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:intl/intl.dart';
 
 class PostFormWidget extends StatefulWidget {
@@ -31,7 +32,6 @@ class _PostFormWidget extends State<PostFormWidget> {
   final descriptionController = TextEditingController();
   final positionController = TextEditingController();
   final tagController = TextEditingController();
-  final imageController = TextEditingController();
 
   DateTime? startDate;
   DateTime? endDate;
@@ -67,7 +67,6 @@ class _PostFormWidget extends State<PostFormWidget> {
     titleController.text = prefilledPost?.title ?? '';
     descriptionController.text = prefilledPost?.description ?? '';
     positionController.text = prefilledPost?.position ?? '';
-    imageController.text = prefilledPost?.image ?? '';
     if (prefilledPost!.type == "action") {
       _selectedPostType = [true, false];
     } else {
@@ -337,9 +336,9 @@ class _PostFormWidget extends State<PostFormWidget> {
                   Column(
                     children: [
                       const Text('Sélectionnez une image'),
-                      OutlinedButton(
-                        onPressed: getImage,
-                        child: _buildImage(),
+                      GestureDetector(
+                        onTap: getImage,
+                        child: _buildImage(prefilledPost.image),
                       ),
                     ],
                   ),
@@ -405,17 +404,51 @@ class _PostFormWidget extends State<PostFormWidget> {
     );
   }
 
-  Widget _buildImage() {
-    if (_image == null) {
-      return const Padding(
-        padding: EdgeInsets.all(10),
-        child: Icon(
-          Icons.add,
-          color: Colors.grey,
+Widget _buildImage(String? postImageUrl) {
+
+    if (_image == null && postImageUrl == null) {
+      return Container(
+        width: 200,
+        height: 200,
+        decoration: BoxDecoration(
+          border: Border.all(color: Colors.grey),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Center(
+          child: Icon(
+            Icons.add,
+            color: Colors.grey,
+          ),
         ),
       );
     } else {
-      return Text(_image!.path);
+        return Stack(
+        alignment: Alignment.center,
+        children: [
+           Container(
+        width: 200,
+        height: 200,
+        decoration: BoxDecoration(
+          border: Border.all(color: Colors.grey),
+          borderRadius: BorderRadius.circular(10),
+          image: DecorationImage(
+                image: _image != null
+                    ? (kIsWeb
+                        ? NetworkImage(_image!.path) as ImageProvider<Object>
+                        : FileImage(_image!))
+                    : NetworkImage(postImageUrl!),
+                fit: BoxFit.cover,
+              ),
+        ),
+      ),
+      Icon(
+            Icons.add,
+            color: Colors.grey.withOpacity(0.6),
+            size: 40,
+          ),
+        ],
+      );
     }
   }
 }
+
