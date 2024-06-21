@@ -14,6 +14,7 @@ import 'package:flutter_tagging_plus/flutter_tagging_plus.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:intl/intl.dart';
 
 class PostFormWidget extends StatefulWidget {
   PostFormWidget({Key? key, this.prefilledPost}) : super(key: key);
@@ -231,6 +232,7 @@ class _PostFormWidget extends State<PostFormWidget> {
                             initialValue: startDate,
                             initialPickerDateTime: startDate,
                             mode: DateTimeFieldPickerMode.date,
+                            dateFormat: DateFormat.yMMMd('fr_FR'),
                             decoration: const InputDecoration(
                               hintStyle: TextStyle(color: Colors.black45),
                               errorStyle: TextStyle(color: Colors.redAccent),
@@ -258,6 +260,7 @@ class _PostFormWidget extends State<PostFormWidget> {
                             initialValue: endDate,
                             initialPickerDateTime: endDate,
                             mode: DateTimeFieldPickerMode.date,
+                            dateFormat: DateFormat.yMMMd('fr_FR'),
                             decoration: const InputDecoration(
                               hintStyle: TextStyle(color: Colors.black45),
                               errorStyle: TextStyle(color: Colors.redAccent),

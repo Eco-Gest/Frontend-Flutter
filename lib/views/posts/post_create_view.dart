@@ -15,6 +15,7 @@ import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:intl/intl.dart';
 
 class PostCreateView extends StatefulWidget {
   const PostCreateView({Key? key}) : super(key: key);
@@ -224,6 +225,7 @@ class _PostCreateView extends State<PostCreateView> {
                                   initialValue: startDate,
                                   initialPickerDateTime: startDate,
                                   mode: DateTimeFieldPickerMode.date,
+                                  dateFormat: DateFormat.yMMMd('fr_FR'),
                                   decoration: const InputDecoration(
                                     hintStyle: TextStyle(color: Colors.black45),
                                     errorStyle:
@@ -253,6 +255,7 @@ class _PostCreateView extends State<PostCreateView> {
                                   initialValue: endDate,
                                   initialPickerDateTime: endDate,
                                   mode: DateTimeFieldPickerMode.date,
+                                  dateFormat: DateFormat.yMMMd('fr_FR'),
                                   decoration: const InputDecoration(
                                     hintStyle: TextStyle(color: Colors.black45),
                                     errorStyle:
