@@ -13,7 +13,9 @@ import 'package:ecogest_front/state_management/authentication/authentication_cub
 import 'package:ecogest_front/core/router.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:ecogest_front/assets/ecogest_theme.dart';
-import 'package:notification_permissions/notification_permissions.dart';
+import 'package:notification_permissions/notification_permissions.dart' as notification_permissions;
+import 'package:permission_handler/permission_handler.dart' as permission_handler;
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -31,9 +33,7 @@ class MainApp extends StatefulWidget {
 
 class _MainApp extends State<MainApp> {
   final AuthenticationCubit authenticationCubit = AuthenticationCubit();
-
   final NotificationsService notificationsService = NotificationsService();
-
   late Future<String?> permissionStatusFuture;
 
   var permGranted = "granted";
@@ -43,16 +43,16 @@ class _MainApp extends State<MainApp> {
 
   /// Checks the notification permission status
   Future<String?> getCheckNotificationPermStatus() {
-    return NotificationPermissions.getNotificationPermissionStatus()
+    return notification_permissions.NotificationPermissions.getNotificationPermissionStatus()
         .then((status) {
       switch (status) {
-        case PermissionStatus.denied:
+        case notification_permissions.PermissionStatus.denied:
           return permDenied;
-        case PermissionStatus.granted:
+        case notification_permissions.PermissionStatus.granted:
           return permGranted;
-        case PermissionStatus.unknown:
+        case notification_permissions.PermissionStatus.unknown:
           return permUnknown;
-        case PermissionStatus.provisional:
+        case notification_permissions.PermissionStatus.provisional:
           return permProvisional;
         default:
           return null;
@@ -62,11 +62,20 @@ class _MainApp extends State<MainApp> {
 
   @override
   void initState() {
+    requestPermissions();
     listenToNotification();
     permissionStatusFuture = getCheckNotificationPermStatus();
     super.initState();
   }
 
+
+  Future<void> requestPermissions() async {
+    var status = await permission_handler.Permission.storage.status;
+    if (!status.isGranted) {
+      await permission_handler.Permission.storage.request();
+    }
+  }
+  
   Widget build(BuildContext context) {
     final GoRouter router = AppRouter.routerWithAuthStream(
       authenticationCubit.stream,

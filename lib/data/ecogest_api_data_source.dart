@@ -10,14 +10,12 @@ class EcoGestApiDataSource {
 
   // to test on android emulator try this for HTTP request:
   // static const _baseUrl = "http://10.0.2.2:8080/api";
-   static const _baseUrl = "http://localhost:8080/api";
-  //static const _baseUrl = "https://ecogest.org/api";
+  //static const _baseUrl = "http://localhost:8080/api";
+  static const _baseUrl = "https://ecogest.org/api";
 
   static get baseUrl {
     return _baseUrl;
   }
-
-  // static const _baseUrl = "https://ecogest.onrender.com/api";
 
   static Map<String, String> _getHeaders(String? token) {
     String apiKey = dotenv.env['API_KEY'].toString();
@@ -69,7 +67,6 @@ class EcoGestApiDataSource {
       {String error = 'Failed to patch data', String? token}) async {
     /// In debug mode, assert that the endpoint starts with a /
     assert(endpoint.startsWith('/'), 'Endpoint must start with a /');
-
     var response = await http.patch(
       Uri.parse('$_baseUrl$endpoint'),
       headers: _getHeaders(token),
@@ -105,9 +102,11 @@ class EcoGestApiDataSource {
 
   static Future<bool> addImage(String endpoint, String filepath,
       {String? token}) async {
+    String apiKey = dotenv.env['API_KEY'].toString();
     Map<String, String> headers = {
       'Content-Type': 'multipart/form-data',
-      'Authorization': 'Bearer $token'
+      'Authorization': 'Bearer $token',
+      'x-api-key': apiKey,
     };
 
     var request = http.MultipartRequest('POST', Uri.parse('$_baseUrl$endpoint'))
