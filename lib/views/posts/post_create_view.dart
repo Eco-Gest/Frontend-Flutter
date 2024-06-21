@@ -14,6 +14,7 @@ import 'package:flutter_tagging_plus/flutter_tagging_plus.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 class PostCreateView extends StatefulWidget {
   const PostCreateView({Key? key}) : super(key: key);
@@ -315,7 +316,8 @@ class _PostCreateView extends State<PostCreateView> {
                                 return ChipConfiguration(
                                   label: Text(tag.label),
                                   backgroundColor: lightColorScheme.primary,
-                                  labelStyle: const TextStyle(color: Colors.white),
+                                  labelStyle:
+                                      const TextStyle(color: Colors.white),
                                   deleteIconColor: Colors.white,
                                 );
                               },
@@ -329,8 +331,8 @@ class _PostCreateView extends State<PostCreateView> {
                         Column(
                           children: [
                             const Text('Sélectionnez une image'),
-                            OutlinedButton(
-                              onPressed: getImage,
+                            GestureDetector(
+                              onTap: getImage,
                               child: _buildImage(),
                             ),
                           ],
@@ -402,15 +404,45 @@ class _PostCreateView extends State<PostCreateView> {
 
   Widget _buildImage() {
     if (_image == null) {
-      return const Padding(
-        padding: EdgeInsets.all(10),
-        child: Icon(
-          Icons.add,
-          color: Colors.grey,
+      return Container(
+        width: 200,
+        height: 200,
+        decoration: BoxDecoration(
+          border: Border.all(color: Colors.grey),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Center(
+          child: Icon(
+            Icons.add,
+            color: Colors.grey,
+          ),
         ),
       );
     } else {
-      return Text(_image!.path);
+        return Stack(
+        alignment: Alignment.center,
+        children: [
+           Container(
+        width: 200,
+        height: 200,
+        decoration: BoxDecoration(
+          border: Border.all(color: Colors.grey),
+          borderRadius: BorderRadius.circular(10),
+          image: DecorationImage(
+                image: kIsWeb
+                        ? NetworkImage(_image!.path) as ImageProvider<Object>
+                        : FileImage(_image!),
+                fit: BoxFit.cover,
+              ),
+        ),
+      ),
+      Icon(
+            Icons.add,
+            color: Colors.grey.withOpacity(0.6),
+            size: 40,
+          ),
+        ],
+      );
     }
   }
 }
