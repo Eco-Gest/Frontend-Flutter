@@ -70,7 +70,7 @@ class SettingsView extends StatelessWidget {
                   ),
                   TextButton(
                       onPressed: () {
-                        GoRouter.of(context).pushNamed(LegalNotices.name);
+                        GoRouter.of(context).pushNamed(LegalNoticesView.name);
                       },
                       child: const Text('Mentions légales')),
                   const SizedBox(
@@ -78,7 +78,7 @@ class SettingsView extends StatelessWidget {
                   ),
                   TextButton(
                       onPressed: () {
-                        GoRouter.of(context).pushNamed(PrivacyPolicy.name);
+                        GoRouter.of(context).pushNamed(PrivacyPolicyView.name);
                       },
                       child: const Text('Politique de confidentialité')),
                   const SizedBox(
@@ -91,7 +91,7 @@ class SettingsView extends StatelessWidget {
                             'Demande de modification de mes données personnelles';
                         const String body =
                             'Je souhaite modifier mes informations personnelles dans votre base de données.';
-                        const String email = 'tigrou-dpo@ecogest.dev';
+                        const String email = 'contact@ecogest.org';
 
                         final Uri emailLaunchUri = Uri(
                           scheme: 'mailto',

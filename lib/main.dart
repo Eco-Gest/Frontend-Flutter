@@ -16,6 +16,7 @@ import 'package:ecogest_front/assets/ecogest_theme.dart';
 import 'package:notification_permissions/notification_permissions.dart' as notification_permissions;
 import 'package:permission_handler/permission_handler.dart' as permission_handler;
 import 'package:intl/intl.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 
 void main() async {
