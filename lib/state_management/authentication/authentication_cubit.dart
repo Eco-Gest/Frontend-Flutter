@@ -7,9 +7,7 @@ part 'authentication_state.dart';
 
 class AuthenticationCubit extends Cubit<AuthenticationState> {
   AuthenticationCubit() : super(AuthenticationInitial()) {
-    // Get the current user when the cubit is initialized.
-    getCurrentUser();
-  }
+}
 
   Future<void> getCurrentUser() async {
     final token = await AuthenticationService.getToken();
