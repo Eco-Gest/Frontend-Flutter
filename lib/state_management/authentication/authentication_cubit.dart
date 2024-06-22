@@ -17,8 +17,7 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
       final user = await UserService.getCurrentUser();
       emit(AuthenticationAuthenticated(user));
     } else {
-      emit(AuthenticationUnauthenticated(
-          "Erreur dans la récupération de vos données"));
+      emit(AuthenticationInitial());
     }
   }
 
