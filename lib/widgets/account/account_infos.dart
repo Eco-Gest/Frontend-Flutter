@@ -101,7 +101,9 @@ class _AccountInfo extends State<AccountInfo>
                         user.badgeTitle ?? 'Badge',
                         style: TextStyle(
                           fontSize: 14,
-                          color: lightColorScheme.onSecondaryContainer,
+                          color: context.read<ThemeSettingsCubit>().state.isDarkMode
+                                ? darkColorScheme.onSecondaryContainer
+                                : lightColorScheme.onSecondaryContainer,
                         ),
                       ),
                     ),
