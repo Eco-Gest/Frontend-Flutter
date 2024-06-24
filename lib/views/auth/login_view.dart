@@ -144,9 +144,8 @@ class _LoginView extends State<LoginView> {
                       BlocListener<AuthenticationCubit, AuthenticationState>(
                         // Error message if user is not allowed to connect
                         listener: (context, state) {
-                          final status = context.read<AuthenticationCubit>().state;
 
-                          if (status is AuthenticationUnauthenticated) {
+                          if (state is AuthenticationUnauthenticated) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
                                 content: Text(
@@ -156,7 +155,7 @@ class _LoginView extends State<LoginView> {
                                 backgroundColor: Colors.red,
                               ),
                             );
-                          } else if (status is AuthenticationAuthenticated) {
+                          } else if (state is AuthenticationAuthenticated) {
                             // Show only CircularProgressIndicator
                             showDialog(
                               context: context,
@@ -172,7 +171,7 @@ class _LoginView extends State<LoginView> {
                                       ),
                                     ),
                                     // Centered CircularProgressIndicator
-                                    Center(
+                                    const Center(
                                       child: CircularProgressIndicator(),
                                     ),
                                   ],

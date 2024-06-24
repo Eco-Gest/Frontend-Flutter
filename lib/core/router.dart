@@ -168,7 +168,7 @@ abstract class AppRouter {
         // If the user is not authenticated, redirect to the login page.
         // (only if the current location is not a public page).
         if (!publicRoutes.contains(state.uri.toString()) &&
-            status is AuthenticationUnauthenticated) {
+          status is AuthenticationUnauthenticated || status is AuthenticationInitial) {
           return '/login';
         }
 
