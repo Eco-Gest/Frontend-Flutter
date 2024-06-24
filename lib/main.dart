@@ -72,7 +72,7 @@ class _MainApp extends State<MainApp> {
 
 
   Future<void> requestPermissions() async {
-    var status = await permission_handler.Permission.storage.status;
+    final status = await permission_handler.Permission.storage.status;
     if (!status.isGranted) {
       await permission_handler.Permission.storage.request();
     }

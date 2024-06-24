@@ -11,6 +11,10 @@ class AuthenticationInitial extends AuthenticationState {
   AuthenticationInitial() : super(null);
 }
 
+class AuthenticationLoading extends AuthenticationState {
+  AuthenticationLoading() : super(null);
+}
+
 /// The state of the authentication cubit when the user is unauthenticated.
 class AuthenticationUnauthenticated extends AuthenticationState {
   final String message;

@@ -12,6 +12,7 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
   }
 
   Future<void> getCurrentUser() async {
+    emit(AuthenticationLoading());
     final token = await AuthenticationService.getToken();
     if (token != null) {
       final user = await UserService.getCurrentUser();
@@ -23,6 +24,7 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
 
   Future<void> login({required String email, required String password}) async {
     try {
+      emit(AuthenticationLoading());
       await AuthenticationService.login(email: email, password: password);
       final user = await UserService.getCurrentUser();
       emit(AuthenticationAuthenticated(user));
