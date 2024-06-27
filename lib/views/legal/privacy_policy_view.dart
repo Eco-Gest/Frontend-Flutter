@@ -9,8 +9,8 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ecogest_front/state_management/theme_settings/theme_settings_cubit.dart';
 
-class PrivacyPolicy extends StatelessWidget {
-  const PrivacyPolicy({super.key});
+class PrivacyPolicyView extends StatelessWidget {
+  const PrivacyPolicyView({super.key});
 
   static String name = 'privacy-policy';
 
@@ -24,10 +24,10 @@ class PrivacyPolicy extends StatelessWidget {
           padding: const EdgeInsets.all(16.0),
           child: Column(
             children: [
-              const Text('Dernière mise à jour : 12 novembre 2023'),
+              const Text('Dernière mise à jour : 22 juin 2024'),
               const PostSeparator(),
               const Text(
-                  'Bienvenue sur l\'application EcO\'Gest de EcO\'Gest (ci-après "nous", "notre" ou "l\'entreprise"). Chez EcO\'Gest, nous accordons une grande importance à la protection de la vie privée de nos utilisateurs. Cette politique de confidentialité a pour but de vous informer sur la manière dont nous collectons, utilisons, partageons et protégeons vos informations personnelles. En utilisant notre site web ou notre application mobile, vous acceptez les conditions de cette politique de confidentialité.'),
+                  'Bienvenue sur l\'application Ecogest de Ecogest (ci-après "nous", "notre" ou "l\'entreprise"). Chez Ecogest, nous accordons une grande importance à la protection de la vie privée de nos utilisateurs. Cette politique de confidentialité a pour but de vous informer sur la manière dont nous collectons, utilisons, partageons et protégeons vos informations personnelles. En utilisant notre site web ou notre application mobile, vous acceptez les conditions de cette politique de confidentialité.'),
               const PostSeparator(),
               const Column(children: [
                 LegalTitle(
@@ -101,10 +101,50 @@ class PrivacyPolicy extends StatelessWidget {
                     'Nous mettons en place des mesures de sécurité appropriées pour protéger vos informations personnelles contre tout accès non autorisé, toute divulgation, altération ou destruction. Cependant, aucune méthode de transmission sur Internet ni de stockage électronique n\'est 100 % sécurisée.'),
               ]),
               const PostSeparator(),
-              const Column(children: [
-                LegalTitle(textContent: 'Vos choix :'),
-                Text(
-                    'Vous pouvez choisir de limiter ou de refuser la collecte et l\'utilisation de vos informations personnelles en nous contactant. Vous pouvez également gérer vos préférences de communication en suivant les instructions fournies dans nos communications.'),
+              Column(children: [
+              LegalTitle(textContent: 'Vos choix :'),
+              RichText(
+                  text: TextSpan(
+                    children: [
+                      TextSpan(
+                        text:
+                            'Vous disposez d\'un droit d\'accès, de rectification, d\’effacement, de limitation du traitement, de portabilité et d\’opposition à vos données personnelles. Pour exercer ces droits, veuillez nous contacter à l\'adresse email suivante : ',
+                      style: TextStyle(
+                          color: context
+                                  .read<ThemeSettingsCubit>()
+                                  .state
+                                  .isDarkMode
+                              ? darkColorScheme.onSurfaceVariant
+                              : lightColorScheme.onSurfaceVariant,
+                        ),
+                      ),
+                      TextSpan(
+                        text: 'contact@egogest.org',
+                        style: TextStyle(
+                          color: context
+                                  .read<ThemeSettingsCubit>()
+                                  .state
+                                  .isDarkMode
+                              ? darkColorScheme.primary
+                              : lightColorScheme.primary,
+                        ),
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () async {
+                            // Launch email application
+                            final Uri emailLaunchUri = Uri(
+                              scheme: 'mailto',
+                              path: 'contact@egogest.org',
+                            );
+                            try {
+                              await launchUrl(emailLaunchUri);
+                            } catch (e) {
+                              throw Exception("Contact non éffectué");
+                            }
+                          },
+                      ),
+                    ],
+                  ),
+                ),
               ]),
               const PostSeparator(),
               const Column(children: [
@@ -120,12 +160,20 @@ class PrivacyPolicy extends StatelessWidget {
                 RichText(
                   text: TextSpan(
                     children: [
-                      const TextSpan(
+                      TextSpan(
                         text:
                             'Si vous avez des questions, des commentaires ou des préoccupations concernant cette politique de confidentialité, veuillez nous contacter à l\'adresse suivante : ',
+                      style: TextStyle(
+                          color: context
+                                  .read<ThemeSettingsCubit>()
+                                  .state
+                                  .isDarkMode
+                              ? darkColorScheme.onSurfaceVariant
+                              : lightColorScheme.onSurfaceVariant,
+                        ),
                       ),
                       TextSpan(
-                        text: 'contact@egogest.dev',
+                        text: 'contact@egogest.org',
                         style: TextStyle(
                           color: context
                                   .read<ThemeSettingsCubit>()
@@ -139,7 +187,7 @@ class PrivacyPolicy extends StatelessWidget {
                             // Launch email application
                             final Uri emailLaunchUri = Uri(
                               scheme: 'mailto',
-                              path: 'contact@egogest.dev',
+                              path: 'contact@egogest.org',
                             );
                             try {
                               await launchUrl(emailLaunchUri);

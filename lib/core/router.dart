@@ -126,13 +126,13 @@ abstract class AppRouter {
         ),
         GoRoute(
           path: '/legal-notices',
-          name: LegalNotices.name,
-          builder: (context, state) => const LegalNotices(),
+          name: LegalNoticesView.name,
+          builder: (context, state) => const LegalNoticesView(),
         ),
         GoRoute(
           path: '/privacy-policy',
-          name: PrivacyPolicy.name,
-          builder: (context, state) => const PrivacyPolicy(),
+          name: PrivacyPolicyView.name,
+          builder: (context, state) => const PrivacyPolicyView(),
         ),
         GoRoute(
           path: '/user/follow',
