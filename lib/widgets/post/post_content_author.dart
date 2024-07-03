@@ -30,73 +30,94 @@ class PostContentAuthor extends StatelessWidget {
 
     final int postId = post.id!;
 
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Row(
-          children: [
-            if (author?.image != null) ...[
-              CircleAvatar(
-                backgroundImage: NetworkImage(author!.image.toString()),
-              )
-            ] else ...[
-              const CircleAvatar(
-                child: Icon(Icons.person),
-              ),
-            ],
-            const SizedBox(width: 10),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                TextButton(
-                  child: Text(
-                    author?.username.toString() ?? 'Utilisateur inconnu',
+    return Container(
+      height: 64,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Row(
+            children: [
+              if (author?.image != null) ...[
+                Padding(
+                  padding: const EdgeInsets.only(right: 6.0),
+                  child: CircleAvatar(
+                    backgroundImage: NetworkImage(author!.image.toString()),
                   ),
-                  onPressed: () {
-                    if (author?.username != null) {
-                      GoRouter.of(context)
-                          .pushNamed(UserView.name, pathParameters: {
-                        'id': author!.id.toString(),
-                      });
-                    }
-                  },
                 ),
-                const SizedBox(height: 5),
-                FilledButton.tonal(
-                  onPressed: () {
-                    // TODO : Afficher les différents badges
-                  },
-                  child: Text(
-                    author?.badgeTitle ?? 'Badge',
-                    style: const TextStyle(
-                      fontSize: 12,
+              ] else ...[
+                const Padding(
+                  padding: EdgeInsets.only(right: 6.0),
+                  child: CircleAvatar(
+                    child: Icon(Icons.person),
+                  ),
+                ),
+              ],
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  TextButton(
+                    onPressed: () {
+                      if (author?.username != null) {
+                        GoRouter.of(context)
+                            .pushNamed(UserView.name, pathParameters: {
+                          'id': author!.id.toString(),
+                        });
+                      }
+                    },
+                    style: TextButton.styleFrom(
+                      minimumSize: Size.zero,
+                      padding: const EdgeInsets.only(bottom: 2.0),
+                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    ),
+                    child: Text(
+                      author?.username.toString() ?? 'Utilisateur inconnu',
                     ),
                   ),
-                )
-              ],
-            ),
-          ],
-        ),
-        Row(
-          children: [
-            Text(publicationDate),
-            if (date != null &&
-                (position != null || author?.position != null)) ...[
-              const Text(' | '),
+                  FilledButton.tonal(
+                    onPressed: () {
+                      // TODO : Afficher les différents badges
+                    },
+                    style: TextButton.styleFrom(
+                      minimumSize: Size.zero,
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 4.0, horizontal: 8.0),
+                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    ),
+                    child: Text(
+                      author?.badgeTitle ?? 'Badge',
+                      style: const TextStyle(
+                        fontSize: 10,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ],
-            Text(() {
-              if (position != null) {
-                return position.toString();
-              } else if (author?.position != null) {
-                return author?.position.toString() ?? '';
-              } else {
-                return '';
-              }
-            }()),
-          ],
-        ),
-        PostContentMenu(author: author, post: post),
-      ],
+          ),
+          Row(
+            children: [
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Text(publicationDate),
+                  Text(() {
+                    if (position != null) {
+                      return position.toString();
+                    } else if (author?.position != null) {
+                      return author?.position.toString() ?? '';
+                    } else {
+                      return '';
+                    }
+                  }()),
+                ],
+              ),
+              PostContentMenu(author: author, post: post),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }

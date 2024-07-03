@@ -25,6 +25,12 @@ class PostContentMenu extends StatelessWidget {
     final user = context.watch<AuthenticationCubit>().state.user;
 
     return PopupMenuButton<String>(
+      style: TextButton.styleFrom(
+                      minimumSize: Size.zero, // Set this
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 4.0, horizontal: 2.0), // and this
+                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    ),
       onSelected: (value) async {
         if (value == 'edit') {
           if (user != null && user.id == author?.id) {

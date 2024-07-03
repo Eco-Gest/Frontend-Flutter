@@ -74,59 +74,51 @@ class _PostsList extends State<PostsList> {
         child: ListView.separated(
           scrollDirection: Axis.vertical,
           shrinkWrap: true,
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(10),
           controller: _scrollController,
           separatorBuilder: (context, index) => const SizedBox(height: 16),
           itemCount: posts.length + (isLastPage ? 1 : 0),
           itemBuilder: (BuildContext context, int index) {
             if (index < posts.length) {
               return Container(
-                  decoration: BoxDecoration(
-                      border: Border.all(
-                    color: lightColorScheme.outline,
-                    width: 0.5,
-                  )),
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      children: [
-                        // Author info
-                        PostContentAuthor(
-                            author: posts[index].user,
-                            position: posts[index].position,
-                            date: posts[index].createdAt,
-                            post: posts[index]),
-                        const PostSeparator(),
-                        // Post info
-                        InkWell(
-                          onTap: () {
-                            // Redirect to post detail page
-                            GoRouter.of(context)
-                                .push('/posts/${posts[index].id!}');
-                          },
-                          child: PostContentInfos(post: posts[index]),
-                        ),
-                        // Buttons
-                        BlocProvider<LikeCubit>(
-                          create: (context) => LikeCubit(),
-                          child: PostContentButtons(
-                            post: posts[index],
-                            likes: posts[index].likes!.length,
-                            isLiked: posts[index]
-                                    .likes
-                                    ?.any((like) => like.userId == user!.id) ??
-                                false, // TODO
-                            comments: posts[index].comments,
-                            isChallenge:
-                                (posts[index].type.toString() == 'challenge')
-                                    ? true
-                                    : false,
-                            canEndChallenge: canEndChallenge(posts[index]),
-                          ),
-                        ),
-                      ],
+               child: Column(
+                  children: [
+                    // Author info
+                    PostContentAuthor(
+                        author: posts[index].user,
+                        position: posts[index].position,
+                        date: posts[index].createdAt,
+                        post: posts[index]),
+                    const PostSeparator(),
+                    // Post info
+                    InkWell(
+                      onTap: () {
+                        // Redirect to post detail page
+                        GoRouter.of(context).push('/posts/${posts[index].id!}');
+                      },
+                      child: PostContentInfos(post: posts[index]),
                     ),
-                  ));
+                    // Buttons
+                    BlocProvider<LikeCubit>(
+                      create: (context) => LikeCubit(),
+                      child: PostContentButtons(
+                        post: posts[index],
+                        likes: posts[index].likes!.length,
+                        isLiked: posts[index]
+                                .likes
+                                ?.any((like) => like.userId == user!.id) ??
+                            false, // TODO
+                        comments: posts[index].comments,
+                        isChallenge:
+                            (posts[index].type.toString() == 'challenge')
+                                ? true
+                                : false,
+                        canEndChallenge: canEndChallenge(posts[index]),
+                      ),
+                    ),
+                  ],
+                ),
+              );
             } else if (isLastPage) {
               return const Center(
                 child: Text("Pas de nouvelles publications à afficher"),

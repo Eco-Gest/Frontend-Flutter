@@ -61,9 +61,9 @@ class PostContentInfos extends StatelessWidget {
           Image(
             image: NetworkImage(post!.image.toString()),
             fit: BoxFit.cover,
-          )
+          ),
+          SizedBox(height: 8),
         ],
-        const SizedBox(height: 10),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -129,6 +129,12 @@ class PostContentInfos extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   FilledButton.tonal(
+                    style: TextButton.styleFrom(
+                      minimumSize: Size.zero, // Set this
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 4.0, horizontal: 8.0), // and this
+                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    ),
                     onPressed: () {
                       debugPrint('Click on ${post!.type.toString()}');
                       // TODO : Afficher les défis
@@ -166,6 +172,12 @@ class PostContentInfos extends StatelessWidget {
                     ],
                   ] else ...[
                     FilledButton.tonal(
+                      style: TextButton.styleFrom(
+                        minimumSize: Size.zero, // Set this
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 4.0, horizontal: 8.0), // and this
+                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      ),
                       onPressed: () {
                         debugPrint('Click on ${post!.type.toString()}');
                       },
@@ -191,19 +203,21 @@ class PostContentInfos extends StatelessWidget {
             ),
           ],
         ),
-        const SizedBox(height: 10),
-        Text(() {
-          if (post!.description != null) {
-            return post!.description.toString();
-          } else {
-            return '';
-          }
-        }()),
-        const SizedBox(height: 10),
+        if (post!.description != null) ...[
+          const SizedBox(height: 10),
+          Text(post!.description.toString()),
+        ],
         if (post!.tags != null) ...[
+          const SizedBox(height: 10),
           Row(
             children: post!.tags!.map((tag) {
               return TextButton(
+                style: TextButton.styleFrom(
+                  minimumSize: Size.zero, // Set this
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 4.0, horizontal: 8.0), // and this
+                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                ),
                 onPressed: () {
                   debugPrint('Click on ${tag.label}');
                   // TODO : Afficher la liste des publications avec ce #
@@ -212,8 +226,8 @@ class PostContentInfos extends StatelessWidget {
                   '#${tag.label}',
                   style: TextStyle(
                       color: context.read<ThemeSettingsCubit>().state.isDarkMode
-                          ? darkColorScheme.onPrimaryContainer
-                          : lightColorScheme.onPrimaryContainer),
+                          ? darkColorScheme.primary
+                          : lightColorScheme.primary),
                 ),
               );
             }).toList(),
