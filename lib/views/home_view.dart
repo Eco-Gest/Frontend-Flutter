@@ -1,7 +1,7 @@
 import 'package:ecogest_front/models/post_model.dart';
 import 'package:ecogest_front/state_management/posts/posts_cubit.dart';
 import 'package:ecogest_front/state_management/posts/posts_state.dart';
-import 'package:ecogest_front/widgets/post/posts_list.dart';
+import 'package:ecogest_front/widgets/post_/posts_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ecogest_front/widgets/bottom_bar.dart';

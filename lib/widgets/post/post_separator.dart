@@ -14,9 +14,6 @@ class PostSeparator extends StatelessWidget {
           thickness: 1,
           color: lightColorScheme.outline,
         ),
-        SizedBox(
-          height: 5,
-        ),
       ],
     );
   }
