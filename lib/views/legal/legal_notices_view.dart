@@ -33,7 +33,6 @@ class LegalNoticesView extends StatelessWidget {
                 const Text('Augustin Seguin'),
                 const Text('Eléonore Euzenes'),
                 const Text('Léa Clair'),
-                const Text('Marion Kozar'),
                 RichText(
                   text: TextSpan(
                         text: 'contact@ecogest.org',
