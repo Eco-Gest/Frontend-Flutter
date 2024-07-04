@@ -1,6 +1,6 @@
 import 'package:ecogest_front/models/user_post_participation_model.dart';
 import 'package:ecogest_front/views/users/user_view.dart';
-import 'package:ecogest_front/widgets/post_/post_body/post_body_stats_category_icon.dart';
+import 'package:ecogest_front/widgets/post/post_body/post_body_stats_category_icon.dart';
 import 'package:ecogest_front/models/post_model.dart';
 import 'package:flutter/material.dart';
 import 'package:ecogest_front/widgets/post/post_separator.dart';

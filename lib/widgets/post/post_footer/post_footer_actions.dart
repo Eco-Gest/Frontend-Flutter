@@ -1,14 +1,9 @@
 import 'package:ecogest_front/models/post_model.dart';
-import 'package:ecogest_front/state_management/authentication/authentication_cubit.dart';
-import 'package:ecogest_front/state_management/like/like_cubit.dart';
-import 'package:ecogest_front/state_management/posts/participation_cubit.dart';
-import 'package:ecogest_front/widgets/post/like_widget.dart';
-import 'package:ecogest_front/widgets/post_/post_footer/post_footer_participation.dart';
+import 'package:ecogest_front/widgets/post/post_footer/post_footer_like_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ecogest_front/assets/ecogest_theme.dart';
-import 'package:ecogest_front/widgets/post/post_separator.dart';
 import 'package:ecogest_front/state_management/theme_settings/theme_settings_cubit.dart';
 
 // PostFooterActions is a widget that displays the actions

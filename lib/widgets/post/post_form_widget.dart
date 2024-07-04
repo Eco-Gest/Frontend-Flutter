@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:date_field/date_field.dart';
 import 'package:ecogest_front/assets/ecogest_theme.dart';
 import 'package:ecogest_front/models/post_model.dart';

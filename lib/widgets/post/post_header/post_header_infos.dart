@@ -1,12 +1,8 @@
 import 'package:ecogest_front/models/post_model.dart';
 import 'package:ecogest_front/models/user_model.dart';
-import 'package:ecogest_front/views/users/user_view.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
-import 'package:ecogest_front/widgets/post/post_content_menu.dart';
-import 'package:ecogest_front/state_management/authentication/authentication_cubit.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ecogest_front/widgets/post/post_header/post_header_infos_actions.dart';
 
 // PostHeaderInfos is a widget inside PostHeader that 
 // groups some information about the post:
@@ -51,7 +47,7 @@ class PostHeaderInfos extends StatelessWidget {
             }()),
           ],
         ),
-        PostContentMenu(author: author, post: post),
+        PostHeaderInfosActions(author: author, post: post),
       ],
     );
   }

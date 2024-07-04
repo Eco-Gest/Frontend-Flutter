@@ -1,8 +1,8 @@
 import 'package:ecogest_front/models/user_post_participation_model.dart';
 import 'package:ecogest_front/views/users/user_view.dart';
-import 'package:ecogest_front/widgets/post_/post_body/post_body_details.dart';
-import 'package:ecogest_front/widgets/post_/post_body/post_body_image.dart';
-import 'package:ecogest_front/widgets/post_/post_body/post_body_stats.dart';
+import 'package:ecogest_front/widgets/post/post_body/post_body_details.dart';
+import 'package:ecogest_front/widgets/post/post_body/post_body_image.dart';
+import 'package:ecogest_front/widgets/post/post_body/post_body_stats.dart';
 import 'package:ecogest_front/models/post_model.dart';
 import 'package:flutter/material.dart';
 import 'package:ecogest_front/widgets/post/post_separator.dart';
@@ -28,14 +28,21 @@ class PostBody extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const PostSeparator(),
         if (post.image != null) ...[
           PostBodyImage(imageUrl: post.image),
           const SizedBox(height: 8),
+        ] else ...[
+          const PostSeparator(),
         ],
-        PostBodyStats(post: post),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: PostBodyStats(post: post),
+        ),
         const PostSeparator(),
-        PostBodyDetails(post: post),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: PostBodyDetails(post: post),
+        ),
       ],
     );
   }

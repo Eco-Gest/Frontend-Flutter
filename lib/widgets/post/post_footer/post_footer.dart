@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ecogest_front/models/post_model.dart';
 import 'package:ecogest_front/state_management/authentication/authentication_cubit.dart';
-import 'package:ecogest_front/widgets/post_/post_footer/post_footer_infos.dart';
-import 'package:ecogest_front/widgets/post_/post_footer/post_footer_actions.dart';
-import 'package:ecogest_front/widgets/post_/post_footer/post_footer_participation.dart';
+import 'package:ecogest_front/widgets/post/post_footer/post_footer_infos.dart';
+import 'package:ecogest_front/widgets/post/post_footer/post_footer_actions.dart';
+import 'package:ecogest_front/widgets/post/post_footer/post_footer_participation.dart';
 import 'package:ecogest_front/widgets/post/post_separator.dart';
+import 'package:ecogest_front/state_management/posts/participation_cubit.dart';
 
 // PostFooter is a widget that displays the footer of a post
 // It contains widgets for
@@ -47,7 +47,9 @@ class _PostFooter extends State<PostFooter> {
     int postId = post.id!;
     bool canEndChallenge = widget.canEndChallenge;
 
-    return Column(
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         PostFooterInfos(
@@ -60,15 +62,19 @@ class _PostFooter extends State<PostFooter> {
           isLiked: isLiked,
           comments: comments,
         ),
-        if (post.type == 'challenge') // Only show participation for challenges
-          PostFooterParticipation(
+        if (isChallenge!) // Only show participation for challenges
+          BlocProvider<ParticipationCubit>(
+            create: (_) => ParticipationCubit(),
+            child: PostFooterParticipation(
             postId: post.id!,
             isAlreadyParticipant: post.userPostParticipation!.any(
                 (participation) => participation.participantId! == user!.id!,
               ),
             canEndChallenge: canEndChallenge, // Replace with actual logic
           ),
+          ),
       ],
+      ),
     );
   }
 }

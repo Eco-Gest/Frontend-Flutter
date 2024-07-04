@@ -1,17 +1,18 @@
 import 'package:ecogest_front/models/post_model.dart';
 import 'package:ecogest_front/models/user_model.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ecogest_front/state_management/authentication/authentication_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ecogest_front/state_management/posts/posts_cubit.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:go_router/go_router.dart';
 import 'package:ecogest_front/views/home_view.dart';
 
-class PostContentMenu extends StatelessWidget {
-  const PostContentMenu({
+// PostHeaderInfosActions is a PopMenuButton inside the PostHeader 
+// that groups actions related to the post:
+// edit, delete and report
+
+class PostHeaderInfosActions extends StatelessWidget {
+  const PostHeaderInfosActions({
     Key? key,
     required this.author,
     required this.post,

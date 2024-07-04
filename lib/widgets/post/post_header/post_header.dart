@@ -1,8 +1,8 @@
 import 'package:ecogest_front/models/post_model.dart';
 import 'package:ecogest_front/models/user_model.dart';
 import 'package:flutter/material.dart';
-import 'package:ecogest_front/widgets/post_/post_header/post_header_author.dart';
-import 'package:ecogest_front/widgets/post_/post_header/post_header_infos.dart';
+import 'package:ecogest_front/widgets/post/post_header/post_header_author.dart';
+import 'package:ecogest_front/widgets/post/post_header/post_header_infos.dart';
 
 /// PostHeader groups the information about the post's author, the date,
 /// the location, and a menu of actions related to the post
@@ -24,12 +24,16 @@ class PostHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           PostHeaderAuthor(author: author),
-          PostHeaderInfos(author: author, position: position, date: date, post: post),
+          PostHeaderInfos(
+              author: author, position: position, date: date, post: post),
         ],
-      );
+      ),
+    );
   }
 }
