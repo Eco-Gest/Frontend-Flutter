@@ -6,7 +6,7 @@ import 'package:go_router/go_router.dart';
 
 import 'package:ecogest_front/state_management/authentication/authentication_cubit.dart';
 import 'package:ecogest_front/views/auth/register_view.dart';
-import 'package:ecogest_front/views/loading_view.dart'; // Importez le widget de chargement
+import 'package:ecogest_front/widgets/loading_widget.dart'; // Importez le widget de chargement
 
 class LoginView extends StatefulWidget {
   LoginView({super.key});
@@ -59,7 +59,7 @@ class _LoginView extends State<LoginView> {
         child: BlocBuilder<AuthenticationCubit, AuthenticationState>(
           builder: (context, state) {
             if (state is AuthenticationLoading || state is AuthenticationAuthenticated) {
-              return LoadingView(); 
+              return LoadingWidget(); 
             }
             return SingleChildScrollView(
               child: Padding(
