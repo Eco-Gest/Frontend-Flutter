@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 
 import 'package:ecogest_front/state_management/authentication/authentication_cubit.dart';
 import 'package:ecogest_front/views/auth/register_view.dart';
+import 'package:ecogest_front/widgets/loading_widget.dart'; // Importez le widget de chargement
 
 class LoginView extends StatefulWidget {
   LoginView({super.key});
@@ -20,9 +21,7 @@ class _LoginView extends State<LoginView> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
-  // A function that validate user entered password
   bool validatePassword(String pass) {
-    //regular expression to check if string
     RegExp passValid = RegExp(r"(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W)");
     String passwordToTest = pass.trim();
     if (passValid.hasMatch(passwordToTest)) {
@@ -34,19 +33,38 @@ class _LoginView extends State<LoginView> {
 
   late bool _passwordVisible;
 
+  @override
   void initState() {
     _passwordVisible = false;
+    super.initState(); // N'oubliez pas d'appeler super.initState()
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Padding(
-        padding: const EdgeInsets.only(top: 40),
-            child: Stack(
-              children: [
-                Center(
+      body: BlocListener<AuthenticationCubit, AuthenticationState>(
+        listener: (context, state) {
+          if (state is AuthenticationUnauthenticated) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text(
+                  "Identifiants incorrects",
+                  style: TextStyle(color: Colors.white),
+                ),
+                backgroundColor: Colors.red,
+              ),
+            );
+          } 
+        },
+        child: BlocBuilder<AuthenticationCubit, AuthenticationState>(
+          builder: (context, state) {
+            if (state is AuthenticationLoading || state is AuthenticationAuthenticated) {
+              return LoadingWidget(); 
+            }
+            return SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.only(top: 40),
+                child: Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -58,25 +76,25 @@ class _LoginView extends State<LoginView> {
                         width: 300,
                         child: Image.asset('assets/logo/logo-color.png'),
                       ),
-
                       Container(
                         alignment: Alignment.center,
                         padding: const EdgeInsets.all(10),
-                        child: const Column(children: [
-                          Text(
-                            'Vous avez déjà un compte ?',
-                            style: TextStyle(fontSize: 18),
-                          ),
-                          Text(
-                            'Heureux de vous revoir',
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
+                        child: const Column(
+                          children: [
+                            Text(
+                              'Vous avez déjà un compte ?',
+                              style: TextStyle(fontSize: 18),
                             ),
-                          )
-                        ]),
+                            Text(
+                              'Heureux de vous revoir',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            )
+                          ],
+                        ),
                       ),
-
                       // Input email
                       Container(
                         alignment: Alignment.topCenter,
@@ -94,7 +112,6 @@ class _LoginView extends State<LoginView> {
                               : 'Veuillez entrer un email valide',
                         ),
                       ),
-
                       // Input password
                       Container(
                         alignment: Alignment.topCenter,
@@ -126,7 +143,6 @@ class _LoginView extends State<LoginView> {
                               : 'Le mot de passe doit ếtre long de 8 caractères \net doit contenir une lettre majuscule et minuscule \nun chiffre et un caractère spécial',
                         ),
                       ),
-
                       // Forgot password
                       TextButton(
                         onPressed: () {
@@ -140,104 +156,63 @@ class _LoginView extends State<LoginView> {
                           ),
                         ),
                       ),
-
-                      BlocListener<AuthenticationCubit, AuthenticationState>(
-                        // Error message if user is not allowed to connect
-                        listener: (context, state) {
-
-                          if (state is AuthenticationUnauthenticated) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text(
-                                  "Identifiants incorrects",
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                                backgroundColor: Colors.red,
-                              ),
-                            );
-                          } else if (state is AuthenticationAuthenticated) {
-                            // Show only CircularProgressIndicator
-                            showDialog(
-                              context: context,
-                              barrierDismissible: false,
-                              builder: (context) {
-                                return Stack(
-                                  children: [
-                                    // Background: Full-screen white background
-                                    Positioned.fill(
-                                      child: Container(
-                                        color: Colors
-                                            .white, // Adjust the opacity as needed
-                                      ),
-                                    ),
-                                    // Centered CircularProgressIndicator
-                                    const Center(
-                                      child: CircularProgressIndicator(),
-                                    ),
-                                  ],
+                      // Connect button
+                      SizedBox(
+                        width: 300,
+                        child: FilledButton(
+                          style: TextButton.styleFrom(
+                            minimumSize: const Size.fromHeight(50),
+                            padding: const EdgeInsets.all(20),
+                          ),
+                          onPressed: () {
+                            context.read<AuthenticationCubit>().login(
+                                  email: emailController.text,
+                                  password: passwordController.text,
                                 );
-                              },
-                            );
-                          }
-                        },
-
-                        // Connect button
-
-                        child: SizedBox(
-                          width: 300,
-                          child: FilledButton(
-                            style: TextButton.styleFrom(
-                              minimumSize: const Size.fromHeight(50),
-                              padding: const EdgeInsets.all(20),
-                            ),
-                            onPressed: () {
-                              context.read<AuthenticationCubit>().login(
-                                    email: emailController.text,
-                                    password: passwordController.text,
-                                  );
-                            },
-                            child: const Text(
-                              style: TextStyle(fontSize: 18),
-                              'Se connecter',
-                            ),
+                          },
+                          child: const Text(
+                            style: TextStyle(fontSize: 18),
+                            'Se connecter',
                           ),
                         ),
                       ),
-
                       // Link s'inscrire
                       Container(
                         alignment: Alignment.center,
                         padding: const EdgeInsets.all(40),
-                        child: Column(children: [
-                          const Text(
-                            'Vous souhaitez créer un compte ?',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontSize: 18,
-                            ),
-                          ),
-                          TextButton(
-                            style: TextButton.styleFrom(
-                              textStyle: const TextStyle(
+                        child: Column(
+                          children: [
+                            const Text(
+                              'Vous souhaitez créer un compte ?',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
                                 fontSize: 18,
-                                fontWeight: FontWeight.bold,
                               ),
                             ),
-                            onPressed: () {
-                              GoRouter.of(context).goNamed(RegisterView.name);
-                            },
-                            child: const Text(
-                              'S\'inscrire',
+                            TextButton(
+                              style: TextButton.styleFrom(
+                                textStyle: const TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              onPressed: () {
+                                GoRouter.of(context).goNamed(RegisterView.name);
+                              },
+                              child: const Text(
+                                'S\'inscrire',
+                              ),
                             ),
-                          ),
-                        ]),
+                          ],
+                        ),
                       ),
                     ],
                   ),
                 ),
-              ],
-            ),
-          ),
+              ),
+            );
+          },
+        ),
       ),
     );
   }
