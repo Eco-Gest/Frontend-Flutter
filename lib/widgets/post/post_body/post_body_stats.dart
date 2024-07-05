@@ -1,16 +1,11 @@
-import 'package:ecogest_front/models/user_post_participation_model.dart';
 import 'package:ecogest_front/views/users/user_view.dart';
 import 'package:ecogest_front/widgets/post/post_body/post_body_stats_category_icon.dart';
 import 'package:ecogest_front/models/post_model.dart';
 import 'package:flutter/material.dart';
-import 'package:ecogest_front/widgets/post/post_separator.dart';
-import 'package:ecogest_front/state_management/theme_settings/theme_settings_cubit.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ecogest_front/assets/ecogest_theme.dart';
 import 'package:go_router/go_router.dart';
 
 // PostBodyStats is a widget inside PostBody that
-// displays the stats of the post : points, category and type
+// displays the stats of the post: points, category, and type
 
 class PostBodyStats extends StatelessWidget {
   final PostModel post;
@@ -83,26 +78,10 @@ class PostBodyStats extends StatelessWidget {
             },
             child: const Text("Geste"),
           )
-        else
+        else if (post.userPostParticipation != null && post.userPostParticipation!.isNotEmpty)
           Row(
             children: [
-              if (post.userPostParticipation != null &&
-                  post.userPostParticipation!.length > 1)
-                for (var participation in post.userPostParticipation!.take(4))
-                  if (participation.user?.id != post.authorId)
-                    GestureDetector(
-                      onTap: () {
-                        GoRouter.of(context).pushNamed(UserView.name, pathParameters: {
-                          'id': participation.user!.id.toString(),
-                        });
-                      },
-                      child: participation.user?.image != null
-                          ? CircleAvatar(
-                              backgroundImage: NetworkImage(participation.user!.image!),
-                            )
-                          : const CircleAvatar(child: Icon(Icons.person)),
-                    )
-              else
+              if (post.userPostParticipation!.length == 1)
                 FilledButton.tonal(
                   style: TextButton.styleFrom(
                     minimumSize: Size.zero,
@@ -110,9 +89,28 @@ class PostBodyStats extends StatelessWidget {
                     tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                   ),
                   onPressed: () {
-                    debugPrint('Click on ${post.type}');
+                    debugPrint('Click on Défi');
                   },
                   child: const Text("Défi"),
+                )
+              else if (post.userPostParticipation!.length > 1)
+                Row(
+                  children: [
+                    for (final participation in post.userPostParticipation!.take(4))
+                      if (participation.user?.id != post.authorId)
+                        GestureDetector(
+                          onTap: () {
+                            GoRouter.of(context).pushNamed(UserView.name, pathParameters: {
+                              'id': participation.user!.id.toString(),
+                            });
+                          },
+                          child: participation.user?.image != null
+                              ? CircleAvatar(
+                                  backgroundImage: NetworkImage(participation.user!.image!),
+                                )
+                              : const CircleAvatar(child: Icon(Icons.person)),
+                        ),
+                  ],
                 ),
             ],
           ),

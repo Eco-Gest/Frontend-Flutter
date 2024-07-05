@@ -59,16 +59,17 @@ class _PostFooterActions extends State<PostFooterActions> {
                   : lightColorScheme.primary,
               icon: const Icon(Icons.comment),
             ),
-            IconButton(
-              onPressed: () {
-                debugPrint('Click pour partager la publication');
-                // TODO : Partager la publication
-              },
-              color: context.read<ThemeSettingsCubit>().state.isDarkMode
-                  ? darkColorScheme.primary
-                  : lightColorScheme.primary,
-              icon: const Icon(Icons.share),
-            ),
+            // TODO : Implementer le partage de la publication
+            // IconButton(
+            //   onPressed: () {
+            //     debugPrint('Click pour partager la publication');
+            //     // TODO : Partager la publication
+            //   },
+            //   color: context.read<ThemeSettingsCubit>().state.isDarkMode
+            //       ? darkColorScheme.primary
+            //       : lightColorScheme.primary,
+            //   icon: const Icon(Icons.share),
+            // ),
           ],
         );
   }
