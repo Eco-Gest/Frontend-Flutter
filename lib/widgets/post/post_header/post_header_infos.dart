@@ -36,15 +36,19 @@ class PostHeaderInfos extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             Text(publicationDate),
-            Text(() {
-              if (position != null) {
-                return position.toString();
-              } else if (author?.position != null) {
-                return author?.position.toString() ?? '';
-              } else {
-                return '';
-              }
-            }()),
+            Text(
+              () {
+                if (position != null) {
+                  return position.toString();
+                } else if (author?.position != null) {
+                  return author?.position.toString() ?? '';
+                } else {
+                  return '';
+                }
+              }(),
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
+            )
           ],
         ),
         PostHeaderInfosActions(author: author, post: post),

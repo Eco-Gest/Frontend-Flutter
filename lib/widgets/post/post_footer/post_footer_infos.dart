@@ -51,7 +51,7 @@ class PostFooterInfos extends StatelessWidget {
               tapTargetSize: MaterialTapTargetSize.shrinkWrap,
             ),
             child: Text(
-              '${comments!.length} ${comments!.length == 1 ? 'comment' : 'comments'}',
+              '${comments!.length} ${comments!.length == 1 ? 'commentaire' : 'commentaires'}',
               style: TextStyle(
                 color: isDarkMode ? darkColorScheme.onBackground : lightColorScheme.onBackground,
               ),
