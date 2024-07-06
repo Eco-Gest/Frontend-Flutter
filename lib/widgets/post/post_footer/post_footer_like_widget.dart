@@ -4,6 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ecogest_front/assets/ecogest_theme.dart';
 import 'package:ecogest_front/state_management/theme_settings/theme_settings_cubit.dart';
 
+// LikeWidget is a widget that displays the like button
+// on a post
+
 class LikeWidget extends StatefulWidget {
   LikeWidget(
       {super.key,
