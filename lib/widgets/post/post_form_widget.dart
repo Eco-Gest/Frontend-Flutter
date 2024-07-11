@@ -32,11 +32,12 @@ class _PostFormWidget extends State<PostFormWidget> {
   final positionController = TextEditingController();
   final tagController = TextEditingController();
 
-  DateTime? startDate;
-  DateTime? endDate;
   late final List<TagModel> _tagsToSave = [];
 
   late List<bool> _selectedPostType;
+
+  DateTime? startDate;
+  DateTime? endDate;
 
   bool datesValidation() {
     if (startDate != null && endDate != null) {
@@ -66,6 +67,12 @@ class _PostFormWidget extends State<PostFormWidget> {
     titleController.text = prefilledPost?.title ?? '';
     descriptionController.text = prefilledPost?.description ?? '';
     positionController.text = prefilledPost?.position ?? '';
+    startDate = prefilledPost?.startDate == null
+        ? null
+        : DateTime.parse(prefilledPost!.startDate!);
+    endDate = prefilledPost?.endDate == null
+        ? null
+        : DateTime.parse(prefilledPost!.endDate!);
     if (prefilledPost!.type == "action") {
       _selectedPostType = [true, false];
     } else {
@@ -211,8 +218,9 @@ class _PostFormWidget extends State<PostFormWidget> {
 
                   BlocBuilder<PostFormCubit, PostFormState>(
                       builder: (context, state) {
-                    startDate = DateTime.now();
-                    endDate = startDate!.add(const Duration(days: 1));
+                    startDate = startDate ?? DateTime.now();
+                    endDate =
+                        endDate ?? startDate!.add(const Duration(days: 1));
                     if (state is SelectionState &&
                         state.selectedType == PostType.challenge) {
                       return Column(children: [
@@ -403,8 +411,7 @@ class _PostFormWidget extends State<PostFormWidget> {
     );
   }
 
-Widget _buildImage(String? postImageUrl) {
-
+  Widget _buildImage(String? postImageUrl) {
     if (_image == null && postImageUrl == null) {
       return Container(
         width: 200,
@@ -421,16 +428,16 @@ Widget _buildImage(String? postImageUrl) {
         ),
       );
     } else {
-        return Stack(
+      return Stack(
         alignment: Alignment.center,
         children: [
-           Container(
-        width: 200,
-        height: 200,
-        decoration: BoxDecoration(
-          border: Border.all(color: Colors.grey),
-          borderRadius: BorderRadius.circular(10),
-          image: DecorationImage(
+          Container(
+            width: 200,
+            height: 200,
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.grey),
+              borderRadius: BorderRadius.circular(10),
+              image: DecorationImage(
                 image: _image != null
                     ? (kIsWeb
                         ? NetworkImage(_image!.path) as ImageProvider<Object>
@@ -438,9 +445,9 @@ Widget _buildImage(String? postImageUrl) {
                     : NetworkImage(postImageUrl!),
                 fit: BoxFit.cover,
               ),
-        ),
-      ),
-      Icon(
+            ),
+          ),
+          Icon(
             Icons.add,
             color: Colors.grey.withOpacity(0.6),
             size: 40,
@@ -450,4 +457,3 @@ Widget _buildImage(String? postImageUrl) {
     }
   }
 }
-
