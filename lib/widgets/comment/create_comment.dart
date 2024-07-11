@@ -19,6 +19,7 @@ class CreateComment extends StatelessWidget {
           : lightColorScheme.primary,
       padding: const EdgeInsets.all(16.0),
       child: TextFormField(
+        textCapitalization: TextCapitalization.sentences,
         controller: _newCommentController,
         decoration: InputDecoration(
           filled: true,

@@ -159,6 +159,7 @@ class _PostCreateView extends State<PostCreateView> {
                           alignment: Alignment.topCenter,
                           padding: const EdgeInsets.all(10),
                           child: TextFormField(
+                            textCapitalization: TextCapitalization.sentences,
                             controller: titleController,
                             decoration: const InputDecoration(
                               border: OutlineInputBorder(),
@@ -178,6 +179,7 @@ class _PostCreateView extends State<PostCreateView> {
                           alignment: Alignment.topCenter,
                           padding: const EdgeInsets.all(10),
                           child: TextFormField(
+                            textCapitalization: TextCapitalization.sentences,
                             textAlign: TextAlign.justify,
                             controller: descriptionController,
                             autofocus: false,
@@ -193,6 +195,7 @@ class _PostCreateView extends State<PostCreateView> {
                           alignment: Alignment.topCenter,
                           padding: const EdgeInsets.all(10),
                           child: TextFormField(
+                            textCapitalization: TextCapitalization.sentences,
                             controller: positionController,
                             decoration: const InputDecoration(
                               border: OutlineInputBorder(),
