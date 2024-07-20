@@ -32,20 +32,22 @@ class _PostCreateView extends State<PostCreateView> {
   final positionController = TextEditingController();
   final tagController = TextEditingController();
 
-  DateTime? startDate;
-  DateTime? endDate;
+DateTime? startDate = DateTime.now(); // Par défaut, aujourd'hui
+DateTime? endDate = DateTime.now().add(Duration(days: 1)); // Par défaut, demain
+
 
   late List<TagModel> _tagsToSave = [];
 
   final List<bool> _selectedPostType = <bool>[true, false];
 
   bool datesValidation() {
-    if (startDate != null && endDate != null) {
-      if (startDate!.isBefore(endDate!)) {
-        return true;
-      }
+    if (startDate == null && endDate == null ) {
+      return false;
     }
-    return false;
+    if (startDate!.isAfter(endDate!)) {
+        return false;
+      }
+    return true;
   }
 
   File? _image;
@@ -99,25 +101,17 @@ class _PostCreateView extends State<PostCreateView> {
                             return Container(
                               alignment: Alignment.center,
                               padding: const EdgeInsets.all(10),
-                              child:
-                                  // Type
-                                  ToggleButtons(
+                              child: ToggleButtons(
                                 constraints: BoxConstraints(
-                                    minWidth:
-                                        (MediaQuery.of(context).size.width -
-                                                26) /
-                                            2,
+                                    minWidth: (MediaQuery.of(context).size.width - 26) / 2,
                                     minHeight: 50.0),
                                 onPressed: (int index) {
-                                  for (int i = 0;
-                                      i < _selectedPostType.length;
-                                      i++) {
-                                    _selectedPostType[i] = i == index;
-                                    context
-                                        .read<PostFormCubit>()
-                                        .selectPostType(
-                                            state.selectableTypes[index]);
-                                  }
+                                  setState(() {
+                                    for (int i = 0; i < _selectedPostType.length; i++) {
+                                      _selectedPostType[i] = i == index;
+                                    }
+                                    context.read<PostFormCubit>().selectPostType(state.selectableTypes[index]);
+                                  });
                                 },
                                 isSelected: _selectedPostType,
                                 children: <Widget>[
@@ -129,7 +123,6 @@ class _PostCreateView extends State<PostCreateView> {
                           }
                           return const CircularProgressIndicator();
                         }),
-                        // Category
                         BlocBuilder<PostFormCubit, PostFormState>(
                             builder: (context, state) {
                           if (state is SelectionState) {
@@ -138,17 +131,13 @@ class _PostCreateView extends State<PostCreateView> {
                               padding: const EdgeInsets.all(10),
                               child: DropdownButtonFormField(
                                 value: state.selectedCategory,
-                                items: state.selectableCategories
-                                    .map<DropdownMenuItem<int>>((category) {
+                                items: state.selectableCategories.map<DropdownMenuItem<int>>((category) {
                                   return DropdownMenuItem<int>(
                                       value: category.id,
-                                      child:
-                                          Text(category.title ?? 'Category'));
+                                      child: Text(category.title ?? 'Category'));
                                 }).toList(),
                                 onChanged: (value) {
-                                  context
-                                      .read<PostFormCubit>()
-                                      .selectCategory(value as int);
+                                  context.read<PostFormCubit>().selectCategory(value as int);
                                 },
                               ),
                             );
@@ -165,13 +154,11 @@ class _PostCreateView extends State<PostCreateView> {
                               labelText: 'Titre',
                               hintText: 'Entrez un titre',
                             ),
-                            autovalidateMode:
-                                AutovalidateMode.onUserInteraction,
-                            validator: (value) => (value != null &&
-                                    value.isNotEmpty &&
-                                    value.length >= 0)
-                                ? null
-                                : 'Titrer non valide',
+                            autovalidateMode: AutovalidateMode.onUserInteraction,
+                            validator: (value) =>
+                                (value != null && value.isNotEmpty && value.length >= 0)
+                                    ? null
+                                    : 'Titre non valide',
                           ),
                         ),
                         Container(
@@ -201,24 +188,17 @@ class _PostCreateView extends State<PostCreateView> {
                             ),
                           ),
                         ),
-
                         BlocBuilder<PostFormCubit, PostFormState>(
                             builder: (context, state) {
-                          if (state is SelectionState &&
-                              state.selectedType == PostType.challenge) {
-                            startDate = DateTime.now();
-                            endDate = startDate!.add(const Duration(days: 1));
+                          if (state is SelectionState && state.selectedType == PostType.challenge) {
                             return Column(children: [
-                              // date debut
                               Container(
                                 padding: const EdgeInsets.all(10),
                                 constraints: BoxConstraints(
-                                  minWidth:
-                                      (MediaQuery.of(context).size.width - 36),
+                                  minWidth: (MediaQuery.of(context).size.width - 36),
                                 ),
                                 child: DateTimeFormField(
-                                  autovalidateMode:
-                                      AutovalidateMode.onUserInteraction,
+                                  autovalidateMode: AutovalidateMode.onUserInteraction,
                                   validator: (value) => datesValidation()
                                       ? null
                                       : "Dates non valides. Veuillez sélectionner une date de début et de fin.",
@@ -228,27 +208,25 @@ class _PostCreateView extends State<PostCreateView> {
                                   dateFormat: DateFormat.yMMMd('fr_FR'),
                                   decoration: const InputDecoration(
                                     hintStyle: TextStyle(color: Colors.black45),
-                                    errorStyle:
-                                        TextStyle(color: Colors.redAccent),
+                                    errorStyle: TextStyle(color: Colors.redAccent),
                                     border: OutlineInputBorder(),
                                     suffixIcon: Icon(Icons.event_note),
-                                    labelText: 'Date',
+                                    labelText: 'Date de début',
                                   ),
                                   onChanged: (value) {
-                                    startDate = value;
+                                    setState(() {
+                                      startDate = value;
+                                    });
                                   },
                                 ),
                               ),
-                              // date fin
                               Container(
                                 padding: const EdgeInsets.all(10),
                                 constraints: BoxConstraints(
-                                  minWidth:
-                                      (MediaQuery.of(context).size.width - 36),
+                                  minWidth: (MediaQuery.of(context).size.width - 36),
                                 ),
                                 child: DateTimeFormField(
-                                  autovalidateMode:
-                                      AutovalidateMode.onUserInteraction,
+                                  autovalidateMode: AutovalidateMode.onUserInteraction,
                                   validator: (value) => datesValidation()
                                       ? null
                                       : 'Dates non valides. La date de fin doit être au moins un jour après la date de début.',
@@ -258,14 +236,15 @@ class _PostCreateView extends State<PostCreateView> {
                                   dateFormat: DateFormat.yMMMd('fr_FR'),
                                   decoration: const InputDecoration(
                                     hintStyle: TextStyle(color: Colors.black45),
-                                    errorStyle:
-                                        TextStyle(color: Colors.redAccent),
+                                    errorStyle: TextStyle(color: Colors.redAccent),
                                     border: OutlineInputBorder(),
                                     suffixIcon: Icon(Icons.event_note),
-                                    labelText: 'Date',
+                                    labelText: 'Date de fin',
                                   ),
                                   onChanged: (value) {
-                                    endDate = value;
+                                    setState(() {
+                                      endDate = value;
+                                    });
                                   },
                                 ),
                               ),
@@ -273,7 +252,6 @@ class _PostCreateView extends State<PostCreateView> {
                           }
                           return const SizedBox();
                         }),
-
                         Container(
                           alignment: Alignment.topCenter,
                           padding: const EdgeInsets.all(10),
@@ -285,8 +263,7 @@ class _PostCreateView extends State<PostCreateView> {
                                   labelText: 'Ajouter un ou plusieurs tags',
                                 ),
                                 inputFormatters: [
-                                  FilteringTextInputFormatter.allow(
-                                      RegExp(r'[a-zA-Z]')),
+                                  FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z]')),
                                   FilteringTextInputFormatter.deny(' '),
                                 ],
                               ),
@@ -319,18 +296,14 @@ class _PostCreateView extends State<PostCreateView> {
                                 return ChipConfiguration(
                                   label: Text(tag.label),
                                   backgroundColor: lightColorScheme.primary,
-                                  labelStyle:
-                                      const TextStyle(color: Colors.white),
+                                  labelStyle: const TextStyle(color: Colors.white),
                                   deleteIconColor: Colors.white,
                                 );
                               },
                               onChanged: () {
-                                _tagsToSave
-                                    .map<TagModel>((tag) => tag)
-                                    .toList();
+                                _tagsToSave.map<TagModel>((tag) => tag).toList();
                               }),
-                        ), // tags
-                        // image
+                        ),
                         Column(
                           children: [
                             const Text('Sélectionnez une image'),
@@ -340,7 +313,6 @@ class _PostCreateView extends State<PostCreateView> {
                             ),
                           ],
                         ),
-                        // level
                         BlocBuilder<PostFormCubit, PostFormState>(
                             builder: (context, state) {
                           if (state is SelectionState) {
@@ -349,16 +321,12 @@ class _PostCreateView extends State<PostCreateView> {
                               padding: const EdgeInsets.all(10),
                               child: DropdownButtonFormField(
                                 value: state.selectedLevel,
-                                items: state.selectableLevels
-                                    .map<DropdownMenuItem<PostLevel>>((level) {
+                                items: state.selectableLevels.map<DropdownMenuItem<PostLevel>>((level) {
                                   return DropdownMenuItem<PostLevel>(
-                                      value: level,
-                                      child: Text(level.displayName));
+                                      value: level, child: Text(level.displayName));
                                 }).toList(),
                                 onChanged: (value) {
-                                  context
-                                      .read<PostFormCubit>()
-                                      .selectPostLevel(value as PostLevel);
+                                  context.read<PostFormCubit>().selectPostLevel(value as PostLevel);
                                 },
                               ),
                             );
@@ -374,9 +342,7 @@ class _PostCreateView extends State<PostCreateView> {
                               onPressed: () async {
                                 if (formKey.currentState!.validate()) {
                                   ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                        content:
-                                            Text('Publication en cours...')),
+                                    const SnackBar(content: Text('Publication en cours...')),
                                   );
                                   context.read<PostFormCubit>().createPost(
                                         title: titleController.text,
@@ -422,24 +388,22 @@ class _PostCreateView extends State<PostCreateView> {
         ),
       );
     } else {
-        return Stack(
+      return Stack(
         alignment: Alignment.center,
         children: [
-           Container(
-        width: 200,
-        height: 200,
-        decoration: BoxDecoration(
-          border: Border.all(color: Colors.grey),
-          borderRadius: BorderRadius.circular(10),
-          image: DecorationImage(
-                image: kIsWeb
-                        ? NetworkImage(_image!.path) as ImageProvider<Object>
-                        : FileImage(_image!),
+          Container(
+            width: 200,
+            height: 200,
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.grey),
+              borderRadius: BorderRadius.circular(10),
+              image: DecorationImage(
+                image: kIsWeb ? NetworkImage(_image!.path) as ImageProvider<Object> : FileImage(_image!),
                 fit: BoxFit.cover,
               ),
-        ),
-      ),
-      Icon(
+            ),
+          ),
+          Icon(
             Icons.add,
             color: Colors.grey.withOpacity(0.6),
             size: 40,
