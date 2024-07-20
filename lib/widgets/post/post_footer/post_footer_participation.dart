@@ -20,9 +20,55 @@ class PostFooterParticipation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Bouton pour participer au défi
     if (!isAlreadyParticipant) {
       return BlocBuilder<ParticipationCubit, ParticipationState>(
         builder: (context, state) {
+          Future<void> postModalAction(
+              BuildContext context, bool isParticipation) {
+            return showDialog<void>(
+              context: context,
+              builder: (BuildContext buildContext) {
+                return AlertDialog(
+                  title: const Text(
+                      "Souhaitez-vous vraiment participer au défi ?"),
+                  actions: <Widget>[
+                    TextButton(
+                      style: TextButton.styleFrom(
+                        textStyle: Theme.of(context).textTheme.labelLarge,
+                      ),
+                      child: const Text('Oui'),
+                      onPressed: () {
+                        context
+                            .read<ParticipationCubit>()
+                            .createParticipation(postId);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text(
+                                "C'est parti ! Vous participez désormais à ce défi."),
+                          ),
+                        );
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width / 3,
+                    ),
+                    TextButton(
+                      style: TextButton.styleFrom(
+                        textStyle: Theme.of(context).textTheme.labelLarge,
+                      ),
+                      child: const Text('Non'),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ],
+                );
+              },
+            );
+          }
+
           if (state is ParticipationStateSuccess) {
             return const SizedBox.shrink();
           } else if (state is ParticipationStateError) {
@@ -39,20 +85,61 @@ class PostFooterParticipation extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                 )),
             onPressed: () {
-              context.read<ParticipationCubit>().createParticipation(postId);
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Vous participer désormais à ce challenge'),
-                ),
-              );
+              postModalAction(context, true);
             },
             child: const Text('Participer au défi'),
           );
         },
       );
-    } else if (canEndChallenge) {
+    }
+
+    // Bouton pour terminer le défi
+    else if (canEndChallenge) {
       return BlocBuilder<ParticipationCubit, ParticipationState>(
         builder: (context, state) {
+          Future<void> postModalAction(
+              BuildContext context, bool isParticipation) {
+            return showDialog<void>(
+              context: context,
+              builder: (BuildContext buildContext) {
+                return AlertDialog(
+                  title:
+                      const Text("Souhaitez-vous vraiment terminer ce défi ?"),
+                  actions: <Widget>[
+                    TextButton(
+                      style: TextButton.styleFrom(
+                        textStyle: Theme.of(context).textTheme.labelLarge,
+                      ),
+                      child: const Text('Oui'),
+                      onPressed: () {
+                        context.read<ParticipationCubit>().endChallenge(postId);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text(
+                                "Bravo ! Vous avez terminé le défi avec succès."),
+                          ),
+                        );
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width / 3,
+                    ),
+                    TextButton(
+                      style: TextButton.styleFrom(
+                        textStyle: Theme.of(context).textTheme.labelLarge,
+                      ),
+                      child: const Text('Non'),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ],
+                );
+              },
+            );
+          }
+
           if (state is ParticipationStateSuccess) {
             return const SizedBox.shrink();
           } else if (state is ParticipationStateError) {
@@ -68,12 +155,7 @@ class PostFooterParticipation extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                 )),
             onPressed: () {
-              context.read<ParticipationCubit>().endChallenge(postId);
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Vous avez terminé ce challenge'),
-                ),
-              );
+              postModalAction(context, false);
             },
             child: const Text('Terminer le défi'),
           );
