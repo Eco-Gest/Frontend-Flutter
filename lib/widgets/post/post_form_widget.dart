@@ -370,7 +370,7 @@ class _PostFormWidget extends State<PostFormWidget> {
                     return const CircularProgressIndicator();
                   }),
                   Padding(
-                    padding: const EdgeInsets.all(30.0),
+                    padding: const EdgeInsets.all(15.0),
                     child: SizedBox(
                       width: (MediaQuery.of(context).size.width - 26) / 2,
                       height: 50.0,

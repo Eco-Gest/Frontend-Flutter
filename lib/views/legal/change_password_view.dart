@@ -177,7 +177,7 @@ class _ChangePasswordView extends State<ChangePasswordView> {
                       child: FilledButton(
                         style: TextButton.styleFrom(
                           minimumSize: const Size.fromHeight(50),
-                          padding: const EdgeInsets.all(20),
+                          padding: const EdgeInsets.all(15),
                         ),
                         onPressed: () {
                           context.read<UserCubit>().changePassword(
@@ -188,7 +188,7 @@ class _ChangePasswordView extends State<ChangePasswordView> {
                               );
                         },
                         child: const Text(
-                            style: TextStyle(fontSize: 18), "Changer de mot de passe"),
+                            "Changer de mot de passe"),
                       ),
                     ),
                   ],

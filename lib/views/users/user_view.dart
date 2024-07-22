@@ -127,8 +127,8 @@ class _UserView extends State<UserView> {
                                       child: FilledButton(
                                         style: TextButton.styleFrom(
                                           minimumSize:
-                                              const Size.fromHeight(50),
-                                          padding: const EdgeInsets.all(20),
+                                               const Size.fromHeight(50),
+                                          padding: const EdgeInsets.all(15),
                                         ),
                                         onPressed: () {
                                           context
@@ -136,7 +136,6 @@ class _UserView extends State<UserView> {
                                               .unblockUser(userId);
                                         },
                                         child: const Text(
-                                          style: TextStyle(fontSize: 18),
                                           'Débloquer',
                                         ),
                                       ),

@@ -144,13 +144,12 @@ class _ResetPasswordView extends State<ResetPasswordView> {
                                             child: FilledButton(
                                               style: TextButton.styleFrom(
                                                 minimumSize: const Size.fromHeight(50),
-                                                padding: const EdgeInsets.all(20),
+                                                padding: const EdgeInsets.all(15),
                                               ),
                                               onPressed: () {
                                                 GoRouter.of(context).goNamed(LoginView.name);
                                               },
                                               child: const Text(
-                                                style: TextStyle(fontSize: 18),
                                                 'Se connecter',
                                               ),
                                             ),
@@ -169,7 +168,7 @@ class _ResetPasswordView extends State<ResetPasswordView> {
                           child: FilledButton(
                             style: TextButton.styleFrom(
                               minimumSize: const Size.fromHeight(50),
-                              padding: const EdgeInsets.all(20),
+                              padding: const EdgeInsets.all(15),
                             ),
                             onPressed: () {
                               context.read<AuthenticationCubit>().resetPassword(
@@ -177,7 +176,7 @@ class _ResetPasswordView extends State<ResetPasswordView> {
                               );
                             },
                             child: const Text(
-                                style: TextStyle(fontSize: 18), "Modifier le mot de passe"),
+                                "Modifier le mot de passe"),
                           ),
                         ),
                       ),
