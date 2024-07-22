@@ -20,7 +20,7 @@ class PostFooterParticipation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Bouton pour participer au défi
+    // button participate to challenge
     if (!isAlreadyParticipant) {
       return BlocBuilder<ParticipationCubit, ParticipationState>(
         builder: (context, state) {
@@ -93,7 +93,7 @@ class PostFooterParticipation extends StatelessWidget {
       );
     }
 
-    // Bouton pour terminer le défi
+    // button to end the challenge
     else if (canEndChallenge) {
       return BlocBuilder<ParticipationCubit, ParticipationState>(
         builder: (context, state) {
