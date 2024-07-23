@@ -14,6 +14,7 @@ import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:intl/intl.dart';
+import 'package:ecogest_front/state_management/theme_settings/theme_settings_cubit.dart';
 
 class PostFormWidget extends StatefulWidget {
   PostFormWidget({Key? key, this.prefilledPost}) : super(key: key);
@@ -192,11 +193,11 @@ class _PostFormWidget extends State<PostFormWidget> {
                     alignment: Alignment.topCenter,
                     padding: const EdgeInsets.all(10),
                     child: TextFormField(
-                      textAlign: TextAlign.justify,
                       controller: descriptionController,
                       autofocus: false,
                       maxLines: 8,
                       decoration: const InputDecoration(
+                        alignLabelWithHint: true,
                         border: OutlineInputBorder(),
                         labelText: 'Description',
                         hintText: 'Entrez une description',
@@ -314,10 +315,16 @@ class _PostFormWidget extends State<PostFormWidget> {
                         configureSuggestion: (tag) {
                           return SuggestionConfiguration(
                             title: Text(tag.label),
-                            additionWidget: const Chip(
+                            additionWidget: Chip(
                               avatar: Icon(
                                 Icons.add_circle,
                               ),
+                              backgroundColor: context
+                                      .read<ThemeSettingsCubit>()
+                                      .state
+                                      .isDarkMode
+                                  ? darkColorScheme.primary
+                                  : lightColorScheme.primary,
                               label: Text('Ajouter un nouveau tag'),
                               labelStyle: TextStyle(
                                 fontSize: 14.0,
@@ -329,7 +336,12 @@ class _PostFormWidget extends State<PostFormWidget> {
                         configureChip: (tag) {
                           return ChipConfiguration(
                             label: Text(tag.label),
-                            backgroundColor: lightColorScheme.primary,
+                            backgroundColor: context
+                                    .read<ThemeSettingsCubit>()
+                                    .state
+                                    .isDarkMode
+                                ? darkColorScheme.primary
+                                : lightColorScheme.primary,
                             labelStyle: const TextStyle(color: Colors.white),
                             deleteIconColor: Colors.white,
                           );

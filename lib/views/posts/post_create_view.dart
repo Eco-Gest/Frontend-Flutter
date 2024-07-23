@@ -16,6 +16,7 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:intl/intl.dart';
+import 'package:ecogest_front/state_management/theme_settings/theme_settings_cubit.dart';
 
 class PostCreateView extends StatefulWidget {
   const PostCreateView({Key? key}) : super(key: key);
@@ -32,21 +33,21 @@ class _PostCreateView extends State<PostCreateView> {
   final positionController = TextEditingController();
   final tagController = TextEditingController();
 
-DateTime? startDate = DateTime.now(); // Par défaut, aujourd'hui
-DateTime? endDate = DateTime.now().add(Duration(days: 1)); // Par défaut, demain
-
+  DateTime? startDate = DateTime.now(); // Par défaut, aujourd'hui
+  DateTime? endDate =
+      DateTime.now().add(Duration(days: 1)); // Par défaut, demain
 
   late List<TagModel> _tagsToSave = [];
 
   final List<bool> _selectedPostType = <bool>[true, false];
 
   bool datesValidation() {
-    if (startDate == null && endDate == null ) {
+    if (startDate == null && endDate == null) {
       return false;
     }
     if (startDate!.isAfter(endDate!)) {
-        return false;
-      }
+      return false;
+    }
     return true;
   }
 
@@ -103,14 +104,22 @@ DateTime? endDate = DateTime.now().add(Duration(days: 1)); // Par défaut, demai
                               padding: const EdgeInsets.all(10),
                               child: ToggleButtons(
                                 constraints: BoxConstraints(
-                                    minWidth: (MediaQuery.of(context).size.width - 26) / 2,
+                                    minWidth:
+                                        (MediaQuery.of(context).size.width -
+                                                26) /
+                                            2,
                                     minHeight: 50.0),
                                 onPressed: (int index) {
                                   setState(() {
-                                    for (int i = 0; i < _selectedPostType.length; i++) {
+                                    for (int i = 0;
+                                        i < _selectedPostType.length;
+                                        i++) {
                                       _selectedPostType[i] = i == index;
                                     }
-                                    context.read<PostFormCubit>().selectPostType(state.selectableTypes[index]);
+                                    context
+                                        .read<PostFormCubit>()
+                                        .selectPostType(
+                                            state.selectableTypes[index]);
                                   });
                                 },
                                 isSelected: _selectedPostType,
@@ -131,13 +140,17 @@ DateTime? endDate = DateTime.now().add(Duration(days: 1)); // Par défaut, demai
                               padding: const EdgeInsets.all(10),
                               child: DropdownButtonFormField(
                                 value: state.selectedCategory,
-                                items: state.selectableCategories.map<DropdownMenuItem<int>>((category) {
+                                items: state.selectableCategories
+                                    .map<DropdownMenuItem<int>>((category) {
                                   return DropdownMenuItem<int>(
                                       value: category.id,
-                                      child: Text(category.title ?? 'Category'));
+                                      child:
+                                          Text(category.title ?? 'Category'));
                                 }).toList(),
                                 onChanged: (value) {
-                                  context.read<PostFormCubit>().selectCategory(value as int);
+                                  context
+                                      .read<PostFormCubit>()
+                                      .selectCategory(value as int);
                                 },
                               ),
                             );
@@ -154,22 +167,24 @@ DateTime? endDate = DateTime.now().add(Duration(days: 1)); // Par défaut, demai
                               labelText: 'Titre',
                               hintText: 'Entrez un titre',
                             ),
-                            autovalidateMode: AutovalidateMode.onUserInteraction,
-                            validator: (value) =>
-                                (value != null && value.isNotEmpty && value.length >= 0)
-                                    ? null
-                                    : 'Titre non valide',
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            validator: (value) => (value != null &&
+                                    value.isNotEmpty &&
+                                    value.length >= 0)
+                                ? null
+                                : 'Titre non valide',
                           ),
                         ),
                         Container(
                           alignment: Alignment.topCenter,
                           padding: const EdgeInsets.all(10),
                           child: TextFormField(
-                            textAlign: TextAlign.justify,
                             controller: descriptionController,
                             autofocus: false,
                             maxLines: 8,
                             decoration: const InputDecoration(
+                              alignLabelWithHint: true,
                               border: OutlineInputBorder(),
                               labelText: 'Description',
                               hintText: 'Entrez une description',
@@ -190,15 +205,18 @@ DateTime? endDate = DateTime.now().add(Duration(days: 1)); // Par défaut, demai
                         ),
                         BlocBuilder<PostFormCubit, PostFormState>(
                             builder: (context, state) {
-                          if (state is SelectionState && state.selectedType == PostType.challenge) {
+                          if (state is SelectionState &&
+                              state.selectedType == PostType.challenge) {
                             return Column(children: [
                               Container(
                                 padding: const EdgeInsets.all(10),
                                 constraints: BoxConstraints(
-                                  minWidth: (MediaQuery.of(context).size.width - 36),
+                                  minWidth:
+                                      (MediaQuery.of(context).size.width - 36),
                                 ),
                                 child: DateTimeFormField(
-                                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                                  autovalidateMode:
+                                      AutovalidateMode.onUserInteraction,
                                   validator: (value) => datesValidation()
                                       ? null
                                       : "Dates non valides. Veuillez sélectionner une date de début et de fin.",
@@ -208,7 +226,8 @@ DateTime? endDate = DateTime.now().add(Duration(days: 1)); // Par défaut, demai
                                   dateFormat: DateFormat.yMMMd('fr_FR'),
                                   decoration: const InputDecoration(
                                     hintStyle: TextStyle(color: Colors.black45),
-                                    errorStyle: TextStyle(color: Colors.redAccent),
+                                    errorStyle:
+                                        TextStyle(color: Colors.redAccent),
                                     border: OutlineInputBorder(),
                                     suffixIcon: Icon(Icons.event_note),
                                     labelText: 'Date de début',
@@ -223,10 +242,12 @@ DateTime? endDate = DateTime.now().add(Duration(days: 1)); // Par défaut, demai
                               Container(
                                 padding: const EdgeInsets.all(10),
                                 constraints: BoxConstraints(
-                                  minWidth: (MediaQuery.of(context).size.width - 36),
+                                  minWidth:
+                                      (MediaQuery.of(context).size.width - 36),
                                 ),
                                 child: DateTimeFormField(
-                                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                                  autovalidateMode:
+                                      AutovalidateMode.onUserInteraction,
                                   validator: (value) => datesValidation()
                                       ? null
                                       : 'Dates non valides. La date de fin doit être au moins un jour après la date de début.',
@@ -236,7 +257,8 @@ DateTime? endDate = DateTime.now().add(Duration(days: 1)); // Par défaut, demai
                                   dateFormat: DateFormat.yMMMd('fr_FR'),
                                   decoration: const InputDecoration(
                                     hintStyle: TextStyle(color: Colors.black45),
-                                    errorStyle: TextStyle(color: Colors.redAccent),
+                                    errorStyle:
+                                        TextStyle(color: Colors.redAccent),
                                     border: OutlineInputBorder(),
                                     suffixIcon: Icon(Icons.event_note),
                                     labelText: 'Date de fin',
@@ -263,7 +285,8 @@ DateTime? endDate = DateTime.now().add(Duration(days: 1)); // Par défaut, demai
                                   labelText: 'Ajouter un ou plusieurs tags',
                                 ),
                                 inputFormatters: [
-                                  FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z]')),
+                                  FilteringTextInputFormatter.allow(
+                                      RegExp(r'[a-zA-Z]')),
                                   FilteringTextInputFormatter.deny(' '),
                                 ],
                               ),
@@ -280,14 +303,21 @@ DateTime? endDate = DateTime.now().add(Duration(days: 1)); // Par défaut, demai
                               configureSuggestion: (tag) {
                                 return SuggestionConfiguration(
                                   title: Text(tag.label),
-                                  additionWidget: const Chip(
+                                  additionWidget: Chip(
                                     avatar: Icon(
                                       Icons.add_circle,
                                     ),
+                                    backgroundColor: context
+                                            .read<ThemeSettingsCubit>()
+                                            .state
+                                            .isDarkMode
+                                        ? darkColorScheme.primary
+                                        : lightColorScheme.primary,
                                     label: Text('Ajouter un nouveau tag'),
                                     labelStyle: TextStyle(
                                       fontSize: 14.0,
                                       fontWeight: FontWeight.w300,
+                                      color: Colors.white,
                                     ),
                                   ),
                                 );
@@ -295,13 +325,21 @@ DateTime? endDate = DateTime.now().add(Duration(days: 1)); // Par défaut, demai
                               configureChip: (tag) {
                                 return ChipConfiguration(
                                   label: Text(tag.label),
-                                  backgroundColor: lightColorScheme.primary,
-                                  labelStyle: const TextStyle(color: Colors.white),
+                                  backgroundColor: context
+                                            .read<ThemeSettingsCubit>()
+                                            .state
+                                            .isDarkMode
+                                        ? darkColorScheme.primary
+                                        : lightColorScheme.primary,
+                                  labelStyle:
+                                      const TextStyle(color: Colors.white),
                                   deleteIconColor: Colors.white,
                                 );
                               },
                               onChanged: () {
-                                _tagsToSave.map<TagModel>((tag) => tag).toList();
+                                _tagsToSave
+                                    .map<TagModel>((tag) => tag)
+                                    .toList();
                               }),
                         ),
                         Column(
@@ -321,12 +359,16 @@ DateTime? endDate = DateTime.now().add(Duration(days: 1)); // Par défaut, demai
                               padding: const EdgeInsets.all(10),
                               child: DropdownButtonFormField(
                                 value: state.selectedLevel,
-                                items: state.selectableLevels.map<DropdownMenuItem<PostLevel>>((level) {
+                                items: state.selectableLevels
+                                    .map<DropdownMenuItem<PostLevel>>((level) {
                                   return DropdownMenuItem<PostLevel>(
-                                      value: level, child: Text(level.displayName));
+                                      value: level,
+                                      child: Text(level.displayName));
                                 }).toList(),
                                 onChanged: (value) {
-                                  context.read<PostFormCubit>().selectPostLevel(value as PostLevel);
+                                  context
+                                      .read<PostFormCubit>()
+                                      .selectPostLevel(value as PostLevel);
                                 },
                               ),
                             );
@@ -342,7 +384,9 @@ DateTime? endDate = DateTime.now().add(Duration(days: 1)); // Par défaut, demai
                               onPressed: () async {
                                 if (formKey.currentState!.validate()) {
                                   ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(content: Text('Publication en cours...')),
+                                    const SnackBar(
+                                        content:
+                                            Text('Publication en cours...')),
                                   );
                                   context.read<PostFormCubit>().createPost(
                                         title: titleController.text,
@@ -398,7 +442,9 @@ DateTime? endDate = DateTime.now().add(Duration(days: 1)); // Par défaut, demai
               border: Border.all(color: Colors.grey),
               borderRadius: BorderRadius.circular(10),
               image: DecorationImage(
-                image: kIsWeb ? NetworkImage(_image!.path) as ImageProvider<Object> : FileImage(_image!),
+                image: kIsWeb
+                    ? NetworkImage(_image!.path) as ImageProvider<Object>
+                    : FileImage(_image!),
                 fit: BoxFit.cover,
               ),
             ),
