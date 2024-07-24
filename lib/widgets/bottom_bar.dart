@@ -61,9 +61,12 @@ class AppBarFooter extends StatelessWidget {
                 },
                 style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16.0),
+                    borderRadius: BorderRadius.circular(12.0),
                   ),
-                  minimumSize: const Size.square(60),
+                  minimumSize: const Size.square(50),
+                  backgroundColor: isDarkMode
+                      ? darkColorScheme.secondaryContainer
+                      : lightColorScheme.secondaryContainer,
                 ),
                 child: const Icon(Icons.add),
               ),

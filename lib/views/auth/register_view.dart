@@ -230,7 +230,7 @@ class _RegisterView extends State<RegisterView> {
                           child: FilledButton(
                             style: TextButton.styleFrom(
                               minimumSize: const Size.fromHeight(50),
-                              padding: const EdgeInsets.all(20),
+                              padding: const EdgeInsets.all(15),
                             ),
                             onPressed: () {
                               context.read<AuthenticationCubit>().register(
@@ -240,7 +240,7 @@ class _RegisterView extends State<RegisterView> {
                                   );
                             },
                             child: const Text(
-                                style: TextStyle(fontSize: 18), "S'inscrire"),
+                                "S'inscrire"),
                           ),
                         ),
                       ),

@@ -1,3 +1,4 @@
+import 'package:ecogest_front/views/home_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ecogest_front/models/post_model.dart';
@@ -7,6 +8,7 @@ import 'package:ecogest_front/widgets/post/post_footer/post_footer_actions.dart'
 import 'package:ecogest_front/widgets/post/post_footer/post_footer_participation.dart';
 import 'package:ecogest_front/widgets/post/post_separator.dart';
 import 'package:ecogest_front/state_management/posts/participation_cubit.dart';
+import 'package:go_router/go_router.dart';
 
 // PostFooter is a widget that displays the footer of a post
 // It contains widgets for
@@ -62,7 +64,7 @@ class _PostFooter extends State<PostFooter> {
           isLiked: isLiked,
           comments: comments,
         ),
-        if (isChallenge!) // Only show participation for challenges
+        if (isChallenge! && GoRouterState.of(context).uri.toString() != "/${HomeView.name}") // Only show participation for challenges
           BlocProvider<ParticipationCubit>(
             create: (_) => ParticipationCubit(),
             child: PostFooterParticipation(
