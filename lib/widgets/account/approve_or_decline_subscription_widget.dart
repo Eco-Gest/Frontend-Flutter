@@ -40,7 +40,7 @@ class _ApproveOrDeclineSubscriptionWidget
         return Row(
           children: [
             SizedBox(
-              width: 10,
+              width: 5,
             ),
             Container(
               width: 200,

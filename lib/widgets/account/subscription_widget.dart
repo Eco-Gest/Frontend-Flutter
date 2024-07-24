@@ -32,20 +32,14 @@ class _SubscriptionWidgetState extends State<SubscriptionWidget> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<UsersRelationCubit, UsersRelationState>(
-      builder: (context, state) {
-        return Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            _buildSubscriptionButton(context),
-            if (isFollowed) ...[
-              ApproveOrDeclineSubscriptionWidget(
-                userId: widget.userId,
-                isFollowed: isFollowed,
-                onApproveOrDeclineButton: () {
-                  setState(() {
-                    widget.isFollowedPending = !isFollowed;
-                  });
-                },
+        builder: (context, state) {
+      if (state is SubscriptionStateSuccess) {
+        return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+          FilledButton(
+            style: FilledButton.styleFrom(
+              backgroundColor: Colors.white,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0),
               ),
             ],
           ],
@@ -54,16 +48,65 @@ class _SubscriptionWidgetState extends State<SubscriptionWidget> {
     );
   }
 
-  Widget _buildSubscriptionButton(BuildContext context) {
-    final isDarkMode = context.read<ThemeSettingsCubit>().state.isDarkMode;
-    final primaryColor = isDarkMode ? darkColorScheme.primary : lightColorScheme.primary;
+      if (state is SubscriptionCancelStateSuccess) {
+        return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+          FilledButton(
+            style: FilledButton.styleFrom(
+              backgroundColor:
+                  context.read<ThemeSettingsCubit>().state.isDarkMode
+                      ? darkColorScheme.primary
+                      : lightColorScheme.primary,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+            ),
+            onPressed: () {
+              widget.onSubscriptionButton;
+              context
+                  .read<UsersRelationCubit>()
+                  .subscription(userId, isFollowing);
+              isFollowing = !isFollowing;
+            },
+            child: const Text(
+              'Suivre',
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+          if (isFollowed) ...[
+            ApproveOrDeclineSubscriptionWidget(
+              userId: userId,
+              isFollowed: isFollowed,
+              onApproveOrDeclineButton: () {
+                setState(() {
+                  isFollowed = !isFollowed;
+                });
+              },
+            ),
+          ]
+        ]);
+      }
 
-    return FilledButton(
-      style: FilledButton.styleFrom(
-        backgroundColor: isFollowing ? Colors.white : primaryColor,
-        fixedSize: Size(isFollowed ? 210 : MediaQuery.of(context).size.width / 2, 50),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10.0),
+      return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+        FilledButton(
+          style: FilledButton.styleFrom(
+            backgroundColor: (isFollowing
+                ? Colors.white
+                : context.read<ThemeSettingsCubit>().state.isDarkMode
+                    ? darkColorScheme.primary
+                    : lightColorScheme.primary),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+          ),
+          onPressed: () {
+            widget.onSubscriptionButton;
+            context.read<UsersRelationCubit>().subscription(userId, isFollowing);
+            isFollowing = !isFollowing;
+          },
+          child: Text(
+            isFollowing ? 'Annuler' : 'Suivre',
+            style: TextStyle(color: isFollowing ? Colors.black : Colors.white),
+          ),
         ),
       ),
       onPressed: () {
