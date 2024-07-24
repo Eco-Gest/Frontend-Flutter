@@ -161,6 +161,7 @@ class _PostCreateView extends State<PostCreateView> {
                           alignment: Alignment.topCenter,
                           padding: const EdgeInsets.all(10),
                           child: TextFormField(
+                            textCapitalization: TextCapitalization.sentences,
                             controller: titleController,
                             decoration: const InputDecoration(
                               border: OutlineInputBorder(),
@@ -180,6 +181,8 @@ class _PostCreateView extends State<PostCreateView> {
                           alignment: Alignment.topCenter,
                           padding: const EdgeInsets.all(10),
                           child: TextFormField(
+                            textCapitalization: TextCapitalization.sentences,
+                            textAlign: TextAlign.justify,
                             controller: descriptionController,
                             autofocus: false,
                             maxLines: 8,
@@ -195,6 +198,7 @@ class _PostCreateView extends State<PostCreateView> {
                           alignment: Alignment.topCenter,
                           padding: const EdgeInsets.all(10),
                           child: TextFormField(
+                            textCapitalization: TextCapitalization.sentences,
                             controller: positionController,
                             decoration: const InputDecoration(
                               border: OutlineInputBorder(),
@@ -376,7 +380,7 @@ class _PostCreateView extends State<PostCreateView> {
                           return const CircularProgressIndicator();
                         }),
                         Padding(
-                          padding: const EdgeInsets.all(30.0),
+                          padding: const EdgeInsets.all(15.0),
                           child: SizedBox(
                             width: (MediaQuery.of(context).size.width - 26) / 2,
                             height: 50.0,

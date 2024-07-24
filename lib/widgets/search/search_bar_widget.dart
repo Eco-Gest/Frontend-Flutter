@@ -33,14 +33,14 @@ class SearchBarWidget extends StatelessWidget {
           child: FilledButton(
             style: TextButton.styleFrom(
               minimumSize: const Size.fromHeight(50),
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.all(15),
             ),
             onPressed: () {
               context
                   .read<SearchCubit>()
                   .getSearchResults(queryController.text);
             },
-            child: const Text(style: TextStyle(fontSize: 18), "Rechercher"),
+            child: const Text("Rechercher"),
           ),
         ),
         SizedBox(height: 20),

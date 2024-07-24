@@ -67,7 +67,7 @@ class _AccountInfo extends State<AccountInfo>
                     ),
                   ),
                 ),
-                const SizedBox(width: 40),
+                const SizedBox(width: 10),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -76,7 +76,6 @@ class _AccountInfo extends State<AccountInfo>
                       style: const TextStyle(
                           fontSize: 20, fontWeight: FontWeight.bold),
                     ),
-                    const SizedBox(height: 6),
                     Text(
                       user.position ?? 'Le Monde',
                       style: const TextStyle(fontSize: 16),
