@@ -40,10 +40,10 @@ class _ApproveOrDeclineSubscriptionWidget
         return Row(
           children: [
             SizedBox(
-              width: 20,
+              width: 10,
             ),
             Container(
-              width: 210,
+              width: 200,
               alignment: Alignment.topCenter,
               padding: const EdgeInsets.all(10),
               child: DropdownButtonFormField(

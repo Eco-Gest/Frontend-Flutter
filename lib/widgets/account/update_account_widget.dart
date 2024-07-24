@@ -99,6 +99,7 @@ class _UpdateAccountWidget extends State<UpdateAccountWidget> {
                                   alignment: Alignment.topCenter,
                                   padding: const EdgeInsets.all(10),
                                   child: TextFormField(
+                                    textCapitalization: TextCapitalization.sentences,
                                     controller: usernameController,
                                     decoration: InputDecoration(
                                       border: OutlineInputBorder(),
@@ -122,6 +123,7 @@ class _UpdateAccountWidget extends State<UpdateAccountWidget> {
                                   alignment: Alignment.topCenter,
                                   padding: const EdgeInsets.all(10),
                                   child: TextFormField(
+                                    textCapitalization: TextCapitalization.sentences,
                                     controller: biographyController,
                                     decoration: InputDecoration(
                                       border: OutlineInputBorder(),
@@ -136,6 +138,7 @@ class _UpdateAccountWidget extends State<UpdateAccountWidget> {
                                   alignment: Alignment.topCenter,
                                   padding: const EdgeInsets.all(10),
                                   child: TextFormField(
+                                    textCapitalization: TextCapitalization.sentences,
                                     controller: positionController,
                                     decoration: InputDecoration(
                                       border: OutlineInputBorder(),
@@ -184,7 +187,7 @@ class _UpdateAccountWidget extends State<UpdateAccountWidget> {
                                   ],
                                 ),
                                 Padding(
-                                  padding: const EdgeInsets.all(30.0),
+                                  padding: const EdgeInsets.all(15.0),
                                   child: SizedBox(
                                     width: (MediaQuery.of(context).size.width +
                                             60) /

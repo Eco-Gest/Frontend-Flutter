@@ -78,10 +78,9 @@ class PostFooterParticipation extends StatelessWidget {
             style: FilledButton.styleFrom(
                 minimumSize: const Size.fromHeight(30),
                 alignment: Alignment.topCenter,
-                padding: const EdgeInsets.all(20),
+                padding: const EdgeInsets.all(15),
                 foregroundColor: Colors.white,
                 textStyle: const TextStyle(
-                  fontSize: 18,
                   fontWeight: FontWeight.bold,
                 )),
             onPressed: () {

@@ -162,7 +162,7 @@ class _LoginView extends State<LoginView> {
                         child: FilledButton(
                           style: TextButton.styleFrom(
                             minimumSize: const Size.fromHeight(50),
-                            padding: const EdgeInsets.all(20),
+                            padding: const EdgeInsets.all(15),
                           ),
                           onPressed: () {
                             context.read<AuthenticationCubit>().login(
@@ -171,7 +171,6 @@ class _LoginView extends State<LoginView> {
                                 );
                           },
                           child: const Text(
-                            style: TextStyle(fontSize: 18),
                             'Se connecter',
                           ),
                         ),
