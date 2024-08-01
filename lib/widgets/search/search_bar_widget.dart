@@ -23,7 +23,7 @@ class SearchBarWidget extends StatelessWidget {
               hintText: 'Rechercher une publication ou un utilisateur',
             ),
             autovalidateMode: AutovalidateMode.onUserInteraction,
-            validator: (value) => (value != null && value.length > 0)
+             validator: (value) => (value != null && value.isNotEmpty)
                 ? null
                 : 'Recherche non valide',
           ),
@@ -36,14 +36,16 @@ class SearchBarWidget extends StatelessWidget {
               padding: const EdgeInsets.all(15),
             ),
             onPressed: () {
-              context
-                  .read<SearchCubit>()
-                  .getSearchResults(queryController.text);
+              if (queryController.text.isNotEmpty) {
+                context
+                    .read<SearchCubit>()
+                    .getSearchResults(queryController.text);
+              }
             },
             child: const Text("Rechercher"),
           ),
         ),
-        SizedBox(height: 20),
+        const SizedBox(height: 20),
       ],
     );
   }

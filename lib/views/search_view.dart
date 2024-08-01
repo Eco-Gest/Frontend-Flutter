@@ -16,7 +16,7 @@ class SearchView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const ThemeAppBar(title: 'Rechercher'),
-      bottomNavigationBar: AppBarFooter(),
+      bottomNavigationBar: const AppBarFooter(),
       body: SingleChildScrollView(
         child: Stack(
           children: [
@@ -26,7 +26,7 @@ class SearchView extends StatelessWidget {
                 children: 
                 [
                   SearchBarWidget(),
-                  SearchResultsWidget(),
+                  const SearchResultsWidget(),
                 ]
               )
             ),
