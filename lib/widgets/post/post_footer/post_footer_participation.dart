@@ -37,6 +37,18 @@ class PostFooterParticipation extends StatelessWidget {
                       style: TextButton.styleFrom(
                         textStyle: Theme.of(context).textTheme.labelLarge,
                       ),
+                      child: const Text('Non'),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                    SizedBox(
+                      width: (MediaQuery.of(context).size.width - 30) / 2,
+                    ),
+                    TextButton(
+                      style: TextButton.styleFrom(
+                        textStyle: Theme.of(context).textTheme.labelLarge,
+                      ),
                       child: const Text('Oui'),
                       onPressed: () {
                         context
@@ -48,18 +60,6 @@ class PostFooterParticipation extends StatelessWidget {
                                 "C'est parti ! Vous participez désormais à ce défi."),
                           ),
                         );
-                        Navigator.of(context).pop();
-                      },
-                    ),
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width / 3,
-                    ),
-                    TextButton(
-                      style: TextButton.styleFrom(
-                        textStyle: Theme.of(context).textTheme.labelLarge,
-                      ),
-                      child: const Text('Non'),
-                      onPressed: () {
                         Navigator.of(context).pop();
                       },
                     ),
@@ -109,6 +109,18 @@ class PostFooterParticipation extends StatelessWidget {
                       style: TextButton.styleFrom(
                         textStyle: Theme.of(context).textTheme.labelLarge,
                       ),
+                      child: const Text('Non'),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                    SizedBox(
+                      width: (MediaQuery.of(context).size.width - 30) / 2,
+                    ),
+                    TextButton(
+                      style: TextButton.styleFrom(
+                        textStyle: Theme.of(context).textTheme.labelLarge,
+                      ),
                       child: const Text('Oui'),
                       onPressed: () {
                         context.read<ParticipationCubit>().endChallenge(postId);
@@ -118,18 +130,6 @@ class PostFooterParticipation extends StatelessWidget {
                                 "Bravo ! Vous avez terminé le défi avec succès."),
                           ),
                         );
-                        Navigator.of(context).pop();
-                      },
-                    ),
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width / 3,
-                    ),
-                    TextButton(
-                      style: TextButton.styleFrom(
-                        textStyle: Theme.of(context).textTheme.labelLarge,
-                      ),
-                      child: const Text('Non'),
-                      onPressed: () {
                         Navigator.of(context).pop();
                       },
                     ),

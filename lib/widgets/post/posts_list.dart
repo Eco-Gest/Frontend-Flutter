@@ -37,23 +37,10 @@ class _PostsList extends State<PostsList> {
 
   Future<void> refreshData() async {
     setState(() {
-      context.read<PostsCubit>().getPosts(widget.currentPage!, true);
+      context.read<PostsCubit>().getPosts(widget.currentPage!);
     });
   }
 
-  bool canEndChallenge(PostModel post) {
-    if (post.type == 'challenge' && post.userPostParticipation != null) {
-      if (post.userPostParticipation!
-          .where((upp) =>
-              upp.isCompleted == false &&
-              upp.participantId ==
-                  context.read<AuthenticationCubit>().state.user!.id)
-          .isNotEmpty) {
-        return true;
-      }
-    }
-    return false;
-  }
 
   @override
   Widget build(BuildContext context) {

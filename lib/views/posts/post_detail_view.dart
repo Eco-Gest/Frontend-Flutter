@@ -27,7 +27,7 @@ class _PostDetailView extends State<PostDetailView> {
       body: BlocProvider<PostsCubit>(
         create: (context) {
           final cubit = PostsCubit();
-          cubit.getOnePost(postId, false);
+          cubit.getOnePost(postId);
           return cubit;
         },
         child: BlocBuilder<PostsCubit, PostsState>(
