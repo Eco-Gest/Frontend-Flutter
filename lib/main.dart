@@ -104,13 +104,13 @@ class _MainApp extends State<MainApp> {
                       useMaterial3: true, colorScheme: darkColorScheme),
                   themeMode: state.themeMode,
                   routerConfig: router,
-                  localizationsDelegates: [
+                  localizationsDelegates: const [
                       GlobalMaterialLocalizations.delegate,
                       GlobalWidgetsLocalizations.delegate,
                       GlobalCupertinoLocalizations.delegate,
                     ],
-                    supportedLocales: [
-                      const Locale('fr', 'FR'),
+                    supportedLocales: const [
+                      Locale('fr', 'FR'),
                     ],
                 );
               });
