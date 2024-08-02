@@ -88,7 +88,7 @@ class PostHeaderInfosActions extends StatelessWidget {
           );
           if (result != null) {
             await context.read<PostsCubit>().submitReport(post.id!, result);
-            await context.read<PostsCubit>().getPosts(1, false);
+            await context.read<PostsCubit>().getPosts(1);
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
                 content: Text('Signalement enregistré. Merci !'),

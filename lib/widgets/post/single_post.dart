@@ -21,26 +21,13 @@ class SinglePostWidget extends StatelessWidget {
 
   final PostModel post;
 
-  bool canEndChallenge(PostModel post, BuildContext context) {
-    if (post.type == 'challenge' && post.userPostParticipation != null) {
-      final user = context.read<AuthenticationCubit>().state.user;
-      if (post.userPostParticipation!
-          .where((upp) =>
-              upp.isCompleted == false && upp.participantId == user!.id)
-          .isNotEmpty) {
-        return true;
-      }
-    }
-    return false;
-  }
-
   @override
   Widget build(BuildContext context) {
     final UserModel? user = context.watch<AuthenticationCubit>().state.user;
 
     return RefreshIndicator(
       onRefresh: () async {
-        context.read<PostsCubit>().getOnePost(post.id!, true);
+        context.read<PostsCubit>().getOnePost(post.id!);
       },
       child: Padding(
         padding: const EdgeInsets.all(6.0),
@@ -67,13 +54,19 @@ class SinglePostWidget extends StatelessWidget {
               BlocProvider<LikeCubit>(
                 create: (context) => LikeCubit(),
                 child: PostFooter(
-                  post: post,
-                  likes: post.likes!.length,
-                  isLiked: post.likes!.any((like) => like.userId == user!.id),
-                  comments: post.comments,
-                  isChallenge: post.type == 'challenge',
-                  canEndChallenge: canEndChallenge(post, context),
-                ),
+                    post: post,
+                    likes: post.likes!.length,
+                    isLiked: post.likes!.any((like) => like.userId == user!.id),
+                    comments: post.comments,
+                    isChallenge: post.type == 'challenge',
+                    canEndChallenge: post.userPostParticipation!.any((upp) =>
+                        upp.isCompleted == false &&
+                        upp.participantId ==
+                            context
+                                .read<AuthenticationCubit>()
+                                .state
+                                .user!
+                                .id)),
               ),
             ],
           ),
