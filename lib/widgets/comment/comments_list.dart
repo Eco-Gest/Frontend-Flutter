@@ -29,10 +29,6 @@ class CommentsList extends StatelessWidget {
               authorId: comment.author?.id,
               profilePic: comment.author?.image
             ),
-            const SizedBox(
-              height: 15,
-              width: 15,
-            ),
           ],
         ] else ...[
           const Text("Il n'y a pas encore de commentaire pour cette publication")
