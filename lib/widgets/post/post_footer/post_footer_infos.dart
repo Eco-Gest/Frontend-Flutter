@@ -2,18 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:ecogest_front/state_management/theme_settings/theme_settings_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ecogest_front/assets/ecogest_theme.dart';
+import 'package:go_router/go_router.dart';
+import 'package:ecogest_front/models/post_model.dart';
 
 // PostFooterInfos is a widget that displays the number of likes and comments
 
 class PostFooterInfos extends StatelessWidget {
-  const PostFooterInfos({
+  PostFooterInfos({
     Key? key,
     required this.likes,
     required this.comments,
+    required this.postId,
   }) : super(key: key);
 
   final int? likes;
   final List? comments;
+  final int? postId;
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +47,7 @@ class PostFooterInfos extends StatelessWidget {
         if (comments != null && comments!.isNotEmpty) ...[
           TextButton(
             onPressed: () {
-              // TODO: Navigate to comments screen
+              GoRouter.of(context).push('/posts/$postId/comments', extra: comments);
             },
             style: TextButton.styleFrom(
               minimumSize: Size.zero,
