@@ -62,7 +62,6 @@ class TrophiesView extends StatelessWidget {
               text: TextSpan(
                 style: const TextStyle(
                   fontSize: 16,
-                  color: Colors.black,
                 ),
                 children: [
                   TextSpan(
