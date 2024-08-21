@@ -76,9 +76,9 @@ class TrophiesView extends StatelessWidget {
                       style: const TextStyle(
                         fontWeight: FontWeight.normal,
                       ),
-                      maxLines: 2, // Maximum 2 lines
-                      overflow: TextOverflow.ellipsis, // Handle overflow with ellipsis
-                      softWrap: true, // Allow text to wrap to the next line
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      softWrap: true, 
                     ),
                   ),
                 ],

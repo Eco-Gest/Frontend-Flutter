@@ -202,7 +202,7 @@ class _AccountInfo extends State<AccountInfo>
             const SizedBox(height: 16),
             // ... Third Bloc: Profil Bio ...
             Text(
-              user.biography ?? 'Default Biography',
+              user.biography ?? '',
               style: const TextStyle(fontSize: 16),
             ),
           ],

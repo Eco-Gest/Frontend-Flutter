@@ -30,9 +30,8 @@ class _AccountViewState extends State<AccountView>
       GlobalKey<RefreshIndicatorState>();
 
   Future<void> refreshData() async {
-    setState(() {
-      context.read<AuthenticationCubit>().getCurrentUser();
-    });
+    await context.read<AuthenticationCubit>().getCurrentUser();
+    setState(() {});
   }
 
   @override
@@ -107,7 +106,7 @@ class _AccountViewState extends State<AccountView>
                           isBlocked: false,
                         ),
                         const SizedBox(height: 20),
-                        // New Widget: Account Trophies
+                        // Account Trophies
                         AccountTrophies(
                           userId: user.id!,
                         ),
