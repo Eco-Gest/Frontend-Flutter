@@ -57,26 +57,32 @@ class TrophiesView extends StatelessWidget {
           ),
           const SizedBox(width: 16),
           // Right: Text
-          RichText(
-            text: TextSpan(
-              style: const TextStyle(
-                fontSize: 16,
-                color: Colors.black,
+          Expanded(
+            child: RichText(
+              text: TextSpan(
+                style: const TextStyle(
+                  fontSize: 16,
+                ),
+                children: [
+                  TextSpan(
+                    text: '$count X ',
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  WidgetSpan(
+                    child: Text(
+                      _getCategoryName(categoryId),
+                      style: const TextStyle(
+                        fontWeight: FontWeight.normal,
+                      ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      softWrap: true, 
+                    ),
+                  ),
+                ],
               ),
-              children: [
-                TextSpan(
-                  text: '$count X ',
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                TextSpan(
-                  text: _getCategoryName(categoryId),
-                  style: const TextStyle(
-                    fontWeight: FontWeight.normal,
-                  ),
-                ),
-              ],
             ),
           ),
         ],
@@ -105,17 +111,20 @@ class TrophiesView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: const ThemeAppBar(title: 'Trophées'),
-        bottomNavigationBar: const AppBarFooter(),
-        body: SingleChildScrollView(
-          child: Stack(children: [
+      appBar: const ThemeAppBar(title: 'Trophées'),
+      bottomNavigationBar: const AppBarFooter(),
+      body: SingleChildScrollView(
+        child: Stack(
+          children: [
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 26.0),
               child: Column(
                 children: _buildTrophyItems(trophies),
               ),
             ),
-          ]),
-        ));
+          ],
+        ),
+      ),
+    );
   }
 }
