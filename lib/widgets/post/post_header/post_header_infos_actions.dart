@@ -111,11 +111,12 @@ class PostHeaderInfosActions extends StatelessWidget {
             value: 'delete',
             child: Text('Supprimer'),
           ));
-        }
+        } else {
         items.add(const PopupMenuItem<String>(
           value: 'report',
           child: Text('Signaler'),
         ));
+        }
 
         return items;
       },
