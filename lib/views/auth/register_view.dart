@@ -12,55 +12,118 @@ class RegisterView extends StatefulWidget {
   static String name = 'register';
 
   @override
-  _RegisterView createState() =>
-      _RegisterView();
+  _RegisterView createState() => _RegisterView();
 }
 
 class _RegisterView extends State<RegisterView> {
-
   final TextEditingController emailController = TextEditingController();
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController passwordRepeatedController =
       TextEditingController();
 
+  final FocusNode emailFocusNode = FocusNode();
+  final FocusNode usernameFocusNode = FocusNode();
+  final FocusNode passwordFocusNode = FocusNode();
+  final FocusNode passwordRepeatedFocusNode = FocusNode();
+  String? emailError;
+  String? usernameError;
+  String? passwordError;
+  String? passwordRepeatedError;
+
   late bool _passwordVisible;
-
-  // A function that validate user entered password
-  bool validatePassword(String pass) {
-    //regular expression to check if string
-    RegExp passValid =
-        RegExp(r"(?=.{8,})(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W)");
-    String passwordToTest = pass.trim();
-    if (passValid.hasMatch(passwordToTest)) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  bool valideUsername(String username) {
-    //regular expression to check if string
-    RegExp usernameValid = RegExp(r"^[A-Za-z0-9_]{5,29}$");
-    String usernameToTest = username.trim();
-    if (usernameValid.hasMatch(usernameToTest)) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  bool validatePasswordRepeated(String? pass, String? passRepeated) {
-    if (pass != passRepeated) {
-      return false;
-    }
-    return true;
-  }
 
   @override
   void initState() {
     super.initState();
     _passwordVisible = false;
+
+    emailFocusNode.addListener(() {
+      if (!emailFocusNode.hasFocus) {
+        if (!EmailValidator.validate(emailController.text)) {
+          setState(() {
+            emailError = 'Veuillez entrer un email valide';
+          });
+        } else {
+          setState(() {
+            emailError = null;
+          });
+        }
+      }
+    });
+
+    usernameFocusNode.addListener(() {
+      if (!usernameFocusNode.hasFocus) {
+        if (!valideUsername(usernameController.text)) {
+          setState(() {
+            usernameError =
+                'Le nom d\'utilisateur doit être de 5 caractères minimum';
+          });
+        } else {
+          setState(() {
+            usernameError = null;
+          });
+        }
+      }
+    });
+
+    passwordFocusNode.addListener(() {
+      if (!passwordFocusNode.hasFocus) {
+        if (!validatePassword(passwordController.text)) {
+          setState(() {
+            passwordError =
+                'Le mot de passe doit ếtre long de 8 caractères \net doit contenir une lettre majuscule et minuscule \nun chiffre et un caractère spécial';
+          });
+        } else {
+          setState(() {
+            passwordError = null;
+          });
+        }
+      }
+    });
+
+    passwordRepeatedFocusNode.addListener(() {
+      if (!passwordRepeatedFocusNode.hasFocus) {
+        if (!validatePasswordRepeated(
+            passwordController.text, passwordRepeatedController.text)) {
+          setState(() {
+            passwordRepeatedError = 'Les mots de passe doivent être identiques';
+          });
+        } else {
+          setState(() {
+            passwordRepeatedError = null;
+          });
+        }
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    usernameController.dispose();
+    passwordController.dispose();
+    passwordRepeatedController.dispose();
+    usernameFocusNode.dispose();
+    emailFocusNode.dispose();
+    passwordFocusNode.dispose();
+    passwordRepeatedFocusNode.dispose();
+    super.dispose();
+  }
+
+  bool validatePassword(String pass) {
+    RegExp passValid =
+        RegExp(r"(?=.{8,})(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W)");
+    return passValid.hasMatch(pass.trim());
+  }
+
+  bool valideUsername(String username) {
+    RegExp usernameValid = RegExp(r"^[A-Za-z0-9_]{5,29}$");
+    return usernameValid.hasMatch(username.trim());
+  }
+
+  bool validatePasswordRepeated(String? pass, String? passRepeated) {
+    return pass == passRepeated;
   }
 
   @override
@@ -68,190 +131,184 @@ class _RegisterView extends State<RegisterView> {
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
-        padding: const EdgeInsets.only(top: 40),
-            child: Stack(
-              children: [
-                Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      // Logo
-                      Container(
-                        alignment: Alignment.topCenter,
-                        padding: const EdgeInsets.all(20),
-                        width: 300,
-                        child: Image.asset('assets/logo/logo-color.png'),
-                      ),
-
-                      Container(
-                        alignment: Alignment.center,
-                        padding: const EdgeInsets.all(10),
-                        child: const Column(children: [
-                          Text(
-                            'Inscription',
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          )
-                        ]),
-                      ),
-                      // Input username
-                      Container(
-                        alignment: Alignment.topCenter,
-                        padding: const EdgeInsets.all(10),
-                        child: TextFormField(
-                          controller: emailController,
-                          decoration: const InputDecoration(
-                            border: OutlineInputBorder(),
-                            labelText: 'Email',
-                            hintText: 'Entrez votre email',
+          padding: const EdgeInsets.only(top: 40),
+          child: Stack(
+            children: [
+              Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    // Logo
+                    Container(
+                      alignment: Alignment.topCenter,
+                      padding: const EdgeInsets.all(20),
+                      width: 300,
+                      child: Image.asset('assets/logo/logo-color.png'),
+                    ),
+                    Container(
+                      alignment: Alignment.center,
+                      padding: const EdgeInsets.all(10),
+                      child: const Column(children: [
+                        Text(
+                          'Inscription',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
                           ),
-                          autovalidateMode: AutovalidateMode.onUserInteraction,
-                          validator: (value) => EmailValidator.validate(value!)
-                              ? null
-                              : 'Veuillez entrer un email valide',
+                        )
+                      ]),
+                    ),
+                    // Input email
+                    Container(
+                      alignment: Alignment.topCenter,
+                      padding: const EdgeInsets.all(10),
+                      child: TextFormField(
+                        controller: emailController,
+                        focusNode: emailFocusNode,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: 'Email',
+                          hintText: 'Entrez votre email',
+                          errorText: emailError,
                         ),
                       ),
-                      // Input email
-                      Container(
-                        alignment: Alignment.topCenter,
-                        padding: const EdgeInsets.all(10),
-                        child: TextFormField(
-                          controller: usernameController,
-                          decoration: const InputDecoration(
-                            border: OutlineInputBorder(),
-                            labelText: 'Nom d\'utilisateur',
-                            hintText: 'Entrez votre nom d\'utilisateur',
-                          ),
-                          autovalidateMode: AutovalidateMode.onUserInteraction,
-                          validator: (value) => valideUsername(value!)
-                              ? null
-                              : 'Veuillez entrer un nom d\'utilisateur de 5 caractères minimum',
+                    ),
+                    // Input username
+                    Container(
+                      alignment: Alignment.topCenter,
+                      padding: const EdgeInsets.all(10),
+                      child: TextFormField(
+                        controller: usernameController,
+                        focusNode: usernameFocusNode,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: 'Nom d\'utilisateur',
+                          hintText: 'Entrez votre nom d\'utilisateur',
+                          errorText: usernameError,
                         ),
                       ),
-
-                      // Input password
-                      Container(
-                        alignment: Alignment.topCenter,
-                        padding: const EdgeInsets.all(10),
-                        child: TextFormField(
-                          controller: passwordController,
-                          obscureText: !_passwordVisible,
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(),
-                            labelText: 'Mot de passe',
-                            hintText: 'Entrez votre mot de passe',
-                            suffixIcon: IconButton(
-                              icon: Icon(
-                                _passwordVisible
-                                    ? Icons.visibility_off
-                                    : Icons.visibility,
-                              ),
-                              onPressed: () {
-                                setState(() {
-                                  _passwordVisible = !_passwordVisible;
-                                });
-                              },
-                            ),
-                          ),
-                          autovalidateMode: AutovalidateMode.onUserInteraction,
-                          validator: (value) => (validatePassword(value!) &&
-                                  value.length >= 8)
-                              ? null
-                              : 'Le mot de passe doit ếtre long de 8 caractères \net doit contenir une lettre majuscule et minuscule \nun chiffre et un caractère spécial',
-                        ),
-                      ),
-
-                      // Input password
-                      Container(
-                        alignment: Alignment.topCenter,
-                        padding: const EdgeInsets.all(10),
-                        child: TextFormField(
-                          controller: passwordRepeatedController,
-                          obscureText: !_passwordVisible,
-                          decoration: const InputDecoration(
-                            border: OutlineInputBorder(),
-                            labelText: 'Répètez votre mot de passe',
-                            hintText: 'Répètez votre mot de passe',
-                          ),
-                          autovalidateMode: AutovalidateMode.onUserInteraction,
-                          validator: (value) => validatePasswordRepeated(
-                                  value, passwordController.text)
-                              ? null
-                              : 'Les mots de passe doivent être identiques',
-                        ),
-                      ),
-
-                      BlocListener<AuthenticationCubit, AuthenticationState>(
-                        // Error message if user is not allow to connect
-                        listener: (context, state) {
-                          final status = context.read<AuthenticationCubit>().state;
-
-                          if (status is AuthenticationUnauthenticated) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(
-                                  status.message,
-                                  style: const TextStyle(color: Colors.white),
-                                ),
-                                backgroundColor: Colors.red,
-                              ),
-                            );
-                          } else if (status is AuthenticationAuthenticated) {
-                            // Show only CircularProgressIndicator
-                            showDialog(
-                              context: context,
-                              barrierDismissible: false,
-                              builder: (context) {
-                                return Stack(
-                                  children: [
-                                    // Background: Full-screen white background
-                                    Positioned.fill(
-                                      child: Container(
-                                        color: Colors
-                                            .white, // Adjust the opacity as needed
-                                      ),
-                                    ),
-                                    // Centered CircularProgressIndicator
-                                    const Center(
-                                      child: CircularProgressIndicator(),
-                                    ),
-                                  ],
-                                );
-                              },
-                            );
-                          }
-                        },
-                        // register button
-                        child: SizedBox(
-                          width: 300,
-                          child: FilledButton(
-                            style: TextButton.styleFrom(
-                              minimumSize: const Size.fromHeight(50),
-                              padding: const EdgeInsets.all(15),
+                    ),
+                    // Input password
+                    Container(
+                      alignment: Alignment.topCenter,
+                      padding: const EdgeInsets.all(10),
+                      child: TextFormField(
+                        controller: passwordController,
+                        focusNode: passwordFocusNode, // Ajoutez le FocusNode
+                        obscureText: !_passwordVisible,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: 'Mot de passe',
+                          hintText: 'Entrez votre mot de passe',
+                          errorText: passwordError,
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              _passwordVisible
+                                  ? Icons.visibility_off
+                                  : Icons.visibility,
                             ),
                             onPressed: () {
-                              context.read<AuthenticationCubit>().register(
-                                    email: emailController.text,
-                                    username: usernameController.text,
-                                    password: passwordController.text,
-                                  );
+                              setState(() {
+                                _passwordVisible = !_passwordVisible;
+                              });
                             },
-                            child: const Text(
-                                "S'inscrire"),
                           ),
                         ),
                       ),
+                    ),
+                    // Input password repeated
+                    Container(
+                      alignment: Alignment.topCenter,
+                      padding: const EdgeInsets.all(10),
+                      child: TextFormField(
+                        controller: passwordRepeatedController,
+                        focusNode:
+                            passwordRepeatedFocusNode, // Ajoutez le FocusNode
+                        obscureText: !_passwordVisible,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: 'Répétez votre mot de passe',
+                          hintText: 'Répétez votre mot de passe',
+                          errorText: passwordRepeatedError,
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              _passwordVisible
+                                  ? Icons.visibility_off
+                                  : Icons.visibility,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _passwordVisible = !_passwordVisible;
+                              });
+                            },
+                          ),
+                        ),
+                      ),
+                    ),
+                    BlocListener<AuthenticationCubit, AuthenticationState>(
+                      listener: (context, state) {
+                        final status =
+                            context.read<AuthenticationCubit>().state;
 
-                      // Link s'inscrire
-                      Container(
-                        alignment: Alignment.center,
-                        padding: const EdgeInsets.all(40),
-                        child: Column(children: [
+                        if (status is AuthenticationUnauthenticated) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                status.message,
+                                style: const TextStyle(color: Colors.white),
+                              ),
+                              backgroundColor: Colors.red,
+                            ),
+                          );
+                        } else if (status is AuthenticationAuthenticated) {
+                          // Show only CircularProgressIndicator
+                          showDialog(
+                            context: context,
+                            barrierDismissible: false,
+                            builder: (context) {
+                              return Stack(
+                                children: [
+                                  Positioned.fill(
+                                    child: Container(
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  const Center(
+                                    child: CircularProgressIndicator(),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        }
+                      },
+                      child: SizedBox(
+                        width: 300,
+                        child: FilledButton(
+                          style: TextButton.styleFrom(
+                            minimumSize: const Size.fromHeight(50),
+                            padding: const EdgeInsets.all(15),
+                          ),
+                          onPressed: () {
+                            context.read<AuthenticationCubit>().register(
+                                  email: emailController.text,
+                                  username: usernameController.text,
+                                  password: passwordController.text,
+                                );
+                          },
+                          child: const Text("S'inscrire"),
+                        ),
+                      ),
+                    ),
+                    // Link to login
+                    Container(
+                      alignment: Alignment.center,
+                      padding: const EdgeInsets.all(40),
+                      child: Column(
+                        children: [
                           const Text(
-                            'Vous avez déjà compte ?',
+                            'Vous avez déjà un compte ?',
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               fontSize: 18,
@@ -259,10 +316,11 @@ class _RegisterView extends State<RegisterView> {
                           ),
                           TextButton(
                             style: TextButton.styleFrom(
-                                textStyle: const TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            )),
+                              textStyle: const TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
                             onPressed: () {
                               GoRouter.of(context).goNamed(LoginView.name);
                             },
@@ -270,14 +328,15 @@ class _RegisterView extends State<RegisterView> {
                               'Se connecter',
                             ),
                           ),
-                        ]),
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
+        ),
       ),
     );
   }

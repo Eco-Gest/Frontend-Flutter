@@ -21,6 +21,11 @@ class _LoginView extends State<LoginView> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
+  final FocusNode emailFocusNode = FocusNode();
+   final FocusNode passwordFocusNode = FocusNode();
+    String? emailError;
+      String? passwordError;
+
   bool validatePassword(String pass) {
     RegExp passValid = RegExp(r"(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W)");
     String passwordToTest = pass.trim();
@@ -36,7 +41,38 @@ class _LoginView extends State<LoginView> {
   @override
   void initState() {
     _passwordVisible = false;
-    super.initState(); // N'oubliez pas d'appeler super.initState()
+    super.initState(); 
+ 
+
+      emailFocusNode.addListener(() {
+      if (!emailFocusNode.hasFocus) {
+        if (!EmailValidator.validate(emailController.text)) {
+          setState(() {
+            emailError = 'Veuillez entrer un email valide';
+          });
+        } else {
+          setState(() {
+            emailError = null;
+          });
+        }
+      }
+    });
+
+        passwordFocusNode.addListener(() {
+      if (!passwordFocusNode.hasFocus) {
+        if (!validatePassword(passwordController.text)) {
+          setState(() {
+            passwordError =
+                'Le mot de passe doit ếtre long de 8 caractères \net doit contenir une lettre majuscule et minuscule \nun chiffre et un caractère spécial';
+          });
+        } else {
+          setState(() {
+            passwordError = null;
+          });
+        }
+      }
+    });
+
   }
 
   @override
@@ -101,15 +137,13 @@ class _LoginView extends State<LoginView> {
                         padding: const EdgeInsets.all(10),
                         child: TextFormField(
                           controller: emailController,
-                          decoration: const InputDecoration(
+                           focusNode: emailFocusNode,
+                          decoration: InputDecoration(
                             border: OutlineInputBorder(),
                             labelText: 'Email',
                             hintText: 'Entrez votre email',
+                            errorText: emailError,
                           ),
-                          autovalidateMode: AutovalidateMode.onUserInteraction,
-                          validator: (value) => EmailValidator.validate(value!)
-                              ? null
-                              : 'Veuillez entrer un email valide',
                         ),
                       ),
                       // Input password
@@ -118,11 +152,13 @@ class _LoginView extends State<LoginView> {
                         padding: const EdgeInsets.all(10),
                         child: TextFormField(
                           controller: passwordController,
+                          focusNode: passwordFocusNode,
                           obscureText: !_passwordVisible,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(),
                             labelText: 'Mot de passe',
                             hintText: 'Entrez votre mot de passe',
+                            errorText: passwordError,
                             suffixIcon: IconButton(
                               icon: Icon(
                                 _passwordVisible
@@ -136,11 +172,6 @@ class _LoginView extends State<LoginView> {
                               },
                             ),
                           ),
-                          autovalidateMode: AutovalidateMode.onUserInteraction,
-                          validator: (value) => (validatePassword(value!) &&
-                                  value.length >= 8)
-                              ? null
-                              : 'Le mot de passe doit ếtre long de 8 caractères \net doit contenir une lettre majuscule et minuscule \nun chiffre et un caractère spécial',
                         ),
                       ),
                       // Forgot password
