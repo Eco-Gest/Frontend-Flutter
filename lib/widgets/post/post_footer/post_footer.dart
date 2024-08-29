@@ -57,6 +57,7 @@ class _PostFooter extends State<PostFooter> {
         PostFooterInfos(
           likes: likes,
           comments: comments,
+          postId : postId,
         ),
         const PostSeparator(),
         PostFooterActions(
@@ -72,7 +73,7 @@ class _PostFooter extends State<PostFooter> {
             isAlreadyParticipant: post.userPostParticipation!.any(
                 (participation) => participation.participantId! == user!.id!,
               ),
-            canEndChallenge: canEndChallenge, // Replace with actual logic
+            canEndChallenge: canEndChallenge,
           ),
           ),
       ],
