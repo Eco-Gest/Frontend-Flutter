@@ -63,7 +63,7 @@ class _LoginView extends State<LoginView> {
         if (!validatePassword(passwordController.text)) {
           setState(() {
             passwordError =
-                'Le mot de passe doit ếtre long de 8 caractères \net doit contenir une lettre majuscule et minuscule \nun chiffre et un caractère spécial';
+                'Le mot de passe doit ếtre long de minimum 8 caractères \net doit contenir une lettre majuscule et minuscule \nun chiffre et un caractère spécial';
           });
         } else {
           setState(() {
