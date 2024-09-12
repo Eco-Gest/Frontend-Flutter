@@ -17,7 +17,8 @@ import 'package:notification_permissions/notification_permissions.dart' as notif
 import 'package:permission_handler/permission_handler.dart' as permission_handler;
 import 'package:intl/intl.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:ecogest_front/views/onboarding_view.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -34,6 +35,7 @@ class MainApp extends StatefulWidget {
 }
 
 class _MainApp extends State<MainApp> {
+  bool _showOnboarding = true;
   final AuthenticationCubit authenticationCubit = AuthenticationCubit();
   final NotificationsService notificationsService = NotificationsService();
   late Future<String?> permissionStatusFuture;
@@ -67,6 +69,7 @@ class _MainApp extends State<MainApp> {
     requestPermissions();
     listenToNotification();
     permissionStatusFuture = getCheckNotificationPermStatus();
+    _checkOnboardingStatus();
     super.initState();
   }
 
@@ -78,6 +81,23 @@ class _MainApp extends State<MainApp> {
     }
   }
   
+    // Vérifier si l'onboarding a été vu
+  Future<void> _checkOnboardingStatus() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool? onboardingSeen = prefs.getBool('onboardingSeen');
+    if (onboardingSeen == true) {
+      setState(() {
+        _showOnboarding = false;
+      });
+    }
+  }
+
+    Future<void> _markOnboardingSeen() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('onboardingSeen', true);
+  }
+
+
   Widget build(BuildContext context) {
     final GoRouter router = AppRouter.routerWithAuthStream(
       authenticationCubit.stream,
