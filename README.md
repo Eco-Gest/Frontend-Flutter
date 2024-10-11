@@ -66,3 +66,10 @@ password : voir le UserSeeder
 # Lancer le projet sur chrome
 
 `flutter run -d chrome`
+
+# Lancer le projet sur téléphone android
+Connecter son téléphone en usb
+afficher les devices disponibles:
+`flutter devices` 
+lancer le projet sur téléphone
+`flutter run -d *id du téléphone*`
