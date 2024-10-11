@@ -11,7 +11,7 @@ import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:intl/intl.dart';
-import 'package:image/image.dart' as img; // For image manipulation
+import 'package:image/image.dart' as img;
 import 'dart:typed_data';
 
 class UpdateAccountWidget extends StatefulWidget {
@@ -40,10 +40,7 @@ class _UpdateAccountWidget extends State<UpdateAccountWidget> {
 
   Future getImage() async {
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
-    if (pickedFile != null) {
-      debugPrint('Picked Image path: ${pickedFile.path}');
-      debugPrint('Picked Image name: ${pickedFile.name}');
-      
+    if (pickedFile != null) {      
       _image = await compressImage(File(pickedFile.path));
       setState(() {});
     }
