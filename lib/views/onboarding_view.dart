@@ -13,14 +13,14 @@ class OnboardingView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const pageDecoration = PageDecoration(
-      titleTextStyle: TextStyle(fontSize: 24.0, fontWeight: FontWeight.w600), // Style for the title
-      bodyTextStyle: TextStyle(fontSize: 16.0), // Style for the body text
-      imagePadding: EdgeInsets.fromLTRB(16.0, 144.0, 16.0, 0.0), // Padding around the image
-      imageAlignment: Alignment.bottomCenter, // Centering the image
-      bodyAlignment: Alignment.center, // Centering the body content
+      titleTextStyle: TextStyle(fontSize: 24.0, fontWeight: FontWeight.w600), 
+      bodyTextStyle: TextStyle(fontSize: 16.0),
+      imagePadding: EdgeInsets.fromLTRB(16.0, 160.0, 16.0, 0.0), 
+      imageAlignment: Alignment.bottomCenter, 
+      bodyAlignment: Alignment.topCenter, 
       contentMargin: EdgeInsets.symmetric(horizontal: 24.0),
       bodyFlex: 2, // Space ratio for the body
-      imageFlex: 4, // Space ratio for the image
+      imageFlex: 6, // Space ratio for the image
     );
 
     return IntroductionScreen(
@@ -28,7 +28,7 @@ class OnboardingView extends StatelessWidget {
         alignment: Alignment.center,
         child: SafeArea(
           child: Padding(
-            padding: const EdgeInsets.only(top: 20),
+            padding: const EdgeInsets.only(top: 50),
             child: _buildImage('logo/logo-color.png', 200),
           ),
         ),
@@ -36,7 +36,7 @@ class OnboardingView extends StatelessWidget {
       pages: [
         PageViewModel(
           title: "Agis",
-          body: "Avec Eco'Gest, adopte des actions simples et concrètes pour préserver la planète au quotidien.",
+          body: "Avec Ecogest, adopte des actions simples et concrètes pour préserver la planète au quotidien.",
           image: _buildImage('onboarding/onboarding_act.png'),
           decoration: pageDecoration,
         ),
