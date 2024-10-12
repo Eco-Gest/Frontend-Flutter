@@ -37,6 +37,7 @@ dependencies:
   flutter_dotenv: ^5.1.0
   notification_permissions: ^0.6.1
   permission_handler: ^10.0.0
+  introduction_screen: ^3.1.12
 
 dev_dependencies:
   flutter_test:
@@ -54,6 +55,7 @@ flutter:
     - assets/icon/icon-reverse.png
     - assets/
     - assets/trophy/
+    - assets/onboarding/
     - assets/404.jpg
     - .env.example
     - .env
