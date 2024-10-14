@@ -17,16 +17,18 @@ import 'package:ecogest_front/views/users/trophies_view.dart';
 import 'package:ecogest_front/views/users/user_view.dart';
 import 'package:ecogest_front/views/search_view.dart';
 import 'package:ecogest_front/views/users/subscriptions_list_view.dart';
-import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-
+import 'package:ecogest_front/views/onboarding_view.dart';
 import 'package:ecogest_front/state_management/authentication/authentication_cubit.dart';
 import 'package:ecogest_front/views/auth/register_view.dart';
 import 'package:ecogest_front/views/auth/login_view.dart';
 import 'package:ecogest_front/views/home_view.dart';
 import 'package:ecogest_front/views/posts/post_create_view.dart';
 import 'package:ecogest_front/views/posts/post_edit_view.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
 
 abstract class AppRouter {
   /// Public routes
@@ -40,9 +42,14 @@ abstract class AppRouter {
   /// [AuthenticationCubit] stream.
   static GoRouter routerWithAuthStream(Stream<AuthenticationState> stream) {
     return GoRouter(
-      initialLocation: '/login',
+      initialLocation: '/onboarding',
       errorBuilder: (context, state) => const Error404View(),
       routes: [
+        GoRoute(
+          path: '/onboarding',
+          name: OnboardingView.name,
+          builder: (context, state) => OnboardingView(),
+        ),
         GoRoute(
           path: '/login',
           name: LoginView.name,
@@ -155,10 +162,19 @@ abstract class AppRouter {
         ),
       ],
       refreshListenable: GoRouterRefreshStream(stream),
-      redirect: (context, state) {
+      redirect: (context, state) async {
         // If the user is not authenticated, redirect to the login page.
         final status = context.read<AuthenticationCubit>().state;
 
+        // Vérifier si l'onboarding a déjà été vu (exemple avec SharedPreferences)
+        final prefs = await SharedPreferences.getInstance();
+        final onboardingSeen = prefs.getBool('onboardingSeen') ?? false;
+
+        // Rediriger vers l'onboarding si ce n'est pas encore vu
+        if (!onboardingSeen) {
+          return '/onboarding';
+        }
+        
         // If the user is authenticated, redirect to the home page (only if
         // the current location is public page)
         if (publicRoutes.contains(state.uri.toString()) &&
