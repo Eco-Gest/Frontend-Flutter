@@ -320,7 +320,7 @@ class _PostFormWidget extends State<PostFormWidget> {
                           return SuggestionConfiguration(
                             title: Text(tag.label),
                             additionWidget: Chip(
-                              avatar: Icon(
+                              avatar: const Icon(
                                 Icons.add_circle,
                               ),
                               backgroundColor: context
@@ -329,9 +329,15 @@ class _PostFormWidget extends State<PostFormWidget> {
                                       .isDarkMode
                                   ? darkColorScheme.primary
                                   : lightColorScheme.primary,
-                              label: Text('Ajouter un nouveau tag'),
+                              label: const Text('Ajouter un nouveau tag'),
                               labelStyle: TextStyle(
                                 fontSize: 14.0,
+                                color: context
+                                        .read<ThemeSettingsCubit>()
+                                        .state
+                                        .isDarkMode
+                                    ? Colors.black
+                                    : Colors.white,
                                 fontWeight: FontWeight.w300,
                               ),
                             ),
