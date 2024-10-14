@@ -327,7 +327,7 @@ class _PostCreateView extends State<PostCreateView> {
                                 return SuggestionConfiguration(
                                   title: Text(tag.label),
                                   additionWidget: Chip(
-                                    avatar: Icon(
+                                    avatar: const Icon(
                                       Icons.add_circle,
                                     ),
                                     backgroundColor: context
@@ -336,11 +336,16 @@ class _PostCreateView extends State<PostCreateView> {
                                             .isDarkMode
                                         ? darkColorScheme.primary
                                         : lightColorScheme.primary,
-                                    label: Text('Ajouter un nouveau tag'),
+                                    label: const Text('Ajouter un nouveau tag'),
                                     labelStyle: TextStyle(
                                       fontSize: 14.0,
                                       fontWeight: FontWeight.w300,
-                                      color: Colors.white,
+                                      color: context
+                                              .read<ThemeSettingsCubit>()
+                                              .state
+                                              .isDarkMode
+                                          ? Colors.black
+                                          : Colors.white,
                                     ),
                                   ),
                                 );
@@ -349,11 +354,11 @@ class _PostCreateView extends State<PostCreateView> {
                                 return ChipConfiguration(
                                   label: Text(tag.label),
                                   backgroundColor: context
-                                            .read<ThemeSettingsCubit>()
-                                            .state
-                                            .isDarkMode
-                                        ? darkColorScheme.primary
-                                        : lightColorScheme.primary,
+                                          .read<ThemeSettingsCubit>()
+                                          .state
+                                          .isDarkMode
+                                      ? darkColorScheme.primary
+                                      : lightColorScheme.primary,
                                   labelStyle:
                                       const TextStyle(color: Colors.white),
                                   deleteIconColor: Colors.white,
