@@ -16,6 +16,8 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:intl/intl.dart';
+import 'package:image/image.dart' as img;
+import 'dart:typed_data';
 import 'package:ecogest_front/state_management/theme_settings/theme_settings_cubit.dart';
 
 class PostCreateView extends StatefulWidget {
@@ -56,11 +58,28 @@ class _PostCreateView extends State<PostCreateView> {
 
   Future getImage() async {
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
-    setState(() {
-      if (pickedFile != null) {
-        _image = File(pickedFile.path);
-      }
-    });
+    if (pickedFile != null) {      
+      _image = await compressImage(File(pickedFile.path));
+      setState(() {});
+    }
+  }
+
+  Future<File> compressImage(File imageFile) async {
+    Uint8List imageBytes = await imageFile.readAsBytes();
+    img.Image? image = img.decodeImage(imageBytes);
+
+    if (image != null) {
+      img.Image resizedImage = img.copyResize(image, width: 800);
+      Uint8List compressedImage = Uint8List.fromList(img.encodeJpg(resizedImage, quality: 85));
+
+      final tempDir = Directory.systemTemp;
+      final tempFile = File('${tempDir.path}/temp_image.jpg');
+      await tempFile.writeAsBytes(compressedImage);
+
+      return tempFile;
+    } else {
+      throw Exception('Error processing the image');
+    }
   }
 
   @override

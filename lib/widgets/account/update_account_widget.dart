@@ -11,6 +11,8 @@ import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:intl/intl.dart';
+import 'package:image/image.dart' as img;
+import 'dart:typed_data';
 
 class UpdateAccountWidget extends StatefulWidget {
   UpdateAccountWidget({super.key, required this.user});
@@ -22,21 +24,15 @@ class UpdateAccountWidget extends StatefulWidget {
 
 class _UpdateAccountWidget extends State<UpdateAccountWidget> {
   final formKey = GlobalKey<FormState>();
-
   final usernameController = TextEditingController();
   final positionController = TextEditingController();
   final biographyController = TextEditingController();
   DateTime? birthdate;
 
   bool valideUsername(String username) {
-    //regular expression to check if string
     RegExp usernameValid = RegExp(r"^[A-Za-z0-9_]{5,29}$");
     String usernameToTest = username.trim();
-    if (usernameValid.hasMatch(usernameToTest)) {
-      return true;
-    } else {
-      return false;
-    }
+    return usernameValid.hasMatch(usernameToTest);
   }
 
   File? _image;
@@ -44,11 +40,28 @@ class _UpdateAccountWidget extends State<UpdateAccountWidget> {
 
   Future getImage() async {
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
-    setState(() {
-      if (pickedFile != null) {
-        _image = File(pickedFile.path);
-      }
-    });
+    if (pickedFile != null) {      
+      _image = await compressImage(File(pickedFile.path));
+      setState(() {});
+    }
+  }
+
+  Future<File> compressImage(File imageFile) async {
+    Uint8List imageBytes = await imageFile.readAsBytes();
+    img.Image? image = img.decodeImage(imageBytes);
+
+    if (image != null) {
+      img.Image resizedImage = img.copyResize(image, width: 800);
+      Uint8List compressedImage = Uint8List.fromList(img.encodeJpg(resizedImage, quality: 85));
+
+      final tempDir = Directory.systemTemp;
+      final tempFile = File('${tempDir.path}/temp_image.jpg');
+      await tempFile.writeAsBytes(compressedImage);
+
+      return tempFile;
+    } else {
+      throw Exception('Error processing the image');
+    }
   }
 
   @override
@@ -61,8 +74,8 @@ class _UpdateAccountWidget extends State<UpdateAccountWidget> {
         ? null
         : DateTime.parse(user.birthdate!);
     bool isPrivateController = user.isPrivate!;
+
     final DateTime defaultDate = DateTime.now().subtract(Duration(days: 365 * 20));
-    
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -106,8 +119,7 @@ class _UpdateAccountWidget extends State<UpdateAccountWidget> {
                                       labelText: 'Nom d\'utilisateur',
                                       hintText: user.username ?? '',
                                     ),
-                                    autovalidateMode:
-                                        AutovalidateMode.onUserInteraction,
+                                    autovalidateMode: AutovalidateMode.onUserInteraction,
                                     validator: (value) => valideUsername(value!)
                                         ? null
                                         : 'Veuillez entrer un nom d\'utilisateur valide',
@@ -130,8 +142,7 @@ class _UpdateAccountWidget extends State<UpdateAccountWidget> {
                                       labelText: 'Biographie',
                                       hintText: user.biography ?? '',
                                     ),
-                                    autovalidateMode:
-                                        AutovalidateMode.onUserInteraction,
+                                    autovalidateMode: AutovalidateMode.onUserInteraction,
                                   ),
                                 ),
                                 Container(
@@ -145,29 +156,23 @@ class _UpdateAccountWidget extends State<UpdateAccountWidget> {
                                       labelText: 'Géolocalisation',
                                       hintText: user.position ?? '',
                                     ),
-                                    autovalidateMode:
-                                        AutovalidateMode.onUserInteraction,
+                                    autovalidateMode: AutovalidateMode.onUserInteraction,
                                   ),
                                 ),
                                 Container(
                                   padding: const EdgeInsets.all(10),
                                   constraints: BoxConstraints(
-                                    minWidth:
-                                        (MediaQuery.of(context).size.width -
-                                            36),
+                                    minWidth: (MediaQuery.of(context).size.width - 36),
                                   ),
                                   child: DateTimeFormField(
-                                    autovalidateMode:
-                                        AutovalidateMode.onUserInteraction,
+                                    autovalidateMode: AutovalidateMode.onUserInteraction,
                                     initialValue: birthdate ?? defaultDate,
                                     initialPickerDateTime: birthdate ?? defaultDate,
                                     mode: DateTimeFieldPickerMode.date,
                                     dateFormat: DateFormat.yMMMd('fr_FR'),
                                     decoration: const InputDecoration(
-                                      hintStyle:
-                                          TextStyle(color: Colors.black45),
-                                      errorStyle:
-                                          TextStyle(color: Colors.redAccent),
+                                      hintStyle: TextStyle(color: Colors.black45),
+                                      errorStyle: TextStyle(color: Colors.redAccent),
                                       border: OutlineInputBorder(),
                                       suffixIcon: Icon(Icons.event_note),
                                       labelText: 'Date d\'anniversaire',
@@ -189,38 +194,27 @@ class _UpdateAccountWidget extends State<UpdateAccountWidget> {
                                 Padding(
                                   padding: const EdgeInsets.all(15.0),
                                   child: SizedBox(
-                                    width: (MediaQuery.of(context).size.width +
-                                            60) /
-                                        2,
+                                    width: (MediaQuery.of(context).size.width + 60) / 2,
                                     height: 50.0,
                                     child: FilledButton(
                                       onPressed: () async {
                                         if (formKey.currentState!.validate()) {
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(
+                                          ScaffoldMessenger.of(context).showSnackBar(
                                             const SnackBar(
-                                                content: Text(
-                                                    'Mise à jour des données en cours...')),
+                                                content: Text('Mise à jour des données en cours...')),
                                           );
-                                          context
-                                              .read<UserCubit>()
-                                              .updateUserAccount(
-                                                  username:
-                                                      usernameController.text,
-                                                  position:
-                                                      positionController.text,
-                                                  biography:
-                                                      biographyController.text,
-                                                  birthdate: birthdate,
-                                                  image: _image?.path ?? "",
-                                                  isPrivate:
-                                                      isPrivateController);
-                                          GoRouter.of(context)
-                                              .pushNamed(AccountView.name);
+                                          context.read<UserCubit>().updateUserAccount(
+                                            username: usernameController.text,
+                                            position: positionController.text,
+                                            biography: biographyController.text,
+                                            birthdate: birthdate,
+                                            image: _image?.path ?? "",
+                                            isPrivate: isPrivateController,
+                                          );
+                                          GoRouter.of(context).pushNamed(AccountView.name);
                                         }
                                       },
-                                      child: const Text(
-                                          'Mettre à jour mon profil'),
+                                      child: const Text('Mettre à jour mon profil'),
                                     ),
                                   ),
                                 ),
