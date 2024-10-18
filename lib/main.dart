@@ -1,4 +1,3 @@
-import 'package:ecogest_front/services/notifications/local_notification_service.dart';
 import 'package:ecogest_front/services/notifications/notifications_service.dart';
 import 'package:ecogest_front/state_management/theme_settings/theme_settings_cubit.dart';
 import 'package:ecogest_front/views/notifications_view.dart';
@@ -6,19 +5,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import 'assets/ecogest_theme.dart';
 import 'package:ecogest_front/state_management/authentication/authentication_cubit.dart';
 import 'package:ecogest_front/core/router.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:ecogest_front/assets/ecogest_theme.dart';
-import 'package:notification_permissions/notification_permissions.dart' as notification_permissions;
-import 'package:permission_handler/permission_handler.dart' as permission_handler;
-import 'package:intl/intl.dart';
+import 'package:notification_permissions/notification_permissions.dart'
+    as notification_permissions;
+import 'package:permission_handler/permission_handler.dart'
+    as permission_handler;
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:ecogest_front/views/onboarding_view.dart';
+
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -31,11 +28,10 @@ class MainApp extends StatefulWidget {
   MainApp({super.key});
 
   @override
-  State<MainApp> createState() => _MainApp();
+  State<MainApp> createState() => _MainAppState();
 }
 
-class _MainApp extends State<MainApp> {
-  bool _showOnboarding = true;
+class _MainAppState extends State<MainApp> {
   final AuthenticationCubit authenticationCubit = AuthenticationCubit();
   final NotificationsService notificationsService = NotificationsService();
   late Future<String?> permissionStatusFuture;
@@ -47,7 +43,8 @@ class _MainApp extends State<MainApp> {
 
   /// Checks the notification permission status
   Future<String?> getCheckNotificationPermStatus() {
-    return notification_permissions.NotificationPermissions.getNotificationPermissionStatus()
+    return notification_permissions.NotificationPermissions
+        .getNotificationPermissionStatus()
         .then((status) {
       switch (status) {
         case notification_permissions.PermissionStatus.denied:
@@ -66,13 +63,11 @@ class _MainApp extends State<MainApp> {
 
   @override
   void initState() {
+    super.initState();
     requestPermissions();
     listenToNotification();
     permissionStatusFuture = getCheckNotificationPermStatus();
-    _checkOnboardingStatus();
-    super.initState();
   }
-
 
   Future<void> requestPermissions() async {
     final status = await permission_handler.Permission.storage.status;
@@ -80,51 +75,40 @@ class _MainApp extends State<MainApp> {
       await permission_handler.Permission.storage.request();
     }
   }
-  
-    // Vérifier si l'onboarding a été vu
-  Future<void> _checkOnboardingStatus() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool? onboardingSeen = prefs.getBool('onboardingSeen');
-    if (onboardingSeen == true) {
-      setState(() {
-        _showOnboarding = false;
-      });
-    }
-  }
 
-    Future<void> _markOnboardingSeen() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('onboardingSeen', true);
-  }
-
-
+  @override
   Widget build(BuildContext context) {
     final GoRouter router = AppRouter.routerWithAuthStream(
       authenticationCubit.stream,
     );
+
     return MultiBlocProvider(
-        providers: [
-          BlocProvider<ThemeSettingsCubit>(
-            create: (context) => ThemeSettingsCubit(),
-          ),
-          BlocProvider.value(value: authenticationCubit),
-        ],
-        child: Builder(
-          builder: (context) {
-            return BlocBuilder<AuthenticationCubit, AuthenticationState>(
-                builder: (context, state) {
+      providers: [
+        BlocProvider<ThemeSettingsCubit>(
+          create: (context) => ThemeSettingsCubit(),
+        ),
+        BlocProvider.value(value: authenticationCubit),
+      ],
+      child: Builder(
+        builder: (context) {
+          return BlocBuilder<AuthenticationCubit, AuthenticationState>(
+            builder: (context, state) {
               return BlocBuilder<ThemeSettingsCubit, ThemeSettingsState>(
-                  builder: (context, state) {
-                return MaterialApp.router(
-                  title: "Ecogest",
-                  debugShowCheckedModeBanner: false,
-                  theme: ThemeData(
-                      useMaterial3: true, colorScheme: lightColorScheme),
-                  darkTheme: ThemeData(
-                      useMaterial3: true, colorScheme: darkColorScheme),
-                  themeMode: state.themeMode,
-                  routerConfig: router,
-                  localizationsDelegates: const [
+                builder: (context, themeState) {
+                  return MaterialApp.router(
+                    title: 'Ecogest',
+                    debugShowCheckedModeBanner: false,
+                    theme: ThemeData(
+                      useMaterial3: true,
+                      colorScheme: lightColorScheme,
+                    ),
+                    darkTheme: ThemeData(
+                      useMaterial3: true,
+                      colorScheme: darkColorScheme,
+                    ),
+                    themeMode: themeState.themeMode,
+                    routerConfig: router,
+                    localizationsDelegates: const [
                       GlobalMaterialLocalizations.delegate,
                       GlobalWidgetsLocalizations.delegate,
                       GlobalCupertinoLocalizations.delegate,
@@ -132,11 +116,14 @@ class _MainApp extends State<MainApp> {
                     supportedLocales: const [
                       Locale('fr', 'FR'),
                     ],
-                );
-              });
-            });
-          },
-        ));
+                  );
+                },
+              );
+            },
+          );
+        },
+      ),
+    );
   }
 
   void listenToNotification() => notificationsService

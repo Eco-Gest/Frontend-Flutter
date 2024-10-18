@@ -42,7 +42,7 @@ abstract class AppRouter {
   /// [AuthenticationCubit] stream.
   static GoRouter routerWithAuthStream(Stream<AuthenticationState> stream) {
     return GoRouter(
-      initialLocation: '/onboarding',
+      initialLocation: '/login',
       errorBuilder: (context, state) => const Error404View(),
       routes: [
         GoRoute(
