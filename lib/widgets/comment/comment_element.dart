@@ -20,73 +20,53 @@ class CommentElement extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-          decoration: BoxDecoration(
-              border: Border.all(
-            color: Colors.grey,
-            width: 0.5,
-          )),
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Row(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 2),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // First Column: Avatar
+            Column(
               children: [
-                Expanded(
-                  child: Wrap(
-                    children: [
-                      // Author infos
-                      Row(
-                        children: [
-                          // Comment author profil picture
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              if (profilePic != null) ...[
-                                CircleAvatar(
-                                  backgroundImage: NetworkImage(profilePic.toString()),
-                                )
-                              ] else ...[
-                                const CircleAvatar(
-                                  child: Icon(Icons.person),
-                                ),
-                              ],
-                            ],
-                          ),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          // Comment author username
-                          Column(
-                            children: [
-                              Text(
-                                author.toString(),
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.bold
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 15,
-                        width: 15,
-                      ),
-                      // Content of the comment
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            content!,
-                          ),
-                        ]
-                      )
-                    ],
-                  )        
+                CircleAvatar(
+                  backgroundImage: profilePic != null 
+                    ? NetworkImage(profilePic!)
+                    : null,
+                  child: profilePic == null 
+                    ? const Icon(Icons.person)
+                    : null,
                 ),
-              CommentContentMenu(authorId: authorId,commentId: commentId, content: content),
               ],
-            )
+            ),
+            const SizedBox(width: 10), 
+            // Second Column: Author and Content
+            Expanded(
+              flex: 3, // Takes more space than the other columns
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    author ?? 'Unknown',
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  Text(content ?? ''),
+                ],
+              ),
+            ),
             
-          )
+            // Third Column: Comment Content Menu
+            Column(
+              children: [
+                CommentContentMenu(
+                  authorId: authorId,
+                  commentId: commentId,
+                  content: content,
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

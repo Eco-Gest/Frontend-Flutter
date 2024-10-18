@@ -55,8 +55,8 @@ class _AccountInfo extends State<AccountInfo>
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Container(
-                  width: 120,
-                  height: 120,
+                  width: 86,
+                  height: 86,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     image: DecorationImage(
@@ -74,15 +74,13 @@ class _AccountInfo extends State<AccountInfo>
                     Text(
                       user.username ?? 'Username',
                       style: const TextStyle(
-                          fontSize: 20, fontWeight: FontWeight.bold),
+                          fontSize: 18, fontWeight: FontWeight.bold),
                     ),
                     Text(
                       user.position ?? 'Le Monde',
-                      style: const TextStyle(fontSize: 16),
                     ),
                     const SizedBox(
-                      height: 6,
-                      width: 4,
+                      height: 2,
                     ),
                     Container(
                       padding: const EdgeInsets.symmetric(
@@ -99,7 +97,7 @@ class _AccountInfo extends State<AccountInfo>
                       child: Text(
                         user.badgeTitle ?? 'Badge',
                         style: TextStyle(
-                          fontSize: 14,
+                          fontSize: 12,
                           color: context.read<ThemeSettingsCubit>().state.isDarkMode
                                 ? darkColorScheme.onSecondaryContainer
                                 : lightColorScheme.onSecondaryContainer,
@@ -204,7 +202,7 @@ class _AccountInfo extends State<AccountInfo>
             const SizedBox(height: 16),
             // ... Third Bloc: Profil Bio ...
             Text(
-              user.biography ?? 'Default Biography',
+              user.biography ?? '',
               style: const TextStyle(fontSize: 16),
             ),
           ],

@@ -88,17 +88,20 @@ class CommentContentMenu extends StatelessWidget {
         }
       },
       itemBuilder: (BuildContext context) {
-        // Build the menu items similar to PostContentMenu
-        return [
-          const PopupMenuItem<String>(
-            value: 'delete',
-            child: Text('Supprimer'),
-          ),
-          const PopupMenuItem<String>(
-            value: 'report',
-            child: Text('Signaler'),
-          ),
-        ];
+        List<PopupMenuEntry<String>> items = [];
+
+        if (user != null && user.id == authorId) {
+            items.add(const PopupMenuItem<String>(
+                        value: 'delete',
+                        child: Text('Supprimer'),
+                      ));
+        } else {
+        items.add(const PopupMenuItem<String>(
+          value: 'report',
+          child: Text('Signaler'),
+        ));
+        }
+        return items;
       },
     );
   }
