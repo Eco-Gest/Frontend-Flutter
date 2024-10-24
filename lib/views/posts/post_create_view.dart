@@ -108,7 +108,9 @@ class _PostCreateView extends State<PostCreateView> {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(content: Text('Publication réussie')),
                       );
-                      GoRouter.of(context).goNamed(HomeView.name);
+                      GoRouter.of(context).pushNamed(HomeView.name).then((_) {
+                        setState(() {});
+                        });
                     }
                   },
                   child: Form(
