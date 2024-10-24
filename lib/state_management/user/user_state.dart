@@ -1,10 +1,21 @@
 part of 'user_cubit.dart';
 
-abstract class UserState {}
+abstract class UserState {
+  UserModel? user;
 
-class UserInitial extends UserState {}
+  UserState(this.user);
 
-class UserLoading extends UserState {}
+}
+
+class UserInitial extends UserState {
+
+   UserInitial() : super(null);
+}
+
+class UserLoading extends UserState {
+   UserLoading() : super(null);
+   
+   }
 
 class UserSuccess extends UserState {
   final UserModel? user;
@@ -12,18 +23,16 @@ class UserSuccess extends UserState {
   final bool? isFollowing;
   final bool? isBlocked;
 
-  UserSuccess(this.user, this.isFollowed, this.isFollowing, this.isBlocked);
+  UserSuccess(this.user, this.isFollowed, this.isFollowing, this.isBlocked): super(user);
 }
 
 class UserAccountSuccess extends UserState {
-  final UserModel? user;
-
-  UserAccountSuccess(this.user);
+  UserAccountSuccess(user) : super(user);
 }
 
 /// The state of the authentication cubit when an error occurred.
 class UserError extends UserState {
   final String message;
 
-  UserError(this.message);
+  UserError(this.message) : super(null);
 }

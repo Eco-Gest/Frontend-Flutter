@@ -12,6 +12,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ecogest_front/assets/ecogest_theme.dart';
 import 'package:ecogest_front/state_management/theme_settings/theme_settings_cubit.dart';
+import 'package:ecogest_front/state_management/user/user_cubit.dart';
 
 class AccountView extends StatefulWidget {
   const AccountView({super.key});
@@ -48,7 +49,9 @@ class _AccountViewState extends State<AccountView>
 
   @override
   Widget build(BuildContext context) {
-    UserModel? user = context.read<AuthenticationCubit>().state.user;
+     // UserModel? user = context.read<UserCubit>().state.user;
+     UserModel? user = context.read<AuthenticationCubit>().state.user;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Profil'),

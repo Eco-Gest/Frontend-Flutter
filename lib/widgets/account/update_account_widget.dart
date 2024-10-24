@@ -101,9 +101,8 @@ class _UpdateAccountWidget extends State<UpdateAccountWidget> {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(content: Text('Mise à jour réussie')),
                         );
+                        //context.read<AuthenticationCubit>().getCurrentUser();
                       GoRouter.of(context).pushNamed(AccountView.name).then((_) {
-                        // After the navigation completes, refresh the user data
-                        context.read<AuthenticationCubit>().getCurrentUser();
                         setState(() {});
                       });
                       }
