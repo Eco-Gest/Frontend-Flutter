@@ -3,11 +3,14 @@ import 'package:ecogest_front/services/users_relation_service.dart';
 import 'package:ecogest_front/services/user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ecogest_front/state_management/authentication/authentication_cubit.dart';
+
 
 part 'user_state.dart';
 
 class UserCubit extends Cubit<UserState> {
   UserCubit() : super(UserInitial());
+  late AuthenticationCubit authenticationCubit;
 
   Future<void> getUser(int userId) async {
     try {
@@ -47,11 +50,23 @@ class UserCubit extends Cubit<UserState> {
     try {
       emit(UserLoading());
       await UserService.updateUserAccount(user);
-      emit(UserAccountSuccess(user));
+            final userAuthenticated = await UserService.getCurrentUser();
+
+      final isFollowed =
+          UsersRelationService.isFollowed(userAuthenticated, user);
+      final isFollowing =
+          UsersRelationService.isFollowing(userAuthenticated, user);
+      final isBlocked =
+          UsersRelationService.isBlocked(userAuthenticated, user);
+      emit(UserSuccess(user, isFollowed, isFollowing, isBlocked));
+       debugPrint('User account update successful: ${user.toString()}');
+        debugPrint('Emitted: ${state.toString()}');
+      authenticationCubit.emit(AuthenticationAuthenticated(user));
     } catch (error) {
       emit(UserError(
           "Erreur rencontrée pour la mise à jour de vos données. Veuillez réessayer."));
     }
+    debugPrint('Emitted: ${state.toString()}'); 
   }
 
   Future<void> submitReport(int userId, String result) async {

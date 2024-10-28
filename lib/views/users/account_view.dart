@@ -51,6 +51,8 @@ class _AccountViewState extends State<AccountView>
   Widget build(BuildContext context) {
      // UserModel? user = context.read<UserCubit>().state.user;
      UserModel? user = context.read<AuthenticationCubit>().state.user;
+     debugPrint("USER");
+    debugPrint(user!.biography);
 
     return Scaffold(
       appBar: AppBar(

@@ -97,13 +97,14 @@ class _UpdateAccountWidget extends State<UpdateAccountWidget> {
                                   'Erreur lors de la mise à jour de vos données.')),
                         );
                       }
-                      if (state is UserAccountSuccess) {
+                      if (state is UserSuccess) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(content: Text('Mise à jour réussie')),
                         );
                         //context.read<AuthenticationCubit>().getCurrentUser();
                       GoRouter.of(context).pushNamed(AccountView.name).then((_) {
                         setState(() {});
+                        context.read<AuthenticationCubit>().getCurrentUser();
                       });
                       }
                     },
