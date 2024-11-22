@@ -26,7 +26,6 @@ class PostsCubit extends Cubit<PostsState> {
       final post = await postService.getOnePost(postId);
       emit(OnePostStateSuccess(post));
     } catch (error) {
-      debugPrint(error.toString());
       emit(PostsStateError(
           "Erreur rencontrée pour récupérer la publication. Veuillez réessayer."));
     }

@@ -60,22 +60,10 @@ class UserCubit extends Cubit<UserState> {
 
     emit(UserSuccess(updatedUser, isFollowed, isFollowing, isBlocked));
     authenticationCubit.emit(AuthenticationAuthenticated(updatedUser));
-
-    debugPrint('User account update successful: ${updatedUser.toJson()}');
-
-      //       final userAuthenticated = await UserService.getCurrentUser();
-      // emit(UserSuccess(user,  null, null, null));
-      //  debugPrint('User account update successful: ${user.toString()}');
-      //   debugPrint('Emitted: ${state.toString()}');
-      // authenticationCubit.emit(AuthenticationAuthenticated(user));
-    } catch (error, stackTrace) {
+    } catch (error) {
       emit(UserError(
           "Erreur rencontrée pour la mise à jour de vos données. Veuillez réessayer."));
-      debugPrint('Error: ${error.toString()}'); 
-      debugPrint('Emitted: ${state.toString()}'); 
-       debugPrint('StackTrace: ${stackTrace.toString()}');
     }
-    debugPrint('Emitted: ${state.toString()}'); 
   }
 
   Future<void> submitReport(int userId, String result) async {

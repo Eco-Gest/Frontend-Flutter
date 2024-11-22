@@ -49,13 +49,7 @@ class _AccountViewState extends State<AccountView>
 
   @override
   Widget build(BuildContext context) {
-     // UserModel? user = context.read<UserCubit>().state.user;
      UserModel? user = context.read<AuthenticationCubit>().state.user;
-     debugPrint("USER BIO");
-    debugPrint(user!.biography);
-    debugPrint("USER ID");
-    debugPrint(user!.id.toString());
-
 
     return Scaffold(
       appBar: AppBar(
