@@ -85,7 +85,7 @@ class _UpdateAccountWidget extends State<UpdateAccountWidget> {
         child: Stack(
           children: [
             BlocProvider(
-              create: (context) => UserCubit(),
+              create: (context) => UserCubit(authenticationCubit: context.read<AuthenticationCubit>(),),
               child: Builder(
                 builder: (context) {
                   return BlocListener<UserCubit, UserState>(

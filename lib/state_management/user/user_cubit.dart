@@ -9,8 +9,9 @@ import 'package:ecogest_front/state_management/authentication/authentication_cub
 part 'user_state.dart';
 
 class UserCubit extends Cubit<UserState> {
-  UserCubit() : super(UserInitial());
-  late AuthenticationCubit authenticationCubit;
+  //UserCubit() : super(UserInitial());
+  final AuthenticationCubit authenticationCubit;
+  UserCubit({required this.authenticationCubit}) : super(UserInitial());
 
   Future<void> getUser(int userId) async {
     try {
@@ -50,21 +51,29 @@ class UserCubit extends Cubit<UserState> {
     try {
       emit(UserLoading());
       await UserService.updateUserAccount(user);
-            final userAuthenticated = await UserService.getCurrentUser();
 
-      final isFollowed =
-          UsersRelationService.isFollowed(userAuthenticated, user);
-      final isFollowing =
-          UsersRelationService.isFollowing(userAuthenticated, user);
-      final isBlocked =
-          UsersRelationService.isBlocked(userAuthenticated, user);
-      emit(UserSuccess(user, isFollowed, isFollowing, isBlocked));
-       debugPrint('User account update successful: ${user.toString()}');
-        debugPrint('Emitted: ${state.toString()}');
-      authenticationCubit.emit(AuthenticationAuthenticated(user));
-    } catch (error) {
+  final updatedUser = await UserService.getCurrentUser();
+
+    final isFollowed = UsersRelationService.isFollowed(updatedUser, updatedUser);
+    final isFollowing = UsersRelationService.isFollowing(updatedUser, updatedUser);
+    final isBlocked = UsersRelationService.isBlocked(updatedUser, updatedUser);
+
+    emit(UserSuccess(updatedUser, isFollowed, isFollowing, isBlocked));
+    authenticationCubit.emit(AuthenticationAuthenticated(updatedUser));
+
+    debugPrint('User account update successful: ${updatedUser.toJson()}');
+
+      //       final userAuthenticated = await UserService.getCurrentUser();
+      // emit(UserSuccess(user,  null, null, null));
+      //  debugPrint('User account update successful: ${user.toString()}');
+      //   debugPrint('Emitted: ${state.toString()}');
+      // authenticationCubit.emit(AuthenticationAuthenticated(user));
+    } catch (error, stackTrace) {
       emit(UserError(
           "Erreur rencontrée pour la mise à jour de vos données. Veuillez réessayer."));
+      debugPrint('Error: ${error.toString()}'); 
+      debugPrint('Emitted: ${state.toString()}'); 
+       debugPrint('StackTrace: ${stackTrace.toString()}');
     }
     debugPrint('Emitted: ${state.toString()}'); 
   }
