@@ -9,7 +9,6 @@ import 'package:ecogest_front/state_management/authentication/authentication_cub
 part 'user_state.dart';
 
 class UserCubit extends Cubit<UserState> {
-  //UserCubit() : super(UserInitial());
   final AuthenticationCubit authenticationCubit;
   UserCubit({required this.authenticationCubit}) : super(UserInitial());
 
@@ -52,14 +51,11 @@ class UserCubit extends Cubit<UserState> {
       emit(UserLoading());
       await UserService.updateUserAccount(user);
 
-  final updatedUser = await UserService.getCurrentUser();
+    final updatedUser = await UserService.getCurrentUser();
 
-    final isFollowed = UsersRelationService.isFollowed(updatedUser, updatedUser);
-    final isFollowing = UsersRelationService.isFollowing(updatedUser, updatedUser);
-    final isBlocked = UsersRelationService.isBlocked(updatedUser, updatedUser);
-
-    emit(UserSuccess(updatedUser, isFollowed, isFollowing, isBlocked));
+    emit(UserSuccess(updatedUser, null, null, null));
     authenticationCubit.emit(AuthenticationAuthenticated(updatedUser));
+    
     } catch (error) {
       emit(UserError(
           "Erreur rencontrée pour la mise à jour de vos données. Veuillez réessayer."));
