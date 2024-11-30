@@ -54,7 +54,7 @@ class _UserView extends State<UserView> {
                     create: (_) => UsersRelationCubit(),
                   ),
                   BlocProvider<UserCubit>(
-                    create: (_) => UserCubit()..getUser(userId),
+                    create: (_) => UserCubit(authenticationCubit: context.read<AuthenticationCubit>(),)..getUser(userId),
                   ),
                 ],
                 child: BlocBuilder<UserCubit, UserState>(

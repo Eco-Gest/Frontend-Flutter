@@ -13,6 +13,7 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:intl/intl.dart';
 import 'package:image/image.dart' as img;
 import 'dart:typed_data';
+import 'package:ecogest_front/state_management/authentication/authentication_cubit.dart';
 
 class UpdateAccountWidget extends StatefulWidget {
   UpdateAccountWidget({super.key, required this.user});
@@ -40,7 +41,7 @@ class _UpdateAccountWidget extends State<UpdateAccountWidget> {
 
   Future getImage() async {
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
-    if (pickedFile != null) {      
+    if (pickedFile != null) {
       _image = await compressImage(File(pickedFile.path));
       setState(() {});
     }
@@ -52,7 +53,8 @@ class _UpdateAccountWidget extends State<UpdateAccountWidget> {
 
     if (image != null) {
       img.Image resizedImage = img.copyResize(image, width: 800);
-      Uint8List compressedImage = Uint8List.fromList(img.encodeJpg(resizedImage, quality: 85));
+      Uint8List compressedImage =
+          Uint8List.fromList(img.encodeJpg(resizedImage, quality: 85));
 
       final tempDir = Directory.systemTemp;
       final tempFile = File('${tempDir.path}/temp_image.jpg');
@@ -75,14 +77,15 @@ class _UpdateAccountWidget extends State<UpdateAccountWidget> {
         : DateTime.parse(user.birthdate!);
     bool isPrivateController = user.isPrivate!;
 
-    final DateTime defaultDate = DateTime.now().subtract(Duration(days: 365 * 20));
+    final DateTime defaultDate =
+        DateTime.now().subtract(Duration(days: 365 * 20));
 
     return Scaffold(
       body: SingleChildScrollView(
         child: Stack(
           children: [
             BlocProvider(
-              create: (context) => UserCubit(),
+              create: (context) => UserCubit(authenticationCubit: context.read<AuthenticationCubit>(),),
               child: Builder(
                 builder: (context) {
                   return BlocListener<UserCubit, UserState>(
@@ -94,10 +97,15 @@ class _UpdateAccountWidget extends State<UpdateAccountWidget> {
                                   'Erreur lors de la mise à jour de vos données.')),
                         );
                       }
-                      if (state is UserAccountSuccess) {
+                      if (state is UserSuccess) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(content: Text('Mise à jour réussie')),
                         );
+                        //context.read<AuthenticationCubit>().getCurrentUser();
+                      GoRouter.of(context).pushNamed(AccountView.name).then((_) {
+                        setState(() {});
+                        context.read<AuthenticationCubit>().getCurrentUser();
+                      });
                       }
                     },
                     child: Form(
@@ -106,20 +114,27 @@ class _UpdateAccountWidget extends State<UpdateAccountWidget> {
                         const SizedBox(height: 20),
                         BlocBuilder<UserCubit, UserState>(
                           builder: (BuildContext context, UserState state) {
+                            if (state is UserLoading) {
+                              return const Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            }
                             return Column(
                               children: [
                                 Container(
                                   alignment: Alignment.topCenter,
                                   padding: const EdgeInsets.all(10),
                                   child: TextFormField(
-                                    textCapitalization: TextCapitalization.sentences,
+                                    textCapitalization:
+                                        TextCapitalization.sentences,
                                     controller: usernameController,
                                     decoration: InputDecoration(
                                       border: OutlineInputBorder(),
                                       labelText: 'Nom d\'utilisateur',
                                       hintText: user.username ?? '',
                                     ),
-                                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                                    autovalidateMode:
+                                        AutovalidateMode.onUserInteraction,
                                     validator: (value) => valideUsername(value!)
                                         ? null
                                         : 'Veuillez entrer un nom d\'utilisateur valide',
@@ -135,44 +150,54 @@ class _UpdateAccountWidget extends State<UpdateAccountWidget> {
                                   alignment: Alignment.topCenter,
                                   padding: const EdgeInsets.all(10),
                                   child: TextFormField(
-                                    textCapitalization: TextCapitalization.sentences,
+                                    textCapitalization:
+                                        TextCapitalization.sentences,
                                     controller: biographyController,
                                     decoration: InputDecoration(
                                       border: OutlineInputBorder(),
                                       labelText: 'Biographie',
                                       hintText: user.biography ?? '',
                                     ),
-                                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                                    autovalidateMode:
+                                        AutovalidateMode.onUserInteraction,
                                   ),
                                 ),
                                 Container(
                                   alignment: Alignment.topCenter,
                                   padding: const EdgeInsets.all(10),
                                   child: TextFormField(
-                                    textCapitalization: TextCapitalization.sentences,
+                                    textCapitalization:
+                                        TextCapitalization.sentences,
                                     controller: positionController,
                                     decoration: InputDecoration(
                                       border: OutlineInputBorder(),
                                       labelText: 'Géolocalisation',
                                       hintText: user.position ?? '',
                                     ),
-                                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                                    autovalidateMode:
+                                        AutovalidateMode.onUserInteraction,
                                   ),
                                 ),
                                 Container(
                                   padding: const EdgeInsets.all(10),
                                   constraints: BoxConstraints(
-                                    minWidth: (MediaQuery.of(context).size.width - 36),
+                                    minWidth:
+                                        (MediaQuery.of(context).size.width -
+                                            36),
                                   ),
                                   child: DateTimeFormField(
-                                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                                    autovalidateMode:
+                                        AutovalidateMode.onUserInteraction,
                                     initialValue: birthdate ?? defaultDate,
-                                    initialPickerDateTime: birthdate ?? defaultDate,
+                                    initialPickerDateTime:
+                                        birthdate ?? defaultDate,
                                     mode: DateTimeFieldPickerMode.date,
                                     dateFormat: DateFormat.yMMMd('fr_FR'),
                                     decoration: const InputDecoration(
-                                      hintStyle: TextStyle(color: Colors.black45),
-                                      errorStyle: TextStyle(color: Colors.redAccent),
+                                      hintStyle:
+                                          TextStyle(color: Colors.black45),
+                                      errorStyle:
+                                          TextStyle(color: Colors.redAccent),
                                       border: OutlineInputBorder(),
                                       suffixIcon: Icon(Icons.event_note),
                                       labelText: 'Date d\'anniversaire',
@@ -194,27 +219,30 @@ class _UpdateAccountWidget extends State<UpdateAccountWidget> {
                                 Padding(
                                   padding: const EdgeInsets.all(15.0),
                                   child: SizedBox(
-                                    width: (MediaQuery.of(context).size.width + 60) / 2,
+                                    width: (MediaQuery.of(context).size.width +
+                                            60) /
+                                        2,
                                     height: 50.0,
                                     child: FilledButton(
                                       onPressed: () async {
                                         if (formKey.currentState!.validate()) {
-                                          ScaffoldMessenger.of(context).showSnackBar(
-                                            const SnackBar(
-                                                content: Text('Mise à jour des données en cours...')),
-                                          );
-                                          context.read<UserCubit>().updateUserAccount(
-                                            username: usernameController.text,
-                                            position: positionController.text,
-                                            biography: biographyController.text,
-                                            birthdate: birthdate,
-                                            image: _image?.path ?? "",
-                                            isPrivate: isPrivateController,
-                                          );
-                                          GoRouter.of(context).pushNamed(AccountView.name);
+                                          context
+                                              .read<UserCubit>()
+                                              .updateUserAccount(
+                                                username:
+                                                    usernameController.text,
+                                                position:
+                                                    positionController.text,
+                                                biography:
+                                                    biographyController.text,
+                                                birthdate: birthdate,
+                                                image: _image?.path ?? "",
+                                                isPrivate: isPrivateController,
+                                              );
                                         }
                                       },
-                                      child: const Text('Mettre à jour mon profil'),
+                                      child: const Text(
+                                          'Mettre à jour mon profil'),
                                     ),
                                   ),
                                 ),

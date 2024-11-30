@@ -6,6 +6,8 @@ import 'package:ecogest_front/widgets/bottom_bar.dart';
 import 'package:ecogest_front/widgets/app_bar.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:ecogest_front/state_management/authentication/authentication_cubit.dart';
+
 
 class ChangePasswordView extends StatefulWidget {
   const ChangePasswordView({Key? key});
@@ -58,7 +60,7 @@ class _ChangePasswordView extends State<ChangePasswordView> {
       appBar: const ThemeAppBar(title: 'Changer de mot de passe'),
       bottomNavigationBar: const AppBarFooter(),
       body: BlocProvider<UserCubit>(
-        create: (_) => UserCubit(),
+        create: (_) => UserCubit(authenticationCubit: context.read<AuthenticationCubit>(),),
         child: Builder(
           builder: (context) {
             return BlocListener<UserCubit, UserState>(
