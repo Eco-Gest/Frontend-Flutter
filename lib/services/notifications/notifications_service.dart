@@ -17,18 +17,28 @@ class NotificationsService {
     localNotificationService.initialize();
   }
 
-  static Future<List<NotificationModel>?> getNotifications() async {
-    final String? token = await AuthenticationService.getToken();
 
-    final List<dynamic> responseMap =
-        await EcoGestApiDataSource.get('/me/notifications', token: token);
+ static Future<List<NotificationModel>?> getNotifications() async {
 
-    final List<NotificationModel> notifications = responseMap.map((notif) {
-      return NotificationModel.fromJson(notif);
+  final String? token = await AuthenticationService.getToken();
+  print('Retrieved token: $token');
+
+  try {
+    List<dynamic> responseList = await EcoGestApiDataSource.get('/me/notifications', token: token);
+
+    // Filter invalid items to keep only valid ones
+    List<NotificationModel> notifications = responseList.where((notification) {
+      return notification is Map<String, dynamic> && notification.containsKey('title');
+    }).map((notification) {
+      return NotificationModel.fromJson(notification);
     }).toList();
 
     return notifications;
+  } catch (e) {
+    debugPrint("ERROR: $e");
   }
+  }
+
 
   connectPusher() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -52,6 +62,7 @@ class NotificationsService {
       await pusher.subscribe(channelName: "private-subscription.user.$userId");
 
       await pusher.connect();
+      debugPrint("PUSHER SUCCESS");
     } catch (e) {
       debugPrint("ERROR: $e");
     }
