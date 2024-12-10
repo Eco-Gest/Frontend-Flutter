@@ -18,7 +18,7 @@ class NotificationsService {
   }
 
 
- static Future<List<NotificationModel>?> getNotifications() async {
+ static Future<List<NotificationModel>> getNotifications() async {
 
   final String? token = await AuthenticationService.getToken();
   print('Retrieved token: $token');
@@ -35,8 +35,9 @@ class NotificationsService {
 
     return notifications;
   } catch (e) {
-    debugPrint("ERROR: $e");
-  }
+    debugPrint("ERROR Failed to retrieve notifications: $e");
+    return [];
+  } 
   }
 
 
