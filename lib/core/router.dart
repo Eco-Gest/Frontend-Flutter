@@ -163,28 +163,30 @@ abstract class AppRouter {
       ],
       refreshListenable: GoRouterRefreshStream(stream),
       redirect: (context, state) async {
-        // If the user is not authenticated, redirect to the login page.
+        // Get Auth status
         final status = context.read<AuthenticationCubit>().state;
 
-        // Vérifier si l'onboarding a déjà été vu (exemple avec SharedPreferences)
+        // Check if onboardng has been seen
         final prefs = await SharedPreferences.getInstance();
         final onboardingSeen = prefs.getBool('onboardingSeen') ?? false;
 
-        // Rediriger vers l'onboarding si ce n'est pas encore vu
+        // If onboarding has not been seen redirect to OnBoardingView
         if (!onboardingSeen) {
           return '/onboarding';
         }
         
-        // If the user is authenticated, redirect to the home page (only if
-        // the current location is public page)
-        if (publicRoutes.contains(state.uri.toString()) &&
-            status is AuthenticationAuthenticated) {
+        // Public routes are accessible 
+        if (publicRoutes.contains(state.uri.toString())) {
+          return null; 
+        }
+
+        // If user is authenticated redirect to HomeView 
+        if (status is AuthenticationAuthenticated && publicRoutes.contains(state.uri.toString())) {
           return '/home';
         }
-        // If the user is not authenticated, redirect to the login page.
-        // (only if the current location is not a public page).
-        if (!publicRoutes.contains(state.uri.toString()) &&
-          status is AuthenticationUnauthenticated || status is AuthenticationInitial) {
+
+        // If user is not authenticated redirect to Login 
+        if (status is AuthenticationUnauthenticated || status is AuthenticationInitial) {
           return '/login';
         }
 
