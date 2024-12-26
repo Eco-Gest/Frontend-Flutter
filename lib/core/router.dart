@@ -29,7 +29,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-
 abstract class AppRouter {
   /// Public routes
   static List<String> get publicRoutes => [
@@ -144,16 +143,14 @@ abstract class AppRouter {
         GoRoute(
           path: '/user/follow',
           name: SubscriptionsListView.name,
-          builder: (context, state) => SubscriptionsListView(
-            user:state.extra! as UserModel
-          ),
+          builder: (context, state) =>
+              SubscriptionsListView(user: state.extra! as UserModel),
         ),
         GoRoute(
           path: '/trophies',
           name: TrophiesView.name,
-          builder: (context, state) => TrophiesView(
-            trophies: state.extra! as List<TrophyModel>
-          ),
+          builder: (context, state) =>
+              TrophiesView(trophies: state.extra! as List<TrophyModel>),
         ),
         GoRoute(
           path: '/change-password',
@@ -174,19 +171,18 @@ abstract class AppRouter {
         if (!onboardingSeen) {
           return '/onboarding';
         }
-        
-        // Public routes are accessible 
-        if (publicRoutes.contains(state.uri.toString())) {
-          return null; 
-        }
 
-        // If user is authenticated redirect to HomeView 
-        if (status is AuthenticationAuthenticated && publicRoutes.contains(state.uri.toString())) {
+        // If the user is authenticated, redirect to the home page (only if
+        // the current location is public page)
+        if (publicRoutes.contains(state.uri.toString()) &&
+            status is AuthenticationAuthenticated) {
           return '/home';
         }
-
-        // If user is not authenticated redirect to Login 
-        if (status is AuthenticationUnauthenticated || status is AuthenticationInitial) {
+        // If the user is not authenticated, redirect to the login page.
+        // (only if the current location is not a public page).
+        if (!publicRoutes.contains(state.uri.toString()) &&
+            (status is AuthenticationUnauthenticated ||
+                status is AuthenticationInitial)) {
           return '/login';
         }
 
