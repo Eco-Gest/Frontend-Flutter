@@ -17,15 +17,16 @@ abstract class CommentService {
 
   static Future<void> deleteComment(int commentId) async {
     final String? token = await AuthenticationService.getToken();
-    final response = await EcoGestApiDataSource.delete(
-      '/posts/comments/$commentId', {},
+    await EcoGestApiDataSource.delete(
+      '/posts/comments/$commentId',
       token: token,
     );
   }
-  
-  static Future<void> submitReport(int commentId, int authorId, String content, String result) async {
-  try {
-    final String? token = await AuthenticationService.getToken();
+
+  static Future<void> submitReport(
+      int commentId, int authorId, String content, String result) async {
+    try {
+      final String? token = await AuthenticationService.getToken();
 
       final Map<String, dynamic> requestBody = {
         'ID': commentId,
@@ -35,8 +36,8 @@ abstract class CommentService {
         'content': content,
       };
 
-      await EcoGestApiDataSource.post('/submit-report', requestBody, token: token);
-
+      await EcoGestApiDataSource.post('/submit-report', requestBody,
+          token: token);
     } catch (error) {
       throw Exception('Échec du signalement');
     }

@@ -37,3 +37,9 @@ class AuthenticationResetPasswordStateSuccess extends AuthenticationState {
   final String message;
   AuthenticationResetPasswordStateSuccess(this.message) : super(null);
 }
+
+/// The state of the authentication cubit when the reset password failed.
+class AuthenticationDeleteAccountError extends AuthenticationState {
+  final String message;
+  AuthenticationDeleteAccountError(this.message) : super(null);
+}

@@ -14,7 +14,7 @@ class UsersRelationService {
   static Future<void> unSubscribe(int userId) async {
     final String? token = await AuthenticationService.getToken();
 
-    await EcoGestApiDataSource.delete('/users/$userId/unsubscribe', {},
+    await EcoGestApiDataSource.delete('/users/$userId/unsubscribe',
         token: token);
   }
 
@@ -22,7 +22,7 @@ class UsersRelationService {
     final String? token = await AuthenticationService.getToken();
 
     await EcoGestApiDataSource.delete(
-        '/users/$userId/cancel-subscription-request', {},
+        '/users/$userId/cancel-subscription-request',
         token: token);
   }
 
@@ -41,14 +41,14 @@ class UsersRelationService {
     final String? token = await AuthenticationService.getToken();
 
     await EcoGestApiDataSource.delete(
-        '/users/$userId/decline-subscription-request', {},
+        '/users/$userId/decline-subscription-request',
         token: token);
   }
 
   static Future<void> removeFollower(int userId) async {
     final String? token = await AuthenticationService.getToken();
 
-    await EcoGestApiDataSource.delete('/remove-follower/$userId', {},
+    await EcoGestApiDataSource.delete('/remove-follower/$userId',
         token: token);
   }
 
@@ -61,7 +61,7 @@ class UsersRelationService {
   static Future<void> unBlockUser(int userId) async {
     final String? token = await AuthenticationService.getToken();
 
-    await EcoGestApiDataSource.delete('/users/$userId/unblock', {},
+    await EcoGestApiDataSource.delete('/users/$userId/unblock',
         token: token);
   }
 

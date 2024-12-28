@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:ecogest_front/views/auth/login_view.dart';
 
 class SettingsView extends StatelessWidget {
   const SettingsView({super.key});
@@ -120,6 +121,15 @@ class SettingsView extends StatelessWidget {
                   const SizedBox(
                     height: 16.0,
                   ),
+                  TextButton(
+                    onPressed: () {
+                      showDeleteAccountDialog(context);
+                    },
+                    child: const Text('Supprimer mon compte'),
+                  ),
+                  const SizedBox(
+                    height: 16.0,
+                  ),
                   SizedBox(
                       width: (MediaQuery.of(context).size.width - 26) / 2,
                       height: 50.0,
@@ -136,6 +146,58 @@ class SettingsView extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+
+  void showDeleteAccountDialog(BuildContext context) {
+    final TextEditingController controller = TextEditingController();
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Etes vous sûr.e de vouloir supprimer votre compte'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text('Veuillez taper "Supprimer mon compte" pour confirmer.'),
+              TextField(
+                controller: controller,
+              ),
+            ],
+          ),
+          actions: <Widget>[
+            Row(
+              children: [
+                Expanded(
+                  child: TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop(); 
+                    },
+                    child: const Text('Non'),
+                  ),
+                ),
+                Expanded(
+                  child: TextButton(
+                    onPressed: () {
+                      if (controller.text == 'Supprimer mon compte') {
+                        context.read<AuthenticationCubit>().deleteMyAccount();
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Le texte ne correspond pas. Veuillez réessayer.'),
+                          ),
+                        );
+                      }
+                    },
+                    child: const Text('Oui'),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        );
+      },
     );
   }
 }

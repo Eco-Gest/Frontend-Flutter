@@ -120,4 +120,20 @@ class AuthenticationService {
         error: 'Failed to send mail to reset password');
     return response;
   }
+
+  
+  static Future<void> deleteMyAccount() async {
+      final String? token = await AuthenticationService.getToken();
+
+      await EcoGestApiDataSource.delete(
+        '/me',
+        token: token,
+      );
+
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.remove('token');
+      
+      // end connection to pusher
+      notificationsService.disconnectPusher();
+  }
 }

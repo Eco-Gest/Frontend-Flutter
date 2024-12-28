@@ -6,8 +6,12 @@ import 'package:ecogest_front/models/points_category_model.dart';
 import 'package:ecogest_front/services/authentication_service.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:ecogest_front/services/notifications/notifications_service.dart';
 
 class UserService {
+  static final NotificationsService notificationsService =
+      NotificationsService();
+
   static Future<UserModel> getCurrentUser() async {
     final String? token = await AuthenticationService.getToken();
 

@@ -78,22 +78,15 @@ class EcoGestApiDataSource {
     }
   }
 
-  static Future<dynamic> delete(String endpoint, Object body,
+  static Future<void> delete(String endpoint,
       {String error = 'Failed to delete data', String? token}) async {
     /// In debug mode, assert that the endpoint starts with a /
     assert(endpoint.startsWith('/'), 'Endpoint must start with a /');
 
-    var response = await http.delete(
+   await http.delete(
       Uri.parse('$_baseUrl$endpoint'),
       headers: _getHeaders(token),
-      body: jsonEncode(body),
     );
-
-    if (response.statusCode > 199 && response.statusCode <= 299) {
-      return jsonDecode(response.body);
-    } else {
-      throw Exception(error);
-    }
   }
 
   static Future<bool> addImage(String endpoint, String filepath,
