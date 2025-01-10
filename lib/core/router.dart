@@ -29,7 +29,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-
 abstract class AppRouter {
   /// Public routes
   static List<String> get publicRoutes => [
@@ -144,16 +143,14 @@ abstract class AppRouter {
         GoRoute(
           path: '/user/follow',
           name: SubscriptionsListView.name,
-          builder: (context, state) => SubscriptionsListView(
-            user:state.extra! as UserModel
-          ),
+          builder: (context, state) =>
+              SubscriptionsListView(user: state.extra! as UserModel),
         ),
         GoRoute(
           path: '/trophies',
           name: TrophiesView.name,
-          builder: (context, state) => TrophiesView(
-            trophies: state.extra! as List<TrophyModel>
-          ),
+          builder: (context, state) =>
+              TrophiesView(trophies: state.extra! as List<TrophyModel>),
         ),
         GoRoute(
           path: '/change-password',
@@ -163,18 +160,18 @@ abstract class AppRouter {
       ],
       refreshListenable: GoRouterRefreshStream(stream),
       redirect: (context, state) async {
-        // If the user is not authenticated, redirect to the login page.
+        // Get Auth status
         final status = context.read<AuthenticationCubit>().state;
 
-        // Vérifier si l'onboarding a déjà été vu (exemple avec SharedPreferences)
+        // Check if onboardng has been seen
         final prefs = await SharedPreferences.getInstance();
         final onboardingSeen = prefs.getBool('onboardingSeen') ?? false;
 
-        // Rediriger vers l'onboarding si ce n'est pas encore vu
+        // If onboarding has not been seen redirect to OnBoardingView
         if (!onboardingSeen) {
           return '/onboarding';
         }
-        
+
         // If the user is authenticated, redirect to the home page (only if
         // the current location is public page)
         if (publicRoutes.contains(state.uri.toString()) &&
@@ -184,7 +181,8 @@ abstract class AppRouter {
         // If the user is not authenticated, redirect to the login page.
         // (only if the current location is not a public page).
         if (!publicRoutes.contains(state.uri.toString()) &&
-          status is AuthenticationUnauthenticated || status is AuthenticationInitial) {
+            (status is AuthenticationUnauthenticated ||
+                status is AuthenticationInitial)) {
           return '/login';
         }
 
