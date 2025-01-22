@@ -86,7 +86,12 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
   Future<void> deleteMyAccount() async {
     try {
       await AuthenticationService.deleteMyAccount();
-      emit(AuthenticationUnauthenticated("Compte supprimé avec succès"));
+
+        emit(AuthenticationAccountDeleted("Compte supprimé avec succès."));
+
+        await Future.delayed(const Duration(seconds: 3));
+
+        emit(AuthenticationUnauthenticated("Vous êtes maintenant déconnecté."));
     } catch (error) {
       emit(AuthenticationDeleteAccountError(
           "Erreur rencontrée lors de la suppression de votre compte. Veuillez réessayer."));

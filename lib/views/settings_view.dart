@@ -19,7 +19,25 @@ class SettingsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return BlocListener<AuthenticationCubit, AuthenticationState>(
+      listener: (context, state) {
+        if (state is AuthenticationAccountDeleted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(state.message), 
+              duration: const Duration(seconds: 3), 
+            ),
+          );
+        } else if (state is AuthenticationDeleteAccountError) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(state.message), 
+              duration: const Duration(seconds: 3), 
+            ),
+          );
+        }
+      },
+      child: Scaffold(
       appBar: const ThemeAppBar(title: 'Paramètres'),
       bottomNavigationBar: const AppBarFooter(),
       body: SingleChildScrollView(
@@ -146,58 +164,83 @@ class SettingsView extends StatelessWidget {
           ],
         ),
       ),
+    ),
     );
   }
+void showDeleteAccountDialog(BuildContext context) {
+  final TextEditingController controller = TextEditingController();
 
-  void showDeleteAccountDialog(BuildContext context) {
-    final TextEditingController controller = TextEditingController();
-
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Etes vous sûr.e de vouloir supprimer votre compte'),
-          content: Column(
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'Etes-vous sûr.e ?',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            const Text(
+              'Vous serez déconnecté de tous vos appareils et perdrez l\'accès à votre compte.',
+              style: TextStyle(fontSize: 12),
+            ),
+          ],
+        ),
+        content: SingleChildScrollView(
+          child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Text('Veuillez taper "Supprimer mon compte" pour confirmer.'),
+              const Text(
+                'Veuillez taper "Supprimer mon compte" pour confirmer.',
+                style: TextStyle(fontSize: 15),
+              ),
+              const SizedBox(height: 12),
               TextField(
                 controller: controller,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'Confirmation',
+                ),
               ),
             ],
           ),
-          actions: <Widget>[
-            Row(
-              children: [
-                Expanded(
-                  child: TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pop(); 
-                    },
-                    child: const Text('Non'),
-                  ),
-                ),
-                Expanded(
-                  child: TextButton(
-                    onPressed: () {
-                      if (controller.text == 'Supprimer mon compte') {
-                        context.read<AuthenticationCubit>().deleteMyAccount();
-                      } else {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('Le texte ne correspond pas. Veuillez réessayer.'),
-                          ),
-                        );
-                      }
-                    },
-                    child: const Text('Oui'),
-                  ),
-                ),
-              ],
-            ),
-          ],
-        );
-      },
-    );
-  }
+        ),
+        actions: <Widget>[
+        Container(
+          height: 40, // Définissez une hauteur fixe pour la zone d'actions
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly, // Ajouter de l'espace entre les boutons
+            children: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(); // Ferme la boîte de dialogue
+                },
+                child: const Text('Non'),
+              ),
+              TextButton(
+                onPressed: () {
+                  if (controller.text == 'Supprimer mon compte') {
+                    context.read<AuthenticationCubit>().deleteMyAccount();
+                    Navigator.of(context).pop();
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text(
+                          'Le texte ne correspond pas. Veuillez réessayer.',
+                        ),
+                      ),
+                    );
+                  }
+                },
+                child: const Text('Oui'),
+              ),
+            ],
+          ),
+        ),
+      ],
+      );
+    },
+  );
+}
 }
