@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:ecogest_front/views/auth/login_view.dart';
 
 class SettingsView extends StatelessWidget {
   const SettingsView({super.key});
@@ -18,7 +19,25 @@ class SettingsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return BlocListener<AuthenticationCubit, AuthenticationState>(
+      listener: (context, state) {
+        if (state is AuthenticationAccountDeleted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(state.message), 
+              duration: const Duration(seconds: 3), 
+            ),
+          );
+        } else if (state is AuthenticationDeleteAccountError) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(state.message), 
+              duration: const Duration(seconds: 3), 
+            ),
+          );
+        }
+      },
+      child: Scaffold(
       appBar: const ThemeAppBar(title: 'Paramètres'),
       bottomNavigationBar: const AppBarFooter(),
       body: SingleChildScrollView(
@@ -120,6 +139,15 @@ class SettingsView extends StatelessWidget {
                   const SizedBox(
                     height: 16.0,
                   ),
+                  TextButton(
+                    onPressed: () {
+                      showDeleteAccountDialog(context);
+                    },
+                    child: const Text('Supprimer mon compte'),
+                  ),
+                  const SizedBox(
+                    height: 16.0,
+                  ),
                   SizedBox(
                       width: (MediaQuery.of(context).size.width - 26) / 2,
                       height: 50.0,
@@ -136,6 +164,83 @@ class SettingsView extends StatelessWidget {
           ],
         ),
       ),
+    ),
     );
   }
+void showDeleteAccountDialog(BuildContext context) {
+  final TextEditingController controller = TextEditingController();
+
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'Etes-vous sûr.e ?',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            const Text(
+              'Vous serez déconnecté de tous vos appareils et perdrez l\'accès à votre compte.',
+              style: TextStyle(fontSize: 12),
+            ),
+          ],
+        ),
+        content: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text(
+                'Veuillez taper "Supprimer mon compte" pour confirmer.',
+                style: TextStyle(fontSize: 15),
+              ),
+              const SizedBox(height: 12),
+              TextField(
+                controller: controller,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'Confirmation',
+                ),
+              ),
+            ],
+          ),
+        ),
+        actions: <Widget>[
+        Container(
+          height: 40, // Définissez une hauteur fixe pour la zone d'actions
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly, // Ajouter de l'espace entre les boutons
+            children: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(); // Ferme la boîte de dialogue
+                },
+                child: const Text('Non'),
+              ),
+              TextButton(
+                onPressed: () {
+                  if (controller.text == 'Supprimer mon compte') {
+                    context.read<AuthenticationCubit>().deleteMyAccount();
+                    Navigator.of(context).pop();
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text(
+                          'Le texte ne correspond pas. Veuillez réessayer.',
+                        ),
+                      ),
+                    );
+                  }
+                },
+                child: const Text('Oui'),
+              ),
+            ],
+          ),
+        ),
+      ],
+      );
+    },
+  );
+}
 }

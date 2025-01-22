@@ -110,7 +110,7 @@ class PostService {
     final String? token = await AuthenticationService.getToken();
 
     if (isLiked) {
-      return await EcoGestApiDataSource.delete('/posts/$postId/likes', {},
+      await EcoGestApiDataSource.delete('/posts/$postId/likes',
           error: 'Failed to add like', token: token);
     } else {
       await EcoGestApiDataSource.post('/posts/$postId/likes', {},
@@ -145,7 +145,6 @@ class PostService {
 
     await EcoGestApiDataSource.delete(
       '/posts/$postId',
-      {},
       token: token,
     );
   }
