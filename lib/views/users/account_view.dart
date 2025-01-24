@@ -39,6 +39,9 @@ class _AccountViewState extends State<AccountView>
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      refreshData();
+    });
   }
 
   @override
