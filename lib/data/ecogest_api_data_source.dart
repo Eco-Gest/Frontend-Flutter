@@ -6,8 +6,9 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
 class EcoGestApiDataSource {
-  static const _baseUrl = "https://ecogest.org/api";
-  // static const _baseUrl = "http://localhost:8080/api";
+ static const _baseUrl = "https://ecogest.org/api";
+ //static const _baseUrl = "http://localhost:8080/api";
+ //static const _baseUrl = "http://10.0.2.2:8080/api";
 
   static get baseUrl {
     return _baseUrl;

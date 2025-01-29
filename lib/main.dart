@@ -15,12 +15,18 @@ import 'package:notification_permissions/notification_permissions.dart'
 import 'package:permission_handler/permission_handler.dart'
     as permission_handler;
 import 'package:flutter_localizations/flutter_localizations.dart';
-
+import 'package:pusher_beams/pusher_beams.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load();
   await initializeDateFormatting('fr_FR', null);
+   debugPrint('PUSHER_BEAMS_ID: ${dotenv.env['PUSHER_BEAMS_ID'].toString()}');
+   if (!kIsWeb) {
+    await PusherBeams.instance.start(dotenv.env['PUSHER_BEAMS_ID'].toString());
+   await PusherBeams.instance.addDeviceInterest("debug-hello");
+   }
   runApp(MainApp());
 }
 
@@ -67,6 +73,7 @@ class _MainAppState extends State<MainApp> {
     requestPermissions();
     listenToNotification();
     permissionStatusFuture = getCheckNotificationPermStatus();
+    initPusherBeams();
   }
 
   Future<void> requestPermissions() async {
@@ -132,5 +139,43 @@ class _MainAppState extends State<MainApp> {
 
   void onNotificationListener(String? payload) {
     GoRouter.of(context).push(NotificationsView.name);
+  }
+
+    initPusherBeams() async {
+    // Let's see our current interests
+    print(await PusherBeams.instance.getDeviceInterests());
+
+    // This is not intented to use in web
+    if (!kIsWeb) {
+      await PusherBeams.instance
+          .onInterestChanges((interests) => {print('Interests: $interests')});
+
+      await PusherBeams.instance
+          .onMessageReceivedInTheForeground(_onMessageReceivedInTheForeground);
+    }
+    await _checkForInitialMessage();
+  }
+
+    Future<void> _checkForInitialMessage() async {
+    final initialMessage = await PusherBeams.instance.getInitialMessage();
+    if (initialMessage != null) {
+      _showAlert('Initial Message Is:', initialMessage.toString());
+    }
+  }
+
+  void _onMessageReceivedInTheForeground(Map<Object?, Object?> data) {
+    _showAlert(data["title"].toString(), data["body"].toString());
+  }
+
+   void _showAlert(String title, String message) {
+    AlertDialog alert = AlertDialog(
+        title: Text(title), content: Text(message), actions: const []);
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
   }
 }

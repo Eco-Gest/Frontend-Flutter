@@ -8,6 +8,7 @@ import 'package:ecogest_front/services/notifications/local_notification_service.
 import 'package:flutter/material.dart';
 import 'package:pusher_channels_flutter/pusher_channels_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:pusher_beams/pusher_beams.dart';
 
 class NotificationsService {
   PusherChannelsFlutter pusher = PusherChannelsFlutter.getInstance();
