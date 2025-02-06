@@ -6,18 +6,13 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
 class EcoGestApiDataSource {
-  // static const _baseUrl = 'https://ecogest-api-ce3f0245de21.herokuapp.com/api';
-
-  // to test on android emulator try this for HTTP request:
-  // static const _baseUrl = "http://10.0.2.2:8080/api";
-  // static const _baseUrl = "http://localhost:8080/api";
-  static const _baseUrl = "https://ecogest.org/api";
+ static const _baseUrl = "https://ecogest.org/api";
+ //static const _baseUrl = "http://localhost:8080/api";
+ //static const _baseUrl = "http://10.0.2.2:8080/api";
 
   static get baseUrl {
     return _baseUrl;
   }
-
-  // static const _baseUrl = "https://ecogest.onrender.com/api";
 
   static Map<String, String> _getHeaders(String? token) {
     String apiKey = dotenv.env['API_KEY'].toString();
@@ -69,7 +64,6 @@ class EcoGestApiDataSource {
       {String error = 'Failed to patch data', String? token}) async {
     /// In debug mode, assert that the endpoint starts with a /
     assert(endpoint.startsWith('/'), 'Endpoint must start with a /');
-
     var response = await http.patch(
       Uri.parse('$_baseUrl$endpoint'),
       headers: _getHeaders(token),
@@ -85,29 +79,24 @@ class EcoGestApiDataSource {
     }
   }
 
-  static Future<dynamic> delete(String endpoint, Object body,
+  static Future<void> delete(String endpoint,
       {String error = 'Failed to delete data', String? token}) async {
     /// In debug mode, assert that the endpoint starts with a /
     assert(endpoint.startsWith('/'), 'Endpoint must start with a /');
 
-    var response = await http.delete(
+   await http.delete(
       Uri.parse('$_baseUrl$endpoint'),
       headers: _getHeaders(token),
-      body: jsonEncode(body),
     );
-
-    if (response.statusCode > 199 && response.statusCode <= 299) {
-      return jsonDecode(response.body);
-    } else {
-      throw Exception(error);
-    }
   }
 
   static Future<bool> addImage(String endpoint, String filepath,
       {String? token}) async {
+    String apiKey = dotenv.env['API_KEY'].toString();
     Map<String, String> headers = {
       'Content-Type': 'multipart/form-data',
-      'Authorization': 'Bearer $token'
+      'Authorization': 'Bearer $token',
+      'x-api-key': apiKey,
     };
 
     var request = http.MultipartRequest('POST', Uri.parse('$_baseUrl$endpoint'))

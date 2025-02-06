@@ -39,9 +39,6 @@ class _SubscriptionWidget extends State<SubscriptionWidget> {
           FilledButton(
             style: FilledButton.styleFrom(
               backgroundColor: Colors.white,
-              fixedSize: isFollowed
-                  ? const Size(210, 50)
-                  : Size((MediaQuery.of(context).size.width) / 2, 50),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10.0),
               ),
@@ -80,9 +77,6 @@ class _SubscriptionWidget extends State<SubscriptionWidget> {
                   context.read<ThemeSettingsCubit>().state.isDarkMode
                       ? darkColorScheme.primary
                       : lightColorScheme.primary,
-              fixedSize: isFollowed
-                  ? Size(210, 50)
-                  : Size((MediaQuery.of(context).size.width) / 2, 50),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10.0),
               ),
@@ -121,9 +115,6 @@ class _SubscriptionWidget extends State<SubscriptionWidget> {
                 : context.read<ThemeSettingsCubit>().state.isDarkMode
                     ? darkColorScheme.primary
                     : lightColorScheme.primary),
-            fixedSize: isFollowing
-                ? Size(210, 50)
-                : Size((MediaQuery.of(context).size.width) / 2, 50),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10.0),
             ),

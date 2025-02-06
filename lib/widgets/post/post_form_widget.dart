@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:date_field/date_field.dart';
 import 'package:ecogest_front/assets/ecogest_theme.dart';
 import 'package:ecogest_front/models/post_model.dart';
@@ -13,6 +12,11 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter_tagging_plus/flutter_tagging_plus.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:intl/intl.dart';
+import 'package:image/image.dart' as img;
+import 'dart:typed_data';
+import 'package:ecogest_front/state_management/theme_settings/theme_settings_cubit.dart';
 
 class PostFormWidget extends StatefulWidget {
   PostFormWidget({Key? key, this.prefilledPost}) : super(key: key);
@@ -30,13 +34,13 @@ class _PostFormWidget extends State<PostFormWidget> {
   final descriptionController = TextEditingController();
   final positionController = TextEditingController();
   final tagController = TextEditingController();
-  final imageController = TextEditingController();
 
-  DateTime? startDate;
-  DateTime? endDate;
   late final List<TagModel> _tagsToSave = [];
 
   late List<bool> _selectedPostType;
+
+  DateTime? startDate;
+  DateTime? endDate;
 
   bool datesValidation() {
     if (startDate != null && endDate != null) {
@@ -52,11 +56,28 @@ class _PostFormWidget extends State<PostFormWidget> {
 
   Future getImage() async {
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
-    setState(() {
-      if (pickedFile != null) {
-        _image = File(pickedFile.path);
-      }
-    });
+    if (pickedFile != null) {      
+      _image = await compressImage(File(pickedFile.path));
+      setState(() {});
+    }
+  }
+
+  Future<File> compressImage(File imageFile) async {
+    Uint8List imageBytes = await imageFile.readAsBytes();
+    img.Image? image = img.decodeImage(imageBytes);
+
+    if (image != null) {
+      img.Image resizedImage = img.copyResize(image, width: 800);
+      Uint8List compressedImage = Uint8List.fromList(img.encodeJpg(resizedImage, quality: 85));
+
+      final tempDir = Directory.systemTemp;
+      final tempFile = File('${tempDir.path}/temp_image.jpg');
+      await tempFile.writeAsBytes(compressedImage);
+
+      return tempFile;
+    } else {
+      throw Exception('Error processing the image');
+    }
   }
 
   @override
@@ -66,7 +87,12 @@ class _PostFormWidget extends State<PostFormWidget> {
     titleController.text = prefilledPost?.title ?? '';
     descriptionController.text = prefilledPost?.description ?? '';
     positionController.text = prefilledPost?.position ?? '';
-    imageController.text = prefilledPost?.image ?? '';
+    startDate = prefilledPost?.startDate == null
+        ? null
+        : DateTime.parse(prefilledPost!.startDate!);
+    endDate = prefilledPost?.endDate == null
+        ? null
+        : DateTime.parse(prefilledPost!.endDate!);
     if (prefilledPost!.type == "action") {
       _selectedPostType = [true, false];
     } else {
@@ -97,9 +123,9 @@ class _PostFormWidget extends State<PostFormWidget> {
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(content: Text('Publication réussie')),
               );
-              GoRouter.of(context).goNamed(
-                HomeView.name,
-              );
+              GoRouter.of(context).pushNamed(HomeView.name).then((_) {
+                        setState(() {});
+              });
             }
           },
           child: SingleChildScrollView(
@@ -167,6 +193,7 @@ class _PostFormWidget extends State<PostFormWidget> {
                     alignment: Alignment.topCenter,
                     padding: const EdgeInsets.all(10),
                     child: TextFormField(
+                      textCapitalization: TextCapitalization.sentences,
                       controller: titleController,
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(),
@@ -186,11 +213,13 @@ class _PostFormWidget extends State<PostFormWidget> {
                     alignment: Alignment.topCenter,
                     padding: const EdgeInsets.all(10),
                     child: TextFormField(
+                      textCapitalization: TextCapitalization.sentences,
                       textAlign: TextAlign.justify,
                       controller: descriptionController,
                       autofocus: false,
                       maxLines: 8,
                       decoration: const InputDecoration(
+                        alignLabelWithHint: true,
                         border: OutlineInputBorder(),
                         labelText: 'Description',
                         hintText: 'Entrez une description',
@@ -201,6 +230,7 @@ class _PostFormWidget extends State<PostFormWidget> {
                     alignment: Alignment.topCenter,
                     padding: const EdgeInsets.all(10),
                     child: TextFormField(
+                      textCapitalization: TextCapitalization.sentences,
                       controller: positionController,
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(),
@@ -212,8 +242,9 @@ class _PostFormWidget extends State<PostFormWidget> {
 
                   BlocBuilder<PostFormCubit, PostFormState>(
                       builder: (context, state) {
-                    startDate = DateTime.now();
-                    endDate = startDate!.add(const Duration(days: 1));
+                    startDate = startDate ?? DateTime.now();
+                    endDate =
+                        endDate ?? startDate!.add(const Duration(days: 1));
                     if (state is SelectionState &&
                         state.selectedType == PostType.challenge) {
                       return Column(children: [
@@ -232,6 +263,7 @@ class _PostFormWidget extends State<PostFormWidget> {
                             initialValue: startDate,
                             initialPickerDateTime: startDate,
                             mode: DateTimeFieldPickerMode.date,
+                            dateFormat: DateFormat.yMMMd('fr_FR'),
                             decoration: const InputDecoration(
                               hintStyle: TextStyle(color: Colors.black45),
                               errorStyle: TextStyle(color: Colors.redAccent),
@@ -259,6 +291,7 @@ class _PostFormWidget extends State<PostFormWidget> {
                             initialValue: endDate,
                             initialPickerDateTime: endDate,
                             mode: DateTimeFieldPickerMode.date,
+                            dateFormat: DateFormat.yMMMd('fr_FR'),
                             decoration: const InputDecoration(
                               hintStyle: TextStyle(color: Colors.black45),
                               errorStyle: TextStyle(color: Colors.redAccent),
@@ -305,13 +338,25 @@ class _PostFormWidget extends State<PostFormWidget> {
                         configureSuggestion: (tag) {
                           return SuggestionConfiguration(
                             title: Text(tag.label),
-                            additionWidget: const Chip(
-                              avatar: Icon(
+                            additionWidget: Chip(
+                              avatar: const Icon(
                                 Icons.add_circle,
                               ),
-                              label: Text('Ajouter un nouveau tag'),
+                              backgroundColor: context
+                                      .read<ThemeSettingsCubit>()
+                                      .state
+                                      .isDarkMode
+                                  ? darkColorScheme.primary
+                                  : lightColorScheme.primary,
+                              label: const Text('Ajouter un nouveau tag'),
                               labelStyle: TextStyle(
                                 fontSize: 14.0,
+                                color: context
+                                        .read<ThemeSettingsCubit>()
+                                        .state
+                                        .isDarkMode
+                                    ? Colors.black
+                                    : Colors.white,
                                 fontWeight: FontWeight.w300,
                               ),
                             ),
@@ -320,7 +365,12 @@ class _PostFormWidget extends State<PostFormWidget> {
                         configureChip: (tag) {
                           return ChipConfiguration(
                             label: Text(tag.label),
-                            backgroundColor: lightColorScheme.primary,
+                            backgroundColor: context
+                                    .read<ThemeSettingsCubit>()
+                                    .state
+                                    .isDarkMode
+                                ? darkColorScheme.primary
+                                : lightColorScheme.primary,
                             labelStyle: const TextStyle(color: Colors.white),
                             deleteIconColor: Colors.white,
                           );
@@ -334,9 +384,9 @@ class _PostFormWidget extends State<PostFormWidget> {
                   Column(
                     children: [
                       const Text('Sélectionnez une image'),
-                      OutlinedButton(
-                        onPressed: getImage,
-                        child: _buildImage(),
+                      GestureDetector(
+                        onTap: getImage,
+                        child: _buildImage(prefilledPost.image),
                       ),
                     ],
                   ),
@@ -366,7 +416,7 @@ class _PostFormWidget extends State<PostFormWidget> {
                     return const CircularProgressIndicator();
                   }),
                   Padding(
-                    padding: const EdgeInsets.all(30.0),
+                    padding: const EdgeInsets.all(15.0),
                     child: SizedBox(
                       width: (MediaQuery.of(context).size.width - 26) / 2,
                       height: 50.0,
@@ -402,17 +452,49 @@ class _PostFormWidget extends State<PostFormWidget> {
     );
   }
 
-  Widget _buildImage() {
-    if (_image == null) {
-      return const Padding(
-        padding: EdgeInsets.all(10),
-        child: Icon(
-          Icons.add,
-          color: Colors.grey,
+  Widget _buildImage(String? postImageUrl) {
+    if (_image == null && postImageUrl == null) {
+      return Container(
+        width: 200,
+        height: 200,
+        decoration: BoxDecoration(
+          border: Border.all(color: Colors.grey),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Center(
+          child: Icon(
+            Icons.add,
+            color: Colors.grey,
+          ),
         ),
       );
     } else {
-      return Text(_image!.path);
+      return Stack(
+        alignment: Alignment.center,
+        children: [
+          Container(
+            width: 200,
+            height: 200,
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.grey),
+              borderRadius: BorderRadius.circular(10),
+              image: DecorationImage(
+                image: _image != null
+                    ? (kIsWeb
+                        ? NetworkImage(_image!.path) as ImageProvider<Object>
+                        : FileImage(_image!))
+                    : NetworkImage(postImageUrl!),
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+          Icon(
+            Icons.add,
+            color: Colors.grey.withOpacity(0.6),
+            size: 40,
+          ),
+        ],
+      );
     }
   }
 }

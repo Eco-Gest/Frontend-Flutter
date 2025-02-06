@@ -8,9 +8,11 @@ import 'package:ecogest_front/widgets/app_bar.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ecogest_front/state_management/theme_settings/theme_settings_cubit.dart';
+import 'package:ecogest_front/views/legal/privacy_policy_view.dart';
+import 'package:go_router/go_router.dart';
 
-class LegalNotices extends StatelessWidget {
-  const LegalNotices({Key? key});
+class LegalNoticesView extends StatelessWidget {
+  const LegalNoticesView({Key? key});
 
   static String name = 'legal-notices';
 
@@ -27,17 +29,13 @@ class LegalNotices extends StatelessWidget {
               // Editeur
               Column(children: [
                 const LegalTitle(textContent: 'Éditeur du site :'),
-                const Text('Société EcO\'Gest'),
-                const Text('2 Rue George Sand, 36120 Ardentes'),
-                const Text('Téléphone : 01.23.45.67.89'),
+                const Text('l\'équipe Ecogest'),
+                const Text('Augustin Seguin'),
+                const Text('Eléonore Euzenes'),
+                const Text('Léa Clair'),
                 RichText(
                   text: TextSpan(
-                    children: [
-                      const TextSpan(
-                        text: 'E-mail : ',
-                      ),
-                      TextSpan(
-                        text: 'report@ecogest.dev',
+                        text: 'contact@ecogest.org',
                         style: TextStyle(
                           color: context
                                   .read<ThemeSettingsCubit>()
@@ -51,7 +49,7 @@ class LegalNotices extends StatelessWidget {
                             // Launch email application
                             final Uri emailLaunchUri = Uri(
                               scheme: 'mailto',
-                              path: 'report@ecogest.io',
+                              path: 'contact@ecogest.org',
                             );
                             try {
                               await launchUrl(emailLaunchUri);
@@ -59,26 +57,24 @@ class LegalNotices extends StatelessWidget {
                               throw Exception("Contact non éffectué");
                             }
                           },
+                       ),
                       ),
-                    ],
-                  ),
-                ),
-              ]),
+                    ]),
               const PostSeparator(),
               // Directeur
               const Column(children: [
                 LegalTitle(textContent: 'Directeur de la publication :'),
-                Text('Tigrou'),
+                Text('Ecogest'),
               ]),
               const PostSeparator(),
               // Hébergement
-              // TODO : A complété
               const Column(children: [
                 LegalTitle(textContent: 'Hébergement du site :'),
-                Text('[Nom de l\'hébergeur]'),
-                Text('[Adresse de l\'hébergeur]'),
-                Text(
-                    'Téléphone de l\'hébergeur : [Numéro de téléphone de l\'hébergeur]'),
+                Text('o2switch'),
+                Text('Siret : 510 909 807 00032'),
+                Text('RCS Clermont Ferrand'),
+                Text('SAS au capital de 100 000€'),
+                Text('Téléphone de l\'hébergeur : 04 44 44 60 40'),
               ]),
               const PostSeparator(),
               // CGU
@@ -96,21 +92,24 @@ class LegalNotices extends StatelessWidget {
                   textSize: 14,
                 ),
                 Text(
-                    'Tous les contenus de ce site, y compris les textes, les images, les vidéos, les logos et les marques, sont protégés par les lois sur la propriété intellectuelle. Vous ne pouvez pas reproduire, distribuer ou utiliser ces contenus sans autorisation écrite.'),
-                LegalTitle(
-                  textContent: '3. Politique de confidentialité',
-                  textSize: 14,
-                ),
-                // TODO : lien vers la page politique de confidentialité
-                Text(
-                    'Veuillez consulter notre politique de confidentialité pour en savoir plus sur la manière dont nous collectons, utilisons et protégeons vos données personnelles.'),
-              ]),
+                    'Tous les contenus de ce site, y compris les textes, les images, les vidéos, les logos et les marques, sont protégés par les lois sur la propriété intellectuelle. Vous ne pouvez pas reproduire, distribuer ou utiliser ces contenus sans autorisation écrite.'),  ]),
               const PostSeparator(),
               // Confidentialité
-              const Column(children: [
+              Column(children: [
                 LegalTitle(textContent: 'Politique de confidentialité :'),
-                Text(
-                    'Pour en savoir plus sur notre politique de confidentialité, veuillez consulter notre page dédiée.'),
+                InkWell(
+                  onTap: () {
+                    GoRouter.of(context).pushNamed(PrivacyPolicyView.name);
+                  },
+                  child: Text(
+                    'Pour en savoir plus sur notre politique de confidentialité, veuillez consulter notre page dédiée.',
+                    style: TextStyle(
+                      color: context.read<ThemeSettingsCubit>().state.isDarkMode
+                          ? darkColorScheme.primary
+                          : lightColorScheme.primary,
+                    ),
+                  ),
+                ),
               ]),
               const PostSeparator(),
               // Cookie

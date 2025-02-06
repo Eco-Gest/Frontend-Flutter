@@ -18,85 +18,90 @@ class AppBarFooter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bool isDarkMode = context.read<ThemeSettingsCubit>().state.isDarkMode;
-    return Container(
-      color: isDarkMode
-          ? darkColorScheme.surface
-          : lightColorScheme.surface,
-      height: 65.0,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: <Widget>[
-          IconButton(
-            icon: const Icon(Icons.home),
-            color: (_getCurrentRoute(context) == "/${HomeView.name}"
-                ? isDarkMode
-                    ? darkColorScheme.primary
-                    : lightColorScheme.primary
-                : isDarkMode
-                    ? darkColorScheme.onSurfaceVariant
-                    : lightColorScheme.onSurfaceVariant),
-            tooltip: 'Home',
-            onPressed: () {
-              GoRouter.of(context).pushNamed(HomeView.name);
-            },
-          ),
-          IconButton(
-            icon: const Icon(Icons.emoji_events),
-            color: (_getCurrentRoute(context) == "/${ChallengesView.name}"
-                ? isDarkMode
-                    ? darkColorScheme.primary
-                    : lightColorScheme.primary
-                : isDarkMode
-                    ? darkColorScheme.onSurfaceVariant
-                    : lightColorScheme.onSurfaceVariant),
-            tooltip: 'Challenge & action',
-            onPressed: () {
-              GoRouter.of(context).pushNamed(ChallengesView.name);
-            },
-          ),
-          ElevatedButton(
-            onPressed: () {
-              GoRouter.of(context).pushNamed(PostCreateView.name);
-            },
-            style: ElevatedButton.styleFrom(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16.0),
+    return BlocBuilder<ThemeSettingsCubit, ThemeSettingsState>(
+      builder: (context, state) {
+        final bool isDarkMode = state.isDarkMode;
+        return Container(
+          color: isDarkMode ? darkColorScheme.surface : lightColorScheme.surface,
+          height: 65.0,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              IconButton(
+                icon: const Icon(Icons.home),
+                color: (_getCurrentRoute(context) == "/${HomeView.name}"
+                    ? isDarkMode
+                        ? darkColorScheme.primary
+                        : lightColorScheme.primary
+                    : isDarkMode
+                        ? darkColorScheme.onSurfaceVariant
+                        : lightColorScheme.onSurfaceVariant),
+                tooltip: 'Home',
+                onPressed: () {
+                  GoRouter.of(context).pushNamed(HomeView.name);
+                },
               ),
-              minimumSize: const Size.square(60),
-            ),
-            child: const Icon(Icons.add),
+              IconButton(
+                icon: const Icon(Icons.emoji_events),
+                color: (_getCurrentRoute(context) == "/${ChallengesView.name}"
+                    ? isDarkMode
+                        ? darkColorScheme.primary
+                        : lightColorScheme.primary
+                    : isDarkMode
+                        ? darkColorScheme.onSurfaceVariant
+                        : lightColorScheme.onSurfaceVariant),
+                tooltip: 'Challenge & action',
+                onPressed: () {
+                  GoRouter.of(context).pushNamed(ChallengesView.name);
+                },
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  GoRouter.of(context).pushNamed(PostCreateView.name);
+                },
+                style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12.0),
+                  ),
+                  minimumSize: const Size.square(50),
+                  backgroundColor: isDarkMode
+                      ? darkColorScheme.secondaryContainer
+                      : lightColorScheme.secondaryContainer,
+                ),
+                child: const Icon(Icons.add),
+              ),
+              IconButton(
+                icon: const Icon(Icons.search),
+                color: (_getCurrentRoute(context) == "/${SearchView.name}"
+                    ? isDarkMode
+                        ? darkColorScheme.primary
+                        : lightColorScheme.primary
+                    : isDarkMode
+                        ? darkColorScheme.onSurfaceVariant
+                        : lightColorScheme.onSurfaceVariant),
+                tooltip: 'Search',
+                onPressed: () {
+                  GoRouter.of(context).pushNamed(SearchView.name);
+                },
+              ),
+              IconButton(
+                icon: const Icon(Icons.person),
+                color: (_getCurrentRoute(context) == "/${AccountView.name}"
+                    ? isDarkMode
+                        ? darkColorScheme.primary
+                        : lightColorScheme.primary
+                    : isDarkMode
+                        ? darkColorScheme.onSurfaceVariant
+                        : lightColorScheme.onSurfaceVariant),
+                tooltip: 'Your Account',
+                onPressed: () {
+                  GoRouter.of(context).pushNamed(AccountView.name);
+                },
+              ),
+            ],
           ),
-          IconButton(
-            icon: const Icon(Icons.search),
-            color: (_getCurrentRoute(context) == "/${SearchView.name}"
-                ? isDarkMode
-                    ? darkColorScheme.primary
-                    : lightColorScheme.primary
-                : isDarkMode
-                    ? darkColorScheme.onSurfaceVariant
-                    : lightColorScheme.onSurfaceVariant),
-            tooltip: 'Search',
-            onPressed: () {
-              GoRouter.of(context).pushNamed(SearchView.name);
-            },
-          ),
-          IconButton(
-            icon: const Icon(Icons.person),
-            color: (_getCurrentRoute(context) == "/${AccountView.name}"
-                ? isDarkMode
-                    ? darkColorScheme.primary
-                    : lightColorScheme.primary
-                : isDarkMode
-                    ? darkColorScheme.onSurfaceVariant
-                    : lightColorScheme.onSurfaceVariant),
-            tooltip: 'Your Account',
-            onPressed: () {
-              GoRouter.of(context).pushNamed(AccountView.name);
-            },
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 }

@@ -1,17 +1,18 @@
 import 'package:ecogest_front/models/post_model.dart';
 import 'package:ecogest_front/models/user_model.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ecogest_front/state_management/authentication/authentication_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ecogest_front/state_management/posts/posts_cubit.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:go_router/go_router.dart';
 import 'package:ecogest_front/views/home_view.dart';
 
-class PostContentMenu extends StatelessWidget {
-  const PostContentMenu({
+// PostHeaderInfosActions is a PopMenuButton inside the PostHeader 
+// that groups actions related to the post:
+// edit, delete and report
+
+class PostHeaderInfosActions extends StatelessWidget {
+  const PostHeaderInfosActions({
     Key? key,
     required this.author,
     required this.post,
@@ -25,6 +26,12 @@ class PostContentMenu extends StatelessWidget {
     final user = context.watch<AuthenticationCubit>().state.user;
 
     return PopupMenuButton<String>(
+      style: TextButton.styleFrom(
+                      minimumSize: Size.zero, // Set this
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 4.0, horizontal: 2.0), // and this
+                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    ),
       onSelected: (value) async {
         if (value == 'edit') {
           if (user != null && user.id == author?.id) {
@@ -81,7 +88,7 @@ class PostContentMenu extends StatelessWidget {
           );
           if (result != null) {
             await context.read<PostsCubit>().submitReport(post.id!, result);
-            await context.read<PostsCubit>().getPosts(1, false);
+            await context.read<PostsCubit>().getPosts(1);
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
                 content: Text('Signalement enregistré. Merci !'),
@@ -104,11 +111,12 @@ class PostContentMenu extends StatelessWidget {
             value: 'delete',
             child: Text('Supprimer'),
           ));
-        }
+        } else {
         items.add(const PopupMenuItem<String>(
           value: 'report',
           child: Text('Signaler'),
         ));
+        }
 
         return items;
       },

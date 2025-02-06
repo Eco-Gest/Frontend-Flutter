@@ -3,11 +3,14 @@ import 'package:ecogest_front/services/users_relation_service.dart';
 import 'package:ecogest_front/services/user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ecogest_front/state_management/authentication/authentication_cubit.dart';
+
 
 part 'user_state.dart';
 
 class UserCubit extends Cubit<UserState> {
-  UserCubit() : super(UserInitial());
+  final AuthenticationCubit authenticationCubit;
+  UserCubit({required this.authenticationCubit}) : super(UserInitial());
 
   Future<void> getUser(int userId) async {
     try {
@@ -47,7 +50,12 @@ class UserCubit extends Cubit<UserState> {
     try {
       emit(UserLoading());
       await UserService.updateUserAccount(user);
-      emit(UserAccountSuccess(user));
+
+    final updatedUser = await UserService.getCurrentUser();
+
+    emit(UserSuccess(updatedUser, null, null, null));
+    authenticationCubit.emit(AuthenticationAuthenticated(updatedUser));
+    
     } catch (error) {
       emit(UserError(
           "Erreur rencontrée pour la mise à jour de vos données. Veuillez réessayer."));

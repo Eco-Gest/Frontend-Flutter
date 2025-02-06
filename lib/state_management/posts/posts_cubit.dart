@@ -8,10 +8,10 @@ class PostsCubit extends Cubit<PostsState> {
 
   static final PostService postService = PostService();
 
-  Future<void> getPosts(int pageNbr, bool forceReload) async {
+  Future<void> getPosts(int pageNbr) async {
     try {
       emit(PostsStateLoading());
-      final posts = await postService.getPosts(pageNbr, forceReload);
+      final posts = await postService.getPosts(pageNbr);
       emit(PostsStateSuccess(posts));
     } catch (error) {
       emit(PostsStateError(
@@ -19,14 +19,13 @@ class PostsCubit extends Cubit<PostsState> {
     }
   }
 
-  Future<void> getOnePost(int postId, bool forceReload) async {
+  Future<void> getOnePost(int postId) async {
     try {
       final PostService postService = PostService();
       emit(PostsStateLoading());
-      final post = await postService.getOnePost(postId, forceReload);
+      final post = await postService.getOnePost(postId);
       emit(OnePostStateSuccess(post));
     } catch (error) {
-      debugPrint(error.toString());
       emit(PostsStateError(
           "Erreur rencontrée pour récupérer la publication. Veuillez réessayer."));
     }

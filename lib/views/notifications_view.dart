@@ -49,45 +49,44 @@ class NotificationsView extends StatelessWidget {
                       title: Text(state.notifications!.elementAt(index).title!),
                       leading: CircleAvatar(
                         backgroundImage:
-                            state.notifications!.elementAt(index).user?.image ==
-                                    null
-                                ? const AssetImage('assets/profile.jpg')
-                                    as ImageProvider
-                                : NetworkImage(state.notifications!
-                                    .elementAt(index)
-                                    .user!
-                                    .image!),
-                      ),
-                      onTap: () {
-                        if (state.notifications!.elementAt(index).post?.id !=
-                            null) {
-                          context
-                              .pushNamed(PostDetailView.name, pathParameters: {
-                            'id': state.notifications!
-                                .elementAt(index)
-                                .post!
-                                .id!
-                                .toString(),
-                          });
-                        } else {
-                          context.pushNamed(UserView.name, pathParameters: {
-                            'id': state.notifications!
-                                .elementAt(index)
-                                .user!
-                                .id!
-                                .toString(),
-                          });
-                        }
-                      },
+                          state.notifications!.elementAt(index).user?.image ==
+                                  null
+                              ? const AssetImage('assets/profile.jpg')
+                                   as ImageProvider
+                              : NetworkImage(state.notifications!
+                                  .elementAt(index)
+                                 .user!
+                                  .image!),
                     ),
-                  );
-                }
-                return const SizedBox.shrink();
-              }),
-            )
-          ],
-        ),
-      ),
-    );
-  }
-}
+                     onTap: () {
+                         if (state.notifications!.elementAt(index).post?.id !=
+                             null) {
+                           context
+                               .pushNamed(PostDetailView.name, pathParameters: {
+                             'id': state.notifications!                                 .elementAt(index)
+                                 .post!
+                                 .id!
+                                 .toString(),
+                           });
+                         } else {
+                           context.pushNamed(UserView.name, pathParameters: {
+                             'id': state.notifications!
+                                 .elementAt(index)
+                                 .user!
+                                 .id!
+                                 .toString(),
+                           });
+                         }
+                       },
+                     ),
+                   );
+                 }
+                 return const SizedBox.shrink();
+               }),
+               )
+           ],
+         ),
+       ),
+     );
+   }
+ }

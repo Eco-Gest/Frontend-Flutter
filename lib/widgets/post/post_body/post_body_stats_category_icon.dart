@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 
-class CategoryIconWidget extends StatelessWidget {
-  CategoryIconWidget({
+// PostBodyStatsCategoryIcon is part of the PostBodyStats widget.
+// It displays an icon according to the category ID.
+
+class PostBodyStatsCategoryIcon extends StatelessWidget {
+  PostBodyStatsCategoryIcon({
     Key? key,
     required this.catId,
   }) : super(key: key);

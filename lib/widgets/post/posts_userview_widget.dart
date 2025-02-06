@@ -13,9 +13,7 @@ class PostsUserviewWidget extends StatefulWidget {
 
 class _PostsUserviewWidget extends State<PostsUserviewWidget>
     with SingleTickerProviderStateMixin {
-  Set<PostsFilter> filters = <PostsFilter>{};
   String? activeFilter;
-  List<String> historyFilters = <String>[];
 
   setTitle(postFilterName) {
     switch (postFilterName) {
@@ -32,8 +30,17 @@ class _PostsUserviewWidget extends State<PostsUserviewWidget>
     }
   }
 
-  GlobalKey<RefreshIndicatorState> refreshIndicatorKey =
-      GlobalKey<RefreshIndicatorState>();
+ Future<void> _updateFilter(PostsFilter filter) async {
+    setState(() {
+      activeFilter = null; 
+    });
+
+    await Future.delayed(const Duration(milliseconds: 100));
+
+    setState(() {
+      activeFilter = filter.name; 
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,13 +57,13 @@ class _PostsUserviewWidget extends State<PostsUserviewWidget>
                 label: Text(setTitle(filter.name)),
                 selected: filter.name == activeFilter,
                 onSelected: (bool selected) {
-                  setState(() {
-                    if (selected) {
-                      activeFilter = filter.name;
+                    if (selected) {   
+                        _updateFilter(filter);
                     } else {
-                      activeFilter = null;
+                      setState(() {
+                        activeFilter = null; 
+                      });
                     }
-                  });
                 },
               );
             }).toList(),

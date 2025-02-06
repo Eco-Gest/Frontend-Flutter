@@ -6,6 +6,8 @@ import 'package:ecogest_front/widgets/bottom_bar.dart';
 import 'package:ecogest_front/widgets/app_bar.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:ecogest_front/state_management/authentication/authentication_cubit.dart';
+
 
 class ChangePasswordView extends StatefulWidget {
   const ChangePasswordView({Key? key});
@@ -58,7 +60,7 @@ class _ChangePasswordView extends State<ChangePasswordView> {
       appBar: const ThemeAppBar(title: 'Changer de mot de passe'),
       bottomNavigationBar: const AppBarFooter(),
       body: BlocProvider<UserCubit>(
-        create: (_) => UserCubit(),
+        create: (_) => UserCubit(authenticationCubit: context.read<AuthenticationCubit>(),),
         child: Builder(
           builder: (context) {
             return BlocListener<UserCubit, UserState>(
@@ -130,7 +132,7 @@ class _ChangePasswordView extends State<ChangePasswordView> {
                         obscureText: !_passwordVisible,
                         decoration: InputDecoration(
                           border: const OutlineInputBorder(),
-                          labelText: 'Nouveua mot de passe',
+                          labelText: 'Nouveau mot de passe',
                           hintText: 'Entrez votre nouveau mot de passe',
                           suffixIcon: IconButton(
                             icon: Icon(
@@ -177,7 +179,7 @@ class _ChangePasswordView extends State<ChangePasswordView> {
                       child: FilledButton(
                         style: TextButton.styleFrom(
                           minimumSize: const Size.fromHeight(50),
-                          padding: const EdgeInsets.all(20),
+                          padding: const EdgeInsets.all(15),
                         ),
                         onPressed: () {
                           context.read<UserCubit>().changePassword(
@@ -188,7 +190,7 @@ class _ChangePasswordView extends State<ChangePasswordView> {
                               );
                         },
                         child: const Text(
-                            style: TextStyle(fontSize: 18), "Changer de mot de passe"),
+                            "Changer de mot de passe"),
                       ),
                     ),
                   ],

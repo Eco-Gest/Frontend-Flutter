@@ -17,16 +17,17 @@ import 'package:ecogest_front/views/users/trophies_view.dart';
 import 'package:ecogest_front/views/users/user_view.dart';
 import 'package:ecogest_front/views/search_view.dart';
 import 'package:ecogest_front/views/users/subscriptions_list_view.dart';
-import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-
+import 'package:ecogest_front/views/onboarding_view.dart';
 import 'package:ecogest_front/state_management/authentication/authentication_cubit.dart';
 import 'package:ecogest_front/views/auth/register_view.dart';
 import 'package:ecogest_front/views/auth/login_view.dart';
 import 'package:ecogest_front/views/home_view.dart';
 import 'package:ecogest_front/views/posts/post_create_view.dart';
 import 'package:ecogest_front/views/posts/post_edit_view.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 abstract class AppRouter {
   /// Public routes
@@ -43,6 +44,11 @@ abstract class AppRouter {
       initialLocation: '/login',
       errorBuilder: (context, state) => const Error404View(),
       routes: [
+        GoRoute(
+          path: '/onboarding',
+          name: OnboardingView.name,
+          builder: (context, state) => OnboardingView(),
+        ),
         GoRoute(
           path: '/login',
           name: LoginView.name,
@@ -126,27 +132,25 @@ abstract class AppRouter {
         ),
         GoRoute(
           path: '/legal-notices',
-          name: LegalNotices.name,
-          builder: (context, state) => const LegalNotices(),
+          name: LegalNoticesView.name,
+          builder: (context, state) => const LegalNoticesView(),
         ),
         GoRoute(
           path: '/privacy-policy',
-          name: PrivacyPolicy.name,
-          builder: (context, state) => const PrivacyPolicy(),
+          name: PrivacyPolicyView.name,
+          builder: (context, state) => const PrivacyPolicyView(),
         ),
         GoRoute(
           path: '/user/follow',
           name: SubscriptionsListView.name,
-          builder: (context, state) => SubscriptionsListView(
-            user:state.extra! as UserModel
-          ),
+          builder: (context, state) =>
+              SubscriptionsListView(user: state.extra! as UserModel),
         ),
         GoRoute(
           path: '/trophies',
           name: TrophiesView.name,
-          builder: (context, state) => TrophiesView(
-            trophies: state.extra! as List<TrophyModel>
-          ),
+          builder: (context, state) =>
+              TrophiesView(trophies: state.extra! as List<TrophyModel>),
         ),
         GoRoute(
           path: '/change-password',
@@ -155,9 +159,18 @@ abstract class AppRouter {
         ),
       ],
       refreshListenable: GoRouterRefreshStream(stream),
-      redirect: (context, state) {
-        // If the user is not authenticated, redirect to the login page.
+      redirect: (context, state) async {
+        // Get Auth status
         final status = context.read<AuthenticationCubit>().state;
+
+        // Check if onboardng has been seen
+        final prefs = await SharedPreferences.getInstance();
+        final onboardingSeen = prefs.getBool('onboardingSeen') ?? false;
+
+        // If onboarding has not been seen redirect to OnBoardingView
+        if (!onboardingSeen) {
+          return '/onboarding';
+        }
 
         // If the user is authenticated, redirect to the home page (only if
         // the current location is public page)
@@ -168,7 +181,8 @@ abstract class AppRouter {
         // If the user is not authenticated, redirect to the login page.
         // (only if the current location is not a public page).
         if (!publicRoutes.contains(state.uri.toString()) &&
-            status is AuthenticationUnauthenticated) {
+            (status is AuthenticationUnauthenticated ||
+                status is AuthenticationInitial)) {
           return '/login';
         }
 

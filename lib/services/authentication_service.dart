@@ -2,6 +2,7 @@ import 'package:ecogest_front/data/ecogest_api_data_source.dart';
 import 'package:ecogest_front/models/user_model.dart';
 import 'package:ecogest_front/services/notifications/notifications_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:pusher_beams/pusher_beams.dart';
 
 class AuthenticationService {
   static final NotificationsService notificationsService =
@@ -91,6 +92,7 @@ class AuthenticationService {
     await prefs.remove('token');
     // end connection to pusher
     notificationsService.disconnectPusher();
+    PusherBeams.instance.clearDeviceInterests();
   }
 
   static Future<String?> getToken() async {
@@ -119,5 +121,22 @@ class AuthenticationService {
     final response = await EcoGestApiDataSource.post('/request-reset-password', request,
         error: 'Failed to send mail to reset password');
     return response;
+  }
+
+  
+  static Future<void> deleteMyAccount() async {
+      final String? token = await AuthenticationService.getToken();
+
+      await EcoGestApiDataSource.delete(
+        '/me',
+        token: token,
+      );
+
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.remove('token');
+      
+      // end connection to pusher
+      notificationsService.disconnectPusher();
+      PusherBeams.instance.clearDeviceInterests();
   }
 }

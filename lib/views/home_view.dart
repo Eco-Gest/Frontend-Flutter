@@ -19,11 +19,11 @@ class HomeView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const ThemeAppBar(title: 'Accueil'),
-      bottomNavigationBar: AppBarFooter(),
+      bottomNavigationBar: const AppBarFooter(),
       body: BlocProvider<PostsCubit>(
         create: (context) {
           final cubit = PostsCubit();
-          cubit.getPosts(currentPage, false);
+          cubit.getPosts(currentPage);
           return cubit;
         },
         child: BlocBuilder<PostsCubit, PostsState>(
@@ -49,7 +49,7 @@ class HomeView extends StatelessWidget {
                   // -> No need to reload the page again when user scroll down
                   if (!noMorePosts) {
                     currentPage = currentPage + 1;
-                    context.read<PostsCubit>().getPosts(currentPage, false);
+                    context.read<PostsCubit>().getPosts(currentPage);
                   }
                 },
               );

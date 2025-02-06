@@ -11,6 +11,10 @@ class AuthenticationInitial extends AuthenticationState {
   AuthenticationInitial() : super(null);
 }
 
+class AuthenticationLoading extends AuthenticationState {
+  AuthenticationLoading() : super(null);
+}
+
 /// The state of the authentication cubit when the user is unauthenticated.
 class AuthenticationUnauthenticated extends AuthenticationState {
   final String message;
@@ -33,3 +37,17 @@ class AuthenticationResetPasswordStateSuccess extends AuthenticationState {
   final String message;
   AuthenticationResetPasswordStateSuccess(this.message) : super(null);
 }
+
+/// The state of the authentication cubit when the user account deletion was successful.
+class AuthenticationAccountDeleted extends AuthenticationState {
+  final String message;
+  AuthenticationAccountDeleted(this.message) : super(null);
+}
+
+/// The state of the authentication cubit when the account deletion failed.
+class AuthenticationDeleteAccountError extends AuthenticationState {
+  final String message;
+  AuthenticationDeleteAccountError(this.message) : super(null);
+}
+
+

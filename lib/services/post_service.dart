@@ -5,29 +5,22 @@ import 'package:ecogest_front/services/notifications/notifications_service.dart'
 import 'package:flutter/material.dart';
 
 class PostService {
-  List<PostModel> allPosts = [];
-  List<PostModel>? completedPosts;
-  List<PostModel>? nextPosts;
-  List<PostModel>? inProgressPosts;
-  List<PostModel>? actionsPosts;
   static final NotificationsService notificationsService =
       NotificationsService();
 
-  Future<List<PostModel>> getPosts(int pageNbr, bool forceReload) async {
+  Future<List<PostModel>> getPosts(int pageNbr) async {
     final String? token = await AuthenticationService.getToken();
 
-    if (allPosts.isEmpty || pageNbr > 1 || forceReload) {
-      final List<dynamic> responseMap =
-          await EcoGestApiDataSource.get('/posts?page=$pageNbr', token: token);
+    final List<dynamic> responseMap =
+        await EcoGestApiDataSource.get('/posts?page=$pageNbr', token: token);
 
-      final posts = responseMap.map((post) {
-        return PostModel.fromJson(post);
-      }).toList();
-      allPosts = posts;
-    }
+    final posts = responseMap.map((post) {
+      return PostModel.fromJson(post);
+    }).toList();
+
     // connect to pusher
     notificationsService.connectPusher();
-    return allPosts;
+    return posts;
   }
 
   Future<List<PostModel>?> getUserPostsFiltered(
@@ -91,14 +84,7 @@ class PostService {
     }).toList();
   }
 
-  Future<PostModel> getOnePost(int postId, bool forceReload) async {
-    if (!forceReload) {
-      for (PostModel post in allPosts) {
-        if (post.id! == postId) {
-          return post;
-        }
-      }
-    }
+  Future<PostModel> getOnePost(int postId) async {
     final String? token = await AuthenticationService.getToken();
     final post = await EcoGestApiDataSource.get('/posts/$postId', token: token);
     return PostModel.fromJson(post);
@@ -117,8 +103,6 @@ class PostService {
           token: token);
     }
 
-    allPosts.insert(0, PostModel.fromJson(result));
-
     return postModel;
   }
 
@@ -126,7 +110,7 @@ class PostService {
     final String? token = await AuthenticationService.getToken();
 
     if (isLiked) {
-      return await EcoGestApiDataSource.delete('/posts/$postId/likes', {},
+      await EcoGestApiDataSource.delete('/posts/$postId/likes',
           error: 'Failed to add like', token: token);
     } else {
       await EcoGestApiDataSource.post('/posts/$postId/likes', {},
@@ -161,7 +145,6 @@ class PostService {
 
     await EcoGestApiDataSource.delete(
       '/posts/$postId',
-      {},
       token: token,
     );
   }
@@ -170,7 +153,7 @@ class PostService {
     try {
       final String? token = await AuthenticationService.getToken();
 
-      getOnePost(postId, false).then((PostModel post) async {
+      getOnePost(postId).then((PostModel post) async {
         final Map<String, dynamic> requestBody = {
           'ID': post.id,
           'title': post.title,

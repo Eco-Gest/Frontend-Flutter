@@ -61,7 +61,6 @@ class _SubscriptionsListWidget extends State<SubscriptionsListWidget> {
           }
 
           return ListView.separated(
-            padding: const EdgeInsets.all(16),
             separatorBuilder: (context, index) => const SizedBox(height: 16),
             itemCount: subscriptions.length,
             itemBuilder: (BuildContext context, int index) {
@@ -103,7 +102,7 @@ class SubscriptionItem extends StatelessWidget {
         : lightColorScheme.primary;
 
     return Padding(
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(4.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -118,7 +117,7 @@ class SubscriptionItem extends StatelessWidget {
                   child: Icon(Icons.person),
                 ),
               ],
-              const SizedBox(width: 16),
+              const SizedBox(width: 6),
               GestureDetector(
                 onTap: () {
                   GoRouter.of(context).push(
@@ -127,6 +126,7 @@ class SubscriptionItem extends StatelessWidget {
                 child: Text(
                   subscriptionUsername(),
                   style: const TextStyle(fontSize: 16),
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
             ],
@@ -162,7 +162,6 @@ class SubscriptionItem extends StatelessWidget {
     return FilledButton(
       style: FilledButton.styleFrom(
         backgroundColor: buttonColor,
-        fixedSize: const Size(160, 50),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10.0),
         ),

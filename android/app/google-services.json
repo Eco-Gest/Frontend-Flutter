@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "7950659876",
+    "project_id": "ecogest-252e6",
+    "storage_bucket": "ecogest-252e6.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:7950659876:android:5fbfbc15b4b89a4414c3b1",
+        "android_client_info": {
+          "package_name": "com.example.ecogest_front"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAeZbhu-G_oykuXbTCpUDfjA-xFwRBKntM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

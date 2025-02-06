@@ -14,6 +14,11 @@ import 'package:flutter_tagging_plus/flutter_tagging_plus.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:intl/intl.dart';
+import 'package:image/image.dart' as img;
+import 'dart:typed_data';
+import 'package:ecogest_front/state_management/theme_settings/theme_settings_cubit.dart';
 
 class PostCreateView extends StatefulWidget {
   const PostCreateView({Key? key}) : super(key: key);
@@ -30,20 +35,22 @@ class _PostCreateView extends State<PostCreateView> {
   final positionController = TextEditingController();
   final tagController = TextEditingController();
 
-  DateTime? startDate;
-  DateTime? endDate;
+  DateTime? startDate = DateTime.now(); // Par défaut, aujourd'hui
+  DateTime? endDate =
+      DateTime.now().add(Duration(days: 1)); // Par défaut, demain
 
   late List<TagModel> _tagsToSave = [];
 
   final List<bool> _selectedPostType = <bool>[true, false];
 
   bool datesValidation() {
-    if (startDate != null && endDate != null) {
-      if (startDate!.isBefore(endDate!)) {
-        return true;
-      }
+    if (startDate == null && endDate == null) {
+      return false;
     }
-    return false;
+    if (startDate!.isAfter(endDate!)) {
+      return false;
+    }
+    return true;
   }
 
   File? _image;
@@ -51,11 +58,28 @@ class _PostCreateView extends State<PostCreateView> {
 
   Future getImage() async {
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
-    setState(() {
-      if (pickedFile != null) {
-        _image = File(pickedFile.path);
-      }
-    });
+    if (pickedFile != null) {      
+      _image = await compressImage(File(pickedFile.path));
+      setState(() {});
+    }
+  }
+
+  Future<File> compressImage(File imageFile) async {
+    Uint8List imageBytes = await imageFile.readAsBytes();
+    img.Image? image = img.decodeImage(imageBytes);
+
+    if (image != null) {
+      img.Image resizedImage = img.copyResize(image, width: 800);
+      Uint8List compressedImage = Uint8List.fromList(img.encodeJpg(resizedImage, quality: 85));
+
+      final tempDir = Directory.systemTemp;
+      final tempFile = File('${tempDir.path}/temp_image.jpg');
+      await tempFile.writeAsBytes(compressedImage);
+
+      return tempFile;
+    } else {
+      throw Exception('Error processing the image');
+    }
   }
 
   @override
@@ -84,7 +108,9 @@ class _PostCreateView extends State<PostCreateView> {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(content: Text('Publication réussie')),
                       );
-                      GoRouter.of(context).goNamed(HomeView.name);
+                      GoRouter.of(context).pushNamed(HomeView.name).then((_) {
+                        setState(() {});
+                        });
                     }
                   },
                   child: Form(
@@ -97,9 +123,7 @@ class _PostCreateView extends State<PostCreateView> {
                             return Container(
                               alignment: Alignment.center,
                               padding: const EdgeInsets.all(10),
-                              child:
-                                  // Type
-                                  ToggleButtons(
+                              child: ToggleButtons(
                                 constraints: BoxConstraints(
                                     minWidth:
                                         (MediaQuery.of(context).size.width -
@@ -107,15 +131,17 @@ class _PostCreateView extends State<PostCreateView> {
                                             2,
                                     minHeight: 50.0),
                                 onPressed: (int index) {
-                                  for (int i = 0;
-                                      i < _selectedPostType.length;
-                                      i++) {
-                                    _selectedPostType[i] = i == index;
+                                  setState(() {
+                                    for (int i = 0;
+                                        i < _selectedPostType.length;
+                                        i++) {
+                                      _selectedPostType[i] = i == index;
+                                    }
                                     context
                                         .read<PostFormCubit>()
                                         .selectPostType(
                                             state.selectableTypes[index]);
-                                  }
+                                  });
                                 },
                                 isSelected: _selectedPostType,
                                 children: <Widget>[
@@ -127,7 +153,6 @@ class _PostCreateView extends State<PostCreateView> {
                           }
                           return const CircularProgressIndicator();
                         }),
-                        // Category
                         BlocBuilder<PostFormCubit, PostFormState>(
                             builder: (context, state) {
                           if (state is SelectionState) {
@@ -157,6 +182,7 @@ class _PostCreateView extends State<PostCreateView> {
                           alignment: Alignment.topCenter,
                           padding: const EdgeInsets.all(10),
                           child: TextFormField(
+                            textCapitalization: TextCapitalization.sentences,
                             controller: titleController,
                             decoration: const InputDecoration(
                               border: OutlineInputBorder(),
@@ -169,18 +195,20 @@ class _PostCreateView extends State<PostCreateView> {
                                     value.isNotEmpty &&
                                     value.length >= 0)
                                 ? null
-                                : 'Titrer non valide',
+                                : 'Titre non valide',
                           ),
                         ),
                         Container(
                           alignment: Alignment.topCenter,
                           padding: const EdgeInsets.all(10),
                           child: TextFormField(
+                            textCapitalization: TextCapitalization.sentences,
                             textAlign: TextAlign.justify,
                             controller: descriptionController,
                             autofocus: false,
                             maxLines: 8,
                             decoration: const InputDecoration(
+                              alignLabelWithHint: true,
                               border: OutlineInputBorder(),
                               labelText: 'Description',
                               hintText: 'Entrez une description',
@@ -191,6 +219,7 @@ class _PostCreateView extends State<PostCreateView> {
                           alignment: Alignment.topCenter,
                           padding: const EdgeInsets.all(10),
                           child: TextFormField(
+                            textCapitalization: TextCapitalization.sentences,
                             controller: positionController,
                             decoration: const InputDecoration(
                               border: OutlineInputBorder(),
@@ -199,15 +228,11 @@ class _PostCreateView extends State<PostCreateView> {
                             ),
                           ),
                         ),
-
                         BlocBuilder<PostFormCubit, PostFormState>(
                             builder: (context, state) {
                           if (state is SelectionState &&
                               state.selectedType == PostType.challenge) {
-                            startDate = DateTime.now();
-                            endDate = startDate!.add(const Duration(days: 1));
                             return Column(children: [
-                              // date debut
                               Container(
                                 padding: const EdgeInsets.all(10),
                                 constraints: BoxConstraints(
@@ -223,20 +248,22 @@ class _PostCreateView extends State<PostCreateView> {
                                   initialValue: startDate,
                                   initialPickerDateTime: startDate,
                                   mode: DateTimeFieldPickerMode.date,
+                                  dateFormat: DateFormat.yMMMd('fr_FR'),
                                   decoration: const InputDecoration(
                                     hintStyle: TextStyle(color: Colors.black45),
                                     errorStyle:
                                         TextStyle(color: Colors.redAccent),
                                     border: OutlineInputBorder(),
                                     suffixIcon: Icon(Icons.event_note),
-                                    labelText: 'Date',
+                                    labelText: 'Date de début',
                                   ),
                                   onChanged: (value) {
-                                    startDate = value;
+                                    setState(() {
+                                      startDate = value;
+                                    });
                                   },
                                 ),
                               ),
-                              // date fin
                               Container(
                                 padding: const EdgeInsets.all(10),
                                 constraints: BoxConstraints(
@@ -252,16 +279,19 @@ class _PostCreateView extends State<PostCreateView> {
                                   initialValue: endDate,
                                   initialPickerDateTime: endDate,
                                   mode: DateTimeFieldPickerMode.date,
+                                  dateFormat: DateFormat.yMMMd('fr_FR'),
                                   decoration: const InputDecoration(
                                     hintStyle: TextStyle(color: Colors.black45),
                                     errorStyle:
                                         TextStyle(color: Colors.redAccent),
                                     border: OutlineInputBorder(),
                                     suffixIcon: Icon(Icons.event_note),
-                                    labelText: 'Date',
+                                    labelText: 'Date de fin',
                                   ),
                                   onChanged: (value) {
-                                    endDate = value;
+                                    setState(() {
+                                      endDate = value;
+                                    });
                                   },
                                 ),
                               ),
@@ -269,7 +299,6 @@ class _PostCreateView extends State<PostCreateView> {
                           }
                           return const SizedBox();
                         }),
-
                         Container(
                           alignment: Alignment.topCenter,
                           padding: const EdgeInsets.all(10),
@@ -299,14 +328,26 @@ class _PostCreateView extends State<PostCreateView> {
                               configureSuggestion: (tag) {
                                 return SuggestionConfiguration(
                                   title: Text(tag.label),
-                                  additionWidget: const Chip(
-                                    avatar: Icon(
+                                  additionWidget: Chip(
+                                    avatar: const Icon(
                                       Icons.add_circle,
                                     ),
-                                    label: Text('Ajouter un nouveau tag'),
+                                    backgroundColor: context
+                                            .read<ThemeSettingsCubit>()
+                                            .state
+                                            .isDarkMode
+                                        ? darkColorScheme.primary
+                                        : lightColorScheme.primary,
+                                    label: const Text('Ajouter un nouveau tag'),
                                     labelStyle: TextStyle(
                                       fontSize: 14.0,
                                       fontWeight: FontWeight.w300,
+                                      color: context
+                                              .read<ThemeSettingsCubit>()
+                                              .state
+                                              .isDarkMode
+                                          ? Colors.black
+                                          : Colors.white,
                                     ),
                                   ),
                                 );
@@ -314,8 +355,14 @@ class _PostCreateView extends State<PostCreateView> {
                               configureChip: (tag) {
                                 return ChipConfiguration(
                                   label: Text(tag.label),
-                                  backgroundColor: lightColorScheme.primary,
-                                  labelStyle: const TextStyle(color: Colors.white),
+                                  backgroundColor: context
+                                          .read<ThemeSettingsCubit>()
+                                          .state
+                                          .isDarkMode
+                                      ? darkColorScheme.primary
+                                      : lightColorScheme.primary,
+                                  labelStyle:
+                                      const TextStyle(color: Colors.white),
                                   deleteIconColor: Colors.white,
                                 );
                               },
@@ -324,18 +371,16 @@ class _PostCreateView extends State<PostCreateView> {
                                     .map<TagModel>((tag) => tag)
                                     .toList();
                               }),
-                        ), // tags
-                        // image
+                        ),
                         Column(
                           children: [
                             const Text('Sélectionnez une image'),
-                            OutlinedButton(
-                              onPressed: getImage,
+                            GestureDetector(
+                              onTap: getImage,
                               child: _buildImage(),
                             ),
                           ],
                         ),
-                        // level
                         BlocBuilder<PostFormCubit, PostFormState>(
                             builder: (context, state) {
                           if (state is SelectionState) {
@@ -361,7 +406,7 @@ class _PostCreateView extends State<PostCreateView> {
                           return const CircularProgressIndicator();
                         }),
                         Padding(
-                          padding: const EdgeInsets.all(30.0),
+                          padding: const EdgeInsets.all(15.0),
                           child: SizedBox(
                             width: (MediaQuery.of(context).size.width - 26) / 2,
                             height: 50.0,
@@ -402,15 +447,45 @@ class _PostCreateView extends State<PostCreateView> {
 
   Widget _buildImage() {
     if (_image == null) {
-      return const Padding(
-        padding: EdgeInsets.all(10),
-        child: Icon(
-          Icons.add,
-          color: Colors.grey,
+      return Container(
+        width: 200,
+        height: 200,
+        decoration: BoxDecoration(
+          border: Border.all(color: Colors.grey),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Center(
+          child: Icon(
+            Icons.add,
+            color: Colors.grey,
+          ),
         ),
       );
     } else {
-      return Text(_image!.path);
+      return Stack(
+        alignment: Alignment.center,
+        children: [
+          Container(
+            width: 200,
+            height: 200,
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.grey),
+              borderRadius: BorderRadius.circular(10),
+              image: DecorationImage(
+                image: kIsWeb
+                    ? NetworkImage(_image!.path) as ImageProvider<Object>
+                    : FileImage(_image!),
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+          Icon(
+            Icons.add,
+            color: Colors.grey.withOpacity(0.6),
+            size: 40,
+          ),
+        ],
+      );
     }
   }
 }

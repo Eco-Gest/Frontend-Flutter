@@ -10,16 +10,9 @@ class PostSeparator extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        SizedBox(
-          height: 5,
-        ),
         Divider(
-          height: 10,
           thickness: 1,
           color: lightColorScheme.outline,
-        ),
-        SizedBox(
-          height: 5,
         ),
       ],
     );

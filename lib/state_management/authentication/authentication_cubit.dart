@@ -2,6 +2,7 @@ import 'package:ecogest_front/models/user_model.dart';
 import 'package:ecogest_front/services/authentication_service.dart';
 import 'package:ecogest_front/services/user_service.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter/material.dart';
 
 part 'authentication_state.dart';
 
@@ -12,18 +13,24 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
   }
 
   Future<void> getCurrentUser() async {
+    emit(AuthenticationLoading());
     final token = await AuthenticationService.getToken();
     if (token != null) {
       final user = await UserService.getCurrentUser();
       emit(AuthenticationAuthenticated(user));
     } else {
-      emit(AuthenticationUnauthenticated(
-          "Erreur dans la récupération de vos données"));
+      emit(AuthenticationInitial());
     }
+  }
+
+  Future<void> reloadCurrentUser() async {
+    final user = await UserService.getCurrentUser();
+    emit(AuthenticationAuthenticated(user));
   }
 
   Future<void> login({required String email, required String password}) async {
     try {
+      emit(AuthenticationLoading());
       await AuthenticationService.login(email: email, password: password);
       final user = await UserService.getCurrentUser();
       emit(AuthenticationAuthenticated(user));
@@ -74,5 +81,20 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
   Future<void> logout() async {
     await AuthenticationService.logout();
     emit(AuthenticationUnauthenticated("Déconnecté."));
+  }
+
+  Future<void> deleteMyAccount() async {
+    try {
+      await AuthenticationService.deleteMyAccount();
+
+        emit(AuthenticationAccountDeleted("Compte supprimé avec succès."));
+
+        await Future.delayed(const Duration(seconds: 3));
+
+        emit(AuthenticationUnauthenticated("Vous êtes maintenant déconnecté."));
+    } catch (error) {
+      emit(AuthenticationDeleteAccountError(
+          "Erreur rencontrée lors de la suppression de votre compte. Veuillez réessayer."));
+    }
   }
 }
