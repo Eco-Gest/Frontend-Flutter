@@ -85,7 +85,6 @@ class _MainAppState extends State<MainApp> {
     final message = await PusherBeams.instance.getInitialMessage();
     
     if (message != null) {
-      print("Notification qui a ouvert l'app: $message");
       Future.delayed(Duration.zero, () {
         GoRouter.of(context).push(NotificationsView.name);
       });

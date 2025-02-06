@@ -46,7 +46,9 @@ app.*.map.json
 .env
 
 # Not useful to include this folders because we code for web & mobile
-linux/*
-macos/*
-windows/*
+/linux/*
+/macos/*
+/windows/*
+/ios/*
+
 
