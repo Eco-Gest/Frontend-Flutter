@@ -7,6 +7,7 @@ import 'package:ecogest_front/services/authentication_service.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ecogest_front/services/notifications/notifications_service.dart';
+import 'package:pusher_beams/pusher_beams.dart';
 
 class UserService {
   static final NotificationsService notificationsService =
@@ -22,6 +23,7 @@ class UserService {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString('userId', '${user.id}');
 
+    await PusherBeams.instance.addDeviceInterest('user-${user.id}');
     return user;
   }
 

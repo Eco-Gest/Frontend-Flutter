@@ -15,12 +15,16 @@ import 'package:notification_permissions/notification_permissions.dart'
 import 'package:permission_handler/permission_handler.dart'
     as permission_handler;
 import 'package:flutter_localizations/flutter_localizations.dart';
-
+import 'package:pusher_beams/pusher_beams.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load();
   await initializeDateFormatting('fr_FR', null);
+  if (!kIsWeb) {
+    await PusherBeams.instance.start(dotenv.env['PUSHER_BEAMS_ID'].toString());
+   }
   runApp(MainApp());
 }
 
@@ -73,6 +77,17 @@ class _MainAppState extends State<MainApp> {
     final status = await permission_handler.Permission.storage.status;
     if (!status.isGranted) {
       await permission_handler.Permission.storage.request();
+    }
+  }
+
+   /// Check if app is opened by click on a push notification
+  Future<void> checkForInitialMessage() async {
+    final message = await PusherBeams.instance.getInitialMessage();
+    
+    if (message != null) {
+      Future.delayed(Duration.zero, () {
+        GoRouter.of(context).push(NotificationsView.name);
+      });
     }
   }
 
@@ -133,4 +148,5 @@ class _MainAppState extends State<MainApp> {
   void onNotificationListener(String? payload) {
     GoRouter.of(context).push(NotificationsView.name);
   }
+
 }

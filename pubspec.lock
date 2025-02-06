@@ -457,10 +457,10 @@ packages:
     dependency: transitive
     description:
       name: js
-      sha256: c1b2e9b5ea78c45e1a0788d29606ba27dc5f71f019f32ca5140f61ef071838cf
+      sha256: f2c445dce49627136094980615a031419f7f3eb393237e4ecd97ac15dea343f3
       url: "https://pub.dev"
     source: hosted
-    version: "0.7.1"
+    version: "0.6.7"
   leak_tracker:
     dependency: transitive
     description:
@@ -701,14 +701,54 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.1.2"
+  pusher_beams:
+    dependency: "direct main"
+    description:
+      name: pusher_beams
+      sha256: f59a00a0dbf1c76eff766f78f536bfbf2b394c747da3b6925333cefb59e726cb
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.2"
+  pusher_beams_android:
+    dependency: transitive
+    description:
+      name: pusher_beams_android
+      sha256: "201ddbce9d6ba75c386ad9ab085c1db88ee6d591ba4a5a86c2fc20c8b5e9dca5"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.2"
+  pusher_beams_ios:
+    dependency: transitive
+    description:
+      name: pusher_beams_ios
+      sha256: "09871ce8ce5a64d43ed5bed3b3816a9dfa507e492bfe4bd0d3168a094c7d500c"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.1"
+  pusher_beams_platform_interface:
+    dependency: transitive
+    description:
+      name: pusher_beams_platform_interface
+      sha256: "90645da247512f080a29d95b23a46998d2f81c37c849376288debf9625457731"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.1"
+  pusher_beams_web:
+    dependency: transitive
+    description:
+      name: pusher_beams_web
+      sha256: f95a14e497263a75f7025fc3c5471fe315f36fb85b113022ca1ac579e10bbe38
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.1"
   pusher_channels_flutter:
     dependency: "direct main"
     description:
       name: pusher_channels_flutter
-      sha256: "4d83b2012079c7d1a3c42cee1d37a48c974504d869b6a9c085144b2d4e35e58a"
+      sha256: "0b06194d85d1665d21e634ea091917b28670fb6d585d76903a4f72d894906000"
       url: "https://pub.dev"
     source: hosted
-    version: "2.5.0"
+    version: "2.4.0"
   rflutter_alert:
     dependency: "direct main"
     description:
@@ -914,6 +954,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.1.4"
+  uuid:
+    dependency: transitive
+    description:
+      name: uuid
+      sha256: "648e103079f7c64a36dc7d39369cabb358d377078a051d6ae2ad3aa539519313"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.7"
   vector_math:
     dependency: transitive
     description:
