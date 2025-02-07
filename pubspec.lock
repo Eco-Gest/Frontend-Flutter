@@ -105,6 +105,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.6"
+  cupertino_icons:
+    dependency: "direct main"
+    description:
+      name: cupertino_icons
+      sha256: ba631d1c7f7bef6b729a622b7b752645a2d076dba9976925b8f25725a30e1ee6
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.8"
   date_field:
     dependency: "direct main"
     description:
@@ -327,7 +335,11 @@ packages:
     source: hosted
     version: "1.0.0"
   flutter_launcher_icons:
+<<<<<<< HEAD
     dependency: "direct main"
+=======
+    dependency: "direct dev"
+>>>>>>> 48aa6cc (deploy to app store)
     description:
       name: flutter_launcher_icons
       sha256: bfa04787c85d80ecb3f8777bde5fc10c3de809240c48fa061a2c2bf15ea5211c
