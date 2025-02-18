@@ -1,4 +1,4 @@
-package com.example.ecogest_front
+package com.example.ecogest_front_front
 
 import io.flutter.embedding.android.FlutterActivity
 

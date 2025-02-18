@@ -1,7 +1,7 @@
 name: ecogest_front
-description: A new Flutter project.
+description: Ecogest Flutter project.
 publish_to: 'none'
-version: 0.1.0
+version: 1.0.0
 
 environment:
   sdk: '>=3.0.6 <4.0.0'
@@ -39,6 +39,9 @@ dependencies:
   permission_handler: ^11.3.1
   introduction_screen: ^3.1.12
   pusher_beams: ^1.1.2
+  flutter_launcher_icons: ^0.14.3
+  firebase_core: ^3.11.0
+  firebase_messaging: ^15.2.2
 
 dev_dependencies:
   flutter_test:
@@ -61,3 +64,9 @@ flutter:
     - .env.example
     - .env
   uses-material-design: true
+
+flutter_icons:
+  image_path: "assets/icon/icon-color.png"
+  android: true
+  # ios: true
+  

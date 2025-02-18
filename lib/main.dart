@@ -17,10 +17,15 @@ import 'package:permission_handler/permission_handler.dart'
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:pusher_beams/pusher_beams.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform, 
+  );
   await initializeDateFormatting('fr_FR', null);
   if (!kIsWeb) {
     await PusherBeams.instance.start(dotenv.env['PUSHER_BEAMS_ID'].toString());

@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "7950659876",
-    "project_id": "ecogest-252e6",
-    "storage_bucket": "ecogest-252e6.firebasestorage.app"
+    "project_number": "718020078847",
+    "project_id": "ecogest-af402",
+    "storage_bucket": "ecogest-af402.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:7950659876:android:5fbfbc15b4b89a4414c3b1",
+        "mobilesdk_app_id": "1:718020078847:android:2dfb1df5f4854db1d6b0ca",
         "android_client_info": {
-          "package_name": "com.example.ecogest_front"
+          "package_name": "com.example.ecogest_front_front"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyAeZbhu-G_oykuXbTCpUDfjA-xFwRBKntM"
+          "current_key": "AIzaSyDBFhv62qMIRXPzEUdvKiZCdjo82sx6Xb8"
         }
       ],
       "services": {
