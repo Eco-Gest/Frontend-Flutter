@@ -9,6 +9,25 @@
       "client_info": {
         "mobilesdk_app_id": "1:718020078847:android:2dfb1df5f4854db1d6b0ca",
         "android_client_info": {
+          "package_name": "com.example.ecogest_front"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDBFhv62qMIRXPzEUdvKiZCdjo82sx6Xb8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:718020078847:android:4232bd19c47e834fd6b0ca",
+        "android_client_info": {
           "package_name": "com.example.ecogest_front_front"
         }
       },
