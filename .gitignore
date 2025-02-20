@@ -54,5 +54,5 @@ app.*.map.json
 ./windows
 ./linux
 ./macos
-./lib/firebase_options.dart
+lib/firebase_options.dart
 firebase.js
