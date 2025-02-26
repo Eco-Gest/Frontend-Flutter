@@ -1,7 +1,7 @@
 name: ecogest_front
 description: Ecogest Flutter project.
 publish_to: 'none'
-version: 1.0.0
+version: 1.0.1
 
 environment:
   sdk: '>=3.0.6 <4.0.0'
@@ -50,15 +50,7 @@ dev_dependencies:
   flutter_lints: ^5.0.0
   flutter_launcher_icons: "^0.14.3"
 
-flutter_icons:
-  image_path: "icons/app_logo.png"
-  android: true
-  # ios: true
-
 flutter:
-
-  uses-material-design: true
-
   assets:  
     - assets/logo/logo-color.png
     - assets/logo/logo-black.png
