@@ -31,6 +31,7 @@ migrate_working_dir/
 .pub-cache/
 .pub/
 /build/
+.vscode/
 
 # Symbolication related
 app.*.symbols
@@ -39,20 +40,20 @@ app.*.symbols
 app.*.map.json
 
 # Android Studio will place build artifacts here
-/android/app/debug
-/android/app/profile
-/android/app/release
+android/app/debug
+android/app/profile
+android/app/release
 
 .env
 
 # Not useful to include this folders because we code for web & mobile
-/linux/*
-/macos/*
-/windows/*
-/ios/*
+linux/*
+macos/*
+windows/*
+ios/*
 
-./windows
-./linux
-./macos
 lib/firebase_options.dart
 firebase.js
+
+pubspec.lock
+
