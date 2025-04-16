@@ -10,10 +10,7 @@ import 'assets/ecogest_theme.dart';
 import 'package:ecogest_front/state_management/authentication/authentication_cubit.dart';
 import 'package:ecogest_front/core/router.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:notification_permissions/notification_permissions.dart'
-    as notification_permissions;
-import 'package:permission_handler/permission_handler.dart'
-    as permission_handler;
+import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:pusher_beams/pusher_beams.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
@@ -24,12 +21,12 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load();
   await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform, 
+    options: DefaultFirebaseOptions.currentPlatform,
   );
   await initializeDateFormatting('fr_FR', null);
   if (!kIsWeb) {
     await PusherBeams.instance.start(dotenv.env['PUSHER_BEAMS_ID'].toString());
-   }
+  }
   runApp(MainApp());
 }
 
@@ -50,45 +47,28 @@ class _MainAppState extends State<MainApp> {
   var permUnknown = "unknown";
   var permProvisional = "provisional";
 
-  /// Checks the notification permission status
-  Future<String?> getCheckNotificationPermStatus() {
-    return notification_permissions.NotificationPermissions
-        .getNotificationPermissionStatus()
-        .then((status) {
-      switch (status) {
-        case notification_permissions.PermissionStatus.denied:
-          return permDenied;
-        case notification_permissions.PermissionStatus.granted:
-          return permGranted;
-        case notification_permissions.PermissionStatus.unknown:
-          return permUnknown;
-        case notification_permissions.PermissionStatus.provisional:
-          return permProvisional;
-        default:
-          return null;
-      }
-    });
-  }
-
   @override
   void initState() {
     super.initState();
     requestPermissions();
     listenToNotification();
-    permissionStatusFuture = getCheckNotificationPermStatus();
   }
 
   Future<void> requestPermissions() async {
-    final status = await permission_handler.Permission.storage.status;
-    if (!status.isGranted) {
-      await permission_handler.Permission.storage.request();
+    final permissionStorageStatus = await Permission.storage.status;
+    if (!permissionStorageStatus.isGranted) {
+      await Permission.storage.request();
+    }
+    final notificationPermissionStatus = await Permission.notification.status;
+    if (!notificationPermissionStatus.isGranted) {
+      await Permission.notification.request();
     }
   }
 
-   /// Check if app is opened by click on a push notification
+  /// Check if app is opened by click on a push notification
   Future<void> checkForInitialMessage() async {
     final message = await PusherBeams.instance.getInitialMessage();
-    
+
     if (message != null) {
       Future.delayed(Duration.zero, () {
         GoRouter.of(context).push(NotificationsView.name);
@@ -153,5 +133,4 @@ class _MainAppState extends State<MainApp> {
   void onNotificationListener(String? payload) {
     GoRouter.of(context).push(NotificationsView.name);
   }
-
 }

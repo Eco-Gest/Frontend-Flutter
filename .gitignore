@@ -53,7 +53,7 @@ windows/*
 ios/*
 
 lib/firebase_options.dart
-firebase.js
+firebase.json
 
 pubspec.lock
 

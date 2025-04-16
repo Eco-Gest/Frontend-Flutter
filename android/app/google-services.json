@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "718020078847",
-    "project_id": "ecogest-af402",
-    "storage_bucket": "ecogest-af402.firebasestorage.app"
+    "project_number": "839857983558",
+    "project_id": "ecogest-486d1",
+    "storage_bucket": "ecogest-486d1.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:718020078847:android:2dfb1df5f4854db1d6b0ca",
+        "mobilesdk_app_id": "1:839857983558:android:165979f189006eee73fa47",
         "android_client_info": {
-          "package_name": "com.example.ecogest_front"
+          "package_name": "org.ecogest.ecogest_front"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyDBFhv62qMIRXPzEUdvKiZCdjo82sx6Xb8"
+          "current_key": "AIzaSyC5BvcgDJbFBYzRB2e4ow4No6mqgl6eFig"
         }
       ],
       "services": {
@@ -26,15 +26,15 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:718020078847:android:4232bd19c47e834fd6b0ca",
+        "mobilesdk_app_id": "1:839857983558:android:76c199af268f18fd73fa47",
         "android_client_info": {
-          "package_name": "com.example.ecogest_front_front"
+          "package_name": "org.ecogest.ecogest_front_front"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyDBFhv62qMIRXPzEUdvKiZCdjo82sx6Xb8"
+          "current_key": "AIzaSyC5BvcgDJbFBYzRB2e4ow4No6mqgl6eFig"
         }
       ],
       "services": {
