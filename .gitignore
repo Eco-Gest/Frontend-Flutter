@@ -54,6 +54,8 @@ ios/*
 
 lib/firebase_options.dart
 firebase.json
-
 pubspec.lock
+android/app/google-services.json
 
+# certificats
+*.pem
