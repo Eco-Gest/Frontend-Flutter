@@ -6,13 +6,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
 class EcoGestApiDataSource {
- static const _baseUrl = "https://ecogest.org/api";
- //static const _baseUrl = "http://localhost:8080/api";
- //static const _baseUrl = "http://10.0.2.2:8080/api";
-
-  static get baseUrl {
-    return _baseUrl;
-  }
+  static String get baseUrl => dotenv.env['API_URL'].toString();
 
   static Map<String, String> _getHeaders(String? token) {
     String apiKey = dotenv.env['API_KEY'].toString();
@@ -29,7 +23,7 @@ class EcoGestApiDataSource {
     assert(endpoint.startsWith('/'), 'Endpoint must start with a /');
 
     var response = await http.get(
-      Uri.parse('$_baseUrl$endpoint'),
+      Uri.parse('$baseUrl$endpoint'),
       headers: _getHeaders(token),
     );
 
@@ -46,7 +40,7 @@ class EcoGestApiDataSource {
     assert(endpoint.startsWith('/'), 'Endpoint must start with a /');
 
     var response = await http.post(
-      Uri.parse('$_baseUrl$endpoint'),
+      Uri.parse('$baseUrl$endpoint'),
       headers: _getHeaders(token),
       body: jsonEncode(body),
     );
@@ -65,7 +59,7 @@ class EcoGestApiDataSource {
     /// In debug mode, assert that the endpoint starts with a /
     assert(endpoint.startsWith('/'), 'Endpoint must start with a /');
     var response = await http.patch(
-      Uri.parse('$_baseUrl$endpoint'),
+      Uri.parse('$baseUrl$endpoint'),
       headers: _getHeaders(token),
       body: jsonEncode(body),
     );
@@ -85,7 +79,7 @@ class EcoGestApiDataSource {
     assert(endpoint.startsWith('/'), 'Endpoint must start with a /');
 
    await http.delete(
-      Uri.parse('$_baseUrl$endpoint'),
+      Uri.parse('$baseUrl$endpoint'),
       headers: _getHeaders(token),
     );
   }
@@ -99,7 +93,7 @@ class EcoGestApiDataSource {
       'x-api-key': apiKey,
     };
 
-    var request = http.MultipartRequest('POST', Uri.parse('$_baseUrl$endpoint'))
+    var request = http.MultipartRequest('POST', Uri.parse('$baseUrl$endpoint'))
       ..headers.addAll(headers)
       ..files.add(await http.MultipartFile.fromPath('image', filepath));
 
